@@ -33,6 +33,7 @@ export default {
       },
       pink: {
         500: "#fa8ac0",
+        100: "#FFF0F1",
       },
       etc: {
         black: "#000",

@@ -1,12 +1,13 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { ExclamationCircleIcon } from "../components/systemdesign/Icons";
+import { FacebookIcon } from "../components/systemdesign/Icons";
 import {
   ButtonPrimary,
   ButtonSecondary,
   ButtonGhost,
   ButtonSocial,
+  ButtonIcon,
 } from "../components/systemdesign/Button";
 function HomePage() {
   return (
@@ -14,11 +15,8 @@ function HomePage() {
       <ButtonPrimary content="ButtonPrimary" width="200px" />
       <ButtonSecondary content="ButtonSecondary" width="200px" />
       <ButtonGhost content="ButtonGhost" />
-      <ButtonSocial
-        content="ButtonSocial"
-        width="400px"
-        icon={ExclamationCircleIcon}
-      />
+      <ButtonSocial content="Facebook" icon={FacebookIcon} width="200px" />
+      <ButtonIcon icon={FacebookIcon} />
       <div></div>
     </>
   );

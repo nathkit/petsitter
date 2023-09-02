@@ -20,12 +20,13 @@ function AuthenticatedApp() {
     // </Routes>
     <>
       <BookingPage />
-      <HomePage />
+      {/* <HomePage />
       <LoginPage />
       <NotFoundPage />
       <RegisterPage />
       <SearchList />
-      <SitterDetailPage />
+      <SitterDetailPage /> */}
+      {/* You can open the modal using ID.showModal() method */}
     </>
   );
 }

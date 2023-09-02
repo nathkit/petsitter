@@ -93,6 +93,13 @@ export default {
             fontWeight: "500",
           },
         ],
+        bodyButton: [
+          "1rem",
+          {
+            lineHeight: "1.5rem",
+            fontWeight: "700",
+          },
+        ],
       },
     },
   },

@@ -72,6 +72,27 @@ export default {
             fontWeight: "700",
           },
         ],
+        body1: [
+          "1.25rem",
+          {
+            lineHeight: "1.625rem",
+            fontWeight: "500",
+          },
+        ],
+        body2: [
+          "1rem",
+          {
+            lineHeight: "1.75rem",
+            fontWeight: "500",
+          },
+        ],
+        body3: [
+          "0.875rem",
+          {
+            lineHeight: "1.5rem",
+            fontWeight: "500",
+          },
+        ],
       },
     },
   },

@@ -73,7 +73,7 @@ export default {
           },
         ],
         body1: [
-          "1.25rem",
+          "1.125rem",
           {
             lineHeight: "1.625rem",
             fontWeight: "500",

@@ -3,7 +3,6 @@ import Booking1 from "../components/booking/Booking1";
 import Booking2 from "../components/booking/Booking2";
 import Booking3 from "../components/booking/Booking3";
 import Booking4 from "../components/booking/Booking4";
-import { Vector } from "../components/systemdesign/image";
 
 function BookingPage() {
   return (

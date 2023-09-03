@@ -26,13 +26,13 @@ const data = [
 function booking1() {
   return (
     <>
-      <div className=" bg-pink-100 p-10">
+      <div className=" bg-pink-100 p-10 w-full h-fit">
         <p className="mb-4 text-body2">Choose your pet</p>
         <div className="flex flex-wrap relative">
           {data.map((item, index) => {
             return (
-              <div key={index} className="flex mr-[14px] disabled:opacity-25">
-                <div className="w-60 h-60 p-6 bg-white rounded-2xl border flex-col justify-between items-center gap-4 inline-flex relative mb-4">
+              <div key={index} className="flex mr-[14px]  ">
+                <div className="w-60 h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 ">
                   <img
                     className="w-[104px] h-[104px] relative rounded-[99px]"
                     src={item.image}

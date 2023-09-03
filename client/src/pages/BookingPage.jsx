@@ -32,29 +32,39 @@ function BookingPage() {
             <div>Payment</div>
           </div>
           {/* <Booking1 /> */}
-          <Booking2 />
+          {/* <Booking2 /> */}
           {/* <Booking3 /> */}
           {/* <Booking4 /> */}
         </div>
 
-        <div className=" bg-green-100 w-[32.5%]">
-          <p>Booking Detail</p>
+        <div className=" bg-etc-white w-[32.5%] rounded-2xl">
+          <p className="p-6 text-center text-headline3">Booking Detail</p>
           <hr />
-          <div>
-            <p>Pet</p>
-            <p>Happy</p>
+          <div className="p-6">
+            <div className="pb-6">
+              <p className="text-body3">Pet</p>
+              <p className="text-body2">Happy</p>
+            </div>
+            <div className="pb-6">
+              <p className="text-body3">Date</p>
+              <p className="text-body2">25 Aug, 2023</p>
+            </div>
+            <div className="pb-6">
+              <p className="text-body3">Duration</p>
+              <p className="text-body2">3 hours</p>
+            </div>
+            <div>
+              <p className="text-body3">Pet</p>
+              <p className="text-body2">-</p>
+            </div>
+            <div>
+              <p className="text-body3">Additional Message </p>
+              <p className="text-body2">Lorem ipsum dolor sit amet.</p>
+            </div>
           </div>
-          <div>
-            <p>Date</p>
-            <p>25 Aug, 2023</p>
-          </div>
-          <div>
-            <p>Duration</p>
-            <p>3 hours</p>
-          </div>
-          <div>
-            <p>Pet</p>
-            <p>-</p>
+          <div className="flex justify-between p-6 bg-etc-black text-etc-white rounded-b-2xl">
+            <p className="text-body2">Total</p>
+            <p className="text-body1">600.00 THB</p>
           </div>
         </div>
       </div>

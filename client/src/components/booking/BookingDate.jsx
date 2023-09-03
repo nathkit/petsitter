@@ -1,10 +1,13 @@
 import { CalendarIcon, ClockIcon } from "../systemdesign/Icons";
 import { ButtonPrimary } from "../systemdesign/Button";
+import { useState } from "react";
 
 function BookingDate() {
-  // if (!props.open) {
-  //   return null;
-  // }
+  const [startTime, setstartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [date, setDate] = useState("");
+
+  console.log(`booking on date ${date} time ${startTime} to ${endTime}`);
 
   return (
     <>
@@ -21,7 +24,7 @@ function BookingDate() {
 
           <hr />
           <div className="my-10">
-            <p className="mb-6 text">
+            <p className="mb-6 text-body1">
               Select date and time you want to schedule the service.
             </p>
             <div>
@@ -29,18 +32,27 @@ function BookingDate() {
                 <CalendarIcon />
                 <input
                   type="date"
-                  placeholder="Type here"
+                  onChange={(e) => {
+                    setDate(e.target.value);
+                  }}
                   className="input input-bordered w-[27.5rem] "
                 />
               </div>
               <div className=" flex items-center justify-around mb-[3.75rem]">
                 <ClockIcon />
-                <input type="time" className="input input-bordered w-52 " />
+                <input
+                  type="time"
+                  onChange={(e) => {
+                    setstartTime(e.target.value);
+                  }}
+                  className="input input-bordered w-52 "
+                />
                 -
                 <input
                   type="time"
-                  name="time"
-                  placeholder="Type here"
+                  onChange={(e) => {
+                    setEndTime(e.target.value);
+                  }}
                   className="input input-bordered w-52"
                 />
               </div>

@@ -68,7 +68,7 @@ export function ButtonIcon(props) {
 // Adding by Pui
 export function Button({ children }) {
   return (
-    <button className="flex gap-2 items-center px-3 py-2 border rounded-[8px] hover:text-orange-500 hover:border-orange-500 active:text-orange-500 active:border-orange-500">
+    <button className="flex gap-2 items-center px-2 py-2 border rounded-[8px] hover:text-orange-500 hover:border-orange-500 active:text-orange-500 active:border-orange-500">
       {children}
     </button>
   );

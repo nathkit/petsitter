@@ -1,13 +1,21 @@
-function SitterDetail() {
+import React from "react";
+import SitterReview from "../components/SitterReview";
+import { ImageProvider } from "../contexts/StarRatingContext";
+
+function SitterDetailPage() {
   return (
-    <>
-      {/* nav */}
-      {/*  ly */}
-      {/*  ly*/}
-      {/*  p /pui*/}
-      {/* foot */}
-    </>
+    <ImageProvider>
+      <div>
+        <>
+          {/* nav */}
+          {/*  ly */}
+          {/*  ly*/}
+          <SitterReview />
+          {/* foot */}
+        </>
+      </div>
+    </ImageProvider>
   );
 }
 
-export default SitterDetail;
+export default SitterDetailPage;

@@ -1,13 +1,14 @@
-function SitterDetail() {
+import SitterDetail from "../components/SitterDetail";
+
+function SitterDetailPage() {
   return (
     <>
       {/* nav */}
-      {/*  ly */}
-      {/*  ly*/}
+      <SitterDetail/>
       {/*  p /pui*/}
       {/* foot */}
     </>
   );
 }
 
-export default SitterDetail;
+export default SitterDetailPage;

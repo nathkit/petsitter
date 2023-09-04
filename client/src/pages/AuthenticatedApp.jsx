@@ -21,12 +21,14 @@ function AuthenticatedApp() {
     <>
       <BookingPage />
       {/* <HomePage />
+      {/* <BookingPage />
+      <HomePage />
       <LoginPage />
       <NotFoundPage />
-      <RegisterPage />
+      <RegisterPage /> */}
       <SearchList />
       <SitterDetailPage /> */}
-      {/* You can open the modal using ID.showModal() method */}
+      {/* <SitterDetailPage /> */}
     </>
   );
 }

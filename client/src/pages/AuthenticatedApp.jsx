@@ -10,6 +10,7 @@ import { Routes, Route } from "react-router-dom";
 function AuthenticatedApp() {
   return (
     <Routes>
+      <Route path="/" element={<HomePage />} />
       <Route path="/booking" element={<BookingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />

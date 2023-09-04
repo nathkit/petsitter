@@ -28,7 +28,7 @@ function SearchList() {
   };
 
   return (
-    <div className="flex flex-col pt-10 pb-20 px-20 bg-gray-100">
+    <div className="flex flex-col w-[1440px] h-[1570px] pt-10 pb-20 px-20 bg-gray-100">
       <div className="text-[24] font-bold">Search For Pet Sitter</div>
       <div className="flex py-[80px] gap-9">
         {/* Start Pet Sitter Search */}
@@ -255,7 +255,7 @@ function SearchList() {
 
         {/* Start Pet Sitter Card */}
         <a href="#">
-          <div className="flex w-[848px] h-[216px] p-4 gap-10 bg-etc-white rounded-[16px]">
+          <div className="flex w-[848px] h-[216px] p-4 gap-10 bg-etc-white rounded-[16px] hover:border-[#FF7037] hover:border-solid hover:border-[1px]">
             <img
               src="./src/asset/sitter-house-1.png"
               alt="sitter1"

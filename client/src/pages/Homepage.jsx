@@ -12,9 +12,9 @@ import {
 } from "../components/systemdesign/Button";
 function HomePage() {
   return (
-    <>
+    <div className="bg-etc-white">
       <Showcase />
-    </>
+    </div>
   );
 }
 

@@ -36,6 +36,7 @@ export default {
         100: "#FFF0F1",
       },
       etc: {
+        bg_gray:"#FAFAFB",
         black: "#000",
         white: "#fff",
         red: "#ea1010",

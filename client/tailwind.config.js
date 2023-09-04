@@ -105,7 +105,7 @@ export default {
           "5.5rem",
           {
             lineHeight: "6rem",
-            fontWeight: "900",
+            fontWeight: "900 !important",
           }
         ]
       },

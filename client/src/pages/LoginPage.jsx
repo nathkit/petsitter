@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import * as React from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { Button, TextField, Box, InputLabel } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Box,
+  Checkbox,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import {
   ButtonPrimary,
   ButtonSocial,
@@ -10,8 +17,11 @@ import {
 } from "../components/systemdesign/Button";
 import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
+import { useNavigate, Link } from "react-router-dom";
 
 function LoginPage() {
+  const nav = useNavigate();
+
   const handleSubmit = (values, formikHelpers) => {
     console.log(values);
     formikHelpers.resetForm();
@@ -24,20 +34,26 @@ function LoginPage() {
     password: "",
   };
 
+  const [alignment, setAlignment] = useState("user");
+  console.log(alignment);
+  const handleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
   return (
     <div className="bg-etc-white  h-[100%] w-[100vw] relative flex justify-center ">
       {/* image ************************************* */}
-      <div className="h-[32%] w-[15%]  absolute bottom-0 left-0 overflow-hidden">
+      <div className="h-[40%] w-[15%]  absolute bottom-0 left-0 overflow-hidden">
         <div className="absolute top-0 left-7 rotate-45">
           <Ellipse15 />
         </div>
-        <div className="absolute w-auto bottom-[-5.5rem] left-[-4.7rem] rotate-90">
+        <div className="absolute w-auto bottom-[-5.5rem] left-[-5rem] rotate-90">
           <Star1 width="310" height="310" />
         </div>
       </div>
       <div className="h-[32%] w-[15%]  absolute top-0 right-0 overflow-hidden">
         <div className="absolute top-10 left-0 rotate-[-90deg]">
-          <Vector width="245" height="245" />
+          <Vector color="#FFCA62" width="245" height="245" />
         </div>
       </div>
 
@@ -45,9 +61,10 @@ function LoginPage() {
       <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col">
         {/* header **************************************** */}
         <Box className="mb-[1rem] ">
-          <p className="text-headline1 text-etc-black">Join Us!</p>
-          <p className="text-headline4">Find your perfect pet stter with us</p>
+          <p className="text-headline1 text-etc-black">Welcome back!</p>
+          <p className="text-headline4">Find your perfect pet sitter with us</p>
         </Box>
+
         {/* form ************************************* */}
         <Formik
           initialValues={initialValues}
@@ -83,6 +100,7 @@ function LoginPage() {
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
+                {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
                   htmlFor="email"
@@ -100,40 +118,8 @@ function LoginPage() {
                   error={Boolean(errors.email) && Boolean(touched.email)}
                   helperText={Boolean(touched.email) && errors.email}
                 />
-                <label
-                  className="text-lg text-etc-black font-medium"
-                  htmlFor="fullName"
-                >
-                  Your name
-                </label>
-                <Field
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  variant="outlined"
-                  color="primary"
-                  label="Full Name"
-                  as={TextField}
-                  error={Boolean(errors.fullName) && Boolean(touched.fullName)}
-                  helperText={Boolean(touched.fullName) && errors.fullName}
-                />
-                <label
-                  className="text-lg text-etc-black font-medium"
-                  htmlFor="phone"
-                >
-                  Phone numbers
-                </label>
-                <Field
-                  id="phone"
-                  name="phone"
-                  type="text"
-                  variant="outlined"
-                  color="primary"
-                  label="Phone"
-                  as={TextField}
-                  error={Boolean(errors.phone) && Boolean(touched.phone)}
-                  helperText={Boolean(touched.phone) && errors.phone}
-                />
+
+                {/* password ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
                   htmlFor="passsword"
@@ -151,27 +137,45 @@ function LoginPage() {
                   error={Boolean(errors.password) && Boolean(touched.password)}
                   helperText={Boolean(touched.password) && errors.password}
                 />
+
+                <Box className="flex w-full justify-between items-center">
+                  <p className="text-etc-black">
+                    <Checkbox /> Remember?
+                  </p>
+                  <Link className="w" to="/register">
+                    <ButtonGhost width="10rem" content="Forget Password?" />
+                  </Link>
+                </Box>
+
+                {/* submit button ************************** */}
                 <ButtonPrimary
-                  content="Register"
+                  content="Login"
                   width="100%"
                   type="submit"
                   variant="contained"
                   color="secondary"
                   disabled={!dirty || !isValid}
-                >
-                  Sign Up
-                </ButtonPrimary>
+                />
               </Form>
             );
           }}
         </Formik>
         <p className="text-gray-500">Or Continue With</p>
+
+        {/* sign in with third party ************************** */}
         <Box>
           <ButtonSocial icon={FacebookIcon} content="Facebook" />
           <ButtonSocial icon={GoogleIcon} content="Google" />
         </Box>
+
         <p className="text-lg text-etc-black font-medium">
-          Already have an account? <ButtonGhost content="Login" />
+          Dont you have any account?{" "}
+          <ButtonGhost
+            content="Register"
+            onClick={(e) => {
+              nav("/register");
+            }}
+          />
         </p>
       </Box>
     </div>

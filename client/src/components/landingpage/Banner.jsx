@@ -5,23 +5,10 @@ export default function Banner() {
   return (
     <div className="w-full p-20 flex flex-col">
       <div className="w-full h-[448px] bg-yellow-100 rounded-[16px] relative overflow-hidden">
-        <div className="absolute right-0 top-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="199"
-            height="190"
-            viewBox="0 0 199 190"
-            fill="none">
-            <circle
-              cx="114.548"
-              cy="75.2333"
-              r="114.5"
-              transform="rotate(15 114.548 75.2333)"
-              fill="#FFCA62"
-            />
-          </svg>
+        <div className="absolute right-[-25px] top-[-35px]">
+          <Ellipse16 width="229" height="229" />
         </div>
-        <div className="absolute bottom-[130px] left-[953px]">
+        <div className="absolute bottom-[130px] left-[965px]">
           <Star1 width="191" height="186" />
         </div>
         <div className="absolute bottom-0">

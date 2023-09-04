@@ -15,7 +15,7 @@ function BookingDate() {
     <>
       {" "}
       <button onClick={() => window.my_modal_3.showModal()}>
-        <ButtonPrimary content="Book Now" width=" 250px" />
+        <ButtonPrimary content="Book Now" width="300px"/>
       </button>
       <dialog id="my_modal_3" className="modal ">
         <form method="dialog" className="modal-box max-w-[560px] px-10 py-0">

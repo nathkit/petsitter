@@ -1,14 +1,15 @@
 import React from "react";
-import { ButtonPrimary } from "./systemdesign/Button";
+import { ButtonPrimary } from "../systemdesign/Button";
 import SitterPictureSlide from "./SitterPictureSlide";
 import sitterData from "./SitterDetailData";
+import SitterReview from "./SitterReview";
 
 function SitterDetail() {
   const sitter = sitterData[3];
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFAFB]">
+    <div className="flex flex-col min-h-screen bg-etc-bg_gray">
       {/* Navbar */}
       <div className="h-[80px] flex justify-between items-center px-4 bg-etc-white text-white">
         Navbar
@@ -18,7 +19,7 @@ function SitterDetail() {
       {/* Sitter Detail */}
       <div className=" flex justify-between px-[80px] gap-[16px]">
         {/* Detail */}
-        <div className=" max-w-[848px] px-[80px] flex flex-col items-start justify-center gap-[48px]">
+        <div className=" w-full px-[80px] flex flex-col items-start justify-center gap-[48px]">
           <h1 className="text-headline1">
             {/* render "Trade name" here */}
             {sitter.trade_name}
@@ -47,6 +48,7 @@ function SitterDetail() {
               {sitter.my_place}
             </p>
           </div>
+          <SitterReview/>
         </div>
 
         {/* Sticky Sitter Card */}
@@ -114,11 +116,12 @@ function SitterDetail() {
             {/* "Book Now" button */}
             <div className="border-t-[1px] w-full border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
               <div className=" m-6 ">
-                <ButtonPrimary content="Book Now" />
+                <ButtonPrimary content="Book Now"/>
               </div>
             </div>
           </div>
         </div>
+       
       </div>
     </div>
   );

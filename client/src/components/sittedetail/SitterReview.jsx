@@ -1,8 +1,8 @@
 import React from "react";
-import union from "../assets/SitterReview/Union.png";
-import { useStarContext } from "../contexts/StarRatingContext";
-import { Button } from "../components/systemdesign/Button.jsx";
-import reviewData from "../assets/SitterReview/reviewsdata.json"; // mock review data
+import union from "../../assets/SitterReview/Union.png"
+import { useStarContext } from "../../contexts/StarRatingContext";
+import { Button } from "../systemdesign/Button";
+import reviewData from "../../assets/SitterReview/reviewsdata.json"; // mock review data
 import ReviewComponent from "./ReviewComponent";
 
 function SitterReview() {
@@ -25,7 +25,7 @@ function SitterReview() {
   const averageRating = totalRating / totalReviews;
 
   return (
-    <div className="sitter-review w-[100%] min-h-screen p-20">
+    <div className="sitter-review w-[100%] min-h-screen bg-etc-bg_gray">
       <div className="sitter-review-container p-6 bg-gray-100 w-[800px]  rounded-tl-[120px] rounded-r-[16px] rounded-b-[16px] rounded-l-[16px]">
         <div className="sitter-review-header p-6 bg-etc-white rounded-tl-[99px] rounded-tr-[12px] rounded-br-[12px] rounded-bl-[99px] flex items-center gap-8">
           <div className="image-wrapper relative">

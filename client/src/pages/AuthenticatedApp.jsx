@@ -19,12 +19,15 @@ function AuthenticatedApp() {
     //   <Route path="*" element={<NotFoundPage />} />
     // </Routes>
     <>
+      <BookingPage />
+      {/* <HomePage />
       {/* <BookingPage />
       <HomePage />
       <LoginPage />
       <NotFoundPage />
       <RegisterPage /> */}
       <SearchList />
+      <SitterDetailPage /> */}
       {/* <SitterDetailPage /> */}
     </>
   );

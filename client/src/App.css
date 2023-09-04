@@ -5,6 +5,10 @@
   font-style: normal;
 }
 
+/* * {
+  outline: 1px solid red;
+} */
+
 #root {
   max-width: 1440px;
   margin: 0 auto;

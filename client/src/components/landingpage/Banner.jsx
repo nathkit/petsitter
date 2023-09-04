@@ -4,7 +4,7 @@ import { Ellipse16, Star1, Ellipse17 } from "../systemdesign/image";
 export default function Banner() {
   return (
     <div className="w-full p-20 flex flex-col">
-      <div className="w-full h-[448px] bg-yellow-100 rounded-[16px] relative">
+      <div className="w-full h-[448px] bg-yellow-100 rounded-[16px] relative overflow-hidden">
         <div className="absolute right-0 top-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"

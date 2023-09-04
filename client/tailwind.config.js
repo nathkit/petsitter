@@ -36,7 +36,7 @@ export default {
         100: "#FFF0F1",
       },
       etc: {
-        bg_gray:"#FAFAFB",
+        bg_gray: "#FAFAFB",
         black: "#000",
         white: "#fff",
         red: "#ea1010",
@@ -101,6 +101,13 @@ export default {
             fontWeight: "700",
           },
         ],
+        textDisplay: [
+          "5.5rem",
+          {
+            lineHeight: "6rem",
+            fontWeight: "900",
+          }
+        ]
       },
     },
   },

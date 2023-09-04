@@ -101,7 +101,7 @@ export default {
             fontWeight: "700",
           },
         ],
-        textDisplay: [
+        display: [
           "5.5rem",
           {
             lineHeight: "6rem",

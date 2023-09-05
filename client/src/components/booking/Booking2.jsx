@@ -42,7 +42,7 @@ function Booking2() {
   });
   return (
     <>
-      <div className=" bg-pink-100 p-10  h-fit">
+      <div className=" bg-etc-white p-10  h-fit">
         <form onSubmit={formik.handleSubmit} className="">
           <TextField
             fullWidth
@@ -56,6 +56,7 @@ function Booking2() {
             helperText={formik.touched.name && formik.errors.name}
             placeholder="Full name"
             required
+            color="warning"
           />
           <div className="flex justify-between my-10">
             <TextField
@@ -71,6 +72,7 @@ function Booking2() {
               placeholder="youremail@hotmail.com"
               required
               className="w-[47%]"
+              color="warning"
             />
             <TextField
               id="phone"
@@ -85,6 +87,7 @@ function Booking2() {
               placeholder="xxx xxx xxxx"
               required
               className="w-[47%]"
+              color="warning"
             />
           </div>
           <hr className="mb-10" />
@@ -94,10 +97,8 @@ function Booking2() {
             label="Additional Message (To pet sitter)"
             multiline
             rows={4}
+            color="warning"
           />
-          {/* <Button color="primary" variant="contained" fullWidth type="submit">
-          Submit
-        </Button> */}
         </form>
       </div>
     </>

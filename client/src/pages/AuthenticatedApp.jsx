@@ -20,15 +20,17 @@ function AuthenticatedApp() {
     </Routes>
 
     // <>
-    //   <BookingPage />
+    //   {/* <BookingPage /> */}
+    //   {/* <HomePage />
+    //   {/* <BookingPage />
     //   <HomePage />
     //   <LoginPage />
     //   <NotFoundPage />
-    //   <RegisterPage />
-    //   <SearchList />
-    //   <SitterDetailPage />
+    //   <RegisterPage /> */}
+    //   {/* <SearchList />
+    //   <SitterDetailPage /> */}
+    //   {/* <SitterDetailPage /> */}
     // </>
-
   );
 }
 

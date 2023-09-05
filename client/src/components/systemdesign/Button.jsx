@@ -7,6 +7,7 @@ export function ButtonPrimary(props) {
         hover:bg-orange-400 active:bg-orange-600
          disabled:bg-gray-200 disabled:text-gray-300`}
       style={{ width: props.width ? props.width : "139px", height: "48px" }}
+      disabled={props.disabled}
     >
       {props.content}
     </button>

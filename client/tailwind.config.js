@@ -115,7 +115,7 @@ export default {
 
   plugins: [require("daisyui")],
 
-  daisyui: {
-    themes: [],
-  },
+  // daisyui: {
+  //   themes: [],
+  // },
 };

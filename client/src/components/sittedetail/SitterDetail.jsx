@@ -16,39 +16,41 @@ function SitterDetail() {
       {/* Sitter Picture */}
       <SitterPictureSlide />
       {/* Sitter Detail */}
-      <div className="
-       flex justify-between px-[40px] gap-[16px] w-full">
+      <div
+        className="
+       flex justify-between px-[40px] gap-[16px] w-full"
+      >
         {/* Detail */}
         <div className=" w-[70%] px-14 flex flex-col items-start justify-center gap-[48px]">
           <div className=" flex flex-col gap-12 px-14">
-          <h1 className="text-headline1">
-            {/* render "Trade name" here */}
-            {sitter.trade_name}
-          </h1>
+            <h1 className="text-headline1">
+              {/* render "Trade name" here */}
+              {sitter.trade_name}
+            </h1>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">Introduction</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "Introduction" here */}
-              {sitter.introduction}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">Introduction</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "Introduction" here */}
+                {sitter.introduction}
+              </p>
+            </div>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">Services</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "service" here */}
-              {sitter.services}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">Services</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "service" here */}
+                {sitter.services}
+              </p>
+            </div>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">My Place</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "My Place" here */}
-              {sitter.my_place}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">My Place</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "My Place" here */}
+                {sitter.my_place}
+              </p>
+            </div>
           </div>
           <div className="">
             <SitterReview />
@@ -126,8 +128,8 @@ function SitterDetail() {
               </div>
             </div>
             {/* "Book Now" button */}
-            <div className="border-t-[1px] w-full border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
-              <div className=" my-6 mx-0 ">
+            <div className=" w-full border-t-[1px] border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
+              <div className="  my-6 mx-0">
                 <BookingDate />
               </div>
             </div>

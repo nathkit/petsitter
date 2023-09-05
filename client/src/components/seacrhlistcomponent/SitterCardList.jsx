@@ -6,7 +6,6 @@ import {
   BirdType,
   RabbitType,
 } from "../systemdesign/PetType.jsx";
-import sitterData from "../SitterDetailData.jsx";
 import sitterCardData from "../../assets/SitterCard/sittercarddata.js";
 
 function SitterCard(props) {

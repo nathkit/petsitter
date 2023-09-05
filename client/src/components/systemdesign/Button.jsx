@@ -2,6 +2,7 @@ export function ButtonPrimary(props) {
   return (
     <button
       onClick={props.onClick ? props.onClick : null}
+      type={props.type ? props.type : null}
       className={`inline-flex justify-center items-center py-3 px-6 rounded-full gap-2 border-none
        bg-orange-500 text-etc-white text-bodyButton
         hover:bg-orange-400 active:bg-orange-600

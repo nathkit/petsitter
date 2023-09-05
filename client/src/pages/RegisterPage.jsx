@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { supabase } from "../contexts/supabase.js";
+import axios from "axios";
 import * as React from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
@@ -20,10 +22,53 @@ import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   const nav = useNavigate();
+  const [facebookLogin, SetFacebookLogin] = useState(false);
+  const [googleLogin, SetGoogleLogin] = useState(false);
+  const [role, setRole] = useState("pet_owners");
 
-  const handleSubmit = (values, formikHelpers) => {
-    console.log(values);
-    formikHelpers.resetForm();
+  const handleChange = (event, newRole) => {
+    setRole(newRole);
+  };
+
+  // supabase handle ****************************************
+
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+    // const serverRespond = await axios.post(
+    //   "http://localhost:4000/auth/register",
+    //   data
+    // );
+
+    console.log(serverRespond);
+  };
+
+  const signInWithFacebook = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "facebook",
+    });
+  };
+
+  const handleSubmit = async (values, formikHelpers) => {
+    const newValues = { ...values, role };
+    try {
+      // const { data, error } = await supabase.auth.signUp({
+      //   email: values.email,
+      //   password: values.password,
+      // });
+      const serverRespond = await axios.post(
+        "http://localhost:4000/auth/register",
+        newValues
+      );
+      console.log(serverRespond);
+    } catch (err) {
+      console.log(err);
+    }
+
+    // formikHelpers.resetForm();
+    // nav("/login")
+    // return
   };
 
   const initialValues = {
@@ -33,14 +78,8 @@ function Register() {
     password: "",
   };
 
-  const [alignment, setAlignment] = useState("user");
-  console.log(alignment);
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
   return (
-    <div className="bg-etc-white  h-[100%] w-[100vw] relative flex justify-center ">
+    <div className="bg-etc-white  h-full w-full relative flex justify-center ">
       {/* image ************************************* */}
       <div className="h-[32%] w-[15%]  absolute bottom-0 left-0 overflow-hidden">
         <div className="absolute top-0 left-[15%] rotate-45">
@@ -100,14 +139,14 @@ function Register() {
             return (
               <Form className="flex flex-col gap-5 text-left ">
                 <ToggleButtonGroup
-                  value={alignment}
+                  value={role}
                   exclusive
                   onChange={handleChange}
                   aria-label="Platform"
                   fullWidth
                 >
-                  <ToggleButton value="user">Pet User</ToggleButton>
-                  <ToggleButton value="sitter">Pet Sitter</ToggleButton>
+                  <ToggleButton value="pet_owners">Pet User</ToggleButton>
+                  <ToggleButton value="pet_sitters">Pet Sitter</ToggleButton>
                 </ToggleButtonGroup>
 
                 {/* email ********************************* */}
@@ -201,10 +240,22 @@ function Register() {
         </Formik>
         <p className="text-gray-500">Or Continue With</p>
 
-        {/* email ********************************* */}
+        {/* sign in with third party ************************** */}
         <Box>
-          <ButtonSocial icon={FacebookIcon} content="Facebook" />
-          <ButtonSocial icon={GoogleIcon} content="Google" />
+          <ButtonSocial
+            onClick={(e) => {
+              signInWithFacebook();
+            }}
+            icon={FacebookIcon}
+            content="Facebook"
+          />
+          <ButtonSocial
+            onClick={(e) => {
+              signInWithGoogle();
+            }}
+            icon={GoogleIcon}
+            content="Google"
+          />
         </Box>
         <p className="text-lg text-etc-black font-medium">
           Already have an account?{" "}

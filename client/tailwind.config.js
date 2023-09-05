@@ -101,6 +101,13 @@ export default {
             fontWeight: "700",
           },
         ],
+        display: [
+          "5.5rem",
+          {
+            lineHeight: "6rem",
+            fontWeight: "900 !important",
+          }
+        ]
       },
     },
   },

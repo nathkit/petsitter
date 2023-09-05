@@ -1,7 +1,6 @@
 import React from "react";
-import SitterReview from "../components/SitterReview";
 import { ImageProvider } from "../contexts/StarRatingContext";
-import SitterDetail from "../components/SitterDetail";
+import SitterDetail from "../components/sittedetail/SitterDetail";
 
 function SitterDetailPage() {
   return (
@@ -10,7 +9,6 @@ function SitterDetailPage() {
         <>
           {/* nav */}
           <SitterDetail/>
-          <SitterReview />
           {/* foot */}
         </>
       </div>

@@ -75,7 +75,7 @@ export function ButtonIcon(props) {
 export function Button({ children }) {
   return (
     <button
-      onClick={props.onClick ? props.onClick : null}
+      // onClick={props.onClick ? props.onClick : null}
       className="flex gap-2 items-center px-2 py-2 border rounded-[8px] hover:text-orange-500 hover:border-orange-500 active:text-orange-500 active:border-orange-500"
     >
       {children}

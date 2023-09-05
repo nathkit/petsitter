@@ -8,11 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   //   const auth = useAuth();
-  const auth = { isAuthenticate: false };
+  const auth = { isAuthenticate: true };
   const { logout } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {}, []);
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
@@ -27,9 +25,7 @@ function Navbar() {
             : ""
         } ${content === "Log Out" ? "border-t-2" : ""}`}
         onClick={() => {
-          {
-            navigate;
-          }
+          navigate;
         }}>
         <a>
           <Icon
@@ -42,10 +38,14 @@ function Navbar() {
     );
 
     const menuItems = [
-      { icon: UserIcon, content: "Profile", navigate: navigate("/profile") },
-      { icon: PetIcon, content: "Your Pet", navigate: navigate("/yourpet") },
-      { icon: ListIcon, content: "History", navigate: navigate("/history") },
-      { icon: LogOutIcon, content: "Log Out", navigate: logout() },
+      { icon: UserIcon, content: "Profile" },
+      { icon: PetIcon, content: "Your Pet" },
+      { icon: ListIcon, content: "History" },
+      { icon: LogOutIcon, content: "Log Out", navigate: logout },
+      //   { icon: UserIcon, content: "Profile", navigate: navigate("/profile") },
+      //   { icon: PetIcon, content: "Your Pet", navigate: navigate("/yourpet") },
+      //   { icon: ListIcon, content: "History", navigate: navigate("/history") },
+      //   { icon: LogOutIcon, content: "Log Out", navigate: logout },
     ];
 
     if (auth.isAuthenticate) {
@@ -91,7 +91,13 @@ function Navbar() {
         }>
         <LoginButton />
         <div>
-          <ButtonPrimary content="Find A Pet Sitter" width="168px" />
+          <ButtonPrimary
+            content="Find A Pet Sitter"
+            width="168px"
+            onClick={() => {
+              navigate("/search");
+            }}
+          />
         </div>
       </div>
     </div>

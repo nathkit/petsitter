@@ -6,7 +6,8 @@ import frame2 from "../../assets/SitterReview/frame427320942.png";
 import { UserIcon, PetIcon, ListIcon, LogOutIcon } from "./Icons";
 
 function Navbar() {
-  const auth = useAuth();
+  //   const auth = useAuth();
+  const auth = { isAuthenticate: false };
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
@@ -15,11 +16,11 @@ function Navbar() {
       <li
         onMouseEnter={() => setHoveredItemId(id)}
         onMouseLeave={() => setHoveredItemId(null)}
-        className={
+        className={`${
           hoveredItemId === id
-            ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px]"
+            ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500"
             : ""
-        }>
+        } ${content === "Log Out" ? "border-t-2" : ""}`}>
         <a>
           <Icon
             color="#3A3B46"
@@ -37,7 +38,7 @@ function Navbar() {
       { icon: LogOutIcon, content: "Log Out" },
     ];
 
-    if (true) {
+    if (auth.isAuthenticate) {
       return (
         <div className="dropdown dropdown-end">
           <label tabIndex={0}>
@@ -59,9 +60,9 @@ function Navbar() {
       );
     }
     return (
-      <div className="px-6 py-4 text-body1 text-etc-black hover:text-orange-500">
+      <button className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600">
         Login
-      </div>
+      </button>
     );
   };
 

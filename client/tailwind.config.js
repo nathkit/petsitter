@@ -111,7 +111,10 @@ export default {
       },
     },
   },
-  daisyui: ["dark", "cupcake"],
+  // daisyui: ["dark", "cupcake"],
 
   plugins: [require("daisyui")],
+  daisyui: {
+    themes: [],
+  },
 };

@@ -11,7 +11,7 @@ import cats from "../../assets/SitterReview/Frame427320927.png";
 
 export default function Header() {
   return (
-    <div className="flex pb-16 pt-20">
+    <div className="min-w-[1440px] flex pb-16 pt-20">
       <div className="relative w-[428px] h-[441px]">
         <div className="absolute top-[-5px] left-[230px] right-[35px]">
           <Vector width="163" height="169" />

@@ -10,9 +10,9 @@ export function BaseCheckbox({ isChecked, label, onChanged }) {
           checked={isChecked}
           onChange={onChanged}
         />
-        <div className="w-6 h-6 rounded-[6px] border border-gray-200 hover:border-orange-300 peer-checked/chk:bg-orange-500 transition-all">
+        <div class="w-6 h-6 rounded-[6px] border border-gray-200 hover:border-orange-300 peer-checked/chk:bg-orange-500 transition-all">
           {isChecked && (
-            <div className="flex w-full h-full items-center justify-center">
+            <div class="flex w-full h-full items-center justify-center">
               <CheckIcon color="white" />
             </div>
           )}

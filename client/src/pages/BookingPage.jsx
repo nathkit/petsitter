@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import starGreen from "../assets/img/starGreen.png";
 import Booking1 from "../components/booking/Booking1";
 import Booking2 from "../components/booking/Booking2";
 import Booking3 from "../components/booking/Booking3";
 import { Step1, Step2, Step3 } from "../components/systemdesign/Icons";
-import Navbar from "../components/systemdesign/Navbar";
-import BookingDate from "../components/booking/BookingDate";
+
 import Confirmation from "../components/booking/Confirmation";
+import {
+  ButtonPrimary,
+  ButtonSecondary,
+} from "../components/systemdesign/Button";
 import {
   ButtonPrimary,
   ButtonSecondary,
 } from "../components/systemdesign/Button";
 
 function BookingPage() {
-  const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
-  const [disableButtonBooking2, setDisableButtonBooking2] = useState();
-  const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [step, setStep] = useState(1);
 
   const nextStep = () => {
@@ -25,19 +26,22 @@ function BookingPage() {
   };
 
   const prevStep = () => {
-    if (step > 1) {
+    if (step <= 2) {
+      setStep(step - 1);
+      setIsCheckboxChecked("");
+    } else if (step > 1) {
       setStep(step - 1);
     }
-
-    // if (step <= 2) {
-    //   setDisableButtonBooking1("");
-    // }
   };
-
   return (
     <>
-      <Navbar />
-
+      <nav className=" flex justify-between bg-gray-300">
+        <div>Sitter</div>
+        <div className=" flex">
+          <div>image</div>
+          <ButtonPrimary width={"168px"} content={"find a pet sitter"} />
+        </div>
+      </nav>
       <div className=" bg-etc-bg_gray w-full h-screen px-20 pt-10 pb-20 flex">
         <div className="mr-[2.25rem] w-[68.5%]">
           <div className=" flex justify-around bg-etc-white mb-4 p-6 text-body1 text-gray-500 items-center">
@@ -63,35 +67,23 @@ function BookingPage() {
               <span className="ml-4">Payment</span>
             </div>
           </div>
-          {step === 1 && (
-            <Booking1 setDisableButtonBooking1={setDisableButtonBooking1} />
-          )}
-          {step === 2 && (
-            <Booking2 setDisableButtonBooking2={setDisableButtonBooking2} />
-          )}
-          {step === 3 && (
-            <Booking3 setDisableButtonBooking3={setDisableButtonBooking3} />
-          )}
+          {step === 1 && <Booking1 CheckboxStatus={setIsCheckboxChecked} />}
+          {step === 2 && <Booking2 />}
+          {step === 3 && <Booking3 />}
           <div className=" p-10 w-full h-fit bg-etc-white flex justify-between">
             {step >= 1 && (
               <ButtonPrimary
                 content={"Back"}
                 onClick={() => {
                   prevStep();
-                  setDisableButtonBooking1("");
-                  setDisableButtonBooking2("");
                 }}
               />
             )}
             {step >= 1 && step < 3 && (
               <ButtonSecondary
                 content={"Next"}
+                disabled={!isCheckboxChecked}
                 onClick={nextStep}
-                disabled={
-                  disableButtonBooking1.length <= 0 || disableButtonBooking2
-                }
-                // disabled={disableButtonBooking1.length <= 0}
-                // disabled={disableButtonBooking2}
               />
             )}
             {step === 3 && (
@@ -104,15 +96,16 @@ function BookingPage() {
                 primaryWidth={"142px"}
                 buttonName={"Confirm Booking"}
                 buttonWidth={"175px"}
-                disabled={disableButtonBooking3}
               />
             )}
           </div>
         </div>
 
         <div className=" bg-etc-white w-[32.5%] rounded-2xl h-fit relative">
+        <div className=" bg-etc-white w-[32.5%] rounded-2xl h-fit relative">
           <p className="p-6 text-center text-headline3">Booking Detail</p>
           <hr />
+          <div className="p-6 ">
           <div className="p-6 ">
             <div className="pb-6">
               <p className="text-body3">Pet</p>
@@ -143,7 +136,12 @@ function BookingPage() {
             src={starGreen}
             className=" absolute bottom-[-300px] right-[-50px] h-[250px] w-[300px]"
           />
+          <img
+            src={starGreen}
+            className=" absolute bottom-[-300px] right-[-50px] h-[250px] w-[300px]"
+          />
         </div>
+      </div>
       </div>
     </>
   );

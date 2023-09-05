@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CreateIcon } from "../systemdesign/Icons";
 import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
+import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
 
 const data = [
   {
@@ -30,8 +31,28 @@ const data = [
   },
 ];
 
-function booking1({ setDisableButtonBooking1 }) {
+function booking1({ CheckboxStatus }) {
+  const [isChecked, setIsChecked] = useState(false);
   const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
+
+  const handleCheckboxChange = (index) => {
+    let updatedSelectedButtons = [...selectedButtons];
+
+    // ตรวจสอบว่าปุ่มที่ถูกเลือกมีอยู่แล้วหรือไม่
+    if (updatedSelectedButtons.includes(index)) {
+      // ถ้ามีอยู่แล้วให้ลบออกจาก selectedButtons
+      updatedSelectedButtons = updatedSelectedButtons.filter(
+        (selectedIndex) => selectedIndex !== index
+      );
+    } else {
+      // ถ้ายังไม่มีให้เพิ่ม index เข้าไปใน selectedButtons
+      updatedSelectedButtons.push(index);
+    }
+
+    setSelectedButtons(updatedSelectedButtons);
+    // อัปเดตสถานะของปุ่มที่ถูกเลือก
+    setIsChecked(updatedSelectedButtons.length > 0);
+  };
 
   const getTypeStyle = (type) => {
     let textStyle = "";
@@ -125,9 +146,12 @@ function booking1({ setDisableButtonBooking1 }) {
                       type="checkbox"
                       onChange={() => {
                         handleCheckboxChange(index);
+                        setIsChecked(!isChecked);
+                        CheckboxStatus(!isChecked);
                       }}
                       className="checkbox absolute top-3 right-3 hover:border-orange-300 border-gray-200"
                     />
+                  )}{" "}
                   )}{" "}
                 </div>
               </div>

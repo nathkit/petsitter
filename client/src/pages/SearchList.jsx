@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import SitterSearch from "../components/SeacrhListComponent/SitterSearch.jsx";
-import SitterCardList from "../components/SeacrhListComponent/SitterCardList.jsx";
-import sitterData from "../components/SitterDetailData.jsx";
+import SitterSearch from "../components/seacrhlistcomponent/SitterSearch.jsx";
+import SitterCardList from "../components/seacrhlistcomponent/SitterCardList.jsx";
+import sitterData from "../components/sittedetail/SitterDetailData.jsx";
 function SearchList() {
   useEffect(() => {
     searchPets();

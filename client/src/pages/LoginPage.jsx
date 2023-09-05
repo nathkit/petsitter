@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { supabase } from "../contexts/supabase.js";
+import axios from "axios";
 import * as React from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
@@ -22,27 +24,73 @@ import { useNavigate, Link } from "react-router-dom";
 function LoginPage() {
   const nav = useNavigate();
 
-  const handleSubmit = (values, formikHelpers) => {
-    console.log(values);
-    formikHelpers.resetForm();
+  // supabase handle ****************************************
+
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+  };
+
+  const signInWithFacebook = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "facebook",
+    });
+  };
+
+  const SignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    console.log("out");
+    // const token = JSON.parse(
+    //   window.localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
+    // );
+    // console.log(token.access_token);
+  };
+
+  const handleSubmit = async (values, formikHelpers) => {
+    try {
+      const serverRespond = await axios.post(
+        "http://localhost:4000/auth/login",
+        values
+      );
+
+      if (
+        serverRespond.data.message ===
+        "User profile has been verified successfully"
+      ) {
+        // console.log(serverRespond.data.message);
+        await supabase.auth.signInWithPassword({
+          email: values.email,
+          password: values.password,
+        });
+      } else {
+        // console.log(serverRespond.data.message);
+        return serverRespond.data.message;
+      }
+    } catch (err) {
+      console.log(err.respondes);
+    }
+
+    // formikHelpers.resetForm();
+    // nav("/");
+    // return;
   };
 
   const initialValues = {
     email: "",
-    fullName: "",
-    phone: "",
     password: "",
   };
 
-  const [alignment, setAlignment] = useState("user");
-  console.log(alignment);
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
+  // supabase.auth.onAuthStateChange((event, session) => {
+  //   console.log(event, session);
+  // });
 
   return (
-    <div className="bg-etc-white  h-[100%] w-[100vw] relative flex justify-center ">
+    <div className="bg-etc-white m-0 p-0  h-[100%] w-full relative flex justify-center ">
       {/* image ************************************* */}
+      <button onClick={SignOut} className="bg-orange-500 h-8">
+        signout test
+      </button>
       <div className="h-[40%] w-[15%]  absolute bottom-0 left-0 overflow-hidden">
         <div className="absolute top-0 left-7 rotate-45">
           <Ellipse15 />
@@ -75,23 +123,6 @@ function LoginPage() {
             email: string()
               .required("Please enter email")
               .email("Invalid email"),
-            fullName: string()
-              .required("Please enter name")
-              .min(6, "Name is too short")
-              .max(20, "Name is too long"),
-            phone: string()
-              .required("Please enter phone number")
-              .test(
-                "startsWithZero",
-                "Phone number must start with 0",
-                (value) => {
-                  if (value) {
-                    return value.startsWith("0");
-                  }
-                  return true; // Allow empty value (optional phone number)
-                }
-              )
-              .min(10, "Phone numbers should have 10 character"),
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),
@@ -156,6 +187,14 @@ function LoginPage() {
                   color="secondary"
                   disabled={!dirty || !isValid}
                 />
+                {/* <ButtonPrimary
+                  content="Login"
+                  width="100%"
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  disabled={!dirty || !isValid}
+                /> */}
               </Form>
             );
           }}
@@ -164,8 +203,21 @@ function LoginPage() {
 
         {/* sign in with third party ************************** */}
         <Box>
-          <ButtonSocial icon={FacebookIcon} content="Facebook" />
-          <ButtonSocial icon={GoogleIcon} content="Google" />
+          <ButtonSocial
+            onClick={(e) => {
+              signInWithFacebook();
+            }}
+            icon={FacebookIcon}
+            content="Facebook"
+          />
+
+          <ButtonSocial
+            onClick={(e) => {
+              signInWithGoogle();
+            }}
+            icon={GoogleIcon}
+            content="Google"
+          />
         </Box>
 
         <p className="text-lg text-etc-black font-medium">

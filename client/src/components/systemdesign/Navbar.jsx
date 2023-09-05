@@ -1,18 +1,23 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SitterIconBlack } from "./Icons";
 import { ButtonPrimary } from "./Button";
 import { useAuth } from "../../contexts/authentication";
 import frame2 from "../../assets/SitterReview/frame427320942.png";
 import { UserIcon, PetIcon, ListIcon, LogOutIcon } from "./Icons";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   //   const auth = useAuth();
   const auth = { isAuthenticate: false };
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {}, []);
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
-    const ListItem = ({ icon: Icon, content, id }) => (
+    const ListItem = ({ icon: Icon, content, id, navigate }) => (
       <li
         onMouseEnter={() => setHoveredItemId(id)}
         onMouseLeave={() => setHoveredItemId(null)}
@@ -20,7 +25,12 @@ function Navbar() {
           hoveredItemId === id
             ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500"
             : ""
-        } ${content === "Log Out" ? "border-t-2" : ""}`}>
+        } ${content === "Log Out" ? "border-t-2" : ""}`}
+        onClick={() => {
+          {
+            navigate;
+          }
+        }}>
         <a>
           <Icon
             color="#3A3B46"
@@ -32,10 +42,10 @@ function Navbar() {
     );
 
     const menuItems = [
-      { icon: UserIcon, content: "Profile" },
-      { icon: PetIcon, content: "Your Pet" },
-      { icon: ListIcon, content: "History" },
-      { icon: LogOutIcon, content: "Log Out" },
+      { icon: UserIcon, content: "Profile", navigate: navigate("/profile") },
+      { icon: PetIcon, content: "Your Pet", navigate: navigate("/yourpet") },
+      { icon: ListIcon, content: "History", navigate: navigate("/history") },
+      { icon: LogOutIcon, content: "Log Out", navigate: logout() },
     ];
 
     if (auth.isAuthenticate) {
@@ -60,7 +70,9 @@ function Navbar() {
       );
     }
     return (
-      <button className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600">
+      <button
+        className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600"
+        onClick={() => navigate("/login")}>
         Login
       </button>
     );

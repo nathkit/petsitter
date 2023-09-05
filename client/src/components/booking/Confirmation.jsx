@@ -1,10 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { ButtonPrimary, ButtonSecondary } from "../systemdesign/Button";
 
 function Confirmation(props) {
+  const navigate = useNavigate();
   return (
     <>
-      <button className="btn" onClick={() => window.my_modal_3.showModal()}>
-        open modal
+      <button onClick={() => window.my_modal_3.showModal()}>
+        <ButtonPrimary content={props.buttonName} width={props.buttonWidth} />
       </button>
       <dialog id="my_modal_3" className="modal ">
         <form method="dialog" className="modal-box max-w-[400px] p-0">
@@ -24,6 +26,9 @@ function Confirmation(props) {
               <ButtonPrimary
                 width={props.primaryWidth}
                 content={props.primaryContent}
+                onClick={() => {
+                  navigate("/booking/confirmation");
+                }}
               />
             </div>
           </div>

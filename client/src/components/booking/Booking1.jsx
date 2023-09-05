@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CreateIcon } from "../systemdesign/Icons";
+import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
 
 const data = [
   {
@@ -29,7 +30,8 @@ const data = [
   },
 ];
 
-function booking1() {
+function booking1({ CheckboxStatus }) {
+  const [isChecked, setIsChecked] = useState(false);
   const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
 
   const handleCheckboxChange = (index) => {
@@ -46,7 +48,9 @@ function booking1() {
       updatedSelectedButtons.push(index);
     }
 
-    setSelectedButtons(updatedSelectedButtons); // อัปเดตสถานะของปุ่มที่ถูกเลือก
+    setSelectedButtons(updatedSelectedButtons);
+    // อัปเดตสถานะของปุ่มที่ถูกเลือก
+    setIsChecked(updatedSelectedButtons.length > 0);
   };
 
   const getTypeStyle = (type) => {
@@ -120,10 +124,14 @@ function booking1() {
                   {!isInvalidType && (
                     <input
                       type="checkbox"
-                      onChange={() => handleCheckboxChange(index)}
+                      onChange={() => {
+                        handleCheckboxChange(index);
+                        setIsChecked(!isChecked);
+                        CheckboxStatus(!isChecked);
+                      }}
                       className="checkbox absolute top-3 right-3 hover:border-orange-300 border-gray-200"
                     />
-                  )}
+                  )}{" "}
                 </div>
               </div>
             );

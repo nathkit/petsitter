@@ -22,6 +22,7 @@ export function ButtonSecondary(props) {
         hover:text-orange-400 active:text-orange-600
          disabled:bg-gray-200 disabled:text-gray-100`}
       style={{ width: props.width ? props.width : "139px", height: "48px" }}
+      disabled={props.disabled}
     >
       {props.content}
     </button>

@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 
 function Booking2() {
   const validationSchema = yup.object({
@@ -40,6 +39,7 @@ function Booking2() {
     //   alert(JSON.stringify(values, null, 2));
     // },
   });
+
   return (
     <>
       <div className=" bg-etc-white p-10  h-fit">

@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     colors: {
       gray: {
@@ -36,7 +40,7 @@ export default {
         100: "#FFF0F1",
       },
       etc: {
-        bg_gray:"#FAFAFB",
+        bg_gray: "#FAFAFB",
         black: "#000",
         white: "#fff",
         red: "#ea1010",

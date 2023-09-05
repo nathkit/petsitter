@@ -36,7 +36,7 @@ export default {
         100: "#FFF0F1",
       },
       etc: {
-        bg_gray:"#FAFAFB",
+        bg_gray: "#FAFAFB",
         black: "#000",
         white: "#fff",
         red: "#ea1010",
@@ -104,6 +104,7 @@ export default {
       },
     },
   },
+  daisyui: ["dark", "cupcake"],
 
   plugins: [require("daisyui")],
 };

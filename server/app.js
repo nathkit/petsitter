@@ -3,10 +3,13 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
 import sitterCardData from "./data/SitterCardData.js";
+import sitterDetailRouter from "./routers/sittterDetail.js";
+import dotenv from "dotenv";
 
 async function init() {
   const app = express();
   const port = 4000;
+  dotenv.config();
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -14,6 +17,8 @@ async function init() {
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
+
+  app.use("/sitter", sitterDetailRouter);
 
   app.get("/search", (req, res) => {
     // let keywords = req.query.keywords;

@@ -20,14 +20,14 @@ authRouter.post("/login", async (req, res) => {
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
-    console.log(valid);
+
     if (!valid.rows.length) {
       return res.json({ message: "Invalid email!" });
     }
     // check password condition **********************
     const validPassword = await bcrypt.compare(
       req.body.password,
-      valid.rows[0].password
+      valid.rows[0].pet_sitter_password
     );
     if (!validPassword) {
       return res.json({ message: "Invalid password!" });
@@ -80,6 +80,25 @@ authRouter.post("/register", async (req, res) => {
   }
 
   return res.json({ message: "User profile has been created successfully" });
+});
+
+// reset password *****************************
+authRouter.put("/resetPassword", async (req, res) => {
+  // console.log(req.body);
+  const user = { email: req.body.email, password: req.body.password };
+
+  const salt = await bcrypt.genSalt(10);
+  // now we set user password to hashed password
+  user.password = await bcrypt.hash(user.password, salt);
+
+  let query =
+    "update pet_sitter_profile set pet_sitter_password = $2 where pet_sitter_email = $1";
+  let value = Object.values(user);
+  const result = await pool.query(query, value);
+  if (result.rowCount === 0) {
+    return res.json({ message: "Email does not exist." });
+  }
+  return res.json({ message: "Reset password successfully" });
 });
 
 export default authRouter;

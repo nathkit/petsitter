@@ -1,5 +1,4 @@
 import React from "react";
-import { ButtonPrimary } from "../systemdesign/Button";
 import SitterPictureSlide from "./SitterPictureSlide";
 import sitterData from "./SitterDetailData";
 import SitterReview from "./SitterReview";
@@ -9,44 +8,49 @@ function SitterDetail() {
   const sitter = sitterData[2];
 
   return (
-    <div className="flex flex-col min-h-screen bg-etc-bg_gray">
+    <div className="flex flex-col w-full min-h-screen bg-etc-bg_gray">
       {/* Navbar */}
-      <div className="h-[80px] flex justify-between px-4 bg-etc-white text-white">
+      <div className=" h-[80px] flex justify-between px-4 bg-etc-white text-white">
         Navbar
       </div>
       {/* Sitter Picture */}
       <SitterPictureSlide />
       {/* Sitter Detail */}
-      <div className=" flex justify-between px-[50px] gap-[10px]">
+      <div
+        className="
+       flex justify-between px-[40px] gap-[16px] w-full"
+      >
         {/* Detail */}
-        <div className=" w-full px-[80px] flex flex-col items-start justify-center gap-[48px]">
-          <h1 className="text-headline1">
-            {/* render "Trade name" here */}
-            {sitter.trade_name}
-          </h1>
+        <div className=" w-[70%] px-14 flex flex-col items-start justify-center gap-[48px]">
+          <div className=" flex flex-col gap-12 px-14">
+            <h1 className="text-headline1">
+              {/* render "Trade name" here */}
+              {sitter.trade_name}
+            </h1>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">Introduction</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all ">
-              {/* render description about "Introduction" here */}
-              {sitter.introduction}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">Introduction</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "Introduction" here */}
+                {sitter.introduction}
+              </p>
+            </div>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">Services</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "service" here */}
-              {sitter.services}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">Services</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "service" here */}
+                {sitter.services}
+              </p>
+            </div>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">My Place</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "My Place" here */}
-              {sitter.my_place}
-            </p>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">My Place</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "My Place" here */}
+                {sitter.my_place}
+              </p>
+            </div>
           </div>
           <div className="">
             <SitterReview />
@@ -54,8 +58,8 @@ function SitterDetail() {
         </div>
 
         {/* Sticky Sitter Card */}
-        <div className="flex flex-col items-center w-shop-card text-center p-2">
-          <div className="sticky top-0 flex flex-col mx-20 pt-[40px] gap-6 items-center justify-center w-full h-auto bg-etc-white rounded-2xl">
+        <div className="flex flex-col w-[30%] items-center text-center p-2">
+          <div className=" sticky top-0 flex flex-col mx-20 pt-10 gap-6 items-center justify-center w-[100%] h-auto bg-etc-white rounded-2xl">
             <div className="avatar">
               <div className="w-[160px] h-[160px] rounded-full">
                 <img
@@ -124,8 +128,8 @@ function SitterDetail() {
               </div>
             </div>
             {/* "Book Now" button */}
-            <div className="border-t-[1px] w-full border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
-              <div className=" my-6 mx-0 ">
+            <div className=" w-full border-t-[1px] border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
+              <div className="  my-6 mx-0">
                 <BookingDate />
               </div>
             </div>

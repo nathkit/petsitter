@@ -1,17 +1,26 @@
 import { Router } from "express";
 import pool from "../utils/db.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 const authRouter = Router();
 
 // login router ****************************
 authRouter.post("/login", async (req, res) => {
-  let query = "select email,password from user_profile where email = $1";
+  const role = req.body.role;
+  let query;
   let value = [req.body.email];
+  if (role === "pet_owners") {
+    query =
+      "select pet_owner_email,pet_owner_password from pet_owner_profile where pet_owner_email = $1";
+  } else {
+    query =
+      "select pet_sitter_email,pet_sitter_password from pet_sitter_profile where pet_sitter_email = $1";
+  }
+
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
+    console.log(valid);
     if (!valid.rows.length) {
       return res.json({ message: "Invalid email!" });
     }
@@ -58,16 +67,14 @@ authRouter.post("/register", async (req, res) => {
   // query condition **************************
   if (req.body.role === "pet_owners") {
     query =
-      "insert into user_profile(email,full_name,phone_number,password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
-  }
-  if (req.body.role === "pet_sitters") {
+      "insert into pet_owner_profile(pet_owner_email,pet_owner_name,pet_owner_phone,pet_owner_password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
+  } else {
     query =
-      "insert into sitter_profile(sitter_email,sitter_name,sitter_phone_number,password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
+      "insert into pet_sitter_profile(pet_sitter_email,pet_sitter_name,pet_sitter_phone,pet_sitter_password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
   }
 
   try {
     const result = pool.query(query, value);
-    console.log(result);
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }

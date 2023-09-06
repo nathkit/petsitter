@@ -1,80 +1,31 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../contexts/supabase.js";
-import axios from "axios";
 import * as React from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import {
-  Button,
-  TextField,
-  Box,
-  Checkbox,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { TextField, Box, Tabs, Tab } from "@mui/material";
 import {
   ButtonPrimary,
   ButtonSocial,
   ButtonGhost,
 } from "../components/systemdesign/Button";
+import { BaseCheckbox } from "../components/systemdesign/BaseCheckbox.jsx";
 import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/authentication.jsx";
+import { supabase } from "../contexts/supabase";
 
 function LoginPage() {
   const nav = useNavigate();
 
   // supabase handle ****************************************
-
-  const signInWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-  };
-
-  const signInWithFacebook = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "facebook",
-    });
-  };
-
-  const SignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log("out");
-    // const token = JSON.parse(
-    //   window.localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
-    // );
-    // console.log(token.access_token);
-  };
-
-  const handleSubmit = async (values, formikHelpers) => {
-    try {
-      const serverRespond = await axios.post(
-        "http://localhost:4000/auth/login",
-        values
-      );
-
-      if (
-        serverRespond.data.message ===
-        "User profile has been verified successfully"
-      ) {
-        // console.log(serverRespond.data.message);
-        await supabase.auth.signInWithPassword({
-          email: values.email,
-          password: values.password,
-        });
-      } else {
-        // console.log(serverRespond.data.message);
-        return serverRespond.data.message;
-      }
-    } catch (err) {
-      console.log(err.respondes);
-    }
-
-    // formikHelpers.resetForm();
-    // nav("/");
-    // return;
-  };
+  const {
+    signInWithFacebook,
+    signInWithGoogle,
+    handleLoginSubmit,
+    handleChangeRole,
+    resetPassword,
+    role,
+  } = useAuth();
 
   const initialValues = {
     email: "",
@@ -84,6 +35,11 @@ function LoginPage() {
   // supabase.auth.onAuthStateChange((event, session) => {
   //   console.log(event, session);
   // });
+
+  const SignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    console.log("out");
+  };
 
   return (
     <div className="bg-etc-white m-0 p-0  h-[100%] w-full relative flex justify-center ">
@@ -117,7 +73,7 @@ function LoginPage() {
         <Formik
           initialValues={initialValues}
           onSubmit={(values, formikHelpers) => {
-            handleSubmit(values, formikHelpers);
+            handleLoginSubmit(values, formikHelpers);
           }}
           validationSchema={object({
             email: string()
@@ -131,6 +87,29 @@ function LoginPage() {
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
+                {/* select role tap ******************************* */}
+                <p className="text-lg text-etc-black font-medium text-center">
+                  Select Role
+                </p>
+                <Tabs
+                  value={role}
+                  onChange={handleChangeRole}
+                  textColor="secondary"
+                  indicatorColor="secondary"
+                  aria-label="secondary tabs example"
+                  sx={{ width: "full" }}
+                >
+                  <Tab
+                    value="pet_owners"
+                    label="Pet User"
+                    sx={{ width: "50%" }}
+                  />
+                  <Tab
+                    value="pet_sitters"
+                    label="Pet Sitter"
+                    sx={{ width: "50%" }}
+                  />
+                </Tabs>
                 {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
@@ -170,10 +149,10 @@ function LoginPage() {
                 />
 
                 <Box className="flex w-full justify-between items-center">
-                  <p className="text-etc-black">
-                    <Checkbox /> Remember?
-                  </p>
-                  <Link className="w" to="/register">
+                  {/* <div className="text-etc-black flex items-center">
+                    <BaseCheckbox /> Remember?
+                  </div> */}
+                  <Link className="w" to="/register" onClick={resetPassword}>
                     <ButtonGhost width="10rem" content="Forget Password?" />
                   </Link>
                 </Box>
@@ -187,14 +166,6 @@ function LoginPage() {
                   color="secondary"
                   disabled={!dirty || !isValid}
                 />
-                {/* <ButtonPrimary
-                  content="Login"
-                  width="100%"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  disabled={!dirty || !isValid}
-                /> */}
               </Form>
             );
           }}

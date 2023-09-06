@@ -30,25 +30,8 @@ const data = [
   },
 ];
 
-function booking1() {
+function booking1({ setDisableButtonBooking1 }) {
   const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
-
-  const handleCheckboxChange = (index) => {
-    let updatedSelectedButtons = [...selectedButtons];
-
-    // ตรวจสอบว่าปุ่มที่ถูกเลือกมีอยู่แล้วหรือไม่
-    if (updatedSelectedButtons.includes(index)) {
-      // ถ้ามีอยู่แล้วให้ลบออกจาก selectedButtons
-      updatedSelectedButtons = updatedSelectedButtons.filter(
-        (selectedIndex) => selectedIndex !== index
-      );
-    } else {
-      // ถ้ายังไม่มีให้เพิ่ม index เข้าไปใน selectedButtons
-      updatedSelectedButtons.push(index);
-    }
-
-    setSelectedButtons(updatedSelectedButtons); // อัปเดตสถานะของปุ่มที่ถูกเลือก
-  };
 
   const getTypeStyle = (type) => {
     let textStyle = "";
@@ -86,6 +69,25 @@ function booking1() {
     return { textStyle, border, bgColor };
   };
 
+  const handleCheckboxChange = (index) => {
+    let updatedSelectedButtons = [...selectedButtons];
+
+    // ตรวจสอบว่าปุ่มที่ถูกเลือกมีอยู่แล้วหรือไม่
+    if (updatedSelectedButtons.includes(index)) {
+      // ถ้ามีอยู่แล้วให้ลบออกจาก selectedButtons
+      updatedSelectedButtons = updatedSelectedButtons.filter(
+        (selectedIndex) => selectedIndex !== index
+      );
+    } else {
+      // ถ้ายังไม่มีให้เพิ่ม index เข้าไปใน selectedButtons
+      updatedSelectedButtons.push(index);
+    }
+
+    setSelectedButtons(updatedSelectedButtons);
+    // อัปเดตสถานะของปุ่มที่ถูกเลือก
+    setDisableButtonBooking1(updatedSelectedButtons);
+    // console.log(updatedSelectedButtons);
+  };
   return (
     <>
       <div className=" bg-etc-white p-10 w-full h-fit">

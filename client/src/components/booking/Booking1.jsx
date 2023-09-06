@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { CreateIcon } from "../systemdesign/Icons";
-import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
-import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
 
 const data = [
   {
@@ -31,94 +29,13 @@ const data = [
   },
 ];
 
-function booking1({ CheckboxStatus }) {
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
-
-  const handleCheckboxChange = (index) => {
-    let updatedSelectedButtons = [...selectedButtons];
-
-    // ตรวจสอบว่าปุ่มที่ถูกเลือกมีอยู่แล้วหรือไม่
-    if (updatedSelectedButtons.includes(index)) {
-      // ถ้ามีอยู่แล้วให้ลบออกจาก selectedButtons
-      updatedSelectedButtons = updatedSelectedButtons.filter(
-        (selectedIndex) => selectedIndex !== index
-      );
-    } else {
-      // ถ้ายังไม่มีให้เพิ่ม index เข้าไปใน selectedButtons
-      updatedSelectedButtons.push(index);
-    }
-
-    setSelectedButtons(updatedSelectedButtons);
-    // อัปเดตสถานะของปุ่มที่ถูกเลือก
-    setIsChecked(updatedSelectedButtons.length > 0);
-  };
-
-  const getTypeStyle = (type) => {
-    let textStyle = "";
-    let bgColor = "";
-    let border = "";
-
-    switch (type) {
-      case "Dog":
-        textStyle = "text-green-500";
-        border = "border-green-500";
-        bgColor = "bg-green-100";
-        break;
-      case "Cat":
-        textStyle = "text-pink-500";
-        border = "border-pink-500";
-        bgColor = "bg-pink-100";
-        break;
-      case "Bird":
-        textStyle = "text-blue-500";
-        border = "border-blue-500";
-        bgColor = "bg-blue-100";
-        break;
-      case "Rabbit":
-        textStyle = "text-orange-500";
-        border = "border-orange-500";
-        bgColor = "bg-orange-100";
-        break;
-      default:
-        textStyle = "";
-        border = "";
-        bgColor = "";
-        break;
-    }
-
-    return { textStyle, border, bgColor };
-  };
-
-  const handleCheckboxChange = (index) => {
-    let updatedSelectedButtons = [...selectedButtons];
-
-    // ตรวจสอบว่าปุ่มที่ถูกเลือกมีอยู่แล้วหรือไม่
-    if (updatedSelectedButtons.includes(index)) {
-      // ถ้ามีอยู่แล้วให้ลบออกจาก selectedButtons
-      updatedSelectedButtons = updatedSelectedButtons.filter(
-        (selectedIndex) => selectedIndex !== index
-      );
-    } else {
-      // ถ้ายังไม่มีให้เพิ่ม index เข้าไปใน selectedButtons
-      updatedSelectedButtons.push(index);
-    }
-
-    setSelectedButtons(updatedSelectedButtons);
-    // อัปเดตสถานะของปุ่มที่ถูกเลือก
-    setDisableButtonBooking1(updatedSelectedButtons);
-    // console.log(updatedSelectedButtons);
-  };
+function booking1() {
   return (
     <>
       <div className=" bg-etc-white p-10 w-full h-fit">
         <p className="mb-4 text-body2">Choose your pet</p>
         <div className="flex flex-wrap relative">
           {data.map((item, index) => {
-            const { textStyle, border, bgColor } = getTypeStyle(item.type);
-            const isInvalidType = !["Dog", "Cat", "Bird", "Rabbit"].includes(
-              item.type
-            );
             return (
               <div key={index} className="flex mr-[14px]">
                 <div
@@ -141,18 +58,10 @@ function booking1({ CheckboxStatus }) {
                       <div className="">{item.type}</div>
                     </div>
                   </div>
-                  {!isInvalidType && (
-                    <input
-                      type="checkbox"
-                      onChange={() => {
-                        handleCheckboxChange(index);
-                        setIsChecked(!isChecked);
-                        CheckboxStatus(!isChecked);
-                      }}
-                      className="checkbox absolute top-3 right-3 hover:border-orange-300 border-gray-200"
-                    />
-                  )}{" "}
-                  )}{" "}
+                  <input
+                    type="checkbox"
+                    className="checkbox absolute top-3 right-3 hover:border-orange-300 "
+                  />
                 </div>
               </div>
             );

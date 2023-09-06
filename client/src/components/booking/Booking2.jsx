@@ -52,6 +52,7 @@ function Booking2({ setDisableButtonBooking2 }) {
   return (
     <>
       <div className=" bg-etc-white p-10  h-fit">
+      <div className=" bg-etc-white p-10  h-fit">
         <form onSubmit={formik.handleSubmit} className="">
           <TextField
             fullWidth
@@ -65,6 +66,7 @@ function Booking2({ setDisableButtonBooking2 }) {
             helperText={formik.touched.name && formik.errors.name}
             placeholder="Full name"
             required
+            color="warning"
             color="warning"
           />
           <div className="flex justify-between my-10">
@@ -82,6 +84,7 @@ function Booking2({ setDisableButtonBooking2 }) {
               required
               className="w-[47%]"
               color="warning"
+              color="warning"
             />
             <TextField
               id="phone"
@@ -97,6 +100,7 @@ function Booking2({ setDisableButtonBooking2 }) {
               required
               className="w-[47%]"
               color="warning"
+              color="warning"
             />
           </div>
           <hr className="mb-10" />
@@ -106,6 +110,7 @@ function Booking2({ setDisableButtonBooking2 }) {
             label="Additional Message (To pet sitter)"
             multiline
             rows={4}
+            color="warning"
             color="warning"
           />
         </form>

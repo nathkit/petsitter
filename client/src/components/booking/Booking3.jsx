@@ -18,6 +18,18 @@ function Booking3({ setDisableButtonBooking3 }) {
     setSelectedOption("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
   };
 
+function Booking3() {
+  const [selectedOption, setSelectedOption] = useState("credit");
+
+  const [credit, setCredit] = useState(null);
+  const [wallet, setWallet] = useState(null);
+
+  const handleCreditClick = () => {
+    setSelectedOption("credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
+  };
+  const handleCashClick = () => {
+    setSelectedOption("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
+  };
   return (
     <>
       <div className="bg-etc-white h-fit p-10">
@@ -33,10 +45,33 @@ function Booking3({ setDisableButtonBooking3 }) {
             onBlur={() => {
               setCredit("#3A3B46");
             }}
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
+          
+            ${selectedOption === "credit" ? "focus:border-orange-500" : ""}`}
+            onClick={handleCreditClick}
+            onFocus={() => {
+              setCredit("#ff7037");
+            }}
+            onBlur={() => {
+              setCredit("#3A3B46");
+            }}
           >
-            <CreditCardIcon color={credit} />
+            <CreditCardIcon color={credit} color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
+          <button
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
+            ${selectedOption === "cash" ? "focus:border-orange-500" : ""}`}
+            onClick={handleCashClick}
+            onFocus={() => {
+              setWallet("#ff7037");
+            }}
+            onBlur={() => {
+              setWallet("#3A3B46");
+            }}
+          >
+            <WalletIcon color={wallet} />
+            <p className="ml-2">Cash</p>
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
             ${selectedOption === "cash" ? "focus:border-orange-500" : ""}`}
@@ -144,6 +179,7 @@ function Credit({ setDisableButtonBooking3 }) {
           required
           className="w-[47%]"
           color="warning"
+          color="warning"
         />
         <TextField
           id="cardOwner"
@@ -157,6 +193,7 @@ function Credit({ setDisableButtonBooking3 }) {
           placeholder="Card owner name"
           required
           className="w-[47%]"
+          color="warning"
           color="warning"
         />
         <TextField
@@ -172,6 +209,7 @@ function Credit({ setDisableButtonBooking3 }) {
           required
           className="w-[47%]"
           color="warning"
+          color="warning"
         />
         <TextField
           id="CVC"
@@ -185,6 +223,7 @@ function Credit({ setDisableButtonBooking3 }) {
           placeholder="xxx"
           required
           className="w-[47%]"
+          color="warning"
           color="warning"
         />
       </div>

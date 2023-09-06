@@ -3,24 +3,91 @@ import { StarIcon, SearchIcon } from "../systemdesign/Icons.jsx";
 import { ButtonSecondary, ButtonPrimary } from "../systemdesign/Button.jsx";
 import { BaseCheckbox } from "../systemdesign/BaseCheckbox.jsx";
 
-function SitterSearch() {
-  const handleRating = (event) => {
-    event.preventDefault();
-  };
-  // Array ชนิดของสัตว์
-  const [petType, setPetType] = useState([]);
+function SitterSearch({ onSearch }) {
+  const [searchData, setSearchData] = useState({
+    search: "",
+    types: [],
+    rate: undefined,
+    exp: 0,
+  });
 
   const allPetTypes = ["Dog", "Cat", "Bird", "Rabbit"];
 
   const starRates = [5, 4, 3, 2, 1];
 
+  const allExp = [
+    {
+      label: "0-2 Years",
+      value: 0,
+    },
+    {
+      label: "3-5 Years",
+      value: 1,
+    },
+    {
+      label: "5+ Years",
+      value: 2,
+    },
+  ];
+
+  const handleSearchText = (event) => {
+    let text = event.target.value;
+    setSearchData({
+      ...searchData,
+      search: text,
+    });
+  };
+
   const handleCheckBox = (event, type) => {
-    if (petType.includes(type)) {
-      setPetType(petType.filter((eachType) => eachType !== type));
+    if (searchData.types.includes(type)) {
+      setSearchData({
+        ...searchData,
+        types: searchData.types.filter((eachType) => eachType !== type),
+      });
     } else {
-      setPetType([...petType, type]);
+      setSearchData({
+        ...searchData,
+        types: [...searchData.types, type],
+      });
     }
-    console.log(petType);
+  };
+
+  const handleRating = (event, rate) => {
+    event.preventDefault();
+    if (searchData.rate === rate) {
+      setSearchData({
+        ...searchData,
+        rate: undefined,
+      });
+    } else {
+      setSearchData({
+        ...searchData,
+        rate: rate,
+      });
+    }
+  };
+
+  const handleExperience = (event) => {
+    setSearchData({
+      ...searchData,
+      exp: event.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(searchData);
+    onSearch(searchData);
+  };
+
+  const handleClear = (event) => {
+    event.preventDefault();
+    setSearchData({
+      search: "",
+      types: [],
+      rate: undefined,
+      exp: 0,
+    });
   };
 
   return (
@@ -33,7 +100,13 @@ function SitterSearch() {
             className="flex w-[318px] h-[48px] py-3 pl-3 pr-4 border-solid rounded-[8px]
                border-[#DCDFED] border-[1px]"
           >
-            <input type="text" className="border-hidden w-[286px] h-[24px]" />
+            <input
+              type="text"
+              id="seacrh"
+              className="border-hidden w-[286px] h-[24px]"
+              onChange={(e) => handleSearchText(e)}
+              value={searchData.search}
+            />
             <SearchIcon color="#AEB1C3" />
           </div>
         </div>
@@ -47,7 +120,7 @@ function SitterSearch() {
               <BaseCheckbox
                 key={type}
                 label={type}
-                isChecked={petType.includes(type)}
+                isChecked={searchData.types.includes(type)}
                 onChanged={(e) => handleCheckBox(e, type)}
               />
             ))}
@@ -59,15 +132,23 @@ function SitterSearch() {
         <div>
           <div className="text-[16px] pb-4 font-bold">Rating:</div>
           <div className="flex flex-wrap gap-2">
-            {starRates.map((rate) => (
+            {starRates.map((rate, index) => (
               <button
                 id={rate + "star"}
-                className="flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] 
-                  rounded-[8px] border-[#DCDFED] bg-etc-white hover:border-[#f0c2b1] focus:border-[#FF7037] focus:text-[#FF7037]"
-                value="5star"
-                onClick={handleRating}
+                key={index}
+                className={`flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] 
+                  rounded-[8px] border-[#DCDFED] bg-etc-white hover:border-orange-500
+                  ${
+                    rate === searchData.rate
+                      ? "border-orange-500 text-orange-500"
+                      : ""
+                  }
+                  `}
+                onClick={(e) => handleRating(e, rate)}
               >
-                <span className="pr-[3px] font-Satoshi">{rate}</span>
+                <span className="pr-[3px] font-Satoshi text-gray-400">
+                  {rate}
+                </span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
                 ))}
@@ -80,21 +161,24 @@ function SitterSearch() {
         {/* Start Experience */}
         <div className="Experience">
           <div className="text-[16px] font-bold pb-4"> Experience: </div>
-          <select className="select w-[346px] text-[#7B7E8F] border-[#DCDFED]">
-            <option disabled selected>
-              0-2 Years
-            </option>
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
+          <select
+            className="select w-[346px] text-[#7B7E8F] border-[#DCDFED]"
+            defaultValue={allExp[0].value}
+            onChange={(e) => handleExperience(e)}
+          >
+            {allExp.map((exp) => (
+              <option key={exp.value} value={exp.value}>
+                {exp.label}
+              </option>
+            ))}
           </select>
         </div>
         {/* End Experience */}
 
         {/* Start Button */}
         <div className="flex gap-4">
-          <ButtonSecondary content="Clear" width={165} />
-          <ButtonPrimary content="Search" width={165} />
+          <ButtonSecondary content="Clear" width={165} onClick={handleClear} />
+          <ButtonPrimary content="Search" width={165} onClick={handleSubmit} />
         </div>
         {/* Start Button */}
       </form>

@@ -14,6 +14,30 @@ async function init() {
     res.send("Hello World!");
   });
 
+  app.get("/search", (req, res) => {
+    // let keywords = req.query.keywords;
+
+    // if (keywords === undefined) {
+    //   return res.status(400).json({
+    //     message: "Please send keywords parameter in the URL endpoint",
+    //   });
+    // }
+
+    // const regexKeywords = keywords.split(" ").join("|");
+    // const regex = new RegExp(regexKeywords, "ig");
+    // const results = card.filter((card) => {
+    //   return (
+    //     card.trade_name.match(regex) ||
+    //     card.pets.match(regex) ||
+    //     card.tags.filter((tag) => tag.match(regex)).length
+    //   );
+    // });
+
+    return res.json({
+      data: sitterCardData,
+    });
+  });
+
   app.get("*", (req, res) => {
     res.status(404).send("Not found");
   });

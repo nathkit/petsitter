@@ -28,7 +28,6 @@ function BookingPage() {
     if (step > 1) {
       setStep(step - 1);
     }
-
     // if (step <= 2) {
     //   setDisableButtonBooking1("");
     // }

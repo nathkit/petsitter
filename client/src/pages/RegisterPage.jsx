@@ -1,16 +1,7 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../contexts/supabase.js";
-import axios from "axios";
 import * as React from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import {
-  Button,
-  TextField,
-  Box,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { TextField, Box, Tabs, Tab } from "@mui/material";
 import {
   ButtonPrimary,
   ButtonSocial,
@@ -18,58 +9,22 @@ import {
 } from "../components/systemdesign/Button";
 import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authentication.jsx";
 
 function Register() {
   const nav = useNavigate();
-  const [facebookLogin, SetFacebookLogin] = useState(false);
-  const [googleLogin, SetGoogleLogin] = useState(false);
-  const [role, setRole] = useState("pet_owners");
-
-  const handleChange = (event, newRole) => {
-    setRole(newRole);
-  };
+  // const [facebookLogin, SetFacebookLogin] = useState(false);
+  // const [googleLogin, SetGoogleLogin] = useState(false);
 
   // supabase handle ****************************************
-
-  const signInWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-    // const serverRespond = await axios.post(
-    //   "http://localhost:4000/auth/register",
-    //   data
-    // );
-
-    console.log(serverRespond);
-  };
-
-  const signInWithFacebook = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "facebook",
-    });
-  };
-
-  const handleSubmit = async (values, formikHelpers) => {
-    const newValues = { ...values, role };
-    try {
-      // const { data, error } = await supabase.auth.signUp({
-      //   email: values.email,
-      //   password: values.password,
-      // });
-      const serverRespond = await axios.post(
-        "http://localhost:4000/auth/register",
-        newValues
-      );
-      console.log(serverRespond);
-    } catch (err) {
-      console.log(err);
-    }
-
-    // formikHelpers.resetForm();
-    // nav("/login")
-    // return
-  };
+  const {
+    handleRegisterSubmit,
+    signInWithFacebook,
+    signInWithGoogle,
+    handleChangeRole,
+    role,
+  } = useAuth();
 
   const initialValues = {
     email: "",
@@ -107,7 +62,7 @@ function Register() {
         <Formik
           initialValues={initialValues}
           onSubmit={(values, formikHelpers) => {
-            handleSubmit(values, formikHelpers);
+            handleRegisterSubmit(values, formikHelpers);
           }}
           validationSchema={object({
             email: string()
@@ -138,16 +93,29 @@ function Register() {
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
-                <ToggleButtonGroup
+                {/* select role tap ******************************* */}
+                <p className="text-lg text-etc-black font-medium text-center">
+                  Select Role
+                </p>
+                <Tabs
                   value={role}
-                  exclusive
-                  onChange={handleChange}
-                  aria-label="Platform"
-                  fullWidth
+                  onChange={handleChangeRole}
+                  textColor="secondary"
+                  indicatorColor="secondary"
+                  aria-label="secondary tabs example"
+                  sx={{ width: "full" }}
                 >
-                  <ToggleButton value="pet_owners">Pet User</ToggleButton>
-                  <ToggleButton value="pet_sitters">Pet Sitter</ToggleButton>
-                </ToggleButtonGroup>
+                  <Tab
+                    value="pet_owners"
+                    label="Pet User"
+                    sx={{ width: "50%" }}
+                  />
+                  <Tab
+                    value="pet_sitters"
+                    label="Pet Sitter"
+                    sx={{ width: "50%" }}
+                  />
+                </Tabs>
 
                 {/* email ********************************* */}
                 <label
@@ -272,5 +240,3 @@ function Register() {
 }
 
 export default Register;
-
-// onClick={props.onClick ? props.onClick : null}

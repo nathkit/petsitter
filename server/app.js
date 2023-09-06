@@ -47,8 +47,7 @@ async function init() {
     console.log(`Example app listening on port ${port}`);
   });
 
-  // authRouter ******************
-
+  // authRouter under this line cannot use .GET ******************
   app.use("/auth", authRouter);
 }
 

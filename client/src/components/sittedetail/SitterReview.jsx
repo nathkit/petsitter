@@ -1,12 +1,10 @@
 import union from "../../assets/SitterReview/Union.png";
-import { useStarContext } from "../../contexts/StarRatingContext";
 import reviewData from "../../assets/SitterReview/reviewsdata.json"; // mock review data
-import ReviewComponent from "./ReviewComponent";
 import { StarIcon } from "../systemdesign/Icons";
 import { useState } from "react";
 
 function SitterReview() {
-  const starRates = ["All", 5, 4, 3, 2, 1];
+  const starRates = [5, 4, 3, 2, 1];
 
   const [searchData, setSearchData] = useState({
     search: "",
@@ -29,14 +27,6 @@ function SitterReview() {
       });
     }
   };
-
-  const { starRatings } = useStarContext();
-
-  const fiveStarRating = starRatings.fiveStar;
-  const fourStarRating = starRatings.fourStar;
-  const threeStarRating = starRatings.threeStar;
-  const twoStarRating = starRatings.twoStar;
-  const oneStarRating = starRatings.oneStar;
 
   const totalReviews = reviewData.length;
 
@@ -63,7 +53,6 @@ function SitterReview() {
           <div className="rating-wrapper flex flex-col gap-4">
             <h1 className="text-headline3 text-etc-black">Rating & Reviews</h1>
             <div className="rating-menu flex gap-2">
-              {/* Start Rating */}
               <div>
                 <div className="flex flex-wrap gap-2">
                   <button
@@ -96,25 +85,25 @@ function SitterReview() {
                   ))}
                 </div>
               </div>
-              {/* End Rating */}
             </div>
           </div>
         </div>
         <div className="sitter-review-list w-[100%] flex flex-col gap-4 p-6">
           {reviewData.map((review) => (
-            //  ReviewComponent ใช้เพื่อดึงค่าจาก review.rating ให้เปลี่ยนเป็น star icon
-            //  เพราะ mock data ของ rating กำหนดเป็นตัวเลข
-            <ReviewComponent
-              key={review.review_id}
-              review={review}
-              starRatings={{
-                oneStarRating,
-                twoStarRating,
-                threeStarRating,
-                fourStarRating,
-                fiveStarRating,
-              }}
-            />
+            <div key={review.review_id} className="review">
+              <img src={review.avatar} alt="avatar" className="h-[50px]" />
+              <div className="w-[20%]">
+                <h2>{review.full_name}</h2>
+                <p>{review.created_date}</p>
+              </div>
+              <p>{review.review_description}</p>
+              <div className="rating">
+                {Array.from({ length: review.rating }, (_, index) => (
+                  <StarIcon key={index} color="#1CCD83" />
+                ))}
+                <p>{review.review_description}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

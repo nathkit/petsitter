@@ -2,11 +2,11 @@ import { CheckIcon } from "./Icons";
 
 export function BaseCheckbox({ isChecked, label, onChanged }) {
   return (
-    <div class="form-control">
-      <label class="cursor-pointer label">
+    <div className="form-control">
+      <label className="cursor-pointer label">
         <input
           type="checkbox"
-          class="hidden peer/chk"
+          className="hidden peer/chk"
           checked={isChecked}
           onChange={onChanged}
         />
@@ -17,7 +17,7 @@ export function BaseCheckbox({ isChecked, label, onChanged }) {
             </div>
           )}
         </div>
-        <span class="label-text pl-2">{label}</span>
+        <span className="label-text pl-2">{label}</span>
       </label>
     </div>
   );

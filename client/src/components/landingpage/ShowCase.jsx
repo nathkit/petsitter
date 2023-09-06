@@ -6,7 +6,7 @@ import { Star1 } from "../systemdesign/image";
 
 export default function ShowCase() {
   return (
-    <div className="w-full p-20 flex flex-col items-center mx-auto">
+    <div className="min-w-[1440px] p-20 flex flex-col items-center mx-auto">
       <p className="mb-[120px] text-headline2 text-etc-black">
         "Your Pets, Our Priority: Perfect Care, Anytime, Anywhere."
       </p>

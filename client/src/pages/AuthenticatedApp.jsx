@@ -28,7 +28,6 @@ function AuthenticatedApp() {
     //   <SearchList />
     //   <SitterDetailPage />
     // </>
-
   );
 }
 

@@ -1,9 +1,11 @@
 import { ButtonPrimary } from "../systemdesign/Button";
 import { Ellipse16, Star1, Ellipse17 } from "../systemdesign/image";
+import { useNavigate } from "react-router-dom";
 
 export default function Banner() {
+  const navigate = useNavigate();
   return (
-    <div className="w-full p-20 flex flex-col">
+    <div className="min-w-[1440px] p-20 flex flex-col">
       <div className="w-full h-[448px] bg-yellow-100 rounded-[16px] relative overflow-hidden">
         <div className="absolute right-[-25px] top-[-35px]">
           <Ellipse16 width="229" height="229" />
@@ -18,7 +20,13 @@ export default function Banner() {
           <p className="text-headline1 text-etc-black text-center">
             Perfect Pet Sitter For Your Pet
           </p>
-          <ButtonPrimary content="Find A Pet Sitter" width="120" />
+          <ButtonPrimary
+            content="Find A Pet Sitter"
+            width="120"
+            onClick={() => {
+              navigate("/search");
+            }}
+          />
         </div>
       </div>
     </div>

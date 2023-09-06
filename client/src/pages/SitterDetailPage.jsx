@@ -1,17 +1,16 @@
-import React from "react";
-import SitterReview from "../components/sittedetail/SitterReview";
 import { ImageProvider } from "../contexts/StarRatingContext";
 import SitterDetail from "../components/sittedetail/SitterDetail";
+import Footer from "../components/systemdesign/Footer";
+import NavBar from "../components/systemdesign/Navbar";
 
 function SitterDetailPage() {
   return (
     <ImageProvider>
-      <div className=" h-screen bg-etc-bg_gray">
+      <div>
         <>
-          {/* nav */}
-          <SitterDetail/>
-          {/* <SitterReview /> */}
-          {/* foot */}
+          <NavBar />
+          <SitterDetail />
+          <Footer />
         </>
       </div>
     </ImageProvider>

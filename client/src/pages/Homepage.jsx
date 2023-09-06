@@ -2,6 +2,13 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { FacebookIcon } from "../components/systemdesign/Icons";
+import Navbar from "../components/systemdesign/Navbar";
+import Header from "../components/landingpage/Header";
+import FilterBar from "../components/landingpage/FilterBar";
+import Showcase from "../components/landingpage/ShowCase";
+import Banner from "../components/landingpage/Banner";
+import Footer from "../components/systemdesign/Footer";
+
 import {
   ButtonPrimary,
   ButtonSecondary,
@@ -9,16 +16,23 @@ import {
   ButtonSocial,
   ButtonIcon,
 } from "../components/systemdesign/Button";
+import { useAuth } from "../contexts/authentication";
+import { useEffect } from "react";
 function HomePage() {
+  const { getUserData, user } = useAuth();
+
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
-    <>
-      <ButtonPrimary content="ButtonPrimary" width="200px" />
-      <ButtonSecondary content="ButtonSecondary" width="200px" />
-      <ButtonGhost content="ButtonGhost" />
-      <ButtonSocial content="Facebook" icon={FacebookIcon} width="200px" />
-      <ButtonIcon icon={FacebookIcon} />
-      <div></div>
-    </>
+    <div className="bg-etc-white">
+      <Navbar />
+      <Header />
+      <FilterBar />
+      <Showcase />
+      <Banner />
+      <Footer />
+    </div>
   );
 }
 

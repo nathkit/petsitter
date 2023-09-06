@@ -1,59 +1,60 @@
-import React from "react";
-import { ButtonPrimary } from "../systemdesign/Button";
 import SitterPictureSlide from "./SitterPictureSlide";
 import sitterData from "./SitterDetailData";
 import SitterReview from "./SitterReview";
+import BookingDate from "../booking/BookingDate";
 
 function SitterDetail() {
-  const sitter = sitterData[3];
-
+  const sitter = sitterData[2];
 
   return (
-    <div className="flex flex-col min-h-screen bg-etc-bg_gray">
-      {/* Navbar */}
-      <div className="h-[80px] flex justify-between items-center px-4 bg-etc-white text-white">
-        Navbar
-      </div>
+    <div className="flex flex-col w-full min-h-screen bg-etc-bg_gray">
       {/* Sitter Picture */}
       <SitterPictureSlide />
       {/* Sitter Detail */}
-      <div className=" flex justify-between px-[80px] gap-[16px]">
+      <div
+        className="
+       flex justify-between px-[40px] gap-[16px] w-full"
+      >
         {/* Detail */}
-        <div className=" w-full px-[80px] flex flex-col items-start justify-center gap-[48px]">
-          <h1 className="text-headline1">
-            {/* render "Trade name" here */}
-            {sitter.trade_name}
-          </h1>
+        <div className=" w-[70%] px-14 flex flex-col items-start justify-center gap-[48px]">
+          <div className=" flex flex-col gap-12 px-14">
+            <h1 className="text-headline1">
+              {/* render "Trade name" here */}
+              {sitter.trade_name}
+            </h1>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">Introduction</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all ">
-              {/* render description about "Introduction" here */}
-              {sitter.introduction}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">Introduction</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "Introduction" here */}
+                {sitter.introduction}
+              </p>
+            </div>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">Services</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "service" here */}
-              {sitter.services}
-            </p>
-          </div>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">Services</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "service" here */}
+                {sitter.services}
+              </p>
+            </div>
 
-          <div>
-            <h3 className="text-headline3 mb-[12px]">My Place</h3>
-            <p className="font-[500px] text-[16px] text-gray-500 break-all">
-              {/* render description about "My Place" here */}
-              {sitter.my_place}
-            </p>
+            <div>
+              <h3 className="text-headline3 mb-[12px]">My Place</h3>
+              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+                {/* render description about "My Place" here */}
+                {sitter.my_place}
+              </p>
+            </div>
           </div>
-          <SitterReview/>
+          <div className="">
+            <SitterReview />
+          </div>
         </div>
 
         {/* Sticky Sitter Card */}
-        <div className="flex flex-col items-center w-shop-card text-center p-2">
-          <div className="sticky top-0 flex flex-col mx-20 pt-[40px] gap-6 items-center justify-center w-full h-auto bg-etc-white rounded-2xl">
+        <div className="flex flex-col w-[30%] items-center text-center p-2">
+          <div className=" sticky top-0 flex flex-col mx-20 pt-10 gap-6 items-center justify-center w-[100%] h-auto bg-etc-white rounded-2xl">
             <div className="avatar">
               <div className="w-[160px] h-[160px] rounded-full">
                 <img
@@ -64,8 +65,18 @@ function SitterDetail() {
             </div>
             {/* detail in Card */}
             <div className="flex flex-col gap-1 mb-10">
-              <h2 className="text-headline2 m-0 self-stretch"> {sitter.trade_name}</h2>
-              <h4 className="text-[20px] m-0">  {sitter.sitter_name}{" "} <span className="text-[16px] text-green-500"> {sitter.experience} Years Exp.</span></h4>
+              <h2 className="text-headline2 m-0 self-stretch">
+                {" "}
+                {sitter.trade_name}
+              </h2>
+              <h4 className="text-[20px] m-0">
+                {" "}
+                {sitter.sitter_name}{" "}
+                <span className="text-[16px] text-green-500">
+                  {" "}
+                  {sitter.experience} Years Exp.
+                </span>
+              </h4>
               {/* rating star use logic if number 1 render 1 star */}
               <div className="flex justify-center mt-1">
                 {[...Array(sitter.rating_star)].map((_, index) => (
@@ -77,9 +88,7 @@ function SitterDetail() {
                     viewBox="0 0 18 18"
                     fill="#1CCD83" // Fill color for filled stars
                   >
-                    <path
-                      d="M8.14319 1.42372C8.53185 0.777902 9.46815 0.777901 9.85681 1.42372L12.0731 5.10651C12.2128 5.33853 12.4405 5.504 12.7043 5.56509L16.8918 6.53491C17.6261 6.70498 17.9154 7.59545 17.4213 8.16466L14.6036 11.4106C14.4261 11.6151 14.3391 11.8828 14.3625 12.1526L14.7342 16.4347C14.7994 17.1857 14.0419 17.736 13.3478 17.442L9.39009 15.7653C9.14076 15.6596 8.85924 15.6596 8.60991 15.7653L4.65216 17.442C3.95813 17.736 3.20065 17.1857 3.26582 16.4347L3.63745 12.1526C3.66087 11.8828 3.57387 11.6151 3.39637 11.4106L0.578707 8.16466C0.0845982 7.59545 0.373929 6.70498 1.10824 6.53491L5.29567 5.56509C5.55948 5.504 5.78723 5.33853 5.92685 5.10652L8.14319 1.42372Z"
-                    />
+                    <path d="M8.14319 1.42372C8.53185 0.777902 9.46815 0.777901 9.85681 1.42372L12.0731 5.10651C12.2128 5.33853 12.4405 5.504 12.7043 5.56509L16.8918 6.53491C17.6261 6.70498 17.9154 7.59545 17.4213 8.16466L14.6036 11.4106C14.4261 11.6151 14.3391 11.8828 14.3625 12.1526L14.7342 16.4347C14.7994 17.1857 14.0419 17.736 13.3478 17.442L9.39009 15.7653C9.14076 15.6596 8.85924 15.6596 8.60991 15.7653L4.65216 17.442C3.95813 17.736 3.20065 17.1857 3.26582 16.4347L3.63745 12.1526C3.66087 11.8828 3.57387 11.6151 3.39637 11.4106L0.578707 8.16466C0.0845982 7.59545 0.373929 6.70498 1.10824 6.53491L5.29567 5.56509C5.55948 5.504 5.78723 5.33853 5.92685 5.10652L8.14319 1.42372Z" />
                   </svg>
                 ))}
               </div>
@@ -114,14 +123,13 @@ function SitterDetail() {
               </div>
             </div>
             {/* "Book Now" button */}
-            <div className="border-t-[1px] w-full border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
-              <div className=" m-6 ">
-                <ButtonPrimary content="Book Now"/>
+            <div className=" w-full border-t-[1px] border-gray-200 flex bg-etc-white justify-center rounded-b-2xl">
+              <div className="  my-6 mx-0">
+                <BookingDate />
               </div>
             </div>
           </div>
         </div>
-       
       </div>
     </div>
   );

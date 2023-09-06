@@ -1,6 +1,7 @@
 import { CalendarIcon, ClockIcon } from "../systemdesign/Icons";
 import { ButtonPrimary } from "../systemdesign/Button";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,8 +17,8 @@ function BookingDate() {
   return (
     <>
       {" "}
-      <button className="btn" onClick={() => window.my_modal_3.showModal()}>
-        open modal
+      <button onClick={() => window.my_modal_3.showModal()}>
+        <ButtonPrimary content="Book Now" width=" 250px" />
       </button>
       <dialog id="my_modal_3" className="modal ">
         <form method="dialog" className="modal-box max-w-[560px] px-10 py-0">

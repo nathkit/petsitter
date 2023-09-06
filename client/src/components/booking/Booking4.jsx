@@ -1,14 +1,14 @@
 import { ButtonPrimary, ButtonSecondary } from "../systemdesign/Button";
-import { Ellipse17, Vector, Star1, Ellipse14 } from "../systemdesign/image";
+import catPaw from "../../assets/img/catPaw.png";
+import starCat from "../../assets/img/starCat.png";
+import { useNavigate } from "react-router-dom";
 
 function Booking4() {
+  const navigate = useNavigate();
   return (
     <div className="flex justify-center flex-col items-center  bg-etc-bg_gray relative h-screen">
-      <div className=" absolute top-[55px] left-[16px]">
-        <Ellipse17 color={"#1ccd83"} width={"229px"} height={"114.5px"} />
-        <div className="mt-[26.5px] ml-[135px]">
-          <Vector width={"136px"} height={"141px"} />
-        </div>
+      <div className=" absolute top-[0px] left-[16px]">
+        <img src={catPaw} />
       </div>
       <div className="w-[632px]  bg-etc-white">
         <div className=" bg-etc-black text-etc-white text-center p-6 rounded-t-2xl ">
@@ -59,13 +59,16 @@ function Booking4() {
       <div className="mt-10 relative">
         <ButtonSecondary content={"Booking History"} width={"159px"} />
         &nbsp;&nbsp;
-        <ButtonPrimary content={"Back To Home"} width={"156px"} />
+        <ButtonPrimary
+          content={"Back To Home"}
+          width={"156px"}
+          onClick={() => {
+            navigate("/");
+          }}
+        />
       </div>
-      <div className=" absolute right-0  bottom-20 ">
-        <Star1 color={"#76d0fc"} width={"159px"} height={"155px"} />
-        <div className="rotate-45">
-          <Ellipse14 color={"#ffca62"} width={"253px"} height={"253px"} />
-        </div>
+      <div className=" absolute right-0  bottom-0 ">
+        <img src={starCat} />
       </div>
     </div>
   );

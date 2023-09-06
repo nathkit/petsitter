@@ -1,9 +1,8 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 
-function Booking2() {
+function Booking2({ setDisableButtonBooking2 }) {
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -15,6 +14,7 @@ function Booking2() {
     name: yup
       .string("Enter your name")
       .min(5, "Full name should be of minimum 5 characters length")
+      .matches(/^[A-Za-z]+$/, "Name should contain only letters")
       .required("Name is required"),
     phone: yup
       .string("Enter your phone number")
@@ -36,10 +36,14 @@ function Booking2() {
       phone: "",
     },
     validationSchema: validationSchema,
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
+  const isNameValid = formik.touched.name && !formik.errors.name;
+  const isEmailValid = formik.touched.email && !formik.errors.email;
+  const isPhoneValid = formik.touched.phone && !formik.errors.phone;
+  const checkStatus =
+    !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid;
+  setDisableButtonBooking2(checkStatus);
+
   return (
     <>
       <div className=" bg-etc-white p-10  h-fit">
@@ -69,7 +73,7 @@ function Booking2() {
               onBlur={formik.handleBlur}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
-              placeholder="youremail@hotmail.com"
+              placeholder="your email"
               required
               className="w-[47%]"
               color="warning"

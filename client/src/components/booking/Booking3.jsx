@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import { Vector } from "../systemdesign/image";
 import { useState } from "react";
 
-function Booking3() {
+function Booking3({ setDisableButtonBooking3 }) {
   const [selectedOption, setSelectedOption] = useState("credit");
 
   const [credit, setCredit] = useState(null);
@@ -17,6 +17,7 @@ function Booking3() {
   const handleCashClick = () => {
     setSelectedOption("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
   };
+
   return (
     <>
       <div className="bg-etc-white h-fit p-10">
@@ -39,7 +40,10 @@ function Booking3() {
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
             ${selectedOption === "cash" ? "focus:border-orange-500" : ""}`}
-            onClick={handleCashClick}
+            onClick={() => {
+              handleCashClick();
+              setDisableButtonBooking3(false);
+            }}
             onFocus={() => {
               setWallet("#ff7037");
             }}
@@ -51,17 +55,22 @@ function Booking3() {
             <p className="ml-2">Cash</p>
           </button>
         </div>
-        {selectedOption === "credit" ? <Credit /> : <Cash />}
+        {selectedOption === "credit" ? (
+          <Credit setDisableButtonBooking3={setDisableButtonBooking3} />
+        ) : (
+          <Cash />
+        )}
       </div>
     </>
   );
 }
 
-function Credit() {
+function Credit({ setDisableButtonBooking3 }) {
   const validationSchema = yup.object({
     cardOwner: yup
       .string("Enter your name")
       .min(5, "Full name should be of minimum 5 characters length")
+      .matches(/^[A-Za-z]+$/, "Name should contain only letters")
       .required("Name is required"),
     cardNumber: yup
       .string("Enter your card number")
@@ -106,10 +115,17 @@ function Credit() {
       CVC: "",
     },
     validationSchema: validationSchema,
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
+
+  const isCardNumber = formik.touched.cardNumber && !formik.errors.cardNumber;
+  const isCardOwner = formik.touched.cardOwner && !formik.errors.cardOwner;
+  const isExpiryDate = formik.touched.expiryDate && !formik.errors.expiryDate;
+  const isCVC = formik.touched.CVC && !formik.errors.CVC;
+
+  setDisableButtonBooking3(
+    !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
+  );
+
   return (
     <div>
       <div className=" flex justify-between flex-wrap gap-10">

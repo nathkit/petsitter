@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CreateIcon } from "../systemdesign/Icons";
+import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
 
 const data = [
   {
@@ -118,12 +119,15 @@ function booking1() {
                     </div>
                   </div>
                   {!isInvalidType && (
-                    <input
-                      type="checkbox"
-                      onChange={() => handleCheckboxChange(index)}
-                      className="checkbox absolute top-3 right-3 hover:border-orange-300 border-gray-200"
-                    />
-                  )}
+                    <div className=" absolute top-3 right-3 hover:border-orange-300 border-gray-200">
+                      <BaseCheckbox
+                        onChanged={() => {
+                          handleCheckboxChange(index);
+                        }}
+                        isChecked={selectedButtons.includes(index)}
+                      />
+                    </div>
+                  )}{" "}
                 </div>
               </div>
             );

@@ -36,8 +36,8 @@ function Register() {
   return (
     <div className="bg-etc-white  h-full w-full relative flex justify-center ">
       {/* image ************************************* */}
-      <div className="h-[32%] w-[15%]  absolute bottom-0 left-0 overflow-hidden">
-        <div className="absolute top-0 left-[15%] rotate-45">
+      <div className="h-[32%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
+        <div className="absolute top-0 left-[10%] rotate-45">
           <Ellipse15 width="100%" />
         </div>
         <div className="absolute bottom-[-5.5rem] left-[-5rem] rotate-90">

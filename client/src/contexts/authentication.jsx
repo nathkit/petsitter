@@ -12,7 +12,8 @@ function AuthProvider(props) {
   // const [googleLogin, SetGoogleLogin] = useState(false);
   const [role, setRole] = useState("pet_owners");
   const [user, setUser] = useState({});
-
+  const [errorMessage, setErrorMessage] = useState("");
+  // console.log(errorMessage);
   const handleChangeRole = (event, newRole) => {
     setRole(newRole);
   };
@@ -31,22 +32,24 @@ function AuthProvider(props) {
         serverRespond.data.message ===
         "User profile has been verified successfully"
       ) {
-        console.log(serverRespond.data.message);
-        await supabase.auth.signInWithPassword({
+        // console.log(serverRespond.data.message);
+        const result = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
+        if (result.error.message) {
+          setErrorMessage(result.error.message);
+        }
       } else {
-        console.log(serverRespond.data.message);
-        return serverRespond.data.message;
+        // console.log(serverRespond.data.message);
+        serverRespond.data.message;
       }
     } catch (err) {
       console.log(err.respondes);
     }
 
-    // formikHelpers.resetForm();
-    // nav("/");
-    // return;
+    formikHelpers.resetForm();
+    nav("/");
   };
 
   const signInWithGoogle = async () => {
@@ -64,37 +67,38 @@ function AuthProvider(props) {
   const handleRegisterSubmit = async (values, formikHelpers) => {
     const newValues = { ...values, role };
     try {
-      // const { data, error } = await supabase.auth.signUp({
-      //   email: values.email,
-      //   password: values.password,
-      // });
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
       const serverRespond = await axios.post(
         "http://localhost:4000/auth/register",
         newValues
       );
-      console.log(serverRespond);
+      // console.log(serverRespond);
     } catch (err) {
       console.log(err);
     }
 
-    // formikHelpers.resetForm();
+    formikHelpers.resetForm();
     nav("/login");
-    return;
   };
 
   const getUserData = async () => {
     await supabase.auth.getUser().then((value) => {
       if (value.data?.user) {
-        // console.log(value.data.user.user_metadata);
+        // console.log(value.data);
         setUser(value.data.user.user_metadata);
       }
     });
   };
 
+  // const email = input email ***********************
   const resetPassword = async () => {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://example.com/update-password",
+      redirectTo: "http://localhost:5173/resetPassword",
     });
+    alert("Please check your email!");
   };
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();

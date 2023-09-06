@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
 import { Vector } from "../systemdesign/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Booking3({ setDisableButtonBooking3 }) {
   const [selectedOption, setSelectedOption] = useState("credit");
@@ -40,7 +40,10 @@ function Booking3({ setDisableButtonBooking3 }) {
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
             ${selectedOption === "cash" ? "focus:border-orange-500" : ""}`}
-            onClick={handleCashClick}
+            onClick={() => {
+              handleCashClick();
+              setDisableButtonBooking3(false);
+            }}
             onFocus={() => {
               setWallet("#ff7037");
             }}
@@ -67,6 +70,7 @@ function Credit({ setDisableButtonBooking3 }) {
     cardOwner: yup
       .string("Enter your name")
       .min(5, "Full name should be of minimum 5 characters length")
+      .matches(/^[A-Za-z]+$/, "Name should contain only letters")
       .required("Name is required"),
     cardNumber: yup
       .string("Enter your card number")
@@ -111,9 +115,6 @@ function Credit({ setDisableButtonBooking3 }) {
       CVC: "",
     },
     validationSchema: validationSchema,
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
 
   const isCardNumber = formik.touched.cardNumber && !formik.errors.cardNumber;
@@ -122,9 +123,6 @@ function Credit({ setDisableButtonBooking3 }) {
   const isCVC = formik.touched.CVC && !formik.errors.CVC;
 
   setDisableButtonBooking3(
-    !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
-  );
-  console.log(
     !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
   );
 

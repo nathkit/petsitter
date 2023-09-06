@@ -14,6 +14,7 @@ function Booking2({ setDisableButtonBooking2 }) {
     name: yup
       .string("Enter your name")
       .min(5, "Full name should be of minimum 5 characters length")
+      .matches(/^[A-Za-z]+$/, "Name should contain only letters")
       .required("Name is required"),
     phone: yup
       .string("Enter your phone number")
@@ -35,19 +36,13 @@ function Booking2({ setDisableButtonBooking2 }) {
       phone: "",
     },
     validationSchema: validationSchema,
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
   const isNameValid = formik.touched.name && !formik.errors.name;
   const isEmailValid = formik.touched.email && !formik.errors.email;
   const isPhoneValid = formik.touched.phone && !formik.errors.phone;
-  setDisableButtonBooking2(
-    !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid
-  );
-  console.log(
-    !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid
-  );
+  const checkStatus =
+    !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid;
+  setDisableButtonBooking2(checkStatus);
 
   return (
     <>
@@ -78,7 +73,7 @@ function Booking2({ setDisableButtonBooking2 }) {
               onBlur={formik.handleBlur}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
-              placeholder="youremail@hotmail.com"
+              placeholder="your email"
               required
               className="w-[47%]"
               color="warning"
@@ -110,14 +105,6 @@ function Booking2({ setDisableButtonBooking2 }) {
           />
         </form>
       </div>
-      {/* <button
-        type="submit"
-        disabled={
-          !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid
-        }
-      >
-        Submit
-      </button> */}
     </>
   );
 }

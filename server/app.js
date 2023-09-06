@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
+import sitterCardData from "./data/SitterCardData.js";
 
 async function init() {
   const app = express();

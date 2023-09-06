@@ -1,47 +1,65 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
 import { TextField, Box, Tabs, Tab } from "@mui/material";
-import {
-  ButtonPrimary,
-  ButtonSocial,
-  ButtonGhost,
-} from "../components/systemdesign/Button";
-import { BaseCheckbox } from "../components/systemdesign/BaseCheckbox.jsx";
-import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
+import { ButtonPrimary, ButtonGhost } from "../components/systemdesign/Button";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication.jsx";
 import { supabase } from "../contexts/supabase";
 import axios from "axios";
 
-function LoginPage() {
+function ResetPassword() {
   const nav = useNavigate();
+  const [getEvent, setGetEvent] = useState({});
 
   // supabase handle ****************************************
-  const {
-    signInWithFacebook,
-    signInWithGoogle,
-    handleLoginSubmit,
-    handleChangeRole,
-    resetPassword,
-    signOut,
-    role,
-  } = useAuth();
+  const { handleLoginSubmit, handleChangeRole, role } = useAuth();
+
+  const handleResetSubmit = async (values, formikHelpers) => {
+    console.log(getEvent);
+    const newValue = {
+      email: getEvent.session.user.email,
+      password: values.password,
+    };
+    if (getEvent.event === "PASSWORD_RECOVERY") {
+      const { data, error } = await supabase.auth.updateUser({
+        password: values.password,
+      });
+      const result = await axios.put(
+        "http://localhost:4000/auth/resetPassword",
+        newValue
+      );
+      console.log(result);
+      if (data && result.data.message === "Reset password successfully") {
+        alert(result.data.message);
+        formikHelpers.resetForm();
+        nav("/");
+      }
+      if (error) {
+        alert("There was an error updating your password.");
+      }
+    }
+  };
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(event);
+      console.log(session);
+      setGetEvent({ event, session });
+    });
+  }, []);
 
   const initialValues = {
-    email: "",
     password: "",
   };
 
   return (
-    <div className="bg-etc-white m-0 p-0  h-[100%] w-full relative flex justify-center ">
+    <div className="bg-etc-white m-0 py-[10%]  h-[100vh] w-full relative flex justify-center ">
       {/* image ************************************* */}
-      <button onClick={signOut} className="bg-orange-500 h-8">
-        signout test
-      </button>
-      <div className="h-[35%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
+
+      <div className="h-[45%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
         <div className="absolute top-0 left-7 rotate-45">
           <Ellipse15 />
         </div>
@@ -56,23 +74,20 @@ function LoginPage() {
       </div>
 
       {/* input box ************************************ */}
-      <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col">
+      <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col items-center">
         {/* header **************************************** */}
         <Box className="mb-[1rem] ">
-          <p className="text-headline1 text-etc-black">Welcome back!</p>
-          <p className="text-headline4">Find your perfect pet sitter with us</p>
+          <p className="text-headline1 text-etc-black">Reset Password</p>
+          <p className="text-headline4">Are you ready to reset your password</p>
         </Box>
 
         {/* form ************************************* */}
         <Formik
           initialValues={initialValues}
           onSubmit={(values, formikHelpers) => {
-            handleLoginSubmit(values, formikHelpers);
+            handleResetSubmit(values, formikHelpers);
           }}
           validationSchema={object({
-            email: string()
-              .required("Please enter email")
-              .email("Invalid email"),
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),
@@ -80,7 +95,7 @@ function LoginPage() {
         >
           {({ errors, isValid, touched, dirty }) => {
             return (
-              <Form className="flex flex-col gap-5 text-left ">
+              <Form className="flex flex-col gap-5 text-left w-full">
                 {/* select role tap ******************************* */}
                 <p className="text-lg text-etc-black font-medium text-center">
                   Select Role
@@ -104,31 +119,13 @@ function LoginPage() {
                     sx={{ width: "50%" }}
                   />
                 </Tabs>
-                {/* email ********************************* */}
-                <label
-                  className="text-lg text-etc-black font-medium"
-                  htmlFor="email"
-                >
-                  Email address
-                </label>
-                <Field
-                  id="email"
-                  name="email"
-                  type="email"
-                  variant="outlined"
-                  color="primary"
-                  label="Email"
-                  as={TextField}
-                  error={Boolean(errors.email) && Boolean(touched.email)}
-                  helperText={Boolean(touched.email) && errors.email}
-                />
 
                 {/* password ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
                   htmlFor="passsword"
                 >
-                  Password
+                  New password
                 </label>
                 <Field
                   id="passsword"
@@ -136,21 +133,15 @@ function LoginPage() {
                   type="password"
                   variant="outlined"
                   color="primary"
-                  label="password"
+                  label="Password"
                   as={TextField}
                   error={Boolean(errors.password) && Boolean(touched.password)}
                   helperText={Boolean(touched.password) && errors.password}
                 />
 
-                <Box className="flex w-full justify-between items-center">
-                  {/* <div className="text-etc-black flex items-center">
-                    <BaseCheckbox /> Remember?
-                  </div> */}
-                </Box>
-
                 {/* submit button ************************** */}
                 <ButtonPrimary
-                  content="Login"
+                  content="Reset"
                   width="100%"
                   type="submit"
                   variant="contained"
@@ -161,46 +152,16 @@ function LoginPage() {
             );
           }}
         </Formik>
-        {/* reset password ******************** */}
+
         <ButtonGhost
-          type="button"
-          onClick={resetPassword}
-          width="10rem"
-          content="Forget Password?"
+          content="Login"
+          onClick={(e) => {
+            nav("/login");
+          }}
         />
-        <p className="text-gray-500">Or Continue With</p>
-
-        {/* sign in with third party ************************** */}
-        <Box>
-          <ButtonSocial
-            onClick={(e) => {
-              signInWithFacebook();
-            }}
-            icon={FacebookIcon}
-            content="Facebook"
-          />
-
-          <ButtonSocial
-            onClick={(e) => {
-              signInWithGoogle();
-            }}
-            icon={GoogleIcon}
-            content="Google"
-          />
-        </Box>
-
-        <p className="text-lg text-etc-black font-medium">
-          Dont you have any account?{" "}
-          <ButtonGhost
-            content="Register"
-            onClick={(e) => {
-              nav("/register");
-            }}
-          />
-        </p>
       </Box>
     </div>
   );
 }
 
-export default LoginPage;
+export default ResetPassword;

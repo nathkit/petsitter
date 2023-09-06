@@ -1,12 +1,35 @@
-import React from "react";
-import union from "../../assets/SitterReview/Union.png"
+import union from "../../assets/SitterReview/Union.png";
 import { useStarContext } from "../../contexts/StarRatingContext";
-import { Button } from "../systemdesign/Button";
 import reviewData from "../../assets/SitterReview/reviewsdata.json"; // mock review data
 import ReviewComponent from "./ReviewComponent";
+import { StarIcon } from "../systemdesign/Icons";
+import { useState } from "react";
 
 function SitterReview() {
-  // ใช้ value จาก useStarContext (context API)
+  const starRates = ["All", 5, 4, 3, 2, 1];
+
+  const [searchData, setSearchData] = useState({
+    search: "",
+    types: [],
+    rate: undefined,
+    exp: 0,
+  });
+
+  const handleRating = (event, rate) => {
+    event.preventDefault();
+    if (searchData.rate === rate) {
+      setSearchData({
+        ...searchData,
+        rate: undefined,
+      });
+    } else {
+      setSearchData({
+        ...searchData,
+        rate: rate,
+      });
+    }
+  };
+
   const { starRatings } = useStarContext();
 
   const fiveStarRating = starRatings.fiveStar;
@@ -40,30 +63,40 @@ function SitterReview() {
           <div className="rating-wrapper flex flex-col gap-4">
             <h1 className="text-headline3 text-etc-black">Rating & Reviews</h1>
             <div className="rating-menu flex gap-2">
-              {/* ใช้ value จาก button component + useStarContext */}
-              <Button>All Reviews</Button>
-              <Button>
-                <h6 className="pt-1 text-body2">5</h6>
-                <div className="flex gap-1 ">{fiveStarRating}</div>
-              </Button>
-              <Button>
-                <h6 className="pt-1 text-body2">4</h6>
-                <div className="flex gap-1 ">{fourStarRating}</div>
-              </Button>
-              <Button>
-                <h6 className="pt-1 text-body2">3</h6>
-                <div className="flex gap-1 ">{threeStarRating}</div>
-              </Button>
-            </div>
-            <div className="rating-menu flex gap-2">
-              <Button>
-                <h6 className="pt-1 text-body2">2</h6>
-                <div className="flex gap-1 ">{twoStarRating}</div>
-              </Button>
-              <Button>
-                <h6 className="pt-1 text-body2">1</h6>
-                <div className="flex gap-1 ">{oneStarRating}</div>
-              </Button>
+              {/* Start Rating */}
+              <div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    className=" h-[36px] px-2 py-1 gap-[2px] border-[1px] 
+                  rounded-[8px] border-gray-200 bg-etc-white text-gray-400 hover:border-orange-500 hover:text-orange-500 focus:border-orange-500"
+                  >
+                    All Reviews
+                  </button>
+                  {starRates.map((rate, index) => (
+                    <button
+                      id={rate + "star"}
+                      key={index}
+                      className={`flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] 
+                  rounded-[8px] border-gray-200 bg-etc-white hover:border-orange-500
+                  ${
+                    rate === searchData.rate
+                      ? "border-orange-500 text-orange-500 "
+                      : ""
+                  }
+                  `}
+                      onClick={(e) => handleRating(e, rate)}
+                    >
+                      <span className="pr-[3px] font-Satoshi text-gray-400">
+                        {rate}
+                      </span>
+                      {Array.from({ length: rate }, (_, index) => (
+                        <StarIcon key={index} color="#1CCD83" />
+                      ))}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {/* End Rating */}
             </div>
           </div>
         </div>

@@ -1,4 +1,3 @@
-import React from "react";
 import SitterPictureSlide from "./SitterPictureSlide";
 import sitterData from "./SitterDetailData";
 import SitterReview from "./SitterReview";
@@ -9,10 +8,6 @@ function SitterDetail() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-etc-bg_gray">
-      {/* Navbar */}
-      <div className=" h-[80px] flex justify-between px-4 bg-etc-white text-white">
-        Navbar
-      </div>
       {/* Sitter Picture */}
       <SitterPictureSlide />
       {/* Sitter Detail */}

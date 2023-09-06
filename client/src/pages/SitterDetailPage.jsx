@@ -1,16 +1,16 @@
-import React from "react";
 import { ImageProvider } from "../contexts/StarRatingContext";
 import SitterDetail from "../components/sittedetail/SitterDetail";
 import Footer from "../components/systemdesign/Footer";
+import NavBar from "../components/systemdesign/Navbar";
 
 function SitterDetailPage() {
   return (
     <ImageProvider>
       <div>
         <>
-          {/* nav */}
-          <SitterDetail/>
-          <Footer/>
+          <NavBar />
+          <SitterDetail />
+          <Footer />
         </>
       </div>
     </ImageProvider>

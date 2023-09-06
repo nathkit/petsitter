@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   //   const auth = useAuth();
-  const auth = { isAuthenticate: true };
+  const auth = { isAuthenticate: false };
   const { logout } = useAuth();
   const navigate = useNavigate();
 

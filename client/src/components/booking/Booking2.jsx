@@ -1,9 +1,8 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 
-function Booking2() {
+function Booking2({ setDisableButtonBooking2 }) {
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -40,9 +39,19 @@ function Booking2() {
     //   alert(JSON.stringify(values, null, 2));
     // },
   });
+  const isNameValid = formik.touched.name && !formik.errors.name;
+  const isEmailValid = formik.touched.email && !formik.errors.email;
+  const isPhoneValid = formik.touched.phone && !formik.errors.phone;
+  setDisableButtonBooking2(
+    !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid
+  );
+  console.log(
+    !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid
+  );
+
   return (
     <>
-      <div className=" bg-pink-100 p-10  h-fit">
+      <div className=" bg-etc-white p-10  h-fit">
         <form onSubmit={formik.handleSubmit} className="">
           <TextField
             fullWidth
@@ -56,6 +65,7 @@ function Booking2() {
             helperText={formik.touched.name && formik.errors.name}
             placeholder="Full name"
             required
+            color="warning"
           />
           <div className="flex justify-between my-10">
             <TextField
@@ -71,6 +81,7 @@ function Booking2() {
               placeholder="youremail@hotmail.com"
               required
               className="w-[47%]"
+              color="warning"
             />
             <TextField
               id="phone"
@@ -85,6 +96,7 @@ function Booking2() {
               placeholder="xxx xxx xxxx"
               required
               className="w-[47%]"
+              color="warning"
             />
           </div>
           <hr className="mb-10" />
@@ -94,12 +106,18 @@ function Booking2() {
             label="Additional Message (To pet sitter)"
             multiline
             rows={4}
+            color="warning"
           />
-          {/* <Button color="primary" variant="contained" fullWidth type="submit">
-          Submit
-        </Button> */}
         </form>
       </div>
+      {/* <button
+        type="submit"
+        disabled={
+          !formik.isValid || !isNameValid || !isEmailValid || !isPhoneValid
+        }
+      >
+        Submit
+      </button> */}
     </>
   );
 }

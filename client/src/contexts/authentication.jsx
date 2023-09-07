@@ -9,16 +9,19 @@ const AuthContext = React.createContext();
 function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const nav = useNavigate();
-  // const [facebookLogin, SetFacebookLogin] = useState(false);
-  // const [googleLogin, SetGoogleLogin] = useState(false);
+  const [getEvent, setGetEvent] = useState({});
   const [role, setRole] = useState("pet_owners");
   const [user, setUser] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   // console.log(errorMessage);
   const handleChangeRole = (event, newRole) => {
     setRole(newRole);
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
   // supabase handle ****************************************
 
   const handleLoginSubmit = async (values, formikHelpers) => {
@@ -38,6 +41,8 @@ function AuthProvider(props) {
           email: values.email,
           password: values.password,
         });
+        formikHelpers.resetForm();
+        nav("/");
         if (result.error.message) {
           setErrorMessage(result.error.message);
         }
@@ -48,9 +53,6 @@ function AuthProvider(props) {
     } catch (err) {
       console.log(err.respondes);
     }
-
-    formikHelpers.resetForm();
-    nav("/");
   };
 
   const signInWithGoogle = async () => {
@@ -95,13 +97,45 @@ function AuthProvider(props) {
     });
   };
 
-  // const email = input email ***********************
-  const resetPassword = async () => {
+  const sendRequestResetPassword = async (values, formikHelpers) => {
+    // console.log(values.email);
+    const email = values.email;
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: "http://localhost:5173/resetPassword",
     });
+    setGetEvent("");
     alert("Please check your email!");
+    nav("/login");
   };
+
+  const handleResetPasswordSubmit = async (values, formikHelpers) => {
+    console.log(getEvent);
+    const newValue = {
+      email: getEvent.session.user.email,
+      password: values.password,
+      role,
+    };
+    if (getEvent.event !== "INITIAL_SESSION") {
+      try {
+        const { data, error } = await supabase.auth.updateUser({
+          password: values.password,
+        });
+        const result = await axios.put(
+          "http://localhost:4000/auth/resetPassword",
+          newValue
+        );
+        console.log(result.data.message);
+        if (data && result.data.message === "Reset password successfully") {
+          alert(result.data.message);
+          formikHelpers.resetForm();
+          nav("/");
+        }
+      } catch (error) {
+        alert("There was an error updating your password.");
+      }
+    }
+  };
+
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     nav("login");
@@ -116,12 +150,18 @@ function AuthProvider(props) {
         handleChangeRole,
         handleLoginSubmit,
         getUserData,
-        resetPassword,
+        sendRequestResetPassword,
+        handleResetPasswordSubmit,
         signOut,
+        setGetEvent,
+        handleClickShowPassword,
+        getEvent,
         role,
         user,
         isAuthenticated,
-      }}>
+        showPassword,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

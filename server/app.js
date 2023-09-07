@@ -5,6 +5,7 @@ import authRouter from "./routers/authRouter.js";
 import sitterDetailRouter from "./routers/sittterDetail.js";
 import dotenv from "dotenv";
 import sitterRouter from "./routers/sitterRouter.js";
+import ownerRouter from "./routers/ownerRouter.js"
 
 async function init() {
   const app = express();
@@ -17,6 +18,7 @@ async function init() {
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
+  app.use("/account", ownerRouter)
 
   app.use("/sitter", sitterDetailRouter);
 

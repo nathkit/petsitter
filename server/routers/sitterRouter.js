@@ -12,6 +12,7 @@ sitterRouter.get("/", async (req, res) => {
 
     const requiredFields = [
       "pet_sitter_name",
+      "pet_sitter_id",
       "pet_sitter_trade_name",
       "pet_sitter_district",
       "pet_sitter_province",

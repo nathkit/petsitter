@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StarIcon, SearchIcon } from "../systemdesign/Icons.jsx";
 import { ButtonSecondary, ButtonPrimary } from "../systemdesign/Button.jsx";
 import { BaseCheckbox } from "../systemdesign/BaseCheckbox.jsx";
@@ -82,12 +82,14 @@ function SitterSearch({ onSearch }) {
 
   const handleClear = (event) => {
     event.preventDefault();
-    setSearchData({
+    const clearedSearchData = {
       search: "",
       types: [],
       rate: undefined,
       exp: 0,
-    });
+    };
+    setSearchData(clearedSearchData);
+    onSearch(clearedSearchData);
   };
 
   return (
@@ -136,7 +138,7 @@ function SitterSearch({ onSearch }) {
               <button
                 id={rate + "star"}
                 key={index}
-                className={`flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] 
+                className={`flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] text-gray-400
                   rounded-[8px] border-[#DCDFED] bg-etc-white hover:border-orange-500
                   ${
                     rate === searchData.rate
@@ -146,9 +148,7 @@ function SitterSearch({ onSearch }) {
                   `}
                 onClick={(e) => handleRating(e, rate)}
               >
-                <span className="pr-[3px] font-Satoshi text-gray-400">
-                  {rate}
-                </span>
+                <span className="pr-[3px] font-Satoshi ">{rate}</span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
                 ))}

@@ -19,6 +19,7 @@ sitterDetailRouter.get("/:sitterId", async (req, res) => {
     pet_sitter_profile.pet_sitter_trade_name,
     pet_sitter_profile.pet_sitter_province,
     pet_sitter_profile.pet_sitter_sub_district,
+    pet_sitter_profile.pet_sitter_pet_type,
     rating_review.rating_review_star,
     rating_review.rating_review_text,
     rating_review.created_at,

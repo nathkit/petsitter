@@ -1,10 +1,27 @@
 import SitterPictureSlide from "./SitterPictureSlide";
-import sitterData from "./SitterDetailData";
 import SitterReview from "./SitterReview";
 import BookingDate from "../booking/BookingDate";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function SitterDetail() {
-  const sitter = sitterData[2];
+  const [sitterDetail, setSitterDetail] = useState({});
+  const params = useParams();
+
+  const getSitterDetail = async () => { 
+    try {
+      const results = await axios.get(`http://localhost:4000/sitter/${params.sitterId}`);
+      console.log(params.sitterId);
+      setSitterDetail(results.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getSitterDetail();
+  }, []);
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-etc-bg_gray">
@@ -20,14 +37,14 @@ function SitterDetail() {
           <div className=" flex flex-col gap-12 px-14">
             <h1 className="text-headline1">
               {/* render "Trade name" here */}
-              {sitter.trade_name}
+              {sitterDetail.pet_sitter_trade_name}
             </h1>
 
             <div>
               <h3 className="text-headline3 mb-[12px]">Introduction</h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {/* render description about "Introduction" here */}
-                {sitter.introduction}
+                {sitterDetail.introduction}
               </p>
             </div>
 
@@ -35,7 +52,7 @@ function SitterDetail() {
               <h3 className="text-headline3 mb-[12px]">Services</h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {/* render description about "service" here */}
-                {sitter.services}
+                {sitterDetail.services}
               </p>
             </div>
 
@@ -43,7 +60,7 @@ function SitterDetail() {
               <h3 className="text-headline3 mb-[12px]">My Place</h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {/* render description about "My Place" here */}
-                {sitter.my_place}
+                {sitterDetail.my_place}
               </p>
             </div>
           </div>
@@ -57,29 +74,26 @@ function SitterDetail() {
           <div className=" sticky top-0 flex flex-col mx-20 pt-10 gap-6 items-center justify-center w-[100%] h-auto bg-etc-white rounded-2xl">
             <div className="avatar">
               <div className="w-[160px] h-[160px] rounded-full">
-                <img
-                  src="https://img.freepik.com/free-photo/pug-dog-isolated-white-background_2829-11416.jpg?w=826&t=st=1693742518~exp=1693743118~hmac=2f485b5ebb74aa19f2a8864d704245e993f221a80c96010b09d41df2b65d0470"
-                  alt="Avatar"
-                />
+                <img src={sitterDetail.pet_sitter_image} alt="Avatar" />
               </div>
             </div>
             {/* detail in Card */}
             <div className="flex flex-col gap-1 mb-10">
               <h2 className="text-headline2 m-0 self-stretch">
                 {" "}
-                {sitter.trade_name}
+                {sitterDetail.pet_sitter_trade_name}
               </h2>
               <h4 className="text-[20px] m-0">
                 {" "}
-                {sitter.sitter_name}{" "}
+                {sitterDetail.pet_sitter_name}{" "}
                 <span className="text-[16px] text-green-500">
                   {" "}
-                  {sitter.experience} Years Exp.
+                  {sitterDetail.pet_sitter_experience} Years Exp.
                 </span>
               </h4>
               {/* rating star use logic if number 1 render 1 star */}
               <div className="flex justify-center mt-1">
-                {[...Array(sitter.rating_star)].map((_, index) => (
+                {[...Array(sitterDetail.rating_review_star)].map((_, index) => (
                   <svg
                     key={index}
                     xmlns="http://www.w3.org/2000/svg"
@@ -108,18 +122,13 @@ function SitterDetail() {
                   </svg>
                 </span>
                 {/* location here */}
-                {sitter.location}
+                {sitterDetail.pet_sitter_sub_district} , {sitterDetail.pet_sitter_province}
               </div>
               {/* pets ทำ equality แสดง */}
               <div className="w-full h-auto mt-4 flex flex-row justify-center gap-[6px]">
-                {sitter.pets.split(",").map((pet, index) => (
-                  <div
-                    key={index}
-                    className="flex w-auto h-auto px-4 border-2 border-green-500 bg-green-100 rounded-[99px] justify-center"
-                  >
-                    {pet.trim()}
-                  </div>
-                ))}
+                <div className="flex w-auto h-auto px-4 border-2 border-green-500  bg-green-100 rounded-[99px] justify-center">
+                  {sitterDetail.pet_sitter_pet_type}
+                </div>
               </div>
             </div>
             {/* "Book Now" button */}

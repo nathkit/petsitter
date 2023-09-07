@@ -18,7 +18,7 @@ function BookingDate() {
         <ButtonPrimary content="Book Now" width="300px"/>
       </button>
       <dialog id="my_modal_3" className="modal ">
-        <form method="dialog" className="modal-box max-w-[560px] px-10 py-0">
+        <form method="dialog" className="modal-box max-w-[560px] px-10 py-0 bg-etc-white">
           <div className="flex justify-between my-6">
             <h3 className="text-headline3">Booking</h3>
             <button className="btn btn-sm btn-circle btn-ghost ">✕</button>
@@ -30,14 +30,14 @@ function BookingDate() {
               Select date and time you want to schedule the service.
             </p>
             <div>
-              <div className=" flex items-center justify-around mb-6">
-                <CalendarIcon />
+              <div className=" flex items-center justify-around mb-6 ">
+                <CalendarIcon className="icon" />
                 <input
                   type="date"
                   onChange={(e) => {
                     setDate(e.target.value);
                   }}
-                  className="input input-bordered w-[27.5rem] "
+                  className="input input-bordered border-gray-200 w-[27.5rem] "
                 />
               </div>
               <div className=" flex items-center justify-around mb-[3.75rem]">
@@ -47,7 +47,7 @@ function BookingDate() {
                   onChange={(e) => {
                     setstartTime(e.target.value);
                   }}
-                  className="input input-bordered w-52 "
+                  className="input input-bordered w-52 border-gray-200 "
                 />
                 -
                 <input
@@ -55,7 +55,7 @@ function BookingDate() {
                   onChange={(e) => {
                     setEndTime(e.target.value);
                   }}
-                  className="input input-bordered w-52"
+                  className="input input-bordered w-52  border-gray-200"
                 />
               </div>
             </div>

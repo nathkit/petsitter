@@ -4,15 +4,40 @@ import bcrypt from "bcrypt";
 
 const ownerRouter = Router();
 
-// login router ****************************
+// get detail by id
 ownerRouter.get("/:id", async (req, res) => {
   const ownerEmail = req.params.id;
+  try {
+    const result = await pool.query("select * from pet_owner_profile where pet_owner_email=$1", [ownerEmail])
+    return res.json({
+      test: "hello",
+      data: result.rows[0]
+    })
 
-  const result = await pool.query("select * from pet_owner_profile where pet_owner_email=$1", [ownerEmail])
+  } catch (error) {
+    return res.json({
+      error: error
+    })
+  }
 
-  return res.json({
-    data: result.rows[0]
-  })
 })
+
+ownerRouter.get("/", async (req, res) => {
+  const ownerEmail = req.params.id;
+
+  try {
+
+    const result = await pool.query("select * from pet_owner_profile")
+
+    return res.json({
+      data: result
+    })
+  } catch (error) {
+    return res.json({
+      error: error
+    })
+  }
+})
+
 
 export default ownerRouter;

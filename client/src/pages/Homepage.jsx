@@ -21,9 +21,6 @@ import { useEffect } from "react";
 function HomePage() {
   const { getUserData, user } = useAuth();
 
-  useEffect(() => {
-    getUserData();
-  }, []);
   return (
     <div className="bg-etc-white">
       <Navbar />

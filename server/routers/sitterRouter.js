@@ -56,12 +56,11 @@ FROM pet_sitter_profile as p JOIN rating_review as r ON p.pet_sitter_id = r.pet_
     }
 
     if (petType) {
-      petType = String(petType);
       petType = petType.split(`,`);
       if (petType.length > 0) {
         if (petType.length > 0) {
           const petTypeConditions = petType.map(
-            (type) => `pet_sitter_pet_type LIKE '%${type}%'`
+            (type) => `'${type}' LIKE ANY (p.pet_sitter_pet_type)`
           );
           condition.push(`(` + petTypeConditions.join(` and `) + `)`);
         }
@@ -92,21 +91,23 @@ FROM pet_sitter_profile as p JOIN rating_review as r ON p.pet_sitter_id = r.pet_
 
     query += ` limit 5`;
 
+    // console.log(query);
+
     const result = await pool.query(query, value);
 
-    const rows = result.rows;
+    // const rows = result.rows;
 
-    const parseTypeRows = rows.map((e) => {
-      const types = e.pet_sitter_pet_type.replaceAll(" ", "").split(",");
-      return {
-        ...e,
-        pet_sitter_pet_type: types,
-      };
-    });
+    // const parseTypeRows = rows.map((e) => {
+    //   const types = e.pet_sitter_pet_type.replaceAll(" ", "").split(",");
+    //   return {
+    //     ...e,
+    //     pet_sitter_pet_type: types,
+    //   };
+    // });
 
     return res.json({
       message: "Get detail successfully",
-      data: parseTypeRows,
+      data: result,
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);

@@ -10,7 +10,7 @@ function SitterSearch({ onSearch }) {
 
   const [searchData, setSearchData] = useState({
     search: "",
-    types: (searchParams.get("petType") ?? "").split(","),
+    types: searchParams.get("petType") ?? [],
     rate: parseInt(searchParams.get("rate")),
     exp: parseInt(searchParams.get("exp")) ?? 0,
   });

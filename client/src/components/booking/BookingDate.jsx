@@ -67,21 +67,25 @@ function BookingDate() {
                 />
               </div>
             </div>
-            <div
-              onClick={() => {
-                navigate("/booking");
-              }}
-            >
-              {isTimeValid ? (
-                <ButtonPrimary width={"100%"} content={"Continue"} />
-              ) : (
-                <ButtonPrimary
-                  width={"100%"}
-                  content={"Continue"}
-                  disabled={!isTimeValid}
-                />
-              )}
-            </div>
+            {startTime && endTime ? (
+              <div
+                onClick={() => {
+                  navigate(`/booking`);
+                }}
+              >
+                {isTimeValid ? (
+                  <ButtonPrimary width={"100%"} content={"Continue"} />
+                ) : (
+                  <ButtonPrimary
+                    width={"100%"}
+                    content={"Continue"}
+                    disabled={!isTimeValid}
+                  />
+                )}
+              </div>
+            ) : (
+              <p className=" text-body1">Please select time</p>
+            )}
           </div>
         </form>
       </dialog>

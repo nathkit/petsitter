@@ -20,9 +20,9 @@ function Navbar() {
     } else {
       try {
         const result = await axios.get(
-          `http://localhost:4000/account/${userEmail}`
+          `http://localhost:4000/accounts/${userEmail}`
         );
-        setImageProfile(result.data.data);
+        setImageProfile(result.data.pet_owner_image);
       } catch (error) {
         console.log(error);
       }

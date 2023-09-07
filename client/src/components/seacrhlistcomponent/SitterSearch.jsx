@@ -7,12 +7,14 @@ import { useSearchParams } from "react-router-dom";
 function SitterSearch({ onSearch }) {
   // const [searchParams, setSearchParams] = useSearchParams();
   const searchParams = new URLSearchParams(window.location.search);
-
-  // searchParams.get("petType") ?? []
+  let petType;
+  if (searchParams.get("petType")) {
+    petType = searchParams.get("petType").split(",");
+  }
 
   const [searchData, setSearchData] = useState({
     search: "",
-    types: searchParams.get("petType").split(",") ?? [],
+    types: petType ?? [],
     rate: parseInt(searchParams.get("rate")),
     exp: parseInt(searchParams.get("exp")) ?? 0,
   });

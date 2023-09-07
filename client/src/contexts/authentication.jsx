@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = React.createContext();
 
 function AuthProvider(props) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const nav = useNavigate();
   // const [facebookLogin, SetFacebookLogin] = useState(false);
   // const [googleLogin, SetGoogleLogin] = useState(false);
@@ -87,8 +88,9 @@ function AuthProvider(props) {
   const getUserData = async () => {
     await supabase.auth.getUser().then((value) => {
       if (value.data?.user) {
-        // console.log(value.data);
-        setUser(value.data.user.user_metadata);
+        console.log(value.data);
+        setUser(value.data.user);
+        setIsAuthenticated(value.data.user.aud === "authenticated");
       }
     });
   };
@@ -118,8 +120,8 @@ function AuthProvider(props) {
         signOut,
         role,
         user,
-      }}
-    >
+        isAuthenticated,
+      }}>
       {props.children}
     </AuthContext.Provider>
   );

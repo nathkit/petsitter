@@ -51,7 +51,7 @@ WHERE
     }
 
     return res.status(200).json({
-      data: sitterData.rows[0],
+      data: sitterData.rows,
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);

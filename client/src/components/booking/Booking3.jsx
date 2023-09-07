@@ -2,32 +2,67 @@ import { CreditCardIcon, WalletIcon } from "../systemdesign/Icons";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
+import { Vector } from "../systemdesign/image";
+import { useEffect, useState } from "react";
 
-function Booking3() {
+function Booking3({ setDisableButtonBooking3 }) {
+  const [selectedOption, setSelectedOption] = useState("credit");
+
+  const [credit, setCredit] = useState(null);
+  const [wallet, setWallet] = useState(null);
+
+  const handleCreditClick = () => {
+    setSelectedOption("credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
+  };
+  const handleCashClick = () => {
+    setSelectedOption("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
+  };
+
   return (
     <>
-      <div className=" bg-green-500 h-fit p-10">
-        <div className=" flex justify-between w-full mb-12">
+      <div className="bg-etc-white h-fit p-10">
+        <div className="flex justify-between w-full mb-12">
           <button
-            className="py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
-        focus:border-orange-500 "
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
+          
+            ${selectedOption === "credit" ? "focus:border-orange-500" : ""}`}
+            onClick={handleCreditClick}
+            onFocus={() => {
+              setCredit("#ff7037");
+            }}
+            onBlur={() => {
+              setCredit("#3A3B46");
+            }}
           >
-            <CreditCardIcon />
+            <CreditCardIcon color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
-          <button className="py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500 focus:border-orange-500">
-            <WalletIcon />
-            <p className="ml-2 ">Cash</p>
+          <button
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
+            ${selectedOption === "cash" ? "focus:border-orange-500" : ""}`}
+            onClick={handleCashClick}
+            onFocus={() => {
+              setWallet("#ff7037");
+            }}
+            onBlur={() => {
+              setWallet("#3A3B46");
+            }}
+          >
+            <WalletIcon color={wallet} />
+            <p className="ml-2">Cash</p>
           </button>
         </div>
-        {/* <Credit /> */}
-        <Cash />
+        {selectedOption === "credit" ? (
+          <Credit setDisableButtonBooking3={setDisableButtonBooking3} />
+        ) : (
+          <Cash />
+        )}
       </div>
     </>
   );
 }
 
-function Credit() {
+function Credit({ setDisableButtonBooking3 }) {
   const validationSchema = yup.object({
     cardOwner: yup
       .string("Enter your name")
@@ -80,6 +115,19 @@ function Credit() {
     //   alert(JSON.stringify(values, null, 2));
     // },
   });
+
+  const isCardNumber = formik.touched.cardNumber && !formik.errors.cardNumber;
+  const isCardOwner = formik.touched.cardOwner && !formik.errors.cardOwner;
+  const isExpiryDate = formik.touched.expiryDate && !formik.errors.expiryDate;
+  const isCVC = formik.touched.CVC && !formik.errors.CVC;
+
+  setDisableButtonBooking3(
+    !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
+  );
+  console.log(
+    !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
+  );
+
   return (
     <div>
       <div className=" flex justify-between flex-wrap gap-10">
@@ -95,6 +143,7 @@ function Credit() {
           placeholder="xxxx-xxxx-xxxx-xxxx"
           required
           className="w-[47%]"
+          color="warning"
         />
         <TextField
           id="cardOwner"
@@ -108,6 +157,7 @@ function Credit() {
           placeholder="Card owner name"
           required
           className="w-[47%]"
+          color="warning"
         />
         <TextField
           id="expiryDate"
@@ -121,6 +171,7 @@ function Credit() {
           placeholder="xx/xx"
           required
           className="w-[47%]"
+          color="warning"
         />
         <TextField
           id="CVC"
@@ -134,6 +185,7 @@ function Credit() {
           placeholder="xxx"
           required
           className="w-[47%]"
+          color="warning"
         />
       </div>
     </div>
@@ -141,7 +193,17 @@ function Credit() {
 }
 
 function Cash() {
-  return <div></div>;
+  return (
+    <div className=" bg-gray-100 p-10 flex flex-col items-center">
+      <Vector />
+      <p className=" text-center mt-6">
+        If you want to pay by cash,
+        <br />
+        you are required to make a cash payment <br />
+        upon arrival at the pet sitter'slocation.
+      </p>
+    </div>
+  );
 }
 
 export default Booking3;

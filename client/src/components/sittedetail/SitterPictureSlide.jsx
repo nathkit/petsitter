@@ -10,12 +10,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 function SitterPictureSlide() {
-  const [sitterDetail, setSitterDetail] = useState({});
+  const [sitterDetail, setSitterDetail] = useState([]);
   const params = useParams();
 
   const getSitterDetail = async () => {
     try {
-      const results = await axios.get(`http://localhost:4000/sitter/5`);
+      const results = await axios.get(
+        `http://localhost:4000/sitter/${params.sitterId}`
+      );
       console.log(params.sitterId);
       setSitterDetail(results.data.data);
     } catch (error) {
@@ -45,41 +47,14 @@ function SitterPictureSlide() {
           modules={[Navigation, Keyboard]}
           loop={true}
         >
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="flex justify-center items-center h-full">
-              <img src={sitterDetail.pet_sitter_carousel} alt="picture" />
-            </div>
-          </SwiperSlide>
+          {sitterDetail.length > 0 &&
+            sitterDetail[0].pet_sitter_carousel.map((image, index) => (
+              <SwiperSlide key={index}>
+                <div className="flex justify-center items-center h-full">
+                  <img src={image} alt={`Picture ${index + 1}`} />
+                </div>
+              </SwiperSlide>
+            ))}
 
           <div className="custom-button-next absolute z-10 top-[45%] w-14 h-14 right-[80px] rounded-full bg-etc-white grid place-items-center">
             <ArrowRightIcon />

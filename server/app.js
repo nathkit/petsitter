@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
-import sitterCardData from "./data/SitterCardData.js";
 import sitterDetailRouter from "./routers/sittterDetail.js";
 import dotenv from "dotenv";
 import sitterRouter from "./routers/sitterRouter.js";
@@ -20,12 +19,6 @@ async function init() {
   });
 
   app.use("/sitter", sitterDetailRouter);
-
-  app.get("/search", (req, res) => {
-    return res.json({
-      data: sitterCardData,
-    });
-  });
 
   // sitterRouter
 

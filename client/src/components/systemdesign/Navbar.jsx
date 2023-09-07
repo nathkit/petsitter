@@ -6,33 +6,17 @@ import frame2 from "../../assets/SitterReview/frame427320942.png";
 import { UserIcon, PetIcon, ListIcon, LogOutIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
   const { signOut, getUserData, user, isAuthenticated } = useAuth();
-  const [imageProfile, setImageProfile] = useState("");
-
-  const getImageProfile = async () => {
-    const userEmail = user.email;
-    console.log(userEmail);
-    if (user.user_metadata.email_verified) {
-      setImageProfile(user.user_metadata.avatar_url);
-    } else {
-      try {
-        const result = await axios.get(
-          `http://localhost:4000/account/${userEmail}`
-        );
-        setImageProfile(result.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  const { profileImage, getProfileImage } = usePosts();
 
   useEffect(() => {
     getUserData();
-    isAuthenticated && getImageProfile();
-  }, []);
+    isAuthenticated && getProfileImage(user);
+  }, [user.email]);
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
@@ -81,7 +65,7 @@ function Navbar() {
         <div className="dropdown dropdown-end">
           <label tabIndex={0}>
             <img
-              src={imageProfile ? imageProfile : frame2}
+              src={profileImage ? profileImage : frame2}
               alt=""
               className="w-12 h-12 rounded-full"
             />

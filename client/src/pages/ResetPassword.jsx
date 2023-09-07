@@ -2,58 +2,48 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab } from "@mui/material";
+import { TextField, Box, Tabs, Tab, IconButton } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { ButtonPrimary, ButtonGhost } from "../components/systemdesign/Button";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication.jsx";
 import { supabase } from "../contexts/supabase";
-import axios from "axios";
 
 function ResetPassword() {
   const nav = useNavigate();
-  const [getEvent, setGetEvent] = useState({});
+  const [initialValues, setInitialValues] = useState({});
 
   // supabase handle ****************************************
-  const { handleLoginSubmit, handleChangeRole, role } = useAuth();
-
-  const handleResetSubmit = async (values, formikHelpers) => {
-    console.log(getEvent);
-    const newValue = {
-      email: getEvent.session.user.email,
-      password: values.password,
-    };
-    if (getEvent.event === "PASSWORD_RECOVERY") {
-      const { data, error } = await supabase.auth.updateUser({
-        password: values.password,
-      });
-      const result = await axios.put(
-        "http://localhost:4000/auth/resetPassword",
-        newValue
-      );
-      console.log(result);
-      if (data && result.data.message === "Reset password successfully") {
-        alert(result.data.message);
-        formikHelpers.resetForm();
-        nav("/");
-      }
-      if (error) {
-        alert("There was an error updating your password.");
-      }
-    }
-  };
+  const {
+    sendRequestResetPassword,
+    handleResetPasswordSubmit,
+    handleChangeRole,
+    handleClickShowPassword,
+    showPassword,
+    getEvent,
+    setGetEvent,
+    role,
+  } = useAuth();
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (event, session) => {
+      // input init values **************************
+      if (event === "INITIAL_SESSION") {
+        setInitialValues({
+          email: "",
+        });
+      }
+      if (event === "PASSWORD_RECOVERY") {
+        setInitialValues({
+          password: "",
+        });
+      }
       console.log(event);
-      console.log(session);
+      // console.log(session);
       setGetEvent({ event, session });
     });
   }, []);
-
-  const initialValues = {
-    password: "",
-  };
 
   return (
     <div className="bg-etc-white m-0 py-[10%]  h-[100vh] w-full relative flex justify-center ">
@@ -80,78 +70,135 @@ function ResetPassword() {
           <p className="text-headline1 text-etc-black">Reset Password</p>
           <p className="text-headline4">Are you ready to reset your password</p>
         </Box>
-
+        {/* select role tap ******************************* */}
+        <Box className="w-full">
+          <p className="text-lg text-etc-black font-medium text-center">
+            Select Role
+          </p>
+          <Tabs
+            value={role}
+            onChange={handleChangeRole}
+            textColor="secondary"
+            indicatorColor="secondary"
+            aria-label="secondary tabs example"
+            sx={{ width: "full" }}
+          >
+            <Tab value="pet_owners" label="Pet User" sx={{ width: "50%" }} />
+            <Tab value="pet_sitters" label="Pet Sitter" sx={{ width: "50%" }} />
+          </Tabs>
+        </Box>
         {/* form ************************************* */}
-        <Formik
-          initialValues={initialValues}
-          onSubmit={(values, formikHelpers) => {
-            handleResetSubmit(values, formikHelpers);
-          }}
-          validationSchema={object({
-            password: string()
-              .required("Please enter password")
-              .min(12, "Password should have atleast 12 character"),
-          })}
-        >
-          {({ errors, isValid, touched, dirty }) => {
-            return (
-              <Form className="flex flex-col gap-5 text-left w-full">
-                {/* select role tap ******************************* */}
-                <p className="text-lg text-etc-black font-medium text-center">
-                  Select Role
-                </p>
-                <Tabs
-                  value={role}
-                  onChange={handleChangeRole}
-                  textColor="secondary"
-                  indicatorColor="secondary"
-                  aria-label="secondary tabs example"
-                  sx={{ width: "full" }}
-                >
-                  <Tab
-                    value="pet_owners"
-                    label="Pet User"
-                    sx={{ width: "50%" }}
+        {getEvent.event === "INITIAL_SESSION" ? (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values, formikHelpers) => {
+              sendRequestResetPassword(values, formikHelpers);
+            }}
+            validationSchema={object({
+              email: string()
+                .required("Please enter email")
+                .email("Invalid email"),
+            })}
+          >
+            {({ errors, isValid, touched, dirty }) => {
+              return (
+                <Form className="flex flex-col gap-5 text-left w-full">
+                  {/* email ********************************* */}
+                  <label
+                    className="text-lg text-etc-black font-medium"
+                    htmlFor="email"
+                  >
+                    Email address
+                  </label>
+                  <Field
+                    id="email"
+                    name="email"
+                    type="email"
+                    variant="outlined"
+                    color="primary"
+                    label="Email"
+                    as={TextField}
+                    error={Boolean(errors.email) && Boolean(touched.email)}
+                    helperText={Boolean(touched.email) && errors.email}
                   />
-                  <Tab
-                    value="pet_sitters"
-                    label="Pet Sitter"
-                    sx={{ width: "50%" }}
+
+                  {/* submit button ************************** */}
+                  <ButtonPrimary
+                    content="Send request to your email"
+                    width="100%"
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    disabled={!dirty || !isValid}
                   />
-                </Tabs>
+                </Form>
+              );
+            }}
+          </Formik>
+        ) : (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values, formikHelpers) => {
+              handleResetPasswordSubmit(values, formikHelpers, getEvent, role);
+            }}
+            validationSchema={object({
+              password: string()
+                .required("Please enter password")
+                .min(12, "Password should have atleast 12 character"),
+            })}
+          >
+            {({ errors, isValid, touched, dirty }) => {
+              return (
+                <Form className="flex flex-col gap-5 text-left w-full">
+                  {/* password ********************************* */}
+                  <label
+                    className="text-lg text-etc-black font-medium"
+                    htmlFor="passsword"
+                  >
+                    New password
+                  </label>
+                  <Box className="relative">
+                    <Field
+                      className="w-full"
+                      id="passsword"
+                      name="password"
+                      variant="outlined"
+                      color="primary"
+                      label="password"
+                      as={TextField}
+                      type={showPassword ? "text" : "password"}
+                      error={
+                        Boolean(errors.password) && Boolean(touched.password)
+                      }
+                      helperText={Boolean(touched.password) && errors.password}
+                    ></Field>
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      sx={{
+                        position: "absolute",
+                        top: "0.5rem",
+                        right: "1rem",
+                      }}
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Box>
 
-                {/* password ********************************* */}
-                <label
-                  className="text-lg text-etc-black font-medium"
-                  htmlFor="passsword"
-                >
-                  New password
-                </label>
-                <Field
-                  id="passsword"
-                  name="password"
-                  type="password"
-                  variant="outlined"
-                  color="primary"
-                  label="Password"
-                  as={TextField}
-                  error={Boolean(errors.password) && Boolean(touched.password)}
-                  helperText={Boolean(touched.password) && errors.password}
-                />
-
-                {/* submit button ************************** */}
-                <ButtonPrimary
-                  content="Reset"
-                  width="100%"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  disabled={!dirty || !isValid}
-                />
-              </Form>
-            );
-          }}
-        </Formik>
+                  {/* submit button ************************** */}
+                  <ButtonPrimary
+                    content="Reset your password"
+                    width="100%"
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    disabled={!dirty || !isValid}
+                  />
+                </Form>
+              );
+            }}
+          </Formik>
+        )}
 
         <ButtonGhost
           content="Login"

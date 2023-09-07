@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab } from "@mui/material";
+import { TextField, Box, Tabs, Tab, IconButton } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   ButtonPrimary,
   ButtonSocial,
@@ -11,10 +11,8 @@ import {
 import { BaseCheckbox } from "../components/systemdesign/BaseCheckbox.jsx";
 import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication.jsx";
-import { supabase } from "../contexts/supabase";
-import axios from "axios";
 
 function LoginPage() {
   const nav = useNavigate();
@@ -25,7 +23,8 @@ function LoginPage() {
     signInWithGoogle,
     handleLoginSubmit,
     handleChangeRole,
-    resetPassword,
+    handleClickShowPassword,
+    showPassword,
     signOut,
     role,
   } = useAuth();
@@ -125,22 +124,38 @@ function LoginPage() {
 
                 {/* password ********************************* */}
                 <label
-                  className="text-lg text-etc-black font-medium"
+                  className="text-lg text-etc-black font-medium relative"
                   htmlFor="passsword"
                 >
                   Password
                 </label>
-                <Field
-                  id="passsword"
-                  name="password"
-                  type="password"
-                  variant="outlined"
-                  color="primary"
-                  label="password"
-                  as={TextField}
-                  error={Boolean(errors.password) && Boolean(touched.password)}
-                  helperText={Boolean(touched.password) && errors.password}
-                />
+                <Box className="relative">
+                  <Field
+                    className="w-full"
+                    id="passsword"
+                    name="password"
+                    variant="outlined"
+                    color="primary"
+                    label="password"
+                    as={TextField}
+                    type={showPassword ? "text" : "password"}
+                    error={
+                      Boolean(errors.password) && Boolean(touched.password)
+                    }
+                    helperText={Boolean(touched.password) && errors.password}
+                  ></Field>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    sx={{
+                      position: "absolute",
+                      top: "0.5rem",
+                      right: "1rem",
+                    }}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+                </Box>
 
                 <Box className="flex w-full justify-between items-center">
                   {/* <div className="text-etc-black flex items-center">
@@ -164,7 +179,9 @@ function LoginPage() {
         {/* reset password ******************** */}
         <ButtonGhost
           type="button"
-          onClick={resetPassword}
+          onClick={() => {
+            nav("/resetPassword");
+          }}
           width="10rem"
           content="Forget Password?"
         />

@@ -16,18 +16,19 @@ authRouter.post("/login", async (req, res) => {
     query =
       "select pet_sitter_email,pet_sitter_password from pet_sitter_profile where pet_sitter_email = $1";
   }
-
+  // console.log(query);
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
-
+    // console.log(valid);
     if (!valid.rows.length) {
       return res.json({ message: "Invalid email!" });
     }
     // check password condition **********************
+    const resPassword = Object.values(valid.rows[0]);
     const validPassword = await bcrypt.compare(
       req.body.password,
-      valid.rows[0].pet_sitter_password
+      resPassword[1]
     );
     if (!validPassword) {
       return res.json({ message: "Invalid password!" });
@@ -91,13 +92,28 @@ authRouter.put("/resetPassword", async (req, res) => {
   // now we set user password to hashed password
   user.password = await bcrypt.hash(user.password, salt);
 
-  let query =
-    "update pet_sitter_profile set pet_sitter_password = $2 where pet_sitter_email = $1";
+  // query condition **************************
+  // console.log(req.body.role);
+  let query;
+  if (req.body.role === "pet_owners") {
+    query =
+      "update pet_owner_profile set pet_owner_password = $2 where pet_owner_email = $1";
+  } else {
+    query =
+      "update pet_sitter_profile set pet_sitter_password = $2 where pet_sitter_email = $1";
+  }
+
   let value = Object.values(user);
-  const result = await pool.query(query, value);
-  if (result.rowCount === 0) {
+  try {
+    const result = await pool.query(query, value);
+    // console.log(result);
+    if (result.rowCount === 0) {
+      return res.json({ message: "Email does not exist." });
+    }
+  } catch (err) {
     return res.json({ message: "Email does not exist." });
   }
+
   return res.json({ message: "Reset password successfully" });
 });
 

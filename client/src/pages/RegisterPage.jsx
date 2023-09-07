@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab } from "@mui/material";
+import { TextField, Box, Tabs, Tab, IconButton } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   ButtonPrimary,
   ButtonSocial,
@@ -23,6 +24,8 @@ function Register() {
     signInWithFacebook,
     signInWithGoogle,
     handleChangeRole,
+    handleClickShowPassword,
+    showPassword,
     role,
   } = useAuth();
 
@@ -181,17 +184,33 @@ function Register() {
                 >
                   Password
                 </label>
-                <Field
-                  id="passsword"
-                  name="password"
-                  type="password"
-                  variant="outlined"
-                  color="primary"
-                  label="password"
-                  as={TextField}
-                  error={Boolean(errors.password) && Boolean(touched.password)}
-                  helperText={Boolean(touched.password) && errors.password}
-                />
+                <Box className="relative">
+                  <Field
+                    className="w-full"
+                    id="passsword"
+                    name="password"
+                    variant="outlined"
+                    color="primary"
+                    label="password"
+                    as={TextField}
+                    type={showPassword ? "text" : "password"}
+                    error={
+                      Boolean(errors.password) && Boolean(touched.password)
+                    }
+                    helperText={Boolean(touched.password) && errors.password}
+                  ></Field>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    sx={{
+                      position: "absolute",
+                      top: "0.5rem",
+                      right: "1rem",
+                    }}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+                </Box>
 
                 {/* submit button ************************** */}
                 <ButtonPrimary

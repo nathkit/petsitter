@@ -106,16 +106,13 @@ function SitterReview() {
                       type="button"
                       id={`${rate}star`}
                       key={index}
-                      className={`flex items-center h-[36px] px-2 py-1 gap-1 border-[1px] rounded-[8px] border-gray-200 bg-etc-white hover:border-orange-500 ${
+                      className={`flex items-center h-[36px] px-2 py-1 gap-1 border-[1px] rounded-[8px] border-gray-200 bg-etc-white text-gray-400 hover:border-orange-500 ${
                         rate === searchData.rate
                           ? "border-orange-500 text-orange-500"
                           : ""
                       }`}
-                      onClick={(e) => handleRating(e, rate)}
-                    >
-                      <span className="pr-[3px] font-Satoshi text-gray-400">
-                        {rate}
-                      </span>
+                      onClick={(e) => handleRating(e, rate)}>
+                      <span className="pr-[3px] font-Satoshi ">{rate}</span>
                       {Array.from({ length: rate }, (_, index) => (
                         <StarIcon key={index} color="#1CCD83" />
                       ))}
@@ -132,8 +129,7 @@ function SitterReview() {
             filteredReviews.map((review, index) => (
               <div
                 className="review flex h-[204px] w-[100%] border border-gray-100 border-b-gray-200 "
-                key={index}
-              >
+                key={index}>
                 <div className="flex gap-4 w-[30%]">
                   <Avatar
                     alt="avatar"

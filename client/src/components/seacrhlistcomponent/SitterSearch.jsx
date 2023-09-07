@@ -8,12 +8,15 @@ function SitterSearch({ onSearch }) {
   // const [searchParams, setSearchParams] = useSearchParams();
   const searchParams = new URLSearchParams(window.location.search);
 
+  // searchParams.get("petType") ?? []
+
   const [searchData, setSearchData] = useState({
     search: "",
-    types: searchParams.get("petType") ?? [],
+    types: searchParams.get("petType").split(",") ?? [],
     rate: parseInt(searchParams.get("rate")),
     exp: parseInt(searchParams.get("exp")) ?? 0,
   });
+  console.log(searchData);
   // useEffect(() => {
   //   setSearchData({
   //     types: searchParams.getAll("petType"),
@@ -55,6 +58,7 @@ function SitterSearch({ onSearch }) {
   };
 
   const handleCheckBox = (event, type) => {
+    console.log(event);
     if (searchData.types.includes(type)) {
       setSearchData({
         ...searchData,

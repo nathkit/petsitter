@@ -160,8 +160,7 @@ function AuthProvider(props) {
         user,
         isAuthenticated,
         showPassword,
-      }}
-    >
+      }}>
       {props.children}
     </AuthContext.Provider>
   );

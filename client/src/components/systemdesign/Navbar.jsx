@@ -11,29 +11,11 @@ import usePosts from "../../hooks/usePost";
 function Navbar() {
   const navigate = useNavigate();
   const { signOut, getUserData, user, isAuthenticated } = useAuth();
-  const [imageProfile, setImageProfile] = useState("");
   const { profileImage, getProfileImage } = usePosts();
-
-  // const getImageProfile = async () => {
-  //   const userEmail = user.email;
-  //   console.log(userEmail);
-  //   if (user.user_metadata.email_verified) {
-  //     setImageProfile(user.user_metadata.avatar_url);
-  //   } else {
-  //     try {
-  //       const result = await axios.get(
-  //         `http://localhost:4000/accounts/${userEmail}`
-  //       );
-  //       setImageProfile(result.data.pet_owner_image);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     getUserData();
-    isAuthenticated && getProfileImage(user.email);
+    isAuthenticated && getProfileImage(user);
   }, [user.email]);
 
   const LoginButton = () => {

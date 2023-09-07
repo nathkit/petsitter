@@ -14,7 +14,7 @@ function Navbar() {
 
   const getImageProfile = async () => {
     const userEmail = user.email;
-
+    console.log(userEmail);
     if (user.user_metadata.email_verified) {
       setImageProfile(user.user_metadata.avatar_url);
     } else {

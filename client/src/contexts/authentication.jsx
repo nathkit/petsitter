@@ -33,7 +33,7 @@ function AuthProvider(props) {
         serverRespond.data.message ===
         "User profile has been verified successfully"
       ) {
-        // console.log(serverRespond.data.message);
+        console.log(serverRespond.data.message);
         const result = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
@@ -42,7 +42,7 @@ function AuthProvider(props) {
           setErrorMessage(result.error.message);
         }
       } else {
-        // console.log(serverRespond.data.message);
+        console.log(serverRespond.data.message);
         serverRespond.data.message;
       }
     } catch (err) {
@@ -88,7 +88,7 @@ function AuthProvider(props) {
   const getUserData = async () => {
     await supabase.auth.getUser().then((value) => {
       if (value.data?.user) {
-        console.log(value.data);
+        // console.log(value.data);
         setUser(value.data.user);
         setIsAuthenticated(value.data.user.aud === "authenticated");
       }

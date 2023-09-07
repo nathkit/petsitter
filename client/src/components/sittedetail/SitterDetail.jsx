@@ -9,9 +9,11 @@ function SitterDetail() {
   const [sitterDetail, setSitterDetail] = useState({});
   const params = useParams();
 
-  const getSitterDetail = async () => { 
+  const getSitterDetail = async () => {
     try {
-      const results = await axios.get(`http://localhost:4000/sitter/${params.sitterId}`);
+      const results = await axios.get(
+        `http://localhost:4000/sitter/${params.sitterId}`
+      );
       console.log(params.sitterId);
       setSitterDetail(results.data.data);
     } catch (error) {
@@ -122,7 +124,8 @@ function SitterDetail() {
                   </svg>
                 </span>
                 {/* location here */}
-                {sitterDetail.pet_sitter_sub_district} , {sitterDetail.pet_sitter_province}
+                {sitterDetail.pet_sitter_sub_district} ,{" "}
+                {sitterDetail.pet_sitter_province}
               </div>
               {/* pets ทำ equality แสดง */}
               <div className="w-full h-auto mt-4 flex flex-row justify-center gap-[6px]">

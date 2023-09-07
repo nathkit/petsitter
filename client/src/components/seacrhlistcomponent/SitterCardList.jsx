@@ -38,7 +38,7 @@ function SitterCardList({ items }) {
                       <br />
                     </span>
                     <span className="text-[18px] font-medium text-[#000]">
-                      By {card.pet_siiter_name}
+                      By {card.pet_sitter_name}
                     </span>
                   </div>
                   <div className="flex w-[120px] h-[32px] p-[6px] gap-[2px] justify-end">

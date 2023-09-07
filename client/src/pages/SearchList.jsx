@@ -3,12 +3,14 @@ import axios from "axios";
 import SitterSearch from "../components/seacrhlistcomponent/SitterSearch.jsx";
 import SitterCardList from "../components/seacrhlistcomponent/SitterCardList.jsx";
 import Footer from "../components/systemdesign/Footer.jsx";
+import Navbar from "../components/systemdesign/Navbar.jsx";
 
 function SearchList() {
-  useEffect(() => {
-    searchPets();
-  }, []);
+  // useEffect(() => {
+  //   searchPets();
+  // }, []);
 
+  // const [searchParams, setSearchParams] = useSearchParams();
   const [pets, setPets] = useState([]);
   // const [paging, setPaging] = useState({
   //   currentPage: 1,
@@ -45,6 +47,7 @@ function SearchList() {
 
   return (
     <>
+      <Navbar />
       <div className="flex flex-col w-[1440px] h-[1570px] pt-10 pb-20 px-20 bg-[#FAFAFB]">
         <div className="text-[24px] font-bold">Search For Pet Sitter</div>
         <div className="flex py-[80px] gap-9">

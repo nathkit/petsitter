@@ -13,7 +13,7 @@ function SitterCardList({ items }) {
     <div className="w-[848px] h-[216px] flex flex-col gap-4">
       {items.map((card, index) => {
         return (
-          <Link to="/sitter" key={index}>
+          <Link to={`/sitter/8`} key={index}>
             <div
               className="flex p-4 gap-10 bg-etc-white rounded-[16px] hover:border-[#FF7037]
               hover:border-solid hover:border-[1px]"

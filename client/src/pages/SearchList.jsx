@@ -37,12 +37,11 @@ function SearchList() {
       }
     }
 
-    console.log(searchParams.toString());
     const result = await axios.get(
       "http://localhost:4000/sitter?" + searchParams.toString()
     );
     console.log(result);
-    setPets(result.data.data);
+    setPets(result.data.data.rows);
   };
 
   return (

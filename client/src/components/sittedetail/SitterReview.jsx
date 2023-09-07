@@ -127,26 +127,31 @@ function SitterReview() {
           </div>
         </div>
 
-        <div className="sitter-review-list w-[100%] flex flex-col gap-4 p-6">
+        <div className="sitter-review-list w-[100%] flex flex-col gap-4 p-6 pt-12 ">
           {filteredReviews && filteredReviews.length > 0 ? (
             filteredReviews.map((review, index) => (
-              <div className="review flex" key={index}>
-                <div className="flex gap-4">
+              <div
+                className="review flex h-[204px] w-[100%] border border-gray-100 border-b-gray-200 "
+                key={index}
+              >
+                <div className="flex gap-4 w-[30%]">
                   <Avatar
                     alt="avatar"
                     src={review.pet_owner_image}
                     className="border"
                   />
                   <div>
-                    <h2 className="text-body1">{review.pet_owner_name}</h2>
+                    <h2 className="text-body1 text-etc-black ">
+                      {review.pet_owner_name}
+                    </h2>
                     <p className="text-body3 text-gray-400">
                       {review.created_at}
                     </p>
                   </div>
                 </div>
                 <hr />
-                <div className="rating flex flex-col">
-                  <div className="star flex gap-1">
+                <div className="rating flex flex-col w-[65%] gap-5">
+                  <div className="star flex gap-1 pt-1">
                     {Array.from(
                       { length: review.rating_review_star },
                       (_, starIndex) => (

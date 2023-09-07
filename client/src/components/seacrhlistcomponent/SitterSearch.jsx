@@ -2,14 +2,30 @@ import React, { useEffect, useState } from "react";
 import { StarIcon, SearchIcon } from "../systemdesign/Icons.jsx";
 import { ButtonSecondary, ButtonPrimary } from "../systemdesign/Button.jsx";
 import { BaseCheckbox } from "../systemdesign/BaseCheckbox.jsx";
+import { useSearchParams } from "react-router-dom";
 
 function SitterSearch({ onSearch }) {
+  // const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = new URLSearchParams(window.location.search);
+
   const [searchData, setSearchData] = useState({
     search: "",
-    types: [],
-    rate: undefined,
-    exp: 0,
+    types: (searchParams.get("petType") ?? "").split(","),
+    rate: parseInt(searchParams.get("rate")),
+    exp: parseInt(searchParams.get("exp")) ?? 0,
   });
+  // useEffect(() => {
+  //   setSearchData({
+  //     types: searchParams.getAll("petType"),
+  //     rate: searchParams.get("rate"),
+  //     exp: searchParams.get("exp"),
+  //   });
+  // }, []);
+  useEffect(() => {
+    onSearch(searchData);
+  }, []);
+
+  const [focus, setFocus] = useState(false);
 
   const allPetTypes = ["Dog", "Cat", "Bird", "Rabbit"];
 
@@ -98,18 +114,20 @@ function SitterSearch({ onSearch }) {
         {/* Start Search */}
         <div>
           <div className="text-[16px] font-medium"> Search </div>
-          <div
-            className="flex w-[318px] h-[48px] py-3 pl-3 pr-4 border-solid rounded-[8px]
-               border-[#DCDFED] border-[1px]"
-          >
+          <div className="relative">
             <input
               type="text"
               id="seacrh"
-              className="border-hidden w-[286px] h-[24px]"
+              className="peer/search outline-none flex w-full h-[48px] py-3 pl-3 pr-4 border-solid rounded-[8px]
+              border-[#DCDFED] border-[1px] focus:border-orange-300"
               onChange={(e) => handleSearchText(e)}
               value={searchData.search}
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
             />
-            <SearchIcon color="#AEB1C3" />
+            <div className="absolute right-4 bottom-3 peer-focus/search:">
+              <SearchIcon color={focus ? "#ffb899" : "#AEB1C3"} />
+            </div>
           </div>
         </div>
         {/* End Search */}
@@ -163,8 +181,8 @@ function SitterSearch({ onSearch }) {
           <div className="text-[16px] font-bold pb-4"> Experience: </div>
           <select
             className="select w-[346px] text-[#7B7E8F] border-[#DCDFED]"
-            defaultValue={allExp[0].value}
             onChange={(e) => handleExperience(e)}
+            value={searchData.exp}
           >
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>

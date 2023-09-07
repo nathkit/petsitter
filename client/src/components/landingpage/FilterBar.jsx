@@ -6,8 +6,8 @@ import { useState } from "react";
 
 function FilterBar() {
   const navigate = useNavigate();
+
   const [searchData, setSearchData] = useState({
-    search: "",
     types: [],
     rate: undefined,
     exp: 0,
@@ -29,59 +29,73 @@ function FilterBar() {
       value: 2,
     },
   ];
+
   const handleCheckBox = (event, type) => {
-    setSearchData({
-      ...searchData,
-      types: searchData.types.includes(type)
-        ? searchData.types.filter((eachType) => eachType !== type)
-        : [...searchData.types, type],
-    });
+    if (searchData.types.includes(type)) {
+      setSearchData({
+        ...searchData,
+        types: searchData.types.filter((eachType) => eachType !== type),
+      });
+    } else {
+      setSearchData({
+        ...searchData,
+        types: [...searchData.types, type],
+      });
+    }
+  };
+
+  const handleRating = (event, rate) => {
+    event.preventDefault();
+    if (searchData.rate === rate) {
+      setSearchData({
+        ...searchData,
+        rate: undefined,
+      });
+    } else {
+      setSearchData({
+        ...searchData,
+        rate: rate,
+      });
+    }
   };
 
   const handleExperience = (event) => {
-    event.preventDefault();
     setSearchData({
       ...searchData,
       exp: event.target.value,
     });
   };
 
-  const handleRating = (event, rate) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    setSearchData({
-      ...searchData,
-      rate: searchData.rate === rate ? undefined : rate,
-    });
+    console.log(searchData);
+    onSearch(searchData);
   };
-  console.log(searchData);
 
   return (
     <div className="max-w-[1064px] mx-auto rounded-[15px]">
       <div className="w-full p-6 bg-gray-100 rounded-t-[15px] flex items-center gap-3 self-stretch">
-        <div className="text-body2">Pet Type:</div>
+        <div className="font-bold">Pet Type:</div>
         <div className="flex items-center gap-[26px]">
-          {petType.map((item, index) => {
-            return (
-              <div key={index}>
-                <BaseCheckbox
-                  label={item}
-                  isChecked={searchData.types.includes(item)}
-                  onChanged={(e) => handleCheckBox(e, item)}
-                />
-              </div>
-            );
-          })}
+          {petType.map((type) => (
+            <BaseCheckbox
+              key={type}
+              label={type}
+              isChecked={searchData.types.includes(type)}
+              onChanged={(e) => handleCheckBox(e, type)}
+            />
+          ))}
         </div>
       </div>
-      <div className="w-full p-6 bg-etc-white rounded-b-[15px] flex items-center justify-between self-stretch">
-        <div className="flex items-center gap-3">
-          <div className="w-[70px] text-body2">Rating:</div>
-          <div className="flex flex-wrap gap-2">
+      <div className="w-full p-6 bg-etc-white rounded-b-[15px] flex items-center gap-6 self-stretch">
+        <div className="flex justify-center items-center">
+          <div className="w-[70px] pr-3 font-bold">Rating:</div>
+          <div className="flex gap-2">
             {starRates.map((rate, index) => (
               <button
                 id={rate + "star"}
                 key={index}
-                className={`flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] 
+                className={`flex items-center h-[36px] px-2 py-1 gap-[2px] border-[1px] text-gray-400
                   rounded-[8px] border-[#DCDFED] bg-etc-white hover:border-orange-500
                   ${
                     rate === searchData.rate
@@ -89,10 +103,9 @@ function FilterBar() {
                       : ""
                   }
                   `}
-                onClick={(e) => handleRating(e, rate)}>
-                <span className="pr-[3px] font-Satoshi text-gray-400">
-                  {rate}
-                </span>
+                onClick={(e) => handleRating(e, rate)}
+              >
+                <span className="pr-[3px] font-Satoshi ">{rate}</span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
                 ))}
@@ -100,12 +113,13 @@ function FilterBar() {
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-body2">Experience: </div>
+        <div className="flex items-center gap-3 w-[244px]">
+          <div className="font-bold">Experience: </div>
           <select
-            className="select w-[144px] text-gray-400 border-gray-200"
+            className="select w-full text-[#7B7E8F] border-[#DCDFED]"
             defaultValue={allExp[0].value}
-            onChange={(e) => handleExperience(e)}>
+            onChange={(e) => handleExperience(e)}
+          >
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}
@@ -114,7 +128,30 @@ function FilterBar() {
           </select>
         </div>
         <div>
-          <ButtonPrimary content="Search" onClick={() => navigate("/search")} />
+          <ButtonPrimary
+            content="Search"
+            onClick={() => {
+              const searchParams = new URLSearchParams();
+              if (searchData !== undefined) {
+                if (searchData?.search) {
+                  searchParams.append("search", searchData.search);
+                }
+
+                if (searchData?.types.length > 0) {
+                  searchParams.append("petType", searchData.types);
+                }
+
+                if (searchData?.rate) {
+                  searchParams.append("rate", searchData.rate);
+                }
+
+                if (searchData?.exp) {
+                  searchParams.append("exp", searchData.exp);
+                }
+              }
+              navigate("/search?" + searchParams.toString());
+            }}
+          />
         </div>
       </div>
     </div>

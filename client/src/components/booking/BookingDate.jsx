@@ -21,7 +21,7 @@ function BookingDate() {
         <ButtonPrimary content="Book Now" width=" 250px" />
       </button>
       <dialog id="my_modal_3" className="modal ">
-        <form method="dialog" className="modal-box max-w-[560px] px-10 py-0">
+        <form method="dialog" className="modal-box max-w-[560px] px-10 py-0 bg-etc-white">
           <div className="flex justify-between my-6">
             <h3 className="text-headline3">Booking</h3>
             <button className="btn btn-sm btn-circle btn-ghost ">✕</button>

@@ -11,13 +11,17 @@ function BookingDate() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const navigate = useNavigate();
   const isTimeValid = startTime < endTime;
 
   return (
     <>
       {" "}
-      <button onClick={() => window.my_modal_3.showModal()}>
+      <button
+        onClick={() => {
+          window.my_modal_3.showModal();
+        }}
+      >
         <ButtonPrimary content="Book Now" width=" 250px" />
       </button>
       <dialog id="my_modal_3" className="modal ">
@@ -63,15 +67,21 @@ function BookingDate() {
                 />
               </div>
             </div>
-            {isTimeValid ? (
-              <ButtonPrimary width={"100%"} content={"Continue"} />
-            ) : (
-              <ButtonPrimary
-                width={"100%"}
-                content={"Continue"}
-                disabled={!isTimeValid}
-              />
-            )}
+            <div
+              onClick={() => {
+                navigate("/booking");
+              }}
+            >
+              {isTimeValid ? (
+                <ButtonPrimary width={"100%"} content={"Continue"} />
+              ) : (
+                <ButtonPrimary
+                  width={"100%"}
+                  content={"Continue"}
+                  disabled={!isTimeValid}
+                />
+              )}
+            </div>
           </div>
         </form>
       </dialog>

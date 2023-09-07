@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import starGreen from "../assets/img/starGreen.png";
 import Booking1 from "../components/booking/Booking1";
 import Booking2 from "../components/booking/Booking2";
 import Booking3 from "../components/booking/Booking3";
 import { Step1, Step2, Step3 } from "../components/systemdesign/Icons";
 import Navbar from "../components/systemdesign/Navbar";
-import BookingDate from "../components/booking/BookingDate";
 import Confirmation from "../components/booking/Confirmation";
 import {
   ButtonPrimary,
   ButtonSecondary,
 } from "../components/systemdesign/Button";
+import { useNavigate } from "react-router-dom";
 
 function BookingPage() {
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
-  const [disableButtonBooking2, setDisableButtonBooking2] = useState();
+  const [disableButtonBooking2, setDisableButtonBooking2] = useState(true);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
-
+  const navigate = useNavigate();
   const nextStep = () => {
     if (step < 3) {
       setStep(step + 1);
@@ -27,16 +27,14 @@ function BookingPage() {
   const prevStep = () => {
     if (step > 1) {
       setStep(step - 1);
+    } else {
+      navigate("/sitter");
     }
-    // if (step <= 2) {
-    //   setDisableButtonBooking1("");
-    // }
   };
 
   return (
     <>
       <Navbar />
-
       <div className=" bg-etc-bg_gray w-full h-screen px-20 pt-10 pb-20 flex">
         <div className="mr-[2.25rem] w-[68.5%]">
           <div className=" flex justify-around bg-etc-white mb-4 p-6 text-body1 text-gray-500 items-center">
@@ -76,21 +74,23 @@ function BookingPage() {
               <ButtonPrimary
                 content={"Back"}
                 onClick={() => {
-                  prevStep();
                   setDisableButtonBooking1("");
-                  setDisableButtonBooking2("");
+                  setDisableButtonBooking2(true);
+                  prevStep();
                 }}
               />
             )}
             {step >= 1 && step < 3 && (
               <ButtonSecondary
                 content={"Next"}
-                onClick={nextStep}
+                onClick={() => {
+                  setDisableButtonBooking1("");
+                  setDisableButtonBooking2("");
+                  nextStep();
+                }}
                 disabled={
-                  disableButtonBooking1.length <= 0 || disableButtonBooking2
+                  disableButtonBooking1.length <= 0 && disableButtonBooking2
                 }
-                // disabled={disableButtonBooking1.length <= 0}
-                // disabled={disableButtonBooking2}
               />
             )}
             {step === 3 && (

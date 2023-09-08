@@ -8,6 +8,7 @@ import SitterDetailPage from "./SitterDetailPage";
 import Booking4 from "../components/booking/Booking4";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ResetPassword from "./ResetPassword";
+import UserManagementPage from "./UserManagementPage";
 
 function AuthenticatedApp() {
   return (
@@ -19,8 +20,9 @@ function AuthenticatedApp() {
       <Route path="/booking/confirmation" element={<Booking4 />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/search" element={<SearchList />} />
-      <Route path="/sitter/:sitterId" element={<SitterDetailPage />} />
+      <Route path="/userManagement" element={<UserManagementPage />} />
       {/* <Route path="/sitter/:sitterId/reviews" element={<SitterDetailPage />} /> */}
+      <Route path="/" element={<SitterDetailPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
 

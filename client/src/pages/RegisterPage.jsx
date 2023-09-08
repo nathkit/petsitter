@@ -1,7 +1,8 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab, IconButton } from "@mui/material";
+import { TextField, Box, Tabs, Tab, IconButton, Alert } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   ButtonPrimary,
@@ -27,6 +28,8 @@ function Register() {
     handleClickShowPassword,
     showPassword,
     role,
+    alertMessage,
+    setAlertMessage,
   } = useAuth();
 
   const initialValues = {
@@ -35,6 +38,13 @@ function Register() {
     phone: "",
     password: "",
   };
+
+  useEffect(() => {
+    setAlertMessage({
+      message: "",
+      severity: "",
+    });
+  }, []);
 
   return (
     <div className="bg-etc-white  h-full w-full relative flex justify-center ">
@@ -57,7 +67,14 @@ function Register() {
       <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col">
         {/* header **************************************** */}
         <Box className="mb-[1rem] ">
-          <p className="text-headline1 text-etc-black">Join Us!</p>
+          <p
+            className="text-headline1 text-etc-black cursor-pointer"
+            onClick={() => {
+              nav("/");
+            }}
+          >
+            Join Us!
+          </p>
           <p className="text-headline4">Find your perfect pet stter with us</p>
         </Box>
 
@@ -119,6 +136,12 @@ function Register() {
                     sx={{ width: "50%" }}
                   />
                 </Tabs>
+                {/* alert box *************************************** */}
+                {alertMessage ? (
+                  <Alert severity={alertMessage.severity}>
+                    {alertMessage.message}
+                  </Alert>
+                ) : null}
 
                 {/* email ********************************* */}
                 <label
@@ -206,6 +229,7 @@ function Register() {
                       position: "absolute",
                       top: "0.5rem",
                       right: "1rem",
+                      color: `${showPassword ? "red" : null}`,
                     }}
                   >
                     <VisibilityIcon />

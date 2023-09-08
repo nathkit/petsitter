@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab, IconButton } from "@mui/material";
+import { TextField, Box, Tabs, Tab, IconButton, Alert } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { ButtonPrimary, ButtonGhost } from "../components/systemdesign/Button";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
@@ -24,10 +24,16 @@ function ResetPassword() {
     getEvent,
     setGetEvent,
     role,
+    alertMessage,
+    setAlertMessage,
   } = useAuth();
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (event, session) => {
+      setAlertMessage({
+        message: "",
+        severity: "",
+      });
       // input init values **************************
       if (event === "INITIAL_SESSION") {
         setInitialValues({
@@ -86,6 +92,12 @@ function ResetPassword() {
             <Tab value="pet_owners" label="Pet User" sx={{ width: "50%" }} />
             <Tab value="pet_sitters" label="Pet Sitter" sx={{ width: "50%" }} />
           </Tabs>
+          {/* alert box *************************************** */}
+          {alertMessage ? (
+            <Alert severity={alertMessage.severity}>
+              {alertMessage.message}
+            </Alert>
+          ) : null}
         </Box>
         {/* form ************************************* */}
         {getEvent.event === "INITIAL_SESSION" ? (
@@ -179,6 +191,7 @@ function ResetPassword() {
                         position: "absolute",
                         top: "0.5rem",
                         right: "1rem",
+                        color: `${showPassword ? "red" : null}`,
                       }}
                     >
                       <VisibilityIcon />

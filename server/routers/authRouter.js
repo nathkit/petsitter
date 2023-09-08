@@ -43,7 +43,20 @@ authRouter.post("/login", async (req, res) => {
 
 // register router ****************************
 authRouter.post("/register", async (req, res) => {
-  // console.log(req.body);
+  // check same email condition first *************************
+  let checkEmailQuery;
+  if (req.body.role === "pet_owners") {
+    checkEmailQuery =
+      "select pet_owner_email from pet_owner_profile where pet_owner_email = $1";
+  } else {
+    checkEmailQuery =
+      "select pet_sitter_email from pet_sitter_profile where pet_sitter_email = $1";
+  }
+  const checkEmail = await pool.query(checkEmailQuery, [req.body.email]);
+  if (checkEmail.rows.length) {
+    return res.json({ message: "Email has been already used!" });
+  }
+
   const created_at = new Date();
   const updated_at = new Date();
 
@@ -73,13 +86,11 @@ authRouter.post("/register", async (req, res) => {
     query =
       "insert into pet_sitter_profile(pet_sitter_email,pet_sitter_name,pet_sitter_phone,pet_sitter_password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
   }
-
   try {
     const result = pool.query(query, value);
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
-
   return res.json({ message: "User profile has been created successfully" });
 });
 

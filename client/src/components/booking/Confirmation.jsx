@@ -14,7 +14,10 @@ function Confirmation(props) {
         />
       </button>
       <dialog id="my_modal_3" className="modal ">
-        <form method="dialog" className="modal-box max-w-[400px] p-0">
+        <form
+          method="dialog"
+          className="modal-box max-w-[400px] p-0 bg-etc-white"
+        >
           <div className="flex justify-between mx-6 my-4">
             <h3 className="text-headline4 ">{props.title}</h3>
             <button className="btn btn-sm btn-circle btn-ghost ">✕</button>

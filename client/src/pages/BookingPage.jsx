@@ -10,14 +10,12 @@ import {
   ButtonPrimary,
   ButtonSecondary,
 } from "../components/systemdesign/Button";
-import { useNavigate } from "react-router-dom";
 
 function BookingPage() {
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
   const [disableButtonBooking2, setDisableButtonBooking2] = useState(true);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
-  const navigate = useNavigate();
   const nextStep = () => {
     if (step < 3) {
       setStep(step + 1);
@@ -27,8 +25,6 @@ function BookingPage() {
   const prevStep = () => {
     if (step > 1) {
       setStep(step - 1);
-    } else {
-      navigate("/sitter");
     }
   };
 
@@ -78,6 +74,7 @@ function BookingPage() {
                   setDisableButtonBooking2(true);
                   prevStep();
                 }}
+                disabled={step === 1}
               />
             )}
             {step >= 1 && step < 3 && (

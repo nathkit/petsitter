@@ -47,63 +47,61 @@ function Booking2({ setDisableButtonBooking2 }) {
   return (
     <>
       <div className=" bg-etc-white p-10  h-fit">
-        <form onSubmit={formik.handleSubmit} className="">
+        <TextField
+          fullWidth
+          id="name"
+          name="name"
+          label="Your Name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+          placeholder="Full name"
+          required
+          color="warning"
+        />
+        <div className="flex justify-between my-10">
           <TextField
-            fullWidth
-            id="name"
-            name="name"
-            label="Your Name"
-            value={formik.values.name}
+            id="email"
+            name="email"
+            label="Email"
+            type="email"
+            value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
-            placeholder="Full name"
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            placeholder="your email"
             required
+            className="w-[47%]"
             color="warning"
           />
-          <div className="flex justify-between my-10">
-            <TextField
-              id="email"
-              name="email"
-              label="Email"
-              type="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              placeholder="your email"
-              required
-              className="w-[47%]"
-              color="warning"
-            />
-            <TextField
-              id="phone"
-              name="phone"
-              label="Phone"
-              type="tel"
-              value={formik.values.phone}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.phone && Boolean(formik.errors.phone)}
-              helperText={formik.touched.phone && formik.errors.phone}
-              placeholder="xxx xxx xxxx"
-              required
-              className="w-[47%]"
-              color="warning"
-            />
-          </div>
-          <hr className="mb-10" />
           <TextField
-            fullWidth
-            id="outlined-multiline-flexible"
-            label="Additional Message (To pet sitter)"
-            multiline
-            rows={4}
+            id="phone"
+            name="phone"
+            label="Phone"
+            type="tel"
+            value={formik.values.phone}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phone && Boolean(formik.errors.phone)}
+            helperText={formik.touched.phone && formik.errors.phone}
+            placeholder="xxx xxx xxxx"
+            required
+            className="w-[47%]"
             color="warning"
           />
-        </form>
+        </div>
+        <hr className="mb-10" />
+        <TextField
+          fullWidth
+          id="outlined-multiline-flexible"
+          label="Additional Message (To pet sitter)"
+          multiline
+          rows={4}
+          color="warning"
+        />
       </div>
     </>
   );

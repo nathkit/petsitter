@@ -13,8 +13,11 @@ function AuthProvider(props) {
   const [role, setRole] = useState("pet_owners");
   const [user, setUser] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  // console.log(errorMessage);
+  const [alertMessage, setAlertMessage] = useState({
+    message: "",
+    severity: "",
+  });
+
   const handleChangeRole = (event, newRole) => {
     setRole(newRole);
   };
@@ -36,19 +39,24 @@ function AuthProvider(props) {
         serverRespond.data.message ===
         "User profile has been verified successfully"
       ) {
-        console.log(serverRespond.data.message);
         const result = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
+
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "success",
+        });
+
         formikHelpers.resetForm();
         nav("/");
-        if (result.error.message) {
-          setErrorMessage(result.error.message);
-        }
       } else {
-        console.log(serverRespond.data.message);
-        serverRespond.data.message;
+        // console.log(serverRespond.data.message);
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "info",
+        });
       }
     } catch (err) {
       console.log(err.respondes);
@@ -70,21 +78,33 @@ function AuthProvider(props) {
   const handleRegisterSubmit = async (values, formikHelpers) => {
     const newValues = { ...values, role };
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-      });
       const serverRespond = await axios.post(
         "http://localhost:4000/auth/register",
         newValues
       );
-      // console.log(serverRespond);
+      if (
+        serverRespond.data.message ===
+        "User profile has been created successfully"
+      ) {
+        const { data, error } = await supabase.auth.signUp({
+          email: values.email,
+          password: values.password,
+        });
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "success",
+        });
+        formikHelpers.resetForm();
+        nav("/login");
+      } else {
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "info",
+        });
+      }
     } catch (err) {
       console.log(err);
     }
-
-    formikHelpers.resetForm();
-    nav("/login");
   };
 
   const getUserData = async () => {
@@ -104,7 +124,10 @@ function AuthProvider(props) {
       redirectTo: "http://localhost:5173/resetPassword",
     });
     setGetEvent("");
-    alert("Please check your email!");
+    setAlertMessage({
+      message: "Please check your email!",
+      severity: "success",
+    });
     nav("/login");
   };
 
@@ -124,14 +147,25 @@ function AuthProvider(props) {
           "http://localhost:4000/auth/resetPassword",
           newValue
         );
-        console.log(result.data.message);
+        // console.log(result.data.message);
         if (data && result.data.message === "Reset password successfully") {
-          alert(result.data.message);
+          setAlertMessage({
+            message: result.data.message,
+            severity: "success",
+          });
           formikHelpers.resetForm();
           nav("/");
+        } else {
+          setAlertMessage({
+            message: result.data.message,
+            severity: "info",
+          });
         }
       } catch (error) {
-        alert("There was an error updating your password.");
+        setAlertMessage({
+          message: "There was an error updating your password.",
+          severity: "error",
+        });
       }
     }
   };
@@ -155,12 +189,15 @@ function AuthProvider(props) {
         signOut,
         setGetEvent,
         handleClickShowPassword,
+        setAlertMessage,
         getEvent,
         role,
         user,
         isAuthenticated,
         showPassword,
-      }}>
+        alertMessage,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

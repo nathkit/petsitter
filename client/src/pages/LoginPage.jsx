@@ -1,14 +1,14 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab, IconButton } from "@mui/material";
+import { TextField, Box, Tabs, Tab, IconButton, Alert } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   ButtonPrimary,
   ButtonSocial,
   ButtonGhost,
 } from "../components/systemdesign/Button";
-import { BaseCheckbox } from "../components/systemdesign/BaseCheckbox.jsx";
 import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
 import { useNavigate } from "react-router-dom";
@@ -25,8 +25,9 @@ function LoginPage() {
     handleChangeRole,
     handleClickShowPassword,
     showPassword,
-    signOut,
     role,
+    alertMessage,
+    setAlertMessage,
   } = useAuth();
 
   const initialValues = {
@@ -34,12 +35,16 @@ function LoginPage() {
     password: "",
   };
 
+  useEffect(() => {
+    setAlertMessage({
+      message: "",
+      severity: "",
+    });
+  }, []);
+
   return (
     <div className="bg-etc-white m-0 p-0  h-[100%] w-full relative flex justify-center ">
       {/* image ************************************* */}
-      <button onClick={signOut} className="bg-orange-500 h-8">
-        signout test
-      </button>
       <div className="h-[35%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
         <div className="absolute top-0 left-7 rotate-45">
           <Ellipse15 />
@@ -58,7 +63,14 @@ function LoginPage() {
       <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col">
         {/* header **************************************** */}
         <Box className="mb-[1rem] ">
-          <p className="text-headline1 text-etc-black">Welcome back!</p>
+          <p
+            className="text-headline1 text-etc-black cursor-pointer"
+            onClick={() => {
+              nav("/");
+            }}
+          >
+            Welcome back!
+          </p>
           <p className="text-headline4">Find your perfect pet sitter with us</p>
         </Box>
 
@@ -103,6 +115,13 @@ function LoginPage() {
                     sx={{ width: "50%" }}
                   />
                 </Tabs>
+
+                {/* alert box *************************************** */}
+                {alertMessage ? (
+                  <Alert severity={alertMessage.severity}>
+                    {alertMessage.message}
+                  </Alert>
+                ) : null}
                 {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
@@ -151,16 +170,11 @@ function LoginPage() {
                       position: "absolute",
                       top: "0.5rem",
                       right: "1rem",
+                      color: `${showPassword ? "red" : null}`,
                     }}
                   >
                     <VisibilityIcon />
                   </IconButton>
-                </Box>
-
-                <Box className="flex w-full justify-between items-center">
-                  {/* <div className="text-etc-black flex items-center">
-                    <BaseCheckbox /> Remember?
-                  </div> */}
                 </Box>
 
                 {/* submit button ************************** */}

@@ -188,9 +188,6 @@ export default function CreatePet() {
   const [haveImage, setImage] = useState(false);
   return (
     <div class="pet-input-container">
-      <div class="pet-list flex">
-        <ArrowLeftIcon /> Your Pet
-      </div>
       <div class="pet-image">
         <div class="pet-image-container">{!haveImage && <PetIcon />}</div>
         <div class="add-image">+</div>

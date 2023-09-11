@@ -5,6 +5,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-Bold.otf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 /* * {
   outline: 1px solid red;
 } */

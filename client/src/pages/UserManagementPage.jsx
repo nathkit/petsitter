@@ -3,9 +3,12 @@ import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
 import { useState } from "react";
 import Petlist from "../components/UserManagement/Petlist";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
 =======
 import CreatePet from "../components/UserManagement/UserPetsList/PetProfile";
+=======
+>>>>>>> e8a7328 (feat:create pet input form)
 
 >>>>>>> c70b05f (feat:create pet input form)
 function UserManagementPage() {
@@ -120,10 +123,14 @@ function UserManagementPage() {
         <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
           {activeSection === "profile" && <div>Profile</div>}
 <<<<<<< HEAD
+<<<<<<< HEAD
           {activeSection === "petlist" && <Petlist />}
           {activeSection === "bookingHistory" && <BookingHistory />}
 =======
           {activeSection === "petlist" && <CreatePet />}
+=======
+          {activeSection === "petlist" && <Petlist />}
+>>>>>>> e8a7328 (feat:create pet input form)
           {activeSection === "bookingHistory" && <div>Booking History</div>}
 >>>>>>> c70b05f (feat:create pet input form)
         </div>

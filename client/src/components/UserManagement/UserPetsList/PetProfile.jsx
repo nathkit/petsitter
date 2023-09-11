@@ -3,6 +3,8 @@ import { ButtonPrimary, ButtonSecondary } from "../../systemdesign/Button";
 import { useState } from "react";
 import { Formik, Form, Field, useFormik } from "formik";
 import * as Yup from "yup";
+import { UploadPetImage } from "../../systemdesign/uploadImage";
+import { Box } from "@mui/system";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -75,7 +77,7 @@ function PetInputForm() {
             value={formik.values.petType}
             onBlur={formik.handleBlur}
             placeholder="Select your pet type">
-            <option value="" disabled selected>
+            <option value="" disabled>
               Select your pet type
             </option>
             <option value="dog">Dog</option>
@@ -117,7 +119,7 @@ function PetInputForm() {
             onChange={formik.handleChange}
             value={formik.values.sex}
             onBlur={formik.handleBlur}>
-            <option value="" disabled selected>
+            <option value="" disabled>
               Select sex of your pet
             </option>
             <option value="male">Male</option>
@@ -202,15 +204,14 @@ function PetInputForm() {
 export default function CreatePet() {
   const [haveImage, setImage] = useState(false);
   return (
-    <div class="pet-input-container">
-      <div class="pet-image">
-        <div class="pet-image-container">{!haveImage && <PetIcon />}</div>
-        <div class="add-image">+</div>
-      </div>
-      <div class="pet-input">
+    <div className="pet-input-container">
+      <Box className="h-[15rem] mb-[60px]">
+        <UploadPetImage />
+      </Box>
+      <div className="pet-input">
         <PetInputForm />
       </div>
-      <div class="pet-input-button flex justify-between">
+      <div className="pet-input-button flex justify-between">
         <ButtonSecondary content="Cancel" />{" "}
         <ButtonPrimary content="Create Pet" />
       </div>

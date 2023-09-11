@@ -4,15 +4,21 @@ import { useState } from "react";
 import Petlist from "../components/UserManagement/Petlist";
 
 function UserManagementPage() {
-  const [userIcon, setUserIcon] = useState(null);
+  const [userIcon, setUserIcon] = useState("#ff7037");
   const [petIcon, setPetIcon] = useState(null);
   const [listIcon, setListIcon] = useState(null);
+
+  const [userIconColor, setUserIconColor] = useState(null);
+  const [petIconColor, setPetIconColor] = useState(null);
+  const [listIconColor, setListIconColor] = useState(null);
+
   const [activeSection, setActiveSection] = useState("profile");
+
   return (
     <>
       <Navbar />
       <div className=" bg-etc-bg_gray w-full px-20 pt-10 pb-20 flex">
-        <div className=" flex flex-col bg-etc-white py-6 w-[292px] h-[289px] rounded-2xl shadow mr-10">
+        <div className=" flex flex-col bg-etc-white py-6 w-[292px] h-[289px] rounded-2xl shadow mr-10 text-gray-500">
           <div className="px-6 pb-3 text-headline4">
             <p className="">Account</p>
           </div>
@@ -20,30 +26,44 @@ function UserManagementPage() {
             className={`px-6 py-5 hover:text-orange-500 text-start focus:bg-orange-100 focus:text-orange-500 text-body1 flex items-center ${
               activeSection === "profile" ? "bg-orange-100 text-orange-500" : ""
             }`}
-            onClick={() => setActiveSection("profile")}
+            onClick={() => {
+              setActiveSection("profile");
+              setListIcon(null);
+              setPetIcon(null);
+            }}
             onFocus={() => {
               setUserIcon("#ff7037");
             }}
-            onBlur={() => {
-              setUserIcon("#3A3B46");
+            onMouseEnter={() => {
+              setUserIconColor("#ff7037");
+            }}
+            onMouseLeave={() => {
+              setUserIconColor("#aeb1c3");
             }}
           >
-            <UserIcon color={userIcon} />
+            <UserIcon hoverColor={userIconColor} onFocus={userIcon} />
             <p className="ml-3">Profile</p>
           </button>
           <button
             className={`px-6 py-5 hover:text-orange-500 text-start focus:bg-orange-100 focus:text-orange-500 text-body1 flex items-center ${
               activeSection === "petlist" ? "bg-orange-100 text-orange-500" : ""
             }`}
-            onClick={() => setActiveSection("petlist")}
+            onClick={() => {
+              setActiveSection("petlist");
+              setUserIcon(null);
+              setListIcon(null);
+            }}
             onFocus={() => {
               setPetIcon("#ff7037");
             }}
-            onBlur={() => {
-              setPetIcon("#3A3B46");
+            onMouseEnter={() => {
+              setPetIconColor("#ff7037");
+            }}
+            onMouseLeave={() => {
+              setPetIconColor("#aeb1c3");
             }}
           >
-            <PetIcon color={petIcon} />
+            <PetIcon hoverColor={petIconColor} onFocus={petIcon} />
             <p className="ml-3">Your Pet</p>
           </button>
           <button
@@ -54,15 +74,20 @@ function UserManagementPage() {
             }`}
             onClick={() => {
               setActiveSection("bookingHistory");
+              setUserIcon(null);
+              setPetIcon(null);
             }}
             onFocus={() => {
               setListIcon("#ff7037");
             }}
-            onBlur={() => {
-              setListIcon("#3A3B46");
+            onMouseEnter={() => {
+              setListIconColor("#ff7037");
+            }}
+            onMouseLeave={() => {
+              setListIconColor("#aeb1c3");
             }}
           >
-            <ListIcon color={listIcon} />
+            <ListIcon hoverColor={listIconColor} onFocus={listIcon} />
             <p className="ml-3">Booking History</p>
           </button>
         </div>{" "}

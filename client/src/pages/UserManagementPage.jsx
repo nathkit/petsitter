@@ -1,5 +1,5 @@
-import ReviewButton from "../components/UserManagement/UserReview/ReviewButton";
-import YourReviewButton from "../components/UserManagement/UserReview/YourReviewButton";
+import ReviewButton from "../components/Management/ReviewButton";
+import YourReviewButton from "../components/Management/YourReviewButton";
 import Navbar from "../components/systemdesign/Navbar";
 import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
 import { useState } from "react";

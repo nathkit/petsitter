@@ -2,7 +2,7 @@ import Navbar from "../components/systemdesign/Navbar";
 import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
 import { useState } from "react";
 import Petlist from "../components/UserManagement/Petlist";
-
+import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState(null);
   const [petIcon, setPetIcon] = useState(null);
@@ -69,7 +69,7 @@ function UserManagementPage() {
         <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
           {activeSection === "profile" && <div>Profile</div>}
           {activeSection === "petlist" && <Petlist />}
-          {activeSection === "bookingHistory" && <div>Booking History</div>}
+          {activeSection === "bookingHistory" && <BookingHistory />}
         </div>
       </div>
     </>

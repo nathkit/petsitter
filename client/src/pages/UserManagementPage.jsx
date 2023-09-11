@@ -4,6 +4,7 @@ import { useState } from "react";
 import Petlist from "../components/UserManagement/Petlist";
 import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
 import { BookingStatusProvider } from "../contexts/BookingStatusContext";
+import UserProfile from "../components/UserManagement/UserProfile";
 
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState("#ff7037");
@@ -80,7 +81,7 @@ function UserManagementPage() {
             </button>
           </div>{" "}
           <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
-            {activeSection === "profile" && <div>Profile</div>}
+            {activeSection === "profile" && <div><UserProfile/></div>}
             {activeSection === "petlist" && <Petlist />}
             {activeSection === "bookingHistory" && <BookingHistory />}
           </div>

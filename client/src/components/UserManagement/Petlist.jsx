@@ -14,7 +14,7 @@ function Petlist() {
       <div>
         <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
           {buttonClicked && !showCreatePetButton ? (
-            <p className=" text-headline3 flex items-center">
+            <p className=" text-headline3 flex items-center gap-[10px]">
               {" "}
               <ArrowLeftIcon
                 color="#7B7E8F"

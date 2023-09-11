@@ -25,9 +25,46 @@ const usePosts = () => {
     }
   };
 
+  const getTypeStyle = (type) => {
+    let textStyle = "";
+    let bgColor = "";
+    let border = "";
+
+    switch (type) {
+      case "Dog":
+        textStyle = "text-green-500";
+        border = "border-green-500";
+        bgColor = "bg-green-100";
+        break;
+      case "Cat":
+        textStyle = "text-pink-500";
+        border = "border-pink-500";
+        bgColor = "bg-pink-100";
+        break;
+      case "Bird":
+        textStyle = "text-blue-500";
+        border = "border-blue-500";
+        bgColor = "bg-blue-100";
+        break;
+      case "Rabbit":
+        textStyle = "text-orange-500";
+        border = "border-orange-500";
+        bgColor = "bg-orange-100";
+        break;
+      default:
+        textStyle = "";
+        border = "";
+        bgColor = "";
+        break;
+    }
+
+    return { textStyle, border, bgColor };
+  };
+
   return {
     profileImage,
     getProfileImage,
+    getTypeStyle,
   };
 };
 

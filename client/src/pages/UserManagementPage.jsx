@@ -6,10 +6,16 @@ import BookingHistory from "../components/UserManagement/BookingHistory/BookingH
 import { BookingStatusProvider } from "../contexts/BookingStatusContext";
 
 function UserManagementPage() {
-  const [userIcon, setUserIcon] = useState(null);
+  const [userIcon, setUserIcon] = useState("#ff7037");
   const [petIcon, setPetIcon] = useState(null);
   const [listIcon, setListIcon] = useState(null);
+
+  const [userIconColor, setUserIconColor] = useState(null);
+  const [petIconColor, setPetIconColor] = useState(null);
+  const [listIconColor, setListIconColor] = useState(null);
+
   const [activeSection, setActiveSection] = useState("profile");
+
   return (
     <>
       <BookingStatusProvider>

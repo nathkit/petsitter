@@ -2,6 +2,8 @@ import { ButtonPrimary } from "../systemdesign/Button";
 import YourPet from "./UserPetsList/YourPet";
 import Footer from "../systemdesign/Footer";
 import { useState } from "react";
+import CreatePet from "./UserPetsList/PetProfile";
+import { ArrowLeftIcon, PetIcon } from "../systemdesign/Icons";
 
 function Petlist() {
   const [showCreatePetButton, setShowCreatePetButton] = useState(true);
@@ -11,7 +13,23 @@ function Petlist() {
     <>
       <div>
         <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
-          <p className=" text-headline3">Your Pet</p>
+          {buttonClicked && !showCreatePetButton ? (
+            <p className=" text-headline3 flex items-center">
+              {" "}
+              <ArrowLeftIcon
+                color="#7B7E8F"
+                onClick={() => {
+                  setButtonClicked(false);
+                  setShowCreatePetButton(true);
+                  setShowYourPet(true);
+                }}
+              />{" "}
+              Your Pet
+            </p>
+          ) : (
+            <p className=" text-headline3">Your Pet</p>
+          )}
+
           {!buttonClicked && showCreatePetButton && (
             <ButtonPrimary
               content={"Create Pet"}
@@ -25,7 +43,8 @@ function Petlist() {
         </div>
         {showYourPet && <YourPet />}{" "}
         {/* เรนเดอร์ YourPet เฉพาะเมื่อ showYourPet เป็น true */}
-        {buttonClicked && <Footer />} {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
+        {buttonClicked && <CreatePet />}{" "}
+        {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
       </div>
     </>
   );

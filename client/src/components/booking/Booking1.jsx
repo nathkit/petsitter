@@ -28,14 +28,16 @@ function booking1({ setDisableButtonBooking1 }) {
   return (
     <>
       <CardPet2 selectedButtons={selectedButtons}>
-        {(index) => (
+        {(index, isInvalidType) => (
           <div className=" absolute top-3 right-3 hover:border-orange-300 border-gray-200">
-            <BaseCheckbox
-              onChanged={() => {
-                handleCheckboxChange(index);
-              }}
-              isChecked={selectedButtons.includes(index)}
-            />
+            {!isInvalidType && (
+              <BaseCheckbox
+                onChanged={() => {
+                  handleCheckboxChange(index);
+                }}
+                isChecked={selectedButtons.includes(index)}
+              />
+            )}{" "}
           </div>
         )}
       </CardPet2>

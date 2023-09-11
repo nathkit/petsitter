@@ -2,6 +2,7 @@ import { ButtonPrimary } from "../systemdesign/Button";
 import YourPet from "./UserPetsList/YourPet";
 import Footer from "../systemdesign/Footer";
 import { useState } from "react";
+import CreatePet from "./UserPetsList/PetProfile";
 
 function Petlist() {
   const [showCreatePetButton, setShowCreatePetButton] = useState(true);
@@ -25,7 +26,8 @@ function Petlist() {
         </div>
         {showYourPet && <YourPet />}{" "}
         {/* เรนเดอร์ YourPet เฉพาะเมื่อ showYourPet เป็น true */}
-        {buttonClicked && <Footer />} {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
+        {buttonClicked && <CreatePet />}{" "}
+        {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
       </div>
     </>
   );

@@ -2,7 +2,12 @@ import Navbar from "../components/systemdesign/Navbar";
 import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
 import { useState } from "react";
 import Petlist from "../components/UserManagement/Petlist";
+<<<<<<< HEAD
 import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
+=======
+import CreatePet from "../components/UserManagement/UserPetsList/PetProfile";
+
+>>>>>>> c70b05f (feat:create pet input form)
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState("#ff7037");
   const [petIcon, setPetIcon] = useState(null);
@@ -34,6 +39,7 @@ function UserManagementPage() {
             onFocus={() => {
               setUserIcon("#ff7037");
             }}
+<<<<<<< HEAD
             onMouseEnter={() => {
               setUserIconColor("#ff7037");
             }}
@@ -42,6 +48,12 @@ function UserManagementPage() {
             }}
           >
             <UserIcon hoverColor={userIconColor} onFocus={userIcon} />
+=======
+            onBlur={() => {
+              setUserIcon("#3A3B46");
+            }}>
+            <UserIcon color={userIcon} />
+>>>>>>> c70b05f (feat:create pet input form)
             <p className="ml-3">Profile</p>
           </button>
           <button
@@ -56,6 +68,7 @@ function UserManagementPage() {
             onFocus={() => {
               setPetIcon("#ff7037");
             }}
+<<<<<<< HEAD
             onMouseEnter={() => {
               setPetIconColor("#ff7037");
             }}
@@ -64,6 +77,12 @@ function UserManagementPage() {
             }}
           >
             <PetIcon hoverColor={petIconColor} onFocus={petIcon} />
+=======
+            onBlur={() => {
+              setPetIcon("#3A3B46");
+            }}>
+            <PetIcon color={petIcon} />
+>>>>>>> c70b05f (feat:create pet input form)
             <p className="ml-3">Your Pet</p>
           </button>
           <button
@@ -80,6 +99,7 @@ function UserManagementPage() {
             onFocus={() => {
               setListIcon("#ff7037");
             }}
+<<<<<<< HEAD
             onMouseEnter={() => {
               setListIconColor("#ff7037");
             }}
@@ -88,13 +108,24 @@ function UserManagementPage() {
             }}
           >
             <ListIcon hoverColor={listIconColor} onFocus={listIcon} />
+=======
+            onBlur={() => {
+              setListIcon("#3A3B46");
+            }}>
+            <ListIcon color={listIcon} />
+>>>>>>> c70b05f (feat:create pet input form)
             <p className="ml-3">Booking History</p>
           </button>
         </div>{" "}
         <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
           {activeSection === "profile" && <div>Profile</div>}
+<<<<<<< HEAD
           {activeSection === "petlist" && <Petlist />}
           {activeSection === "bookingHistory" && <BookingHistory />}
+=======
+          {activeSection === "petlist" && <CreatePet />}
+          {activeSection === "bookingHistory" && <div>Booking History</div>}
+>>>>>>> c70b05f (feat:create pet input form)
         </div>
       </div>
     </>

@@ -1,3 +1,5 @@
+import ReviewButton from "../components/Management/ReviewButton";
+import YourReviewButton from "../components/Management/YourReviewButton";
 import Navbar from "../components/systemdesign/Navbar";
 import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
 import { useState } from "react";
@@ -105,6 +107,8 @@ function UserManagementPage() {
             {activeSection === "bookingHistory" && <BookingHistory />}
           </div>
         </div>
+        <ReviewButton />
+        <YourReviewButton />
       </BookingStatusProvider>
     </>
   );

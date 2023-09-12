@@ -43,7 +43,8 @@ function Petlist() {
         </div>
         {showYourPet && <YourPet />}{" "}
         {/* เรนเดอร์ YourPet เฉพาะเมื่อ showYourPet เป็น true */}
-        {buttonClicked && <EditPet />} {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
+        {buttonClicked && <CreatePet />}{" "}
+        {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
       </div>
     </>
   );

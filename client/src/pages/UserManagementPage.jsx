@@ -7,8 +7,6 @@ import { BookingStatusProvider } from "../contexts/BookingStatusContext";
 import UserProfile from "../components/UserManagement/UserProfile";
 import ReviewButton from "../components/UserManagement/UserReview/ReviewButton";
 import YourReviewButton from "../components/UserManagement/UserReview/YourReviewButton";
-import UserProfile from "../components/UserManagement/UserProfile";
-
 
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState("#ff7037");
@@ -49,8 +47,7 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setUserIconColor("#aeb1c3");
-              }}
-            >
+              }}>
               <UserIcon hoverColor={userIconColor} onFocus={userIcon} />
               <p className="ml-3">Profile</p>
             </button>
@@ -73,8 +70,7 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setPetIconColor("#aeb1c3");
-              }}
-            >
+              }}>
               <PetIcon hoverColor={petIconColor} onFocus={petIcon} />
               <p className="ml-3">Your Pet</p>
             </button>
@@ -97,14 +93,17 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setListIconColor("#aeb1c3");
-              }}
-            >
+              }}>
               <ListIcon hoverColor={listIconColor} onFocus={listIcon} />
               <p className="ml-3">Booking History</p>
             </button>
           </div>{" "}
           <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
-            {activeSection === "profile" && <div><UserProfile/></div>}
+            {activeSection === "profile" && (
+              <div>
+                <UserProfile />
+              </div>
+            )}
             {activeSection === "petlist" && <Petlist />}
             {activeSection === "bookingHistory" && <BookingHistory />}
           </div>

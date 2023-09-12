@@ -10,6 +10,8 @@ import * as Yup from "yup";
 import { UploadPetImage } from "../../systemdesign/uploadImage";
 import { Box } from "@mui/system";
 import { Delete } from "../../booking/Confirmation";
+import usePosts from "../../../hooks/usePost";
+import { useNavigate } from "react-router-dom";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -26,6 +28,8 @@ const PetProfileSchema = Yup.object().shape({
 });
 
 function PetInputForm(props) {
+  const navigate = useNavigate();
+  const { createPetProfile, updatePetProfile } = usePosts();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
   const formik = useFormik({
@@ -40,6 +44,14 @@ function PetInputForm(props) {
       about: "",
     },
     validationSchema: PetProfileSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      console.log(values);
+      props.editPet ? updatePetProfile(values) : createPetProfile(values);
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2));
+        setSubmitting(false);
+      }, 1000);
+    },
   });
 
   const errorForm = {
@@ -48,8 +60,8 @@ function PetInputForm(props) {
 
   const error = {
     color: "red",
-    "font-size": "0.875rem",
-    "margin-top": "0.25rem",
+    fontSize: "0.875rem",
+    marginTop: "0.25rem",
   };
 
   return (
@@ -220,8 +232,15 @@ function PetInputForm(props) {
         </div>
       )}
       <div className="pet-input-button flex justify-between">
-        <ButtonSecondary content="Cancel" />{" "}
-        <ButtonPrimary content="Update Pet" type="submit" />
+        <ButtonSecondary
+          content="Cancel"
+          onClick={() => navigate("/usermanagement")}
+          type="cancel"
+        />{" "}
+        <ButtonPrimary
+          content={!props.editPet ? "Create Pet" : "Update Pet"}
+          type="submit"
+        />
       </div>
     </form>
   );

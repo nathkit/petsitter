@@ -36,7 +36,7 @@ export function ButtonGhost(props) {
       className={`inline-flex justify-center items-center py-1 px-0.5 rounded-full gap-1 border-none
       bg-transparent text-orange-500 text-bodyButton
         hover:text-orange-400 active:text-orange-600
-         disabled:text-gray-200`}
+         disabled:text-gray-200 ${props.className}`}
       style={{ width: props.width ? props.width : "91px", height: "48px" }}>
       {props.icon ? <props.icon /> : null}
       {props.content}

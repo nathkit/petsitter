@@ -1,5 +1,9 @@
-import { ArrowLeftIcon, PetIcon } from "../../systemdesign/Icons";
-import { ButtonPrimary, ButtonSecondary } from "../../systemdesign/Button";
+import { ArrowLeftIcon, PetIcon, TrashIcon } from "../../systemdesign/Icons";
+import {
+  ButtonPrimary,
+  ButtonSecondary,
+  ButtonGhost,
+} from "../../systemdesign/Button";
 import { useState } from "react";
 import { Formik, Form, Field, useFormik } from "formik";
 import * as Yup from "yup";
@@ -20,7 +24,9 @@ const PetProfileSchema = Yup.object().shape({
   about: Yup.string(),
 });
 
-function PetInputForm() {
+function PetInputForm(props) {
+  const [isHovered, setIsHovered] = useState(null);
+  const [isFocus, setIsFocus] = useState(null);
   const formik = useFormik({
     initialValues: {
       petName: "",
@@ -197,11 +203,37 @@ function PetInputForm() {
           placeholder="Describe more about your pet..."
         />
       </div>
+      {props.editPet && (
+        <div className="pet-input-button flex items-center mb-[60px]">
+          <button
+            className="btn border-none"
+            onClick={() => document.getElementById("my_modal_4").showModal()}>
+            <ButtonGhost content="Delete Pet" icon={TrashIcon} width="109px" />{" "}
+          </button>
+          <dialog id="my_modal_4" className="modal">
+            <div className="modal-box w-11/12 max-w-5xl bg-etc-white">
+              <h3 className="font-bold text-lg">Hello!</h3>
+              <p className="py-4">Click the button below to close</p>
+              <div className="modal-action">
+                <form method="dialog" className="flex justify-between">
+                  {/* if there is a button, it will close the modal */}
+                  <ButtonSecondary content="Cancel" />
+                  <ButtonPrimary content="Delete" />
+                </form>
+              </div>
+            </div>
+          </dialog>
+        </div>
+      )}
+      <div className="pet-input-button flex justify-between">
+        <ButtonSecondary content="Cancel" />{" "}
+        <ButtonPrimary content="Update Pet" type="submit" />
+      </div>
     </form>
   );
 }
 
-export default function CreatePet() {
+export function CreatePet() {
   const [haveImage, setImage] = useState(false);
   return (
     <div className="pet-input-container">
@@ -211,9 +243,19 @@ export default function CreatePet() {
       <div className="pet-input">
         <PetInputForm />
       </div>
-      <div className="pet-input-button flex justify-between">
-        <ButtonSecondary content="Cancel" />{" "}
-        <ButtonPrimary content="Create Pet" />
+    </div>
+  );
+}
+
+export function EditPet() {
+  const [haveImage, setImage] = useState(false);
+  return (
+    <div className="pet-input-container">
+      <Box className="h-[15rem] mb-[60px]">
+        <UploadPetImage />
+      </Box>
+      <div className="pet-input">
+        <PetInputForm editPet={true} />
       </div>
     </div>
   );

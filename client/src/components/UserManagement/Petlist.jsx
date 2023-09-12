@@ -2,7 +2,7 @@ import { ButtonPrimary } from "../systemdesign/Button";
 import YourPet from "./UserPetsList/YourPet";
 import Footer from "../systemdesign/Footer";
 import { useState } from "react";
-import CreatePet from "./UserPetsList/PetProfile";
+import { CreatePet, EditPet } from "./UserPetsList/PetProfile";
 import { ArrowLeftIcon, PetIcon } from "../systemdesign/Icons";
 
 function Petlist() {
@@ -43,8 +43,7 @@ function Petlist() {
         </div>
         {showYourPet && <YourPet />}{" "}
         {/* เรนเดอร์ YourPet เฉพาะเมื่อ showYourPet เป็น true */}
-        {buttonClicked && <CreatePet />}{" "}
-        {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
+        {buttonClicked && <EditPet />} {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
       </div>
     </>
   );

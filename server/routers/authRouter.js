@@ -11,16 +11,17 @@ authRouter.post("/login", async (req, res) => {
   let value = [req.body.email];
   if (role === "pet_owners") {
     query =
-      "select pet_owner_email,pet_owner_password from pet_owner_profile where pet_owner_email = $1";
+      "select pet_owner_email,pet_owner_password, * from pet_owner_profile where pet_owner_email = $1";
   } else {
     query =
-      "select pet_sitter_email,pet_sitter_password from pet_sitter_profile where pet_sitter_email = $1";
+      "select pet_sitter_email,pet_sitter_password, * from pet_sitter_profile where pet_sitter_email = $1";
   }
   // console.log(query);
+  let result;
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
-    // console.log(valid);
+    // console.log(valid.rows[0].pet_owner_id);
     if (!valid.rows.length) {
       return res.json({ message: "Invalid email!" });
     }
@@ -33,11 +34,13 @@ authRouter.post("/login", async (req, res) => {
     if (!validPassword) {
       return res.json({ message: "Invalid password!" });
     }
+    result = valid.rows[0];
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
   return res.json({
     message: "User profile has been verified successfully",
+    user: result,
   });
 });
 

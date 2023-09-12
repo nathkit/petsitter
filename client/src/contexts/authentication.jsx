@@ -3,6 +3,7 @@ import { useState } from "react";
 import { supabase } from "./supabase.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { object } from "yup";
 
 const AuthContext = React.createContext();
 
@@ -11,6 +12,7 @@ function AuthProvider(props) {
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
   const [role, setRole] = useState("pet_owners");
+  const [userFromSupabaseAuth, setUserFromSupabaseAuth] = useState({});
   const [user, setUser] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [alertMessage, setAlertMessage] = useState({
@@ -43,6 +45,34 @@ function AuthProvider(props) {
           email: values.email,
           password: values.password,
         });
+        const resultUser = serverRespond.data.user;
+
+        // role condition *****************************
+        if (role === "pet_owners") {
+          const newUser = {
+            yourName: resultUser.pet_owner_name,
+            email: resultUser.pet_owner_email,
+            idNumber: resultUser.pet_owner_id_number,
+            phone: resultUser.pet_owner_phone,
+            dateOfBirth: resultUser.pet_owner_date_of_birth,
+            imgUrl: resultUser.pet_owner_image,
+            userId: resultUser.pet_owner_id,
+          };
+          setUser(newUser);
+          // console.log(newUser);
+        } else {
+          const newUser = {
+            yourName: resultUser.pet_sitter_name,
+            email: resultUser.pet_sitter_email,
+            idNumber: resultUser.pet_sitter_id_number,
+            phone: resultUser.pet_sitter_phone,
+            // dateOfBirth: resultUser.pet_sitter_date_of_birth,
+            imgUrl: resultUser.pet_sitter_image,
+            userId: resultUser.pet_sitter_id,
+          };
+          setUser(newUser);
+          // console.log(newUser);
+        }
 
         setAlertMessage({
           message: serverRespond.data.message,
@@ -111,8 +141,10 @@ function AuthProvider(props) {
     await supabase.auth.getUser().then((value) => {
       if (value.data?.user) {
         // console.log(value.data);
-        setUser(value.data.user);
-        setIsAuthenticated(value.data.user.aud === "authenticated");
+        setUserFromSupabaseAuth(value.data.user);
+        if (user || userFromSupabaseAuth) {
+          setIsAuthenticated(true);
+        }
       }
     });
   };

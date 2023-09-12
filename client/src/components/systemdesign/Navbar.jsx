@@ -15,6 +15,7 @@ function Navbar() {
 
   useEffect(() => {
     getUserData();
+    // console.log(user);
     isAuthenticated && getProfileImage(user);
   }, [user.email]);
 
@@ -45,7 +46,11 @@ function Navbar() {
       {
         icon: UserIcon,
         content: "Profile",
+<<<<<<< HEAD
         navigate: () => navigate("/usermanagement"),
+=======
+        navigate: () => navigate(`/userManagement/${user.userId}`),
+>>>>>>> 39f9a46 (set upload avatar)
       },
       {
         icon: PetIcon,

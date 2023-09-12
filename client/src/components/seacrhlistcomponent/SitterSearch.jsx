@@ -125,7 +125,7 @@ function SitterSearch({ onSearch }) {
               type="text"
               id="seacrh"
               className="peer/search outline-none flex w-full h-[48px] py-3 pl-3 pr-4 border-solid rounded-[8px]
-              border-[#DCDFED] border-[1px] focus:border-orange-300"
+              border-[#DCDFED] border-[1px] focus:border-orange-300 bg-etc-white"
               onChange={(e) => handleSearchText(e)}
               value={searchData.search}
               onFocus={() => setFocus(true)}
@@ -170,8 +170,7 @@ function SitterSearch({ onSearch }) {
                       : ""
                   }
                   `}
-                onClick={(e) => handleRating(e, rate)}
-              >
+                onClick={(e) => handleRating(e, rate)}>
                 <span className="pr-[3px] font-Satoshi ">{rate}</span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
@@ -186,10 +185,9 @@ function SitterSearch({ onSearch }) {
         <div className="Experience">
           <div className="text-[16px] font-bold pb-4"> Experience: </div>
           <select
-            className="select w-[346px] text-[#7B7E8F] border-[#DCDFED]"
+            className="select w-[346px] text-[#7B7E8F] border-[#DCDFED] bg-etc-white"
             onChange={(e) => handleExperience(e)}
-            value={searchData.exp}
-          >
+            value={searchData.exp}>
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}

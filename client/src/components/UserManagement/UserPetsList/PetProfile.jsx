@@ -58,7 +58,7 @@ function PetInputForm(props) {
         <label htmlFor="petName">Pet Name*</label>
         <input
           style={formik.touched.petName && formik.errors.petName && errorForm}
-          className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12"
+          className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white"
           id="petName"
           name="petName"
           type="text"
@@ -76,7 +76,7 @@ function PetInputForm(props) {
           <label htmlFor="petType">Pet Type*</label>
           <select
             style={formik.touched.petType && formik.errors.petType && errorForm}
-            className="select outline-none flex items-center self-stretch border-[1px] rounded-[8px] border-gray-200 text-body2 text-gray-400 hover:border-orange-500 h-12"
+            className="select outline-none flex items-center self-stretch border-[1px] rounded-[8px] border-gray-200 text-body2 text-gray-400 hover:border-orange-500 h-12 bg-etc-white"
             id="petType"
             name="petType"
             type="text"
@@ -100,7 +100,7 @@ function PetInputForm(props) {
           <label htmlFor="breed">Breed*</label>
           <input
             style={formik.touched.breed && formik.errors.breed && errorForm}
-            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12"
+            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white"
             id="breed"
             name="breed"
             type="text"
@@ -119,7 +119,7 @@ function PetInputForm(props) {
           <label htmlFor="sex">Sex*</label>
           <select
             style={formik.touched.sex && formik.errors.sex && errorForm}
-            className="select outline-none flex items-center self-stretch border-[1px] rounded-[8px] border-gray-200 text-body2 text-gray-400 hover:border-orange-500 h-12"
+            className="select outline-none flex items-center self-stretch border-[1px] rounded-[8px] border-gray-200 text-body2 text-gray-400 hover:border-orange-500 h-12 bg-etc-white"
             id="sex"
             name="sex"
             type="text"
@@ -140,7 +140,7 @@ function PetInputForm(props) {
           <label htmlFor="age">Age (Month)*</label>
           <input
             style={formik.touched.age && formik.errors.age && errorForm}
-            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12"
+            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white"
             id="age"
             name="age"
             type="text"
@@ -159,7 +159,7 @@ function PetInputForm(props) {
           <label htmlFor="color">Color*</label>
           <input
             style={formik.touched.color && formik.errors.color && errorForm}
-            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12"
+            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white"
             id="color"
             name="color"
             type="text"
@@ -176,7 +176,7 @@ function PetInputForm(props) {
           <label htmlFor="weight">Weight (Kilogram)*</label>
           <input
             style={formik.touched.weight && formik.errors.weight && errorForm}
-            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12"
+            className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white"
             id="weight"
             name="weight"
             type="number"
@@ -194,7 +194,7 @@ function PetInputForm(props) {
       <div className="outline-none flex flex-col item-start gap-1 w-full pt-10 mb-[60px] border-t-[1px] border-gray-200">
         <label htmlFor="about">About</label>
         <textarea
-          className="outline-none gap-2 py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-[140px]"
+          className="outline-none gap-2 py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-[140px] bg-etc-white"
           id="about"
           name="about"
           type="text"

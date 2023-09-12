@@ -103,8 +103,7 @@ function FilterBar() {
                       : ""
                   }
                   `}
-                onClick={(e) => handleRating(e, rate)}
-              >
+                onClick={(e) => handleRating(e, rate)}>
                 <span className="pr-[3px] font-Satoshi ">{rate}</span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
@@ -116,10 +115,9 @@ function FilterBar() {
         <div className="flex items-center gap-3 w-[244px]">
           <div className="font-bold">Experience: </div>
           <select
-            className="select w-full text-[#7B7E8F] border-[#DCDFED]"
+            className="select w-full text-[#7B7E8F] border-[#DCDFED] bg-etc-white"
             defaultValue={allExp[0].value}
-            onChange={(e) => handleExperience(e)}
-          >
+            onChange={(e) => handleExperience(e)}>
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}

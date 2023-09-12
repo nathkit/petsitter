@@ -5,6 +5,10 @@ import Petlist from "../components/UserManagement/Petlist";
 import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
 import { BookingStatusProvider } from "../contexts/BookingStatusContext";
 import UserProfile from "../components/UserManagement/UserProfile";
+import ReviewButton from "../components/UserManagement/UserReview/ReviewButton";
+import YourReviewButton from "../components/UserManagement/UserReview/YourReviewButton";
+import UserProfile from "../components/UserManagement/UserProfile";
+
 
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState("#ff7037");
@@ -105,6 +109,8 @@ function UserManagementPage() {
             {activeSection === "bookingHistory" && <BookingHistory />}
           </div>
         </div>
+        <ReviewButton />
+        <YourReviewButton />
       </BookingStatusProvider>
     </>
   );

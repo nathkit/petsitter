@@ -1,11 +1,11 @@
-import ReviewButton from "../components/Management/ReviewButton";
-import YourReviewButton from "../components/Management/YourReviewButton";
 import Navbar from "../components/systemdesign/Navbar";
 import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
 import { useState } from "react";
 import Petlist from "../components/UserManagement/Petlist";
 import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
 import { BookingStatusProvider } from "../contexts/BookingStatusContext";
+import ReviewButton from "../components/UserManagement/UserReview/ReviewButton";
+import YourReviewButton from "../components/UserManagement/UserReview/YourReviewButton";
 
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState("#ff7037");

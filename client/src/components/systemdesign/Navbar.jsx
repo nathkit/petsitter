@@ -27,11 +27,10 @@ function Navbar() {
         onMouseLeave={() => setHoveredItemId(null)}
         className={`${
           hoveredItemId === id
-            ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500"
+            ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500 active:text-etc-white"
             : ""
         } ${content === "Log Out" ? "border-t-2" : ""}`}
-        onClick={navigate}
-      >
+        onClick={navigate}>
         <a>
           <Icon
             color="#3A3B46"
@@ -73,8 +72,7 @@ function Navbar() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2"
-          >
+            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2">
             {menuItems.map((item, idx) => (
               <ListItem
                 key={idx}
@@ -91,8 +89,7 @@ function Navbar() {
     return (
       <button
         className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600"
-        onClick={() => navigate("/login")}
-      >
+        onClick={() => navigate("/login")}>
         Login
       </button>
     );
@@ -108,8 +105,7 @@ function Navbar() {
           isAuthenticated
             ? "flex items-center gap-6"
             : "flex items-center gap-4"
-        }
-      >
+        }>
         <LoginButton />
         <div>
           <ButtonPrimary

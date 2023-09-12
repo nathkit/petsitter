@@ -2,7 +2,7 @@ import { ButtonPrimary } from "../systemdesign/Button";
 import YourPet from "./UserPetsList/YourPet";
 import Footer from "../systemdesign/Footer";
 import { useState } from "react";
-import CreatePet from "./UserPetsList/PetProfile";
+import { CreatePet, EditPet } from "./UserPetsList/PetProfile";
 import { ArrowLeftIcon, PetIcon } from "../systemdesign/Icons";
 
 function Petlist() {
@@ -14,7 +14,7 @@ function Petlist() {
       <div>
         <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
           {buttonClicked && !showCreatePetButton ? (
-            <p className=" text-headline3 flex items-center">
+            <p className=" text-headline3 flex items-center gap-[10px]">
               {" "}
               <ArrowLeftIcon
                 color="#7B7E8F"
@@ -43,8 +43,7 @@ function Petlist() {
         </div>
         {showYourPet && <YourPet />}{" "}
         {/* เรนเดอร์ YourPet เฉพาะเมื่อ showYourPet เป็น true */}
-        {buttonClicked && <CreatePet />}{" "}
-        {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
+        {buttonClicked && <EditPet />} {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
       </div>
     </>
   );

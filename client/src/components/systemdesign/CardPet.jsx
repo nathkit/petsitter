@@ -117,7 +117,7 @@ export function CardPet2(props) {
                       <div className="">{item.type}</div>
                     </div>
                   </div>
-                  {props.children(index)}
+                  {props.children(index, isInvalidType)}
                 </div>
               </div>
             );

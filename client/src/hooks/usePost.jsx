@@ -25,6 +25,32 @@ const usePosts = () => {
     }
   };
 
+  const createPetProfile = async (user, data) => {
+    const userEmail = user.email;
+    try {
+      const result = await axios.post(
+        `http://localhost:4000/accounts/${userEmail}/pets/`,
+        data
+      );
+      navigate("/usermanagement");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updatePetProfile = async (user, data) => {
+    const userEmail = user.email;
+    try {
+      const result = await axios.put(
+        `http://localhost:4000/accounts/${userEmail}/pets/`,
+        data
+      );
+      navigate("/usermanagement");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getTypeStyle = (type) => {
     let textStyle = "";
     let bgColor = "";
@@ -65,6 +91,8 @@ const usePosts = () => {
     profileImage,
     getProfileImage,
     getTypeStyle,
+    createPetProfile,
+    updatePetProfile,
   };
 };
 

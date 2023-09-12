@@ -45,7 +45,7 @@ function Navbar() {
       {
         icon: UserIcon,
         content: "Profile",
-        navigate: () => navigate("/profile"),
+        navigate: () => navigate("/usermanagement"),
       },
       {
         icon: PetIcon,

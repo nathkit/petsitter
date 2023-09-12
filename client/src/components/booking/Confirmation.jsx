@@ -51,7 +51,6 @@ function Confirmation(props) {
 
 export function Delete(props) {
   const navigate = useNavigate();
-
   return (
     <>
       <button

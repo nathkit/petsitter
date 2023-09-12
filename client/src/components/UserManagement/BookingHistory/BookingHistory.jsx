@@ -3,6 +3,13 @@ import Line from "../../../assets/img/Line.png";
 import BookingHistoryDetail from "./BookingHistoryDetail";
 import { useContext } from "react";
 import { BookingStatusContext } from "../../../contexts/BookingStatusContext";
+import {
+  InService,
+  WaitingforConfirm,
+  WaitingforService,
+  Success,
+  Canceled
+} from "./BookingStatusMsg";
 
 export const petData = [
   {
@@ -10,7 +17,7 @@ export const petData = [
     trade_name: "Kid friendly",
     pet_sitter_name: "Jane",
     transaction_date: "8/16/2023",
-    status: "Test2",
+    status: "Waiting for confirmation",
     date: "3/11/2022",
     starttime: "12 PM",
     endtime: "13 PM",
@@ -26,7 +33,7 @@ export const petData = [
     trade_name: "We love cat and your cat",
     pet_sitter_name: "Maison",
     transaction_date: "8/16/2023",
-    status: "Waiting for service",
+    status: "Canceled",
     date: "2/3/2023",
     starttime: "12 PM",
     endtime: "13 PM",
@@ -79,7 +86,9 @@ function BookingHistory() {
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
   const handleClick = (id) => {
     const updateStatus = data.map((card) => {
-      return card.id === id ? { ...card, status: "Test" } : card;
+      return card.id === id
+        ? { ...card, status: "Waiting for service" }
+        : card;
     });
     setStatus(updateStatus);
   };
@@ -90,13 +99,19 @@ function BookingHistory() {
         data.map((card) => {
           return (
             <div
-              className="booking-history-container border border-gray-200 rounded-2xl p-6"
+              className={`booking-history-container rounded-2xl p-6 ${
+                card.status === "In service" ? "border border-blue-500" : "border border-gray-200"
+              }`}
               key={card.id}
               onClick={() =>
                 document.getElementById("booking-detail").showModal()
               }
             >
-              <BookingHistoryDetail />
+              <BookingHistoryDetail
+                key={card.id}
+                card={card}
+                handleClick={handleClick}
+              />
               <header className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4">
                 <div className="flex gap-2 items-center">
                   <Avatar alt="avatar" src={card.imageSrc} className="border" />
@@ -110,7 +125,19 @@ function BookingHistory() {
                     Transaction date: {card.transaction_date}
                   </p>
                   <h5
-                    className=" text-right text-body2"
+                   className={`text-right text-body2 ${
+                    card.status === "In service"
+                      ? "text-blue-500"
+                      : card.status === "Waiting for confirmation"
+                      ? "text-pink-500"
+                      : card.status === "Waiting for service"
+                      ? "text-yellow-200"
+                      : card.status === "Success"
+                      ? "text-green-500"
+                      : card.status === "Canceled"
+                      ? "text-etc-red"
+                      : ""
+                  }`}
                     onClick={() => handleClick(card.id)}
                   >
                     {card.status}
@@ -135,8 +162,14 @@ function BookingHistory() {
                   <div className="text-gray-600">{card.pet_name}</div>
                 </div>
               </main>
-              <div className="text-gray-400 flex-1 w-auto bg-gray-100 p-4 mt-9 rounded-lg">
-                {card.status_message}
+              <div>
+                {card.status === "Waiting for confirmation" && (
+                  <WaitingforConfirm />
+                )}
+                {card.status === "Waiting for service" && <WaitingforService />}
+                {card.status === "In service" && <InService />}
+                {card.status === "Success" && <Success />}
+                {card.status === "Canceled" && <Canceled />}
               </div>
             </div>
           );

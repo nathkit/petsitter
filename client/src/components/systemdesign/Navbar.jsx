@@ -27,7 +27,7 @@ function Navbar() {
         onMouseLeave={() => setHoveredItemId(null)}
         className={`${
           hoveredItemId === id
-            ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500"
+            ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500 active:text-etc-white"
             : ""
         } ${content === "Log Out" ? "border-t-2" : ""}`}
         onClick={navigate}

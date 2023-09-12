@@ -2,7 +2,7 @@ import { CalendarIcon, ClockIcon } from "../systemdesign/Icons";
 import { ButtonPrimary } from "../systemdesign/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./Booking.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns-tz";
@@ -27,7 +27,7 @@ function BookingDate() {
       <dialog id="my_modal_3" className="modal ">
         <form
           method="dialog"
-          className="modal-box max-w-[560px] px-10 py-0 bg-etc-white"
+          className="modal-box max-w-[560px] px-10 py-0 bg-etc-white "
         >
           <div className="flex justify-between my-6">
             <h3 className="text-headline3">Booking</h3>
@@ -35,11 +35,11 @@ function BookingDate() {
           </div>
           <hr />
           <div className="my-10 h-[20%]">
-            <p className="mb-6 text-body1">
+            <p className="mb-6 text-body1 text-start">
               Select date and time you want to schedule the service.
             </p>
             <div>
-              <div className=" flex items-center justify-around mb-6">
+              <div className=" flex items-center justify-around mb-6 ">
                 <CalendarIcon />
                 <DatePicker
                   selected={selectedDate}
@@ -48,6 +48,7 @@ function BookingDate() {
                   minDate={new Date()}
                   placeholderText={format(new Date(), "dd MMMM yyyy")}
                   className="input input-bordered w-[27.5rem]"
+                  calendarClassName="rounded-xl "
                 />
               </div>
               <div className="flex items-center justify-around mb-[3.75rem]">

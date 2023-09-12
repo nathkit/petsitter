@@ -28,3 +28,11 @@ body {
   background-color: #ffff;
 }
 
+:root {
+  --n: 0 !important;
+  --nc: 0 !important;
+}
+
+.modal-box {
+  overflow: visible !important;
+}

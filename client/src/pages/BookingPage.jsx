@@ -13,7 +13,6 @@ import {
 
 function BookingPage() {
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
-  const [disableButtonBooking2, setDisableButtonBooking2] = useState(true);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
   const nextStep = () => {
@@ -59,9 +58,7 @@ function BookingPage() {
           {step === 1 && (
             <Booking1 setDisableButtonBooking1={setDisableButtonBooking1} />
           )}
-          {step === 2 && (
-            <Booking2 setDisableButtonBooking2={setDisableButtonBooking2} />
-          )}
+          {step === 2 && <Booking2 />}
           {step === 3 && (
             <Booking3 setDisableButtonBooking3={setDisableButtonBooking3} />
           )}
@@ -71,7 +68,6 @@ function BookingPage() {
                 content={"Back"}
                 onClick={() => {
                   setDisableButtonBooking1("");
-                  setDisableButtonBooking2(true);
                   prevStep();
                 }}
                 disabled={step === 1}
@@ -81,13 +77,9 @@ function BookingPage() {
               <ButtonSecondary
                 content={"Next"}
                 onClick={() => {
-                  setDisableButtonBooking1("");
-                  setDisableButtonBooking2("");
                   nextStep();
                 }}
-                disabled={
-                  disableButtonBooking1.length <= 0 && disableButtonBooking2
-                }
+                disabled={disableButtonBooking1.length <= 0}
               />
             )}
             {step === 3 && (

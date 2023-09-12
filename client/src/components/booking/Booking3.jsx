@@ -8,14 +8,16 @@ import { useState } from "react";
 function Booking3({ setDisableButtonBooking3 }) {
   const [selectedOption, setSelectedOption] = useState("credit");
 
-  const [credit, setCredit] = useState(null);
+  const [credit, setCredit] = useState("#ff7037");
   const [wallet, setWallet] = useState(null);
 
   const handleCreditClick = () => {
     setSelectedOption("credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
+    setWallet(null);
   };
   const handleCashClick = () => {
     setSelectedOption("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
+    setCredit(null);
   };
 
   return (
@@ -23,32 +25,32 @@ function Booking3({ setDisableButtonBooking3 }) {
       <div className="bg-etc-white h-fit p-10">
         <div className="flex justify-between w-full mb-12">
           <button
-            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
           
-            ${selectedOption === "credit" ? "focus:border-orange-500" : ""}`}
-            onClick={handleCreditClick}
-            onFocus={() => {
+            ${
+              selectedOption === "credit"
+                ? "border-orange-500 text-orange-500"
+                : ""
+            }`}
+            onClick={() => {
+              handleCreditClick();
               setCredit("#ff7037");
-            }}
-            onBlur={() => {
-              setCredit("#3A3B46");
             }}
           >
             <CreditCardIcon color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
           <button
-            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 focus:text-orange-500
-            ${selectedOption === "cash" ? "focus:border-orange-500" : ""}`}
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
+            ${
+              selectedOption === "cash"
+                ? "border-orange-500 text-orange-500"
+                : ""
+            }`}
             onClick={() => {
               handleCashClick();
-              setDisableButtonBooking3(false);
-            }}
-            onFocus={() => {
               setWallet("#ff7037");
-            }}
-            onBlur={() => {
-              setWallet("#3A3B46");
+              setDisableButtonBooking3(false);
             }}
           >
             <WalletIcon color={wallet} />
@@ -128,63 +130,89 @@ function Credit({ setDisableButtonBooking3 }) {
 
   return (
     <div>
-      <div className=" flex justify-between flex-wrap gap-10">
-        <TextField
-          id="cardNumber"
-          name="cardNumber"
-          label="Card Number"
-          value={formik.values.cardNumber}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.cardNumber && Boolean(formik.errors.cardNumber)}
-          helperText={formik.touched.cardNumber && formik.errors.cardNumber}
-          placeholder="xxxx-xxxx-xxxx-xxxx"
-          required
-          className="w-[47%]"
-          color="warning"
-        />
-        <TextField
-          id="cardOwner"
-          name="cardOwner"
-          label="Card Owner"
-          value={formik.values.cardOwner}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.cardOwner && Boolean(formik.errors.cardOwner)}
-          helperText={formik.touched.cardOwner && formik.errors.cardOwner}
-          placeholder="Card owner name"
-          required
-          className="w-[47%]"
-          color="warning"
-        />
-        <TextField
-          id="expiryDate"
-          name="expiryDate"
-          label="Expiry Date"
-          value={formik.values.expiryDate}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.expiryDate && Boolean(formik.errors.expiryDate)}
-          helperText={formik.touched.expiryDate && formik.errors.expiryDate}
-          placeholder="xx/xx"
-          required
-          className="w-[47%]"
-          color="warning"
-        />
-        <TextField
-          id="CVC"
-          name="CVC"
-          label="CVC/CVV"
-          value={formik.values.CVC}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.CVC && Boolean(formik.errors.CVC)}
-          helperText={formik.touched.CVC && formik.errors.CVC}
-          placeholder="xxx"
-          required
-          className="w-[47%]"
-          color="warning"
-        />
+      <div className=" flex  justify-between flex-wrap gap-10 w-full">
+        <div className="flex w-full">
+          <div className=" flex flex-col w-full mr-10">
+            <label htmlFor="cardNumber">Card Number*</label>
+            <TextField
+              id="cardNumber"
+              name="cardNumber"
+              // label="Card Number"
+              value={formik.values.cardNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.cardNumber && Boolean(formik.errors.cardNumber)
+              }
+              helperText={formik.touched.cardNumber && formik.errors.cardNumber}
+              placeholder="xxxx-xxxx-xxxx-xxxx"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{ sx: { borderRadius: " 8px" } }}
+            />
+          </div>
+          <div className=" flex flex-col w-full">
+            <label htmlFor="cardOwner">Card Owner*</label>
+            <TextField
+              id="cardOwner"
+              name="cardOwner"
+              // label="Card Owner"
+              value={formik.values.cardOwner}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.cardOwner && Boolean(formik.errors.cardOwner)
+              }
+              helperText={formik.touched.cardOwner && formik.errors.cardOwner}
+              placeholder="Card owner name"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{ sx: { borderRadius: " 8px" } }}
+            />
+          </div>
+        </div>
+        <div className="flex w-full">
+          <div className=" flex flex-col w-full mr-10">
+            <label htmlFor="expiryDate">Expiry Date*</label>
+            <TextField
+              id="expiryDate"
+              name="expiryDate"
+              // label="Expiry Date"
+              value={formik.values.expiryDate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+              }
+              helperText={formik.touched.expiryDate && formik.errors.expiryDate}
+              placeholder="xx/xx"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{ sx: { borderRadius: " 8px" } }}
+            />
+          </div>
+          <div className=" flex flex-col w-full ">
+            <label htmlFor="CVC">CVC/CVV*</label>
+            <TextField
+              id="CVC"
+              name="CVC"
+              // label="CVC/CVV"
+              value={formik.values.CVC}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.CVC && Boolean(formik.errors.CVC)}
+              helperText={formik.touched.CVC && formik.errors.CVC}
+              placeholder="xxx"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{ sx: { borderRadius: " 8px" } }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

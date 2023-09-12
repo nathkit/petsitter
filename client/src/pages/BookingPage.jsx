@@ -10,8 +10,10 @@ import {
   ButtonPrimary,
   ButtonSecondary,
 } from "../components/systemdesign/Button";
+import { useNavigate } from "react-router-dom";
 
 function BookingPage() {
+  const navigate = useNavigate();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
@@ -93,6 +95,7 @@ function BookingPage() {
                 buttonName={"Confirm Booking"}
                 buttonWidth={"175px"}
                 disabled={disableButtonBooking3}
+                onClick={() => navigate("/booking/confirmation")}
               />
             )}
           </div>

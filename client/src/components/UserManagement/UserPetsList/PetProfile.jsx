@@ -9,6 +9,7 @@ import { Formik, Form, Field, useFormik } from "formik";
 import * as Yup from "yup";
 import { UploadPetImage } from "../../systemdesign/uploadImage";
 import { Box } from "@mui/system";
+import { Delete } from "../../booking/Confirmation";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -205,24 +206,17 @@ function PetInputForm(props) {
       </div>
       {props.editPet && (
         <div className="pet-input-button flex items-center mb-[60px]">
-          <button
-            className="btn border-none"
-            onClick={() => document.getElementById("my_modal_4").showModal()}>
-            <ButtonGhost content="Delete Pet" icon={TrashIcon} width="109px" />{" "}
-          </button>
-          <dialog id="my_modal_4" className="modal">
-            <div className="modal-box w-11/12 max-w-5xl bg-etc-white">
-              <h3 className="font-bold text-lg">Hello!</h3>
-              <p className="py-4">Click the button below to close</p>
-              <div className="modal-action">
-                <form method="dialog" className="flex justify-between">
-                  {/* if there is a button, it will close the modal */}
-                  <ButtonSecondary content="Cancel" />
-                  <ButtonPrimary content="Delete" />
-                </form>
-              </div>
-            </div>
-          </dialog>
+          <Delete
+            title={"Delete Confirmation"}
+            description={"Are you sure to delete this pet?"}
+            secondaryContent={"Cancel"}
+            secondaryWidth={"120px"}
+            primaryContent={"Delete"}
+            primaryWidth={"142px"}
+            buttonName={"Delete"}
+            buttonWidth={"175px"}
+            onClick={() => navigate("/booking/confirmation")}
+          />
         </div>
       )}
       <div className="pet-input-button flex justify-between">

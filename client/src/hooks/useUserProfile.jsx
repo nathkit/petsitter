@@ -24,14 +24,21 @@ function useUserProfile() {
   const updateUserData = async (data) => {
     // console.log(data);
     // console.log(params.ownerId);
-    // try {
-    //   const result = await axios.put(
-    //     `http://localhost:4000/accounts/${params.ownerId}`,
-    //     data
-    //   );
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    // const { user, error } = await supabase.auth.updateUser({
+    //   data: {
+    //     first_name: "555555555",
+    //     last_name: "55555555",
+    //     age: 5555555,
+    //   },
+    // });
+    try {
+      const result = await axios.put(
+        `http://localhost:4000/accounts/${params.ownerId}`,
+        data
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const fetchUserData = async () => {

@@ -48,17 +48,18 @@ const validationSchema = yup.object({
 });
 
 const profile = () => {
+  // user come from useAuth *****************************************
   const { user } = useAuth();
   const { updateUserData, handleAvatar } = useUserProfile();
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
   const params = useParams();
 
-  // formik function ***********************
+  // formik function ***********************************************
   const formik = useFormik({
-    // pull from server *********************
+    // pull from server *********************************************
     initialValues: {
-      yourName: user.yourName,
+      yourName: user.full_name,
       email: user.email,
       idNumbers: user.idNumbers,
       phone: user.phone,
@@ -96,8 +97,13 @@ const profile = () => {
             img={
               avatarUrl ? (
                 <img src={avatarUrl} alt="avatar" width="300" height="300" />
-              ) : user.imgUrl ? (
-                <img src={user.imgUrl} alt="avatar" width="300" height="300" />
+              ) : user.profile_image_path ? (
+                <img
+                  src={user.profile_image_path}
+                  alt="avatar"
+                  width="300"
+                  height="300"
+                />
               ) : null
             }
             onChange={async (e) => {
@@ -118,7 +124,7 @@ const profile = () => {
             value={
               formik.values.yourName !== ""
                 ? formik.values.yourName
-                : user.yourName
+                : user.full_name
             }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

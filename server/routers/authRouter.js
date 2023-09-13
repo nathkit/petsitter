@@ -4,24 +4,32 @@ import bcrypt from "bcrypt";
 
 const authRouter = Router();
 
+authRouter.post("/", async (req, res) => {
+  const query = `select id,full_name, email, id_number, phone, date_of_birth,profile_image_path from users where id = $1`;
+  let result;
+  try {
+    result = await pool.query(query, [req.body.id]);
+  } catch (err) {
+    return res.json({
+      message: "Request error occurred",
+    });
+  }
+  return res.json({
+    message: "Fetch data successfully",
+    data: result.rows[0],
+  });
+});
+
 // login router ****************************
 authRouter.post("/login", async (req, res) => {
   const role = req.body.role;
-  let query;
+  let query = "select email,password,id from users where email = $1";
   let value = [req.body.email];
-  if (role === "pet_owners") {
-    query =
-      "select pet_owner_email,pet_owner_password, * from pet_owner_profile where pet_owner_email = $1";
-  } else {
-    query =
-      "select pet_sitter_email,pet_sitter_password, * from pet_sitter_profile where pet_sitter_email = $1";
-  }
-  // console.log(query);
   let result;
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
-    // console.log(valid.rows[0].pet_owner_id);
+    // console.log(valid.rows[0]);
     if (!valid.rows.length) {
       return res.json({ message: "Invalid email!" });
     }
@@ -34,27 +42,21 @@ authRouter.post("/login", async (req, res) => {
     if (!validPassword) {
       return res.json({ message: "Invalid password!" });
     }
-    result = valid.rows[0];
+    result = { id: Object.values(valid.rows[0])[2] };
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
+  // console.log(result);
   return res.json({
-    message: "User profile has been verified successfully",
-    user: result,
+    message: "User has been verified successfully",
+    data: result,
   });
 });
 
 // register router ****************************
 authRouter.post("/register", async (req, res) => {
   // check same email condition first *************************
-  let checkEmailQuery;
-  if (req.body.role === "pet_owners") {
-    checkEmailQuery =
-      "select pet_owner_email from pet_owner_profile where pet_owner_email = $1";
-  } else {
-    checkEmailQuery =
-      "select pet_sitter_email from pet_sitter_profile where pet_sitter_email = $1";
-  }
+  let checkEmailQuery = "select email from users where email = $1";
   const checkEmail = await pool.query(checkEmailQuery, [req.body.email]);
   if (checkEmail.rows.length) {
     return res.json({ message: "Email has been already used!" });
@@ -62,33 +64,20 @@ authRouter.post("/register", async (req, res) => {
 
   const created_at = new Date();
   const updated_at = new Date();
-
   const user = {
     email: req.body.email,
-    fullName: req.body.fullName,
+    name: req.body.fullName,
     phone: req.body.phone,
     password: req.body.password,
     created_at,
     updated_at,
   };
-
   const salt = await bcrypt.genSalt(10);
   // now we set user password to hashed password
   user.password = await bcrypt.hash(user.password, salt);
-
-  // query manage **************************
-  let query;
-  let value = Object.values(user);
-
-  // console.log(value);
-  // query condition **************************
-  if (req.body.role === "pet_owners") {
-    query =
-      "insert into pet_owner_profile(pet_owner_email,pet_owner_name,pet_owner_phone,pet_owner_password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
-  } else {
-    query =
-      "insert into pet_sitter_profile(pet_sitter_email,pet_sitter_name,pet_sitter_phone,pet_sitter_password,created_at, updated_at)values($1,$2,$3,$4,$5,$6)";
-  }
+  const query = `insert into users(email,full_name,phone,password,created_at, updated_at)
+                 values($1,$2,$3,$4,$5,$6)`;
+  const value = Object.values(user);
   try {
     const result = pool.query(query, value);
   } catch (err) {
@@ -108,15 +97,7 @@ authRouter.put("/resetPassword", async (req, res) => {
 
   // query condition **************************
   // console.log(req.body.role);
-  let query;
-  if (req.body.role === "pet_owners") {
-    query =
-      "update pet_owner_profile set pet_owner_password = $2 where pet_owner_email = $1";
-  } else {
-    query =
-      "update pet_sitter_profile set pet_sitter_password = $2 where pet_sitter_email = $1";
-  }
-
+  let query = `update users set password = $2 where email = $1`;
   let value = Object.values(user);
   try {
     const result = await pool.query(query, value);

@@ -11,7 +11,6 @@ function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
-  const [role, setRole] = useState("pet_owners");
   const [userFromSupabaseAuth, setUserFromSupabaseAuth] = useState({});
   const [user, setUser] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -20,65 +19,30 @@ function AuthProvider(props) {
     severity: "",
   });
 
-  const handleChangeRole = (event, newRole) => {
-    setRole(newRole);
-  };
-
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show);
   };
   // supabase handle ****************************************
 
   const handleLoginSubmit = async (values, formikHelpers) => {
-    const newValues = { ...values, role };
     try {
       const serverRespond = await axios.post(
         "http://localhost:4000/auth/login",
-        newValues
+        values
       );
-
       if (
-        serverRespond.data.message ===
-        "User profile has been verified successfully"
+        serverRespond.data.message === "User has been verified successfully"
       ) {
         const result = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
-        const resultUser = serverRespond.data.user;
-
-        // role condition *****************************
-        if (role === "pet_owners") {
-          const newUser = {
-            yourName: resultUser.pet_owner_name,
-            email: resultUser.pet_owner_email,
-            idNumber: resultUser.pet_owner_id_number,
-            phone: resultUser.pet_owner_phone,
-            dateOfBirth: resultUser.pet_owner_date_of_birth,
-            imgUrl: resultUser.pet_owner_image,
-            userId: resultUser.pet_owner_id,
-          };
-          setUser(newUser);
-          // console.log(newUser);
-        } else {
-          const newUser = {
-            yourName: resultUser.pet_sitter_name,
-            email: resultUser.pet_sitter_email,
-            idNumber: resultUser.pet_sitter_id_number,
-            phone: resultUser.pet_sitter_phone,
-            // dateOfBirth: resultUser.pet_sitter_date_of_birth,
-            imgUrl: resultUser.pet_sitter_image,
-            userId: resultUser.pet_sitter_id,
-          };
-          setUser(newUser);
-          // console.log(newUser);
-        }
-
         setAlertMessage({
           message: serverRespond.data.message,
           severity: "success",
         });
-
+        // console.log(serverRespond.data.data);
+        setUser(serverRespond.data.data);
         formikHelpers.resetForm();
         nav("/");
       } else {
@@ -96,7 +60,15 @@ function AuthProvider(props) {
   const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      // options: {
+      //   data: {
+      //     first_name: "asdfasfasfdasf",
+      //     last_name: "kkkkk",
+      //     age: 27,
+      //   },
+      // },
     });
+    // console.log({ data, error });
   };
 
   const signInWithFacebook = async () => {
@@ -106,11 +78,10 @@ function AuthProvider(props) {
   };
 
   const handleRegisterSubmit = async (values, formikHelpers) => {
-    const newValues = { ...values, role };
     try {
       const serverRespond = await axios.post(
         "http://localhost:4000/auth/register",
-        newValues
+        values
       );
       if (
         serverRespond.data.message ===
@@ -119,6 +90,13 @@ function AuthProvider(props) {
         const { data, error } = await supabase.auth.signUp({
           email: values.email,
           password: values.password,
+          // options: {
+          //   data: {
+          //     email: "kkkkk",
+          //     name: "John",
+          //     phone: 27,
+          //   },
+          // },
         });
         setAlertMessage({
           message: serverRespond.data.message,
@@ -140,13 +118,17 @@ function AuthProvider(props) {
   const getUserData = async () => {
     await supabase.auth.getUser().then((value) => {
       if (value.data?.user) {
-        // console.log(value.data);
+        console.log(value.data);
         setUserFromSupabaseAuth(value.data.user);
         if (user || userFromSupabaseAuth) {
           setIsAuthenticated(true);
         }
       }
     });
+    // console.log(user);
+    const respondes = await axios.post("http://localhost:4000/auth", user);
+    // console.log(respondes.data.data);
+    setUser(respondes.data.data);
   };
 
   const sendRequestResetPassword = async (values, formikHelpers) => {
@@ -213,7 +195,6 @@ function AuthProvider(props) {
         handleRegisterSubmit,
         signInWithFacebook,
         signInWithGoogle,
-        handleChangeRole,
         handleLoginSubmit,
         getUserData,
         sendRequestResetPassword,
@@ -223,7 +204,6 @@ function AuthProvider(props) {
         handleClickShowPassword,
         setAlertMessage,
         getEvent,
-        role,
         user,
         isAuthenticated,
         showPassword,

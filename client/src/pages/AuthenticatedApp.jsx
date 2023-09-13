@@ -14,13 +14,16 @@ function AuthenticatedApp() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/booking" element={<BookingPage />} />
+      <Route path="/sitter/:sitterId/booking" element={<BookingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/resetPassword" element={<ResetPassword />} />
-      <Route path="/booking/confirmation" element={<Booking4 />} />
+      <Route
+        path="/sitter/:sitterId/booking/confirmation"
+        element={<Booking4 />}
+      />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/search" element={<SearchList />} />
-      <Route path="/userManagement" element={<UserManagementPage />} />
+      <Route path="/userManagement/:ownerId" element={<UserManagementPage />} />
       {/* <Route path="/sitter/:sitterId/reviews" element={<SitterDetailPage />} /> */}
       <Route path="/sitter/:sitterId" element={<SitterDetailPage />} />
       <Route path="*" element={<NotFoundPage />} />

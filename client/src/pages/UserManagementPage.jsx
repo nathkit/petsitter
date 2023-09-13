@@ -47,7 +47,8 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setUserIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <UserIcon hoverColor={userIconColor} onFocus={userIcon} />
               <p className="ml-3">Profile</p>
             </button>
@@ -70,7 +71,8 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setPetIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <PetIcon hoverColor={petIconColor} onFocus={petIcon} />
               <p className="ml-3">Your Pet</p>
             </button>
@@ -93,17 +95,14 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setListIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <ListIcon hoverColor={listIconColor} onFocus={listIcon} />
               <p className="ml-3">Booking History</p>
             </button>
           </div>{" "}
           <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
-            {activeSection === "profile" && (
-              <div>
-                <UserProfile />
-              </div>
-            )}
+            {activeSection === "profile" && <UserProfile />}
             {activeSection === "petlist" && <Petlist />}
             {activeSection === "bookingHistory" && <BookingHistory />}
           </div>

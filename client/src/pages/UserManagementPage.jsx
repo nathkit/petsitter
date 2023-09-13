@@ -7,17 +7,28 @@ import { BookingStatusProvider } from "../contexts/BookingStatusContext";
 import UserProfile from "../components/UserManagement/UserProfile";
 import ReviewButton from "../components/UserManagement/UserReview/ReviewButton";
 import YourReviewButton from "../components/UserManagement/UserReview/YourReviewButton";
+import { useManagement } from "../contexts/UserManagementContext";
 
 function UserManagementPage() {
-  const [userIcon, setUserIcon] = useState("#ff7037");
-  const [petIcon, setPetIcon] = useState(null);
-  const [listIcon, setListIcon] = useState(null);
+  // const [userIcon, setUserIcon] = useState("#ff7037");
+  // const [petIcon, setPetIcon] = useState(null);
+  // const [listIcon, setListIcon] = useState(null);
 
   const [userIconColor, setUserIconColor] = useState(null);
   const [petIconColor, setPetIconColor] = useState(null);
   const [listIconColor, setListIconColor] = useState(null);
 
-  const [activeSection, setActiveSection] = useState("profile");
+  // const [activeSection, setActiveSection] = useState("profile");
+  const {
+    setActiveSection,
+    activeSection,
+    userIcon,
+    setUserIcon,
+    petIcon,
+    setPetIcon,
+    listIcon,
+    setListIcon,
+  } = useManagement();
 
   return (
     <>

@@ -7,6 +7,7 @@ import {
 import { CardPet1 } from "../../components/systemdesign/CardPet";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ButtonPrimary } from "../../components/systemdesign/Button";
 
 function PetListPage() {
   const [listIcon, setListIcon] = useState(null);
@@ -69,6 +70,18 @@ function PetListPage() {
           </button>
         </div>
         <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
+          <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
+            <p className=" text-headline3 flex items-center gap-[10px]">
+              Your Pet
+            </p>
+
+            <ButtonPrimary
+              content={"Create Pet"}
+              onClick={() => {
+                navigate(`/userManagement/${userId}/pets/create`);
+              }}
+            />
+          </div>
           <CardPet1 />
         </div>
       </div>

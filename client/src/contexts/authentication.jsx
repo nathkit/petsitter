@@ -42,7 +42,10 @@ function AuthProvider(props) {
           severity: "success",
         });
         // console.log(serverRespond.data.data);
-        setUser(serverRespond.data.data);
+        setUser((prev) => {
+          return serverRespond.data.data;
+        });
+        localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
         formikHelpers.resetForm();
         nav("/");
       } else {
@@ -174,6 +177,7 @@ function AuthProvider(props) {
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
+    window.localStorage.removeItem("user");
     nav("login");
   };
 
@@ -198,8 +202,7 @@ function AuthProvider(props) {
         isAuthenticated,
         showPassword,
         alertMessage,
-      }}
-    >
+      }}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -10,24 +10,33 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const {
-    signOut,
-    getUserData,
-    user,
-    setIsAuthenticated,
-    isAuthenticated,
-    userFromSupabaseAuth,
-  } = useAuth();
+  const { signOut } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [profileImageLoaded, setProfileImageLoaded] = useState(false); // Add this state
+
+  const authenticate = () => {
+    const authToken = JSON.parse(
+      window.localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
+    );
+    if (authToken?.access_token) {
+      setIsAuthenticated(true);
+      return JSON.parse(window.localStorage.getItem("user"));
+    }
+    return null;
+  };
 
   useEffect(() => {
-    // getUserData();
-    if (user || userFromSupabaseAuth) {
-      setIsAuthenticated(true);
+    const userData = authenticate();
+    if (userData && !profileImageLoaded) {
+      // Check if profileImage has not been loaded yet
+      setUserData(userData);
+      getProfileImage(userData);
+      setProfileImageLoaded(true); // Set the flag to true after loading the image
     }
-    isAuthenticated && getProfileImage(user);
-  }, []);
-  console.log(user);
+  }, [getProfileImage, profileImageLoaded]);
+
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
@@ -40,8 +49,7 @@ function Navbar() {
             ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500 active:text-etc-white"
             : ""
         } ${content === "Log Out" ? "border-t-2" : ""}`}
-        onClick={navigate}
-      >
+        onClick={navigate}>
         <a>
           <Icon
             color="#3A3B46"
@@ -56,7 +64,7 @@ function Navbar() {
       {
         icon: UserIcon,
         content: "Profile",
-        navigate: () => navigate(`/userManagement/${user.id}`),
+        navigate: () => navigate(`/userManagement/${userData.id}`),
       },
       {
         icon: PetIcon,
@@ -83,8 +91,7 @@ function Navbar() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2"
-          >
+            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2">
             {menuItems.map((item, idx) => (
               <ListItem
                 key={idx}
@@ -101,8 +108,7 @@ function Navbar() {
     return (
       <button
         className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600"
-        onClick={() => navigate("/login")}
-      >
+        onClick={() => navigate("/login")}>
         Login
       </button>
     );
@@ -118,8 +124,7 @@ function Navbar() {
           isAuthenticated
             ? "flex items-center gap-6"
             : "flex items-center gap-4"
-        }
-      >
+        }>
         <LoginButton />
         <div>
           <ButtonPrimary

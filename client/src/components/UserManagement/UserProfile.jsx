@@ -43,7 +43,7 @@ const validationSchema = yup.object({
       "isNumber",
       "IdNumber must be a valid number and exactly 13 characters long",
       (val) =>
-        typeof val === "number" && !isNaN(val) && val.toString().length === 12
+        typeof val === "number" && !isNaN(val) && val.toString().length === 13
     ),
 });
 
@@ -89,8 +89,7 @@ const profile = () => {
         onSubmit={(e, values) => {
           formik.handleSubmit(e, values);
         }}
-        className="h-auto flex flex-col gap-[2rem] relative"
-      >
+        className="h-auto flex flex-col gap-[2rem] relative">
         {/* upload image *********************************** */}
         <Box className="h-[15rem] relative mb-10">
           <UploadImage

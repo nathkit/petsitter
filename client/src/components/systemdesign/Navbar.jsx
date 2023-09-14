@@ -10,13 +10,22 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { signOut, getUserData, user, isAuthenticated, userFromSupabaseAuth } =
-    useAuth();
+  const {
+    signOut,
+    getUserData,
+    user,
+    setIsAuthenticated,
+    isAuthenticated,
+    userFromSupabaseAuth,
+  } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
 
   useEffect(() => {
-    getUserData();
-    isAuthenticated && getProfileImage(userFromSupabaseAuth);
+    // getUserData();
+    if (user || userFromSupabaseAuth) {
+      setIsAuthenticated(true);
+    }
+    isAuthenticated && getProfileImage(user);
   }, []);
   console.log(user);
   const LoginButton = () => {
@@ -47,15 +56,7 @@ function Navbar() {
       {
         icon: UserIcon,
         content: "Profile",
-<<<<<<< HEAD
-<<<<<<< HEAD
-        navigate: () => navigate("/usermanagement"),
-=======
-        navigate: () => navigate(`/userManagement/${user.userId}`),
->>>>>>> 39f9a46 (set upload avatar)
-=======
         navigate: () => navigate(`/userManagement/${user.id}`),
->>>>>>> 4e37b36 (refector:auth)
       },
       {
         icon: PetIcon,

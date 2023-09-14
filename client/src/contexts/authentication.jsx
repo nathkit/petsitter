@@ -191,6 +191,7 @@ function AuthProvider(props) {
         setGetEvent,
         handleClickShowPassword,
         setAlertMessage,
+        setIsAuthenticated,
         getEvent,
         user,
         userFromSupabaseAuth,

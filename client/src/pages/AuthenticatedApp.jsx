@@ -14,7 +14,7 @@ function AuthenticatedApp() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/booking" element={<BookingPage />} />
+      <Route path="/booking/:userId/:sitterId" element={<BookingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/resetPassword" element={<ResetPassword />} />
       <Route path="/register" element={<RegisterPage />} />

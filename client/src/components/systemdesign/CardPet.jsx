@@ -1,5 +1,6 @@
 import usePosts from "../../hooks/usePost";
 import { CreateIcon } from "./Icons";
+import { useManagement } from "../../contexts/UserManagementContext";
 
 const data = [
   {
@@ -36,6 +37,8 @@ const data = [
 
 export function CardPet1() {
   const { getTypeStyle } = usePosts();
+  const { setPetId, setShowYourPet, setShowEditPet, setShowCreatePetButton } =
+    useManagement();
 
   return (
     <>
@@ -47,11 +50,20 @@ export function CardPet1() {
               item.type
             );
             return (
-              <div key={index} className="flex mx-[5px]">
+              <div
+                key={index}
+                className="flex mx-[5px]"
+                onClick={() => {
+                  setPetId(index);
+                  console.log(index);
+                  setShowEditPet(true);
+                  setShowYourPet(false);
+                  setShowCreatePetButton(false);
+                }}
+              >
                 <div
                   id="card"
-                  className={`border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
-               
+                  className={`border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4               
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
                   <img

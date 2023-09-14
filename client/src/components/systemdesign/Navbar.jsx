@@ -7,6 +7,7 @@ import { UserIcon, PetIcon, ListIcon, LogOutIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import usePosts from "../../hooks/usePost";
+import { useManagement } from "../../contexts/UserManagementContext";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function Navbar() {
     userFromSupabaseAuth,
   } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
+  const { setActiveSection, setUserIcon, setPetIcon, setListIcon } =
+    useManagement();
 
   useEffect(() => {
     // getUserData();
@@ -61,12 +64,24 @@ function Navbar() {
       {
         icon: PetIcon,
         content: "Your Pet",
-        navigate: () => navigate("/yourpet"),
+        navigate: () => {
+          setPetIcon("#ff7037");
+          setListIcon(null);
+          setUserIcon(null);
+          setActiveSection("petlist");
+          navigate("/userManagement/1");
+        },
       },
       {
         icon: ListIcon,
         content: "History",
-        navigate: () => navigate("/history"),
+        navigate: () => {
+          setListIcon("#ff7037");
+          setUserIcon(null);
+          setPetIcon(null);
+          setActiveSection("bookingHistory");
+          navigate("/userManagement/1");
+        },
       },
       { icon: LogOutIcon, content: "Log Out", navigate: () => signOut() },
     ];

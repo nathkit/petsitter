@@ -5,10 +5,20 @@ import { useState } from "react";
 import { CreatePet, EditPet } from "./UserPetsList/PetProfile";
 import { ArrowLeftIcon, PetIcon } from "../systemdesign/Icons";
 
+import { useManagement } from "../../contexts/UserManagementContext";
 function Petlist() {
-  const [showCreatePetButton, setShowCreatePetButton] = useState(true);
-  const [buttonClicked, setButtonClicked] = useState(false);
-  const [showYourPet, setShowYourPet] = useState(true);
+  // const [showCreatePetButton, setShowCreatePetButton] = useState(true);
+  // const [buttonClicked, setButtonClicked] = useState(false);
+  // const [showYourPet, setShowYourPet] = useState(true);
+  const {
+    showYourPet,
+    setShowYourPet,
+    showEditPet,
+    showCreatePetButton,
+    setShowCreatePetButton,
+    buttonClicked,
+    setButtonClicked,
+  } = useManagement();
   return (
     <>
       <div>
@@ -45,6 +55,7 @@ function Petlist() {
         {/* เรนเดอร์ YourPet เฉพาะเมื่อ showYourPet เป็น true */}
         {buttonClicked && <CreatePet />}{" "}
         {/* เรนเดอร์ Footer เมื่อปุ่มถูกคลิก */}
+        {showEditPet && <Footer />}
       </div>
     </>
   );

@@ -24,10 +24,8 @@ function Register() {
     handleRegisterSubmit,
     signInWithFacebook,
     signInWithGoogle,
-    handleChangeRole,
     handleClickShowPassword,
     showPassword,
-    role,
     alertMessage,
     setAlertMessage,
   } = useAuth();
@@ -113,29 +111,6 @@ function Register() {
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
-                {/* select role tap ******************************* */}
-                <p className="text-lg text-etc-black font-medium text-center">
-                  Select Role
-                </p>
-                <Tabs
-                  value={role}
-                  onChange={handleChangeRole}
-                  textColor="secondary"
-                  indicatorColor="secondary"
-                  aria-label="secondary tabs example"
-                  sx={{ width: "full" }}
-                >
-                  <Tab
-                    value="pet_owners"
-                    label="Pet User"
-                    sx={{ width: "50%" }}
-                  />
-                  <Tab
-                    value="pet_sitters"
-                    label="Pet Sitter"
-                    sx={{ width: "50%" }}
-                  />
-                </Tabs>
                 {/* alert box *************************************** */}
                 {alertMessage ? (
                   <Alert severity={alertMessage.severity}>

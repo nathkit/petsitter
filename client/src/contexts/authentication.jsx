@@ -3,6 +3,7 @@ import { useState } from "react";
 import { supabase } from "./supabase.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { object } from "yup";
 
 const AuthContext = React.createContext();
 
@@ -10,7 +11,7 @@ function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
-  const [role, setRole] = useState("pet_owners");
+  const [userFromSupabaseAuth, setUserFromSupabaseAuth] = useState({});
   const [user, setUser] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [alertMessage, setAlertMessage] = useState({
@@ -18,37 +19,30 @@ function AuthProvider(props) {
     severity: "",
   });
 
-  const handleChangeRole = (event, newRole) => {
-    setRole(newRole);
-  };
-
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show);
   };
   // supabase handle ****************************************
 
   const handleLoginSubmit = async (values, formikHelpers) => {
-    const newValues = { ...values, role };
     try {
       const serverRespond = await axios.post(
         "http://localhost:4000/auth/login",
-        newValues
+        values
       );
-
       if (
-        serverRespond.data.message ===
-        "User profile has been verified successfully"
+        serverRespond.data.message === "User has been verified successfully"
       ) {
         const result = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
-
         setAlertMessage({
           message: serverRespond.data.message,
           severity: "success",
         });
-
+        // console.log(serverRespond.data.data);
+        setUser(serverRespond.data.data);
         formikHelpers.resetForm();
         nav("/");
       } else {
@@ -76,11 +70,10 @@ function AuthProvider(props) {
   };
 
   const handleRegisterSubmit = async (values, formikHelpers) => {
-    const newValues = { ...values, role };
     try {
       const serverRespond = await axios.post(
         "http://localhost:4000/auth/register",
-        newValues
+        values
       );
       if (
         serverRespond.data.message ===
@@ -89,6 +82,13 @@ function AuthProvider(props) {
         const { data, error } = await supabase.auth.signUp({
           email: values.email,
           password: values.password,
+          // options: {
+          //   data: {
+          //     email: "kkkkk",
+          //     name: "John",
+          //     phone: 27,
+          //   },
+          // },
         });
         setAlertMessage({
           message: serverRespond.data.message,
@@ -108,13 +108,15 @@ function AuthProvider(props) {
   };
 
   const getUserData = async () => {
-    await supabase.auth.getUser().then((value) => {
-      if (value.data?.user) {
-        // console.log(value.data);
-        setUser(value.data.user);
-        setIsAuthenticated(value.data.user.aud === "authenticated");
-      }
-    });
+    // await supabase.auth.getUser().then((value) => {
+    //   if (value.data?.user) {
+    //     console.log(value.data);
+    //     setUserFromSupabaseAuth(value.data.user);
+    //     if (user || userFromSupabaseAuth) {
+    //       setIsAuthenticated(true);
+    //     }
+    //   }
+    // });
   };
 
   const sendRequestResetPassword = async (values, formikHelpers) => {
@@ -181,7 +183,6 @@ function AuthProvider(props) {
         handleRegisterSubmit,
         signInWithFacebook,
         signInWithGoogle,
-        handleChangeRole,
         handleLoginSubmit,
         getUserData,
         sendRequestResetPassword,
@@ -190,9 +191,10 @@ function AuthProvider(props) {
         setGetEvent,
         handleClickShowPassword,
         setAlertMessage,
+        setIsAuthenticated,
         getEvent,
-        role,
         user,
+        userFromSupabaseAuth,
         isAuthenticated,
         showPassword,
         alertMessage,

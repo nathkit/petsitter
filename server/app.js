@@ -5,7 +5,7 @@ import authRouter from "./routers/authRouter.js";
 import sitterDetailRouter from "./routers/sittterDetail.js";
 import dotenv from "dotenv";
 import sitterRouter from "./routers/sitterRouter.js";
-import ownerRouter from "./routers/ownerRouter.js"
+import userRouter from "./routers/userRouter.js";
 
 async function init() {
   const app = express();
@@ -18,13 +18,16 @@ async function init() {
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
-  app.use("/accounts", ownerRouter)
+  app.use("/userManagement", userRouter);
 
   app.use("/sitter", sitterDetailRouter);
 
   // sitterRouter
 
   app.use("/sitter", sitterRouter);
+
+  // authRouter
+  app.use("/auth", authRouter);
 
   app.get("*", (req, res) => {
     res.status(404).send("Not found");
@@ -33,9 +36,6 @@ async function init() {
   app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
   });
-
-  // authRouter under this line cannot use .GET ******************
-  app.use("/auth", authRouter);
 }
 
 init();

@@ -9,6 +9,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { useState, useEffect } from "react";
+import useUserProfile from "../../hooks/useUserProfile";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../contexts/authentication.jsx";
 dayjs.extend(utc);
 
 const validationSchema = yup.object({
@@ -31,7 +35,7 @@ const validationSchema = yup.object({
       return true; // Allow empty value (optional phone number)
     })
     .min(10, "Phone numbers should have 10 character"),
-  IdNumbers: yup
+  idNumbers: yup
     .number()
     .integer()
     .min(0)
@@ -44,18 +48,35 @@ const validationSchema = yup.object({
 });
 
 const profile = () => {
-  // formik function ***********************
+  // user come from useAuth *****************************************
+  const { user } = useAuth();
+  const { updateUserData, handleAvatar } = useUserProfile();
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const params = useParams();
+
+  // formik function ***********************************************
   const formik = useFormik({
-    // pull from server *********************
+    // pull from server *********************************************
     initialValues: {
-      yourName: "",
-      email: "",
-      IdNumbers: "",
-      phone: "",
+      yourName: user.fullName,
+      email: user.email,
+      idNumbers: user.idNumber,
+      phone: user.phone,
+      dateOfBirth: user.dateOfBirth,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values));
+    onSubmit: async (values) => {
+      if (avatarFile) {
+        const result = await handleAvatar(avatarFile);
+        const newValue = { ...values, ...result };
+        await updateUserData(newValue);
+        // console.log(newValue);
+        alert(JSON.stringify(newValue));
+      } else {
+        await updateUserData(values);
+        alert(JSON.stringify(values));
+      }
     },
   });
 
@@ -63,16 +84,30 @@ const profile = () => {
     <div className="flex flex-col gap-[4rem] h-[55.5rem] w-full">
       <h1 className="text-headline3 ">Profile</h1>
 
-      {/* upload image *********************************** */}
-      <Box className="h-[15rem]">
-        <UploadImage />
-      </Box>
-
       {/* form *********************************** */}
       <form
-        onSubmit={formik.handleSubmit}
-        className="h-[19rem] flex flex-col gap-[2rem] relative"
+        onSubmit={(e, values) => {
+          formik.handleSubmit(e, values);
+        }}
+        className="h-auto flex flex-col gap-[2rem] relative"
       >
+        {/* upload image *********************************** */}
+        <Box className="h-[15rem] relative mb-10">
+          <UploadImage
+            img={
+              avatarUrl ? (
+                <img src={avatarUrl} alt="avatar" width="300" height="300" />
+              ) : user.avatar ? (
+                <img src={user.avatar} alt="avatar" width="300" height="300" />
+              ) : null
+            }
+            onChange={async (e) => {
+              setAvatarFile(e.target.files[0]);
+              const imgUrl = URL.createObjectURL(e.target.files[0]);
+              setAvatarUrl(imgUrl);
+            }}
+          />
+        </Box>
         {/* your name *********************************** */}
         <label htmlFor="yourName" className="text-body1">
           <p className="mb-4">your name*</p>
@@ -81,7 +116,11 @@ const profile = () => {
             id="yourName"
             name="yourName"
             label="your name"
-            value={formik.values.yourName}
+            value={
+              formik.values.yourName !== ""
+                ? formik.values.yourName
+                : user.fullName
+            }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.yourName && Boolean(formik.errors.yourName)}
@@ -98,7 +137,9 @@ const profile = () => {
                 id="email"
                 name="email"
                 label="email"
-                value={formik.values.email}
+                value={
+                  formik.values.email !== "" ? formik.values.email : user.email
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.email && Boolean(formik.errors.email)}
@@ -107,20 +148,24 @@ const profile = () => {
             </label>
 
             {/* id number *********************************** */}
-            <label htmlFor="IdNumbers" className="text-body1">
+            <label htmlFor="idNumbers" className="text-body1">
               <p className="mb-4">Id number</p>
               <TextField
                 fullWidth
-                id="IdNumbers"
-                name="IdNumbers"
+                id="idNumbers"
+                name="idNumbers"
                 label="Id number"
-                value={formik.values.IdNumbers}
+                value={
+                  formik.values.idNumbers !== ""
+                    ? formik.values.idNumbers
+                    : user.idNumbers
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.IdNumbers && Boolean(formik.errors.IdNumbers)
+                  formik.touched.idNumbers && Boolean(formik.errors.idNumbers)
                 }
-                helperText={formik.touched.IdNumbers && formik.errors.IdNumbers}
+                helperText={formik.touched.idNumbers && formik.errors.idNumbers}
               />
             </label>
           </Box>
@@ -133,7 +178,9 @@ const profile = () => {
                 id="phone"
                 name="phone"
                 label="Phone"
-                value={formik.values.phone}
+                value={
+                  formik.values.phone !== "" ? formik.values.phone : user.phone
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.phone && Boolean(formik.errors.phone)}
@@ -149,20 +196,10 @@ const profile = () => {
                   fullWidth
                   sx={{ width: "100%" }}
                   label="Select your date of birth"
-                  format="DD-MM-YYYY"
+                  format="YYYY-MM-DD"
                   onChange={(value) => {
-                    const newValue = value.local().format("DD-MM-YYYY");
+                    const newValue = value.local().format("YYYY-MM-DD");
                     formik.setFieldValue("dateOfBirth", newValue);
-                  }}
-                  slotProps={{
-                    TextField: {
-                      error:
-                        formik.touched.dateOfBirth &&
-                        Boolean(formik.errors.dateOfBirth),
-
-                      helperText:
-                        formik.touched.dateOfBirth && formik.errors.dateOfBirth,
-                    },
                   }}
                 />
               </LocalizationProvider>
@@ -171,7 +208,7 @@ const profile = () => {
         </Box>
 
         {/* submit button ************************** */}
-        <Box className="absolute right-0 bottom-[-11rem]">
+        <Box className="flex justify-end mt-10">
           <ButtonPrimary
             content="Update Profile"
             width="9.93rem"

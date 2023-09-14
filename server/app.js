@@ -2,10 +2,10 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
-import sitterDetailRouter from "./routers/sittterDetail.js";
 import dotenv from "dotenv";
-import sitterRouter from "./routers/sitterRouter.js";
-import userRouter from "./routers/userRouter.js";
+import sitterManagementRouter from "./routers/sitterManagementRouter.js";
+import userManagementRouter from "./routers/userManagementRouter.js";
+import bookingRouter from "./routers/bookingRouter.js";
 
 async function init() {
   const app = express();
@@ -18,14 +18,13 @@ async function init() {
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
-  app.use("/userManagement", userRouter);
-
-  app.use("/sitter", sitterDetailRouter);
 
   // sitterRouter
-
-  app.use("/sitter", sitterRouter);
-
+  app.use("/sitterManagement", sitterManagementRouter);
+  // userRouter
+  app.use("/userManagement", userManagementRouter);
+  // bookingRouter
+  app.use("/booking", bookingRouter);
   // authRouter
   app.use("/auth", authRouter);
 

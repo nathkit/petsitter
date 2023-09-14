@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { AuthProvider } from "./contexts/authentication.jsx";
 import { BrowserRouter } from "react-router-dom";
+import { BookingStatusProvider } from "./contexts/BookingStatusContext";
 import jwtInterceptor from "./utils/jwtIntercepter.js";
 
 jwtInterceptor();
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <BookingStatusProvider>
+          <App />
+        </BookingStatusProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

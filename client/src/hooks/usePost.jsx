@@ -7,7 +7,6 @@ const usePosts = () => {
   const [profileImage, setProfileImage] = useState(null);
 
   const getProfileImage = async (user) => {
-    const userEmail = user.email;
     // console.log(userEmail);
     // console.log(user);
     if (user) {

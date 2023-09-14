@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import usePosts from "../../hooks/usePost";
 import { useManagement } from "../../contexts/UserManagementContext";
+import { useManagement } from "../../contexts/UserManagementContext";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ function Navbar() {
     userFromSupabaseAuth,
   } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
+  const { setActiveSection, setUserIcon, setPetIcon, setListIcon } =
+    useManagement();
   const { setActiveSection, setUserIcon, setPetIcon, setListIcon } =
     useManagement();
 
@@ -45,6 +48,7 @@ function Navbar() {
         } ${content === "Log Out" ? "border-t-2" : ""}`}
         onClick={navigate}
       >
+        onClick={navigate}>
         <a>
           <Icon
             color="#3A3B46"
@@ -71,10 +75,24 @@ function Navbar() {
           setActiveSection("petlist");
           navigate("/userManagement/1");
         },
+        navigate: () => {
+          setPetIcon("#ff7037");
+          setListIcon(null);
+          setUserIcon(null);
+          setActiveSection("petlist");
+          navigate("/userManagement/1");
+        },
       },
       {
         icon: ListIcon,
         content: "History",
+        navigate: () => {
+          setListIcon("#ff7037");
+          setUserIcon(null);
+          setPetIcon(null);
+          setActiveSection("bookingHistory");
+          navigate("/userManagement/1");
+        },
         navigate: () => {
           setListIcon("#ff7037");
           setUserIcon(null);
@@ -100,6 +118,8 @@ function Navbar() {
             tabIndex={0}
             className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2"
           >
+            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white
+            rounded-box w-[186px] text-etc-black text-body2" >
             {menuItems.map((item, idx) => (
               <ListItem
                 key={idx}
@@ -118,7 +138,7 @@ function Navbar() {
         className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600"
         onClick={() => navigate("/login")}
       >
-        Login
+        onClick={() => navigate("/login")}> Login
       </button>
     );
   };
@@ -135,6 +155,7 @@ function Navbar() {
             : "flex items-center gap-4"
         }
       >
+        } >
         <LoginButton />
         <div>
           <ButtonPrimary

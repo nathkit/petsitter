@@ -4,26 +4,10 @@ import bcrypt from "bcrypt";
 
 const authRouter = Router();
 
-authRouter.post("/", async (req, res) => {
-  const query = `select id,full_name, email, id_number, phone, date_of_birth,profile_image_path from users where id = $1`;
-  let result;
-  try {
-    result = await pool.query(query, [req.body.id]);
-  } catch (err) {
-    return res.json({
-      message: "Request error occurred",
-    });
-  }
-  return res.json({
-    message: "Fetch data successfully",
-    data: result.rows[0],
-  });
-});
-
 // login router ****************************
 authRouter.post("/login", async (req, res) => {
   const role = req.body.role;
-  let query = "select email,password,id from users where email = $1";
+  let query = "select * from users where email = $1";
   let value = [req.body.email];
   let result;
   try {
@@ -34,22 +18,28 @@ authRouter.post("/login", async (req, res) => {
       return res.json({ message: "Invalid email!" });
     }
     // check password condition **********************
-    const resPassword = Object.values(valid.rows[0]);
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      resPassword[1]
-    );
+    const resPassword = valid.rows[0].password;
+    const validPassword = await bcrypt.compare(req.body.password, resPassword);
     if (!validPassword) {
       return res.json({ message: "Invalid password!" });
     }
-    result = { id: Object.values(valid.rows[0])[2] };
+    result = valid.rows[0];
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
-  // console.log(result);
+  // send user data back to client *******************************
   return res.json({
     message: "User has been verified successfully",
-    data: result,
+    data: {
+      id: result.id,
+      fullName: result.full_name,
+      email: result.email,
+      idNumber: result.id_number,
+      phone: result.phone,
+      dateOfbirth: result.date_of_birth,
+      avatar: result.profile_image_path,
+      sitterAuthen: result.sitter_authen,
+    },
   });
 });
 

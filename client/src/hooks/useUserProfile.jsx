@@ -33,7 +33,7 @@ function useUserProfile() {
     // });
     try {
       const result = await axios.put(
-        `http://localhost:4000/accounts/${params.ownerId}`,
+        `http://localhost:4000/userManagement/:${params.userId}`,
         data
       );
     } catch (err) {
@@ -41,15 +41,15 @@ function useUserProfile() {
     }
   };
 
-  const fetchUserData = async () => {
-    const result = await axios.get(
-      `http://localhost:4000/accounts/${params.ownerId}`
-    );
-    setUser(result.data);
-    setAlertUserMessage(result.data.message);
-  };
+  // const fetchUserData = async () => {
+  //   const result = await axios.get(
+  //     `http://localhost:4000/userManagement/:${params.userId}`
+  //   );
+  //   setUser(result.data);
+  //   setAlertUserMessage(result.data.message);
+  // };
 
-  return { fetchUserData, updateUserData, handleAvatar };
+  return { updateUserData, handleAvatar };
 }
 
 export default useUserProfile;

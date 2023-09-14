@@ -59,9 +59,9 @@ const profile = () => {
   const formik = useFormik({
     // pull from server *********************************************
     initialValues: {
-      yourName: user.full_name,
+      yourName: user.fullName,
       email: user.email,
-      idNumbers: user.idNumbers,
+      idNumbers: user.idNumber,
       phone: user.phone,
       dateOfBirth: user.dateOfBirth,
     },
@@ -70,8 +70,8 @@ const profile = () => {
       if (avatarFile) {
         const result = await handleAvatar(avatarFile);
         const newValue = { ...values, ...result };
-        console.log(user);
         await updateUserData(newValue);
+        // console.log(newValue);
         alert(JSON.stringify(newValue));
       } else {
         await updateUserData(values);
@@ -97,13 +97,8 @@ const profile = () => {
             img={
               avatarUrl ? (
                 <img src={avatarUrl} alt="avatar" width="300" height="300" />
-              ) : user.profile_image_path ? (
-                <img
-                  src={user.profile_image_path}
-                  alt="avatar"
-                  width="300"
-                  height="300"
-                />
+              ) : user.avatar ? (
+                <img src={user.avatar} alt="avatar" width="300" height="300" />
               ) : null
             }
             onChange={async (e) => {
@@ -124,7 +119,7 @@ const profile = () => {
             value={
               formik.values.yourName !== ""
                 ? formik.values.yourName
-                : user.full_name
+                : user.fullName
             }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -201,9 +196,9 @@ const profile = () => {
                   fullWidth
                   sx={{ width: "100%" }}
                   label="Select your date of birth"
-                  format="DD-MM-YYYY"
+                  format="YYYY-MM-DD"
                   onChange={(value) => {
-                    const newValue = value.local().format("DD-MM-YYYY");
+                    const newValue = value.local().format("YYYY-MM-DD");
                     formik.setFieldValue("dateOfBirth", newValue);
                   }}
                 />

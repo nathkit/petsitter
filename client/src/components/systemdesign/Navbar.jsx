@@ -10,14 +10,15 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { signOut, getUserData, user, isAuthenticated } = useAuth();
+  const { signOut, getUserData, user, isAuthenticated, userFromSupabaseAuth } =
+    useAuth();
   const { profileImage, getProfileImage } = usePosts();
 
   useEffect(() => {
     getUserData();
-    isAuthenticated && getProfileImage(user);
+    isAuthenticated && getProfileImage(userFromSupabaseAuth);
   }, []);
-
+  console.log(user);
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
 

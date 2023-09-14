@@ -10,19 +10,20 @@ const usePosts = () => {
     const userEmail = user.email;
     // console.log(userEmail);
     // console.log(user);
-    if (user.user_metadata.email_verified) {
-      setProfileImage(user.user_metadata.avatar_url);
-    } else {
-      try {
-        const result = await axios.get(
-          `http://localhost:4000/accounts/${userEmail}`
-        );
-        setProfileImage(result.data.data.pet_owner_image);
-        console.log(result.data);
-      } catch (error) {
-        console.log(error);
-      }
+    if (user) {
+      setProfileImage(user.avatar);
     }
+    // else {
+    //   try {
+    //     const result = await axios.get(
+    //       `http://localhost:4000/accounts/${userEmail}`
+    //     );
+    //     setProfileImage(result.data.data.pet_owner_image);
+    //     console.log(result.data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
   };
 
   const createPetProfile = async (user, data) => {

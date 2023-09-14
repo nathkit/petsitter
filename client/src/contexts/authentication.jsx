@@ -60,15 +60,7 @@ function AuthProvider(props) {
   const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      // options: {
-      //   data: {
-      //     first_name: "asdfasfasfdasf",
-      //     last_name: "kkkkk",
-      //     age: 27,
-      //   },
-      // },
     });
-    // console.log({ data, error });
   };
 
   const signInWithFacebook = async () => {
@@ -116,19 +108,15 @@ function AuthProvider(props) {
   };
 
   const getUserData = async () => {
-    await supabase.auth.getUser().then((value) => {
-      if (value.data?.user) {
-        console.log(value.data);
-        setUserFromSupabaseAuth(value.data.user);
-        if (user || userFromSupabaseAuth) {
-          setIsAuthenticated(true);
-        }
-      }
-    });
-    // console.log(user);
-    const respondes = await axios.post("http://localhost:4000/auth", user);
-    // console.log(respondes.data.data);
-    setUser(respondes.data.data);
+    // await supabase.auth.getUser().then((value) => {
+    //   if (value.data?.user) {
+    //     console.log(value.data);
+    //     setUserFromSupabaseAuth(value.data.user);
+    //     if (user || userFromSupabaseAuth) {
+    //       setIsAuthenticated(true);
+    //     }
+    //   }
+    // });
   };
 
   const sendRequestResetPassword = async (values, formikHelpers) => {
@@ -205,6 +193,7 @@ function AuthProvider(props) {
         setAlertMessage,
         getEvent,
         user,
+        userFromSupabaseAuth,
         isAuthenticated,
         showPassword,
         alertMessage,

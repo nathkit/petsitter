@@ -18,7 +18,7 @@ async function init() {
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
-  app.use("/accounts", userRouter);
+  app.use("/userManagement", userRouter);
 
   app.use("/sitter", sitterDetailRouter);
 

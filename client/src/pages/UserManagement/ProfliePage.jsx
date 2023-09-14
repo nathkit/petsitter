@@ -19,6 +19,7 @@ import utc from "dayjs/plugin/utc";
 import useUserProfile from "../../hooks/useUserProfile";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication.jsx";
+import { useNavigate } from "react-router-dom";
 dayjs.extend(utc);
 
 const validationSchema = yup.object({
@@ -86,6 +87,12 @@ function ProfilePage() {
     },
   });
 
+  const [petIcon, setPetIcon] = useState(null);
+  const [listIcon, setListIcon] = useState(null);
+  const [listIconColor, setListIconColor] = useState(null);
+  const [petIconColor, setPetIconColor] = useState(null);
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar />
@@ -95,21 +102,45 @@ function ProfilePage() {
             <p className="">Account</p>
           </div>
           <button
-            className={`px-6 py-5 hover:text-orange-500 text-start focus:bg-orange-100 focus:text-orange-500 text-body1 flex items-center `}
+            className={`px-6 py-5 text-orange-500 text-start bg-orange-100  text-body1 flex items-center `}
           >
-            <UserIcon />
+            <UserIcon hoverColor={"#ff7037"} />
             <p className="ml-3">Profile</p>
           </button>
           <button
             className={`px-6 py-5 hover:text-orange-500 text-start focus:bg-orange-100 focus:text-orange-500 text-body1 flex items-center `}
+            onClick={() => {
+              navigate("/");
+            }}
+            onFocus={() => {
+              setPetIcon("#ff7037");
+            }}
+            onMouseEnter={() => {
+              setPetIconColor("#ff7037");
+            }}
+            onMouseLeave={() => {
+              setPetIconColor("#aeb1c3");
+            }}
           >
-            <PetIcon />
+            <PetIcon hoverColor={petIconColor} onFocus={petIcon} />
             <p className="ml-3">Your Pet</p>
           </button>
           <button
-            className={`px-6 py-5 hover:text-orange-500 text-start  focus:text-orange-500 text-body1 flex items-center `}
+            className={`px-6 py-5 hover:text-orange-500 text-start focus:bg-orange-100 focus:text-orange-500 text-body1 flex items-center `}
+            onFocus={() => {
+              setListIcon("#ff7037");
+            }}
+            onMouseEnter={() => {
+              setListIconColor("#ff7037");
+            }}
+            onMouseLeave={() => {
+              setListIconColor("#aeb1c3");
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
           >
-            <ListIcon />
+            <ListIcon hoverColor={listIconColor} onFocus={listIcon} />
             <p className="ml-3">Booking History</p>
           </button>
         </div>

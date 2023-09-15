@@ -16,7 +16,7 @@ function SitterPictureSlide() {
   const getSitterDetail = async () => {
     try {
       const results = await axios.get(
-        `http://localhost:4000/sitter/${params.sitterId}`
+        `http://localhost:4000/sitterManagement/${params.sitterId}`
       );
       console.log(params.sitterId);
       setSitterDetail(results.data.data);
@@ -47,14 +47,18 @@ function SitterPictureSlide() {
           modules={[Navigation, Keyboard]}
           loop={true}
         >
-          {sitterDetail.length > 0 &&
-            sitterDetail[0].pet_sitter_carousel.map((image, index) => (
-              <SwiperSlide key={index}>
+          {sitterDetail.map((sitter, sitterIndex) => (
+            <SwiperSlide key={sitterIndex}>
+              <div>
                 <div className="flex justify-center items-center h-full">
-                  <img src={image} alt={`Picture ${index + 1}`} />
+                  <img
+                    src={`${sitter.trade_image_path}?width=640&height=480`}
+                    alt={`Picture ${sitterIndex + 1}`}
+                  />
                 </div>
-              </SwiperSlide>
-            ))}
+              </div>
+            </SwiperSlide>
+          ))}
 
           <div className="custom-button-next absolute z-10 top-[45%] w-14 h-14 right-[80px] rounded-full bg-etc-white grid place-items-center">
             <ArrowRightIcon />

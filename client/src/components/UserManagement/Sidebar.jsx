@@ -13,10 +13,6 @@ import { CreatePet, EditPet } from "./PetProfile";
 import { CardPet1 } from "../systemdesign/CardPet";
 
 function Sidebar(props) {
-  const [userIcon, setUserIcon] = useState(null);
-  const [petIcon, setPetIcon] = useState(null);
-  const [listIcon, setListIcon] = useState(null);
-
   const [userIconColor, setUserIconColor] = useState(null);
   const [petIconColor, setPetIconColor] = useState(null);
   const [listIconColor, setListIconColor] = useState(null);
@@ -43,9 +39,6 @@ function Sidebar(props) {
             onClick={() => {
               navigate("/userManagement/:userId");
             }}
-            onFocus={() => {
-              setUserIcon("#ff7037");
-            }}
             onMouseEnter={() => {
               setUserIconColor("#ff7037");
             }}
@@ -68,9 +61,6 @@ function Sidebar(props) {
             onClick={() => {
               navigate("/userManagement/:userId/pets");
             }}
-            onFocus={() => {
-              setPetIcon("#ff7037");
-            }}
             onMouseEnter={() => {
               setPetIconColor("#ff7037");
             }}
@@ -92,9 +82,6 @@ function Sidebar(props) {
             className={`px-6 py-5 hover:text-orange-500 text-start  ${
               isHistoryPage ? "bg-orange-100 text-orange-500" : ""
             } text-body1 flex items-center `}
-            onFocus={() => {
-              setListIcon("#ff7037");
-            }}
             onMouseEnter={() => {
               setListIconColor("#ff7037");
             }}

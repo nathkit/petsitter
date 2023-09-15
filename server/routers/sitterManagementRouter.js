@@ -123,43 +123,38 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const sitterId = req.params.sitterId;
     const page = parseInt(req.query.page) || 1;
     const reviewPerPage = 5;
-    const queryForSitterReview = `
-      SELECT * FROM sitter_reviews_by_id 
-      WHERE sitter_id = $1
-      LIMIT $2 OFFSET $3;
-    `;
-    
-    const queryForSitterDetail = `
-      SELECT * FROM pet_sitter_details
-      WHERE
-        pet_sitter_id = $1;
-    `;
-    
-    console.log("SQL Query (Sitter Detail):", queryForSitterDetail);
-    console.log("SQL Query (Sitter Reviews):", queryForSitterReview);
-    console.log("Parameter (sitterId):", sitterId);
-    
-    const sitterDetail = await pool.query(queryForSitterDetail, [sitterId]);
-    const sitterReviewResult = await pool.query(queryForSitterReview, [sitterId, reviewPerPage, (page - 1) * reviewPerPage]);
-    
-    const totalReviews = sitterReviewResult.rows.length;
-    const totalPages = Math.ceil(totalReviews / reviewPerPage);
-    
-    console.log("Database Query Result (Sitter Detail):", sitterDetail.rows);
-    console.log("Database Query Result (Sitter Reviews):", sitterReviewResult.rows);
-    
-    if (sitterDetail.rows.length === 0) {
+
+    const queryForDetail = `SELECT * FROM pet_sitter_details WHERE pet_sitter_id = $1;`
+
+    const queryForReviews = `SELECT * FROM sitter_reviews_by_id 
+    WHERE sitter_id = $1;`
+    // console.log("Parameter (sitterId):", sitterId);
+
+    const sitterDetails = await pool.query(queryForDetail, [sitterId]);
+    const sitterReview = await pool.query(queryForReviews, [sitterId]);
+    const totalData = sitterReview.rows.length;
+    const totalPages = Math.ceil(totalData / reviewPerPage);
+    const skip = (page - 1) * reviewPerPage;
+    const end = skip + reviewPerPage;
+
+    console.log("Database Query Result:", sitterReview.rows);
+
+    if (totalData === 0) {
       return res.status(404).json({ message: "Sitter not found" });
     }
-    
+
+    const paginatedReviews = sitterReview.rows.slice(skip, end);
+
+    console.log("Database Query Result:", paginatedReviews);
+
     return res.status(200).json({
-      sitterDetail: sitterDetail.rows[0], // Assuming only one sitter detail is expected
-      reviews: sitterReviewResult.rows,
+      data: sitterDetails.rows,
+      reviews: paginatedReviews,
       pagination: {
         currentPage: page,
         totalPages: totalPages,
         dataPerPage: reviewPerPage,
-        totalData: totalReviews,
+        totalData: totalData,
       },
     });
   } catch (error) {
@@ -167,7 +162,6 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     return res.status(500).json({ message: "Request error occurred" });
   }
 });
-
 
 sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 

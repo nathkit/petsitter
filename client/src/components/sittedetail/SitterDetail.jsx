@@ -14,9 +14,9 @@ import {
 function SitterDetail() {
   const [sitterDetail, setSitterDetail] = useState([]);
   const params = useParams();
-  const uniquePetTypeIds = [
-    ...new Set(sitterDetail.map((petType) => petType.pet_type_id)),
-  ];
+  // const uniquePetTypeIds = [
+  //   ...new Set(sitterDetail.map((petType) => petType.pet_type)),
+  // ];
 
   const getSitterDetail = async () => {
     try {
@@ -126,14 +126,20 @@ function SitterDetail() {
               {/* pets ทำ equality แสดง */}
               <div className="w-full h-auto mt-4 flex flex-row justify-center gap-[6px]">
                 <div className="flex gap-2">
-                  {uniquePetTypeIds.map((petTypeId, index) => (
-                    <span key={index}>
-                      {petTypeId === 1 && <DogType />}
-                      {petTypeId === 2 && <CatType />}
-                      {petTypeId === 3 && <BirdType />}
-                      {petTypeId === 4 && <RabbitType />}
-                    </span>
-                  ))}
+                  {sitterDetail.length > 0 && sitterDetail[0] && (
+                    <div className="flex gap-2">
+                      {sitterDetail[0]?.pet_type
+                        ?.split(",")
+                        .map((petType, index) => (
+                          <span key={index}>
+                            {petType.trim() === "Dog" && <DogType />}
+                            {petType.trim() === "Cat" && <CatType />}
+                            {petType.trim() === "Bird" && <BirdType />}
+                            {petType.trim() === "Rabbit" && <RabbitType />}
+                          </span>
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

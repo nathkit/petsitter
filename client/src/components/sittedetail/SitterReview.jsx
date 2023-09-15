@@ -18,6 +18,7 @@ function SitterReview() {
   const params = useParams();
 
   const [searchData, setSearchData] = useState({ rate: undefined });
+  
 
   const handleRating = (event, rate) => {
     event.preventDefault();

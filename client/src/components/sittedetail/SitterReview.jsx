@@ -1,62 +1,70 @@
-// import union from "../../assets/SitterReview/Union.png";
-import React from "react";
-import { StarIcon } from "../systemdesign/Icons";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import union from "../../assets/SitterReview/Union.png";
+import { Variant3 } from "../systemdesign/Pagination";
+import { Variant4 } from "../systemdesign/Pagination";
+import { StarIcon } from "../systemdesign/Icons";
 
 function SitterReview() {
   const starRates = ["All Reviews", 5, 4, 3, 2, 1];
   const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState(reviews);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [averageRating, setAverageRating] = useState(0.0);
+  const [totalReviews, setTotalReviews] = useState(0);
   const params = useParams();
 
-  const [searchData, setSearchData] = useState({
-    search: "",
-    types: [],
-    rate: undefined,
-    exp: 0,
-  });
+  const [searchData, setSearchData] = useState({ rate: undefined });
 
   const handleRating = (event, rate) => {
     event.preventDefault();
 
-    if (searchData.rate === rate || rate === "All Reviews") {
-      setSearchData({
-        ...searchData,
-        rate: searchData.rate === rate ? undefined : "All Reviews",
-      });
-
-      if (rate === "All Reviews") {
-        setFilteredReviews(reviews);
-      } else {
-        const filtered = reviews.filter(
-          (review) => review.rating_review_star === rate
-        );
-        setFilteredReviews(filtered);
-      }
-    } else {
+    if (rate === "All Reviews" || rate !== searchData.rate) {
       setSearchData({
         ...searchData,
         rate,
       });
 
-      const filtered = reviews.filter(
-        (review) => review.rating_review_star === rate
-      );
+      const filtered =
+        rate === "All Reviews"
+          ? reviews
+          : reviews.filter((review) => review.rating === rate);
+
       setFilteredReviews(filtered);
+    } else if (rate === searchData.rate) {
+      setSearchData({
+        ...searchData,
+        rate: "All Reviews",
+      });
+
+      setFilteredReviews(reviews);
     }
   };
 
   const getSitterReviewById = async () => {
     try {
+      const queryParams = {
+        page: currentPage,
+      };
+
+      if (searchData.rate !== "All Reviews") {
+        queryParams.rate = searchData.rate;
+      }
+
       const response = await axios.get(
-        `http://localhost:4000/sitter/${params.sitterId}`
+        `http://localhost:4000/sitterManagement/${params.sitterId}`,
+        {
+          params: queryParams,
+        }
       );
-      console.log(response);
+
       setReviews(response.data.data);
+      setAverageRating(response.data.data[0].avg_rating);
+      setTotalPages(response.data.pagination.totalPages);
+      setTotalReviews(response.data.pagination.totalData);
     } catch (error) {
       console.error("Request error occurred", error);
     }
@@ -64,23 +72,23 @@ function SitterReview() {
 
   useEffect(() => {
     getSitterReviewById();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     setFilteredReviews(reviews);
   }, [reviews]);
 
-  console.log("Result");
-  console.log(reviews);
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
-  const totalReviews = reviews.length;
-
-  let totalRating = 0.0;
-  for (const review of reviews) {
-    totalRating += review.rating_review_star;
-  }
-
-  const averageRating = totalReviews > 0 ? totalRating / totalReviews : 0;
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div className="sitter-review w-[100%] min-h-screen bg-etc-bg_gray">
@@ -88,8 +96,8 @@ function SitterReview() {
         <div className="sitter-review-header p-6 bg-etc-white rounded-tl-[99px] rounded-tr-[12px] rounded-br-[12px] rounded-bl-[99px] flex items-center gap-8">
           <div className="image-wrapper relative">
             <img src={union} alt="union-icon" />
-            <h1 className="average text-headline2 text-etc-white absolute top-[27%] left-[33%]">
-              {averageRating.toFixed(1)}
+            <h1 className="average text-headline2 text-etc-white absolute top-[27%] left-[31%]">
+              {averageRating ? averageRating.toFixed(1) : "N/A"}
             </h1>
             <h3 className="total-reviews text-body3 text-etc-white absolute top-[59%] left-[26%]">
               {totalReviews} Reviews
@@ -135,31 +143,26 @@ function SitterReview() {
                 <div className="flex gap-4 w-[30%]">
                   <Avatar
                     alt="avatar"
-                    src={review.pet_owner_image}
+                    src={review.profile_image_path}
                     className="border"
                   />
                   <div>
                     <h2 className="text-body1 text-etc-black ">
-                      {review.pet_owner_name}
+                      {review.full_name}
                     </h2>
                     <p className="text-body3 text-gray-400">
-                      {review.created_at}
+                      {new Date(review.date).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <hr />
                 <div className="rating flex flex-col w-[65%] gap-5">
                   <div className="star flex gap-1 pt-1">
-                    {Array.from(
-                      { length: review.rating_review_star },
-                      (_, starIndex) => (
-                        <StarIcon key={starIndex} color="#1CCD83" />
-                      )
-                    )}
+                    {Array.from({ length: review.rating }, (_, starIndex) => (
+                      <StarIcon key={starIndex} color="#1CCD83" />
+                    ))}
                   </div>
-                  <p className="text-gray-500 text-body2">
-                    {review.rating_review_text}
-                  </p>
+                  <p className="text-gray-500 text-body2">{review.comment}</p>
                 </div>
               </div>
             ))
@@ -167,6 +170,17 @@ function SitterReview() {
             <div>No reviews available</div>
           )}
         </div>
+      </div>
+      <div className="pagination flex justify-center items-center gap-4 py-10">
+        <button className="prev-btn" onClick={handlePrevPage}>
+          <Variant3 />
+        </button>
+        <div className="current-page">
+          {currentPage} / {totalPages}
+        </div>
+        <button className="next-btn" onClick={handleNextPage}>
+          <Variant4 />
+        </button>
       </div>
     </div>
   );

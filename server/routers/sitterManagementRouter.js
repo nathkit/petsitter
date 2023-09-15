@@ -42,16 +42,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(pet_sitter_trade_name) like $` +
-          (value.length + 1) +
-          ` or Lower(pet_sitter_address) like $` +
-          (value.length + 1) +
-          ` or Lower(pet_sitter_district) like $` +
-          (value.length + 1) +
-          ` or Lower(pet_sitter_sub_district) like $` +
-          (value.length + 1) +
-          `  or Lower(pet_sitter_province) like $` +
-          (value.length + 1) +
-          ` )`
+        (value.length + 1) +
+        ` or Lower(pet_sitter_address) like $` +
+        (value.length + 1) +
+        ` or Lower(pet_sitter_district) like $` +
+        (value.length + 1) +
+        ` or Lower(pet_sitter_sub_district) like $` +
+        (value.length + 1) +
+        `  or Lower(pet_sitter_province) like $` +
+        (value.length + 1) +
+        ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -116,57 +116,51 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
     const sitterId = req.params.sitterId;
-    const query = `
-      SELECT
-      pet_sitter_profile.pet_sitter_id,
-      pet_sitter_profile.pet_sitter_name,
-      pet_sitter_profile.pet_sitter_image,
-      pet_sitter_profile.pet_sitter_experience,
-      pet_sitter_profile.introduction,
-      pet_sitter_profile.services,
-      pet_sitter_profile.my_place,
-      pet_sitter_profile.pet_sitter_carousel,
-      pet_sitter_profile.pet_sitter_trade_name,
-      pet_sitter_profile.pet_sitter_province,
-      pet_sitter_profile.pet_sitter_sub_district,
-      pet_sitter_profile.pet_sitter_pet_type,
-      rating_review.rating_review_star,
-      rating_review.rating_review_text,
-      rating_review.created_at,
-      pet_owner_profile.pet_owner_image,
-      pet_owner_profile.pet_owner_name
-    FROM
-      pet_sitter_profile
-    JOIN
-      rating_review
-    ON
-      pet_sitter_profile.pet_sitter_id = rating_review.pet_sitter_id
-    JOIN
-      pet_owner_profile
-    ON
-      rating_review.pet_owner_id = pet_owner_profile.pet_owner_id
-  WHERE
-      pet_sitter_profile.pet_sitter_id = $1;
-      `;
-
-    console.log("SQL Query:", query);
+    const page = parseInt(req.query.page) || 1;
+    const reviewPerPage = 5;
+    const queryForSitterReview = `
+      SELECT * FROM sitter_reviews_by_id 
+      WHERE sitter_id = $1
+      LIMIT $2 OFFSET $3;
+    `;
+    
+    const queryForSitterDetail = `
+      SELECT * FROM pet_sitter_details
+      WHERE
+        pet_sitter_id = $1;
+    `;
+    
+    console.log("SQL Query (Sitter Detail):", queryForSitterDetail);
+    console.log("SQL Query (Sitter Reviews):", queryForSitterReview);
     console.log("Parameter (sitterId):", sitterId);
-
-    const sitterData = await pool.query(query, [sitterId]);
-
-    console.log("Database Query Result:", sitterData.rows);
-
-    if (sitterData.rows.length === 0) {
+    
+    const sitterDetail = await pool.query(queryForSitterDetail, [sitterId]);
+    const sitterReviewResult = await pool.query(queryForSitterReview, [sitterId, reviewPerPage, (page - 1) * reviewPerPage]);
+    
+    const totalReviews = sitterReviewResult.rows.length;
+    const totalPages = Math.ceil(totalReviews / reviewPerPage);
+    
+    console.log("Database Query Result (Sitter Detail):", sitterDetail.rows);
+    console.log("Database Query Result (Sitter Reviews):", sitterReviewResult.rows);
+    
+    if (sitterDetail.rows.length === 0) {
       return res.status(404).json({ message: "Sitter not found" });
     }
-
+    
     return res.status(200).json({
-      data: sitterData.rows,
+      sitterDetail: sitterDetail.rows[0], // Assuming only one sitter detail is expected
+      reviews: sitterReviewResult.rows,
+      pagination: {
+        currentPage: page,
+        totalPages: totalPages,
+        dataPerPage: reviewPerPage,
+        totalData: totalReviews,
+      },
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);
@@ -174,33 +168,34 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => {});
+
+sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 
 sitterManagementRouter.get(
   "/sitterManagement/:sitterId/booking/",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 sitterManagementRouter.get(
   "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 // Reject / Confirm /In Service
 sitterManagementRouter.put(
   "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 // Success
 sitterManagementRouter.put(
   "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 sitterManagementRouter.put(
   "/sitterManagement/:userId/booking/:bookingId/review",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 export default sitterManagementRouter;

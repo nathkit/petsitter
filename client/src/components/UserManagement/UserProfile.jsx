@@ -89,7 +89,8 @@ const profile = () => {
         onSubmit={(e, values) => {
           formik.handleSubmit(e, values);
         }}
-        className="h-auto flex flex-col gap-[2rem] relative">
+        className="h-auto flex flex-col gap-[2rem] relative"
+      >
         {/* upload image *********************************** */}
         <Box className="h-[15rem] relative mb-10">
           <UploadImage

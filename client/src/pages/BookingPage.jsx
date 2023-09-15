@@ -24,6 +24,9 @@ function BookingPage() {
   };
 
   const prevStep = () => {
+    if (step <= 2) {
+      setDisableButtonBooking1("");
+    }
     if (step > 1) {
       setStep(step - 1);
     }
@@ -69,7 +72,7 @@ function BookingPage() {
               <ButtonPrimary
                 content={"Back"}
                 onClick={() => {
-                  setDisableButtonBooking1("");
+                  // setDisableButtonBooking1("");
                   prevStep();
                 }}
                 disabled={step === 1}

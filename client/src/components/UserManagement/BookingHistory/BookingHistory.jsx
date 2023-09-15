@@ -8,7 +8,7 @@ import {
   WaitingforConfirm,
   WaitingforService,
   Success,
-  Canceled
+  Canceled,
 } from "./BookingStatusMsg";
 
 export const petData = [
@@ -86,21 +86,22 @@ function BookingHistory() {
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
   const handleClick = (id) => {
     const updateStatus = data.map((card) => {
-      return card.id === id
-        ? { ...card, status: "Waiting for service" }
-        : card;
+      return card.id === id ? { ...card, status: "Waiting for service" } : card;
     });
     setStatus(updateStatus);
   };
 
   return (
     <section className="booking-history flex flex-col gap-6">
+      <p className=" pb-[60px] text-headline3">Booking History</p>
       {Array.isArray(data) !== undefined &&
         data.map((card) => {
           return (
             <div
               className={`booking-history-container rounded-2xl p-6 ${
-                card.status === "In service" ? "border border-blue-500" : "border border-gray-200"
+                card.status === "In service"
+                  ? "border border-blue-500"
+                  : "border border-gray-200"
               }`}
               key={card.id}
               onClick={() =>
@@ -125,19 +126,19 @@ function BookingHistory() {
                     Transaction date: {card.transaction_date}
                   </p>
                   <h5
-                   className={`text-right text-body2 ${
-                    card.status === "In service"
-                      ? "text-blue-500"
-                      : card.status === "Waiting for confirmation"
-                      ? "text-pink-500"
-                      : card.status === "Waiting for service"
-                      ? "text-yellow-200"
-                      : card.status === "Success"
-                      ? "text-green-500"
-                      : card.status === "Canceled"
-                      ? "text-etc-red"
-                      : ""
-                  }`}
+                    className={`text-right text-body2 ${
+                      card.status === "In service"
+                        ? "text-blue-500"
+                        : card.status === "Waiting for confirmation"
+                        ? "text-pink-500"
+                        : card.status === "Waiting for service"
+                        ? "text-yellow-200"
+                        : card.status === "Success"
+                        ? "text-green-500"
+                        : card.status === "Canceled"
+                        ? "text-etc-red"
+                        : ""
+                    }`}
                     onClick={() => handleClick(card.id)}
                   >
                     {card.status}

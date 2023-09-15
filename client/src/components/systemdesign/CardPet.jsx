@@ -1,33 +1,41 @@
 import usePosts from "../../hooks/usePost";
 import { CreateIcon } from "./Icons";
+import { useNavigate } from "react-router-dom";
+import { ButtonPrimary } from "./Button";
 
 const data = [
   {
+    id: "1",
     name: "Bubba",
     type: "Dog",
     image: "https://picsum.photos/id/237/200/300",
   },
   {
+    id: "2",
     name: "Daisy",
     type: "Dog",
     image: "https://picsum.photos/id/237/200/300",
   },
   {
+    id: "3",
     name: "I Som",
     type: "Cat",
     image: "https://bit.ly/fcc-relaxing-cat",
   },
   {
+    id: "4",
     name: "Noodle Birb",
     type: "Bird",
     image: "https://i.stack.imgur.com/Cb5uv.jpg",
   },
   {
+    id: "5",
     name: "Toffe",
     type: "Super Dog",
     image: "https://cdn.pic.in.th/file/picinth/S__164773890.th.jpeg",
   },
   {
+    id: "6",
     name: "Bubba",
     type: "Dog",
     image: "https://picsum.photos/id/237/200/300",
@@ -36,10 +44,21 @@ const data = [
 
 export function CardPet1() {
   const { getTypeStyle } = usePosts();
-
+  const navigate = useNavigate();
   return (
     <>
       <div className=" bg-etc-white w-full h-fit">
+        <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
+          <p className=" text-headline3 flex items-center gap-[10px]">
+            Your Pet
+          </p>
+          <ButtonPrimary
+            content={"Create Pet"}
+            onClick={() => {
+              navigate(`/userManagement/:userId/pets/create`);
+            }}
+          />
+        </div>
         <div className="flex flex-wrap j">
           {data.map((item, index) => {
             const { textStyle, border, bgColor } = getTypeStyle(item.type);
@@ -47,7 +66,13 @@ export function CardPet1() {
               item.type
             );
             return (
-              <div key={index} className="flex mx-[5px]">
+              <div
+                key={index}
+                className="flex mx-[5px]"
+                onClick={() => {
+                  navigate(`/userManagement/1/pets/${item.id}`);
+                }}
+              >
                 <div
                   id="card"
                   className={`border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 

@@ -1,16 +1,15 @@
-import { ArrowLeftIcon, PetIcon, TrashIcon } from "../../systemdesign/Icons";
+import { ArrowLeftIcon } from "../../components/systemdesign/Icons";
 import {
   ButtonPrimary,
   ButtonSecondary,
-  ButtonGhost,
-} from "../../systemdesign/Button";
+} from "../../components/systemdesign/Button";
 import { useState } from "react";
-import { Formik, Form, Field, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { UploadPetImage } from "../../systemdesign/uploadImage";
+import { UploadPetImage } from "../../components/systemdesign/uploadImage";
 import { Box } from "@mui/system";
-import { Delete } from "../../booking/Confirmation";
-import usePosts from "../../../hooks/usePost";
+import { Delete } from "../../components/booking/Confirmation";
+import usePosts from "../../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 
 const PetProfileSchema = Yup.object().shape({
@@ -99,7 +98,8 @@ function PetInputForm(props) {
             onChange={formik.handleChange}
             value={formik.values.petType}
             onBlur={formik.handleBlur}
-            placeholder="Select your pet type">
+            placeholder="Select your pet type"
+          >
             <option value="" disabled>
               Select your pet type
             </option>
@@ -145,7 +145,8 @@ function PetInputForm(props) {
             type="text"
             onChange={formik.handleChange}
             value={formik.values.sex}
-            onBlur={formik.handleBlur}>
+            onBlur={formik.handleBlur}
+          >
             <option value="" disabled>
               Select sex of your pet
             </option>
@@ -250,7 +251,7 @@ function PetInputForm(props) {
       <div className="pet-input-button flex justify-between">
         <ButtonSecondary
           content="Cancel"
-          onClick={() => navigate("/usermanagement")}
+          onClick={() => navigate("/userManagement/:userId/pets")}
           type="cancel"
         />{" "}
         <ButtonPrimary
@@ -262,10 +263,28 @@ function PetInputForm(props) {
   );
 }
 
+export function TurnBack() {
+  const navigate = useNavigate();
+  return (
+    <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
+      <p className=" text-headline3 flex items-center gap-[10px]">
+        <ArrowLeftIcon
+          color="#7B7E8F"
+          onClick={() => {
+            navigate("/");
+          }}
+        />
+        Your Pet
+      </p>
+    </div>
+  );
+}
+
 export function CreatePet() {
   const [haveImage, setImage] = useState(false);
   return (
     <div className="pet-input-container">
+      <TurnBack />
       <Box className="h-[15rem] mb-[60px]">
         <UploadPetImage />
       </Box>
@@ -280,6 +299,7 @@ export function EditPet() {
   const [haveImage, setImage] = useState(false);
   return (
     <div className="pet-input-container">
+      <TurnBack />
       <Box className="h-[15rem] mb-[60px]">
         <UploadPetImage />
       </Box>

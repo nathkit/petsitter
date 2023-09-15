@@ -57,7 +57,7 @@ function Booking4() {
         </div>
       </div>
       <div className="mt-10 relative flex">
-        <ButtonSecondary content={"Booking History"} width={"159px"} />
+        <ButtonSecondary content={"Booking History"} width={"167px"} />
         &nbsp;&nbsp;&nbsp;&nbsp;
         <ButtonPrimary
           content={"Back To Home"}

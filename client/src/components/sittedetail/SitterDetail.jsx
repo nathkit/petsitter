@@ -74,7 +74,7 @@ function SitterDetail() {
           <div className=" sticky top-0 flex flex-col mx-20 pt-10 gap-6 items-center justify-center w-[100%] h-auto bg-etc-white rounded-2xl">
             <div className="avatar">
               <div className="w-[160px] h-[160px] rounded-full">
-                <img src={sitterDetail[0]?.profile_image_path} alt="Avatar" />
+                <img src={sitterDetail[0]?.sitter_image_path} alt="Avatar" />
               </div>
             </div>
             {/* detail in Card */}
@@ -85,7 +85,7 @@ function SitterDetail() {
               </h2>
               <h4 className="text-[20px] m-0">
                 {" "}
-                {sitterDetail[0]?.full_name}{" "}
+                {sitterDetail[0]?.sitter_name}{" "}
                 <span className="text-[16px] text-green-500">
                   {" "}
                   {sitterDetail[0]?.experience} Years Exp.
@@ -93,7 +93,7 @@ function SitterDetail() {
               </h4>
               {/* rating star use logic if number 1 render 1 star */}
               <div className="flex justify-center mt-1">
-                {[...Array(sitterDetail[0]?.avg_rating)].map((_, index) => (
+                {[...Array(sitterDetail[0]?.star)].map((_, index) => (
                   <svg
                     key={index}
                     xmlns="http://www.w3.org/2000/svg"

@@ -62,8 +62,8 @@ function SitterReview() {
         }
       );
 
-      setReviews(response.data.data);
-      setAverageRating(response.data.data[0].avg_rating);
+      setReviews(response.data.reviews);
+      setAverageRating(response.data.reviews[0].avg_rating);
       setTotalPages(response.data.pagination.totalPages);
       setTotalReviews(response.data.pagination.totalData);
     } catch (error) {

@@ -28,14 +28,15 @@ function HistoryPage() {
             <p className="ml-3">Your Pet</p>
           </button>
           <button
-            className={`px-6 py-5 hover:text-orange-500 text-start  focus:text-orange-500 text-body1 flex items-center `}
+            className={`px-6 py-5 hover:text-orange-500 text-start focus:bg-orange-100 focus:text-orange-500 text-body1 flex items-center `}
           >
             <ListIcon />
             <p className="ml-3">Booking History</p>
           </button>
         </div>
         <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
-          <BookingHistory />;
+          <p className=" pb-[60px] text-headline3">Booking History</p>
+          <BookingHistory />
         </div>
       </div>
     </>

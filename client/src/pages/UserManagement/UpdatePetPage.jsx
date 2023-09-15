@@ -1,5 +1,12 @@
+import { EditPet } from "../../components/UserManagement/PetProfile";
+import Sidebar from "../../components/UserManagement/Sidebar";
+
 function UpdatePetPage() {
-  return <div>UpdatePetPage</div>;
+  return (
+    <Sidebar>
+      <EditPet />
+    </Sidebar>
+  );
 }
 
 export default UpdatePetPage;

@@ -1,6 +1,7 @@
 import usePosts from "../../hooks/usePost";
 import { CreateIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
+import { ButtonPrimary } from "./Button";
 
 const data = [
   {
@@ -47,6 +48,17 @@ export function CardPet1() {
   return (
     <>
       <div className=" bg-etc-white w-full h-fit">
+        <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
+          <p className=" text-headline3 flex items-center gap-[10px]">
+            Your Pet
+          </p>
+          <ButtonPrimary
+            content={"Create Pet"}
+            onClick={() => {
+              navigate(`/userManagement/:userId/pets/create`);
+            }}
+          />
+        </div>
         <div className="flex flex-wrap j">
           {data.map((item, index) => {
             const { textStyle, border, bgColor } = getTypeStyle(item.type);

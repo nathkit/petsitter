@@ -1,12 +1,12 @@
+import BookingHistory from "../../components/UserManagement/BookingHistory/BookingHistory";
 import Navbar from "../../components/systemdesign/Navbar";
 import {
   UserIcon,
   PetIcon,
   ListIcon,
 } from "../../components/systemdesign/Icons";
-import { CardPet1 } from "../../components/systemdesign/CardPet";
 
-function PetListPage() {
+function HistoryPage() {
   return (
     <>
       <Navbar />
@@ -35,11 +35,11 @@ function PetListPage() {
           </button>
         </div>
         <div className="p-10 bg-etc-white rounded-2xl w-[956px] h-fit">
-          <CardPet1 />
+          <BookingHistory />;
         </div>
       </div>
     </>
   );
 }
 
-export default PetListPage;
+export default HistoryPage;

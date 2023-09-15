@@ -10,7 +10,8 @@ import { Routes, Route } from "react-router-dom";
 import ResetPassword from "./ResetPassword";
 import ProfliePage from "./UserManagement/ProfliePage";
 import PetListPage from "./UserManagement/PetListPage";
-
+import CreatePetPage from "./UserManagement/CreatePetPage";
+import BookingHistoryPage from "./UserManagement/BookingHistoryPage";
 function AuthenticatedApp() {
   return (
     <Routes>
@@ -26,7 +27,7 @@ function AuthenticatedApp() {
       {/* สร้างpet */}
       <Route
         path="/userManagement/:userId/pets/create"
-        element={<ProfliePage />}
+        element={<CreatePetPage />}
       />
       {/* ดูpetID */}
       <Route
@@ -44,7 +45,7 @@ function AuthenticatedApp() {
       />
       <Route
         path="/sitterManagement/:sitterId"
-        element={<SitterDetailPage />}
+        element={<BookingHistoryPage />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

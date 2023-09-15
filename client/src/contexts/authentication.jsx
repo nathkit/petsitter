@@ -9,10 +9,9 @@ const AuthContext = React.createContext();
 
 function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState({});
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
-  const [userFromSupabaseAuth, setUserFromSupabaseAuth] = useState({});
-  const [user, setUser] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [alertMessage, setAlertMessage] = useState({
     message: "",
@@ -33,7 +32,9 @@ function AuthProvider(props) {
       if (
         serverRespond.data.message === "User has been verified successfully"
       ) {
-        const result = await supabase.auth.signInWithPassword({
+        // sign in to supabase auth table *******************************
+        // must be sign in by client if sign in server it will not set token to local storage
+        await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
@@ -41,10 +42,8 @@ function AuthProvider(props) {
           message: serverRespond.data.message,
           severity: "success",
         });
+        setUser(serverRespond.data.data);
         // console.log(serverRespond.data.data);
-        setUser((prev) => {
-          return serverRespond.data.data;
-        });
         localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
         formikHelpers.resetForm();
         nav("/");
@@ -56,7 +55,7 @@ function AuthProvider(props) {
         });
       }
     } catch (err) {
-      console.log(err.respondes);
+      console.log(err);
     }
   };
 
@@ -80,25 +79,16 @@ function AuthProvider(props) {
       );
       if (
         serverRespond.data.message ===
-        "User profile has been created successfully"
+        "User profile has been created successfully and please confirm you email first"
       ) {
-        const { data, error } = await supabase.auth.signUp({
-          email: values.email,
-          password: values.password,
-          // options: {
-          //   data: {
-          //     email: "kkkkk",
-          //     name: "John",
-          //     phone: 27,
-          //   },
-          // },
-        });
         setAlertMessage({
           message: serverRespond.data.message,
           severity: "success",
         });
         formikHelpers.resetForm();
-        nav("/login");
+        setTimeout(() => {
+          nav("/login");
+        }, 3000);
       } else {
         setAlertMessage({
           message: serverRespond.data.message,
@@ -110,59 +100,57 @@ function AuthProvider(props) {
     }
   };
 
-  const getUserData = async () => {
-    // await supabase.auth.getUser().then((value) => {
-    //   if (value.data?.user) {
-    //     console.log(value.data);
-    //     setUserFromSupabaseAuth(value.data.user);
-    //     if (user || userFromSupabaseAuth) {
-    //       setIsAuthenticated(true);
-    //     }
-    //   }
-    // });
-  };
-
   const sendRequestResetPassword = async (values, formikHelpers) => {
-    // console.log(values.email);
-    const email = values.email;
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/resetPassword",
-    });
-    setGetEvent("");
-    setAlertMessage({
-      message: "Please check your email!",
-      severity: "success",
-    });
-    nav("/login");
+    try {
+      const serverRespond = await axios.post(
+        "http://localhost:4000/auth/requestResetPassword",
+        values
+      );
+      if (serverRespond.data.message === "Please check your email!") {
+        setGetEvent("");
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "success",
+        });
+        formikHelpers.resetForm();
+        setTimeout(() => {
+          nav("/login");
+        }, 3000);
+      } else {
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "info",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleResetPasswordSubmit = async (values, formikHelpers) => {
-    console.log(getEvent);
+    // console.log(getEvent);
     const newValue = {
       email: getEvent.session.user.email,
       password: values.password,
-      role,
     };
     if (getEvent.event !== "INITIAL_SESSION") {
       try {
-        const { data, error } = await supabase.auth.updateUser({
-          password: values.password,
-        });
-        const result = await axios.put(
+        const serverRespond = await axios.put(
           "http://localhost:4000/auth/resetPassword",
           newValue
         );
-        // console.log(result.data.message);
-        if (data && result.data.message === "Reset password successfully") {
+        if (serverRespond.data.message === "Reset password successfully") {
           setAlertMessage({
-            message: result.data.message,
+            message: serverRespond.data.message,
             severity: "success",
           });
           formikHelpers.resetForm();
-          nav("/");
+          setTimeout(() => {
+            nav("/login");
+          }, 3000);
         } else {
           setAlertMessage({
-            message: result.data.message,
+            message: serverRespond.data.message,
             severity: "info",
           });
         }
@@ -188,7 +176,6 @@ function AuthProvider(props) {
         signInWithFacebook,
         signInWithGoogle,
         handleLoginSubmit,
-        getUserData,
         sendRequestResetPassword,
         handleResetPasswordSubmit,
         signOut,
@@ -197,12 +184,12 @@ function AuthProvider(props) {
         setAlertMessage,
         setIsAuthenticated,
         getEvent,
-        user,
-        userFromSupabaseAuth,
         isAuthenticated,
         showPassword,
         alertMessage,
-      }}>
+        user,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

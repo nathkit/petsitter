@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 
 function useUserProfile() {
   const params = useParams();
-  const [user, setUser] = useState();
   const [alertUserMessage, setAlertUserMessage] = useState();
 
   // send img to storage *****************************
@@ -22,32 +21,19 @@ function useUserProfile() {
   };
 
   const updateUserData = async (data) => {
-    // console.log(data);
-    // console.log(params.ownerId);
-    // const { user, error } = await supabase.auth.updateUser({
-    //   data: {
-    //     first_name: "555555555",
-    //     last_name: "55555555",
-    //     age: 5555555,
-    //   },
-    // });
+    const newData = data;
+    const { user, error } = await supabase.auth.updateUser({
+      data: newData,
+    });
     try {
       const result = await axios.put(
-        `http://localhost:4000/userManagement/:${params.userId}`,
-        data
+        `http://localhost:4000/userManagement/${params.userId}`,
+        newData
       );
     } catch (err) {
       console.log(err);
     }
   };
-
-  // const fetchUserData = async () => {
-  //   const result = await axios.get(
-  //     `http://localhost:4000/userManagement/:${params.userId}`
-  //   );
-  //   setUser(result.data);
-  //   setAlertUserMessage(result.data.message);
-  // };
 
   return { updateUserData, handleAvatar };
 }

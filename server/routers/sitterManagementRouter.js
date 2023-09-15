@@ -10,48 +10,23 @@ sitterManagementRouter.get("/", async (req, res) => {
     const rate = req.query.rate || "";
     const exp = req.query.exp || "";
 
-    const requiredFields = [
-      "pet_sitter_name",
-      "pet_sitter_id",
-      "pet_sitter_trade_name",
-      "pet_sitter_district",
-      "pet_sitter_province",
-      "pet_sitter_pet_type",
-      "pet_sitter_image",
-      "pet_sitter_carousel",
-      "experience",
-      "pet_sitter_address",
-      "pet_sitter_sub_district",
-    ];
-
-    const petSitterRequiedFields = requiredFields
-      .map((e) => "p." + e)
-      .join(", ");
-
-    let query = `WITH pet_sitter_profile AS (
-        SELECT
-            *,
-            ((EXTRACT(YEAR FROM now()) - EXTRACT(YEAR FROM created_at)) * 12) + (EXTRACT(MONTH FROM now()) - EXTRACT(MONTH FROM created_at)) AS experience
-        FROM pet_sitter_profile
-    )
-  SELECT ${petSitterRequiedFields} , floor(AVG(r.rating_review_star)) as avg_rating
-  FROM pet_sitter_profile as p JOIN rating_review as r ON p.pet_sitter_id = r.pet_sitter_id GROUP BY p.pet_sitter_id, ${petSitterRequiedFields}`;
+    let query = `SELECT * FROM pet_sitter_view`;
     let value = [];
     let condition = [];
 
     if (search) {
       condition.push(
-        `(Lower(pet_sitter_trade_name) like $` +
-        (value.length + 1) +
-        ` or Lower(pet_sitter_address) like $` +
-        (value.length + 1) +
-        ` or Lower(pet_sitter_district) like $` +
-        (value.length + 1) +
-        ` or Lower(pet_sitter_sub_district) like $` +
-        (value.length + 1) +
-        `  or Lower(pet_sitter_province) like $` +
-        (value.length + 1) +
-        ` )`
+        `(Lower(trade_name) like $` +
+          (value.length + 1) +
+          ` or Lower(address_detail) like $` +
+          (value.length + 1) +
+          ` or Lower(district) like $` +
+          (value.length + 1) +
+          ` or Lower(sub_district) like $` +
+          (value.length + 1) +
+          `  or Lower(province) like $` +
+          (value.length + 1) +
+          ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -61,7 +36,7 @@ sitterManagementRouter.get("/", async (req, res) => {
       if (petType.length > 0) {
         if (petType.length > 0) {
           const petTypeConditions = petType.map(
-            (type) => `'${type}' LIKE ANY (p.pet_sitter_pet_type)`
+            (type) => `pet_type LIKE '%${type}%'`
           );
           condition.push(`(` + petTypeConditions.join(` and `) + `)`);
         }
@@ -69,46 +44,38 @@ sitterManagementRouter.get("/", async (req, res) => {
     }
 
     if (rate) {
-      condition.push(
-        `floor(avg(r.rating_review_star)) = $` + (value.length + 1) + ``
-      );
+      condition.push(`avg_rating = $` + (value.length + 1) + ``);
       value.push(rate);
     }
 
     if (exp) {
-      if (exp == 0) {
-        // 0-35 Month
-        condition.push(`experience < 36`);
-      } else if (exp == 1) {
-        // 36-60 Month
-        condition.push(`experience >= 36 and experience  <= 60`);
-      } // >60 Month
-      else condition.push(`experience > 60`);
+      condition.push(`experience = ` + exp);
     }
 
     if (condition.length > 0) {
-      query += ` having ` + condition.join(` and `);
+      query += ` where ` + condition.join(` and `);
     }
 
     query += ` limit 5`;
 
-    // console.log(query);
+    console.log(query);
 
     const result = await pool.query(query, value);
 
-    // const rows = result.rows;
+    const rows = result.rows;
+    // console.log(rows);
 
-    // const parseTypeRows = rows.map((e) => {
-    //   const types = e.pet_sitter_pet_type.replaceAll(" ", "").split(",");
-    //   return {
-    //     ...e,
-    //     pet_sitter_pet_type: types,
-    //   };
-    // });
+    const parseTypeRows = rows.map((e) => {
+      const types = e.pet_type.split(",");
+      return {
+        ...e,
+        pet_type: types,
+      };
+    });
 
     return res.json({
       message: "Get detail successfully",
-      data: result,
+      data: parseTypeRows,
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);
@@ -116,7 +83,26 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => { });
+sitterManagementRouter.post("/", async (req, res) => {
+  try {
+    const newReview = {
+      ...req.body,
+      created_at: new Date(),
+    };
+    await pool.query(
+      `insert into sitter_reviews (rating, comment, created_at)
+            value ($1, $2, $3)`,
+      [newReview.rating, newReview.comment, newReview.created_at]
+    );
+
+    return res.json({
+      message: "Rating has been created successfully",
+      data: newReview,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -124,10 +110,10 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const reviewPerPage = 5;
 
-    const queryForDetail = `SELECT * FROM pet_sitter_details WHERE pet_sitter_id = $1;`
+    const queryForDetail = `SELECT * FROM pet_sitter_details WHERE pet_sitter_id = $1;`;
 
     const queryForReviews = `SELECT * FROM sitter_reviews_by_id 
-    WHERE sitter_id = $1;`
+    WHERE sitter_id = $1;`;
     // console.log("Parameter (sitterId):", sitterId);
 
     const sitterDetails = await pool.query(queryForDetail, [sitterId]);
@@ -163,33 +149,33 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => { });
+sitterManagementRouter.put("/:sitterId", async (req, res) => {});
 
 sitterManagementRouter.get(
   "/sitterManagement/:sitterId/booking/",
-  async (req, res) => { }
+  async (req, res) => {}
 );
 
 sitterManagementRouter.get(
   "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => { }
+  async (req, res) => {}
 );
 
 // Reject / Confirm /In Service
 sitterManagementRouter.put(
   "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => { }
+  async (req, res) => {}
 );
 
 // Success
 sitterManagementRouter.put(
   "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => { }
+  async (req, res) => {}
 );
 
 sitterManagementRouter.put(
   "/sitterManagement/:userId/booking/:bookingId/review",
-  async (req, res) => { }
+  async (req, res) => {}
 );
 
 export default sitterManagementRouter;

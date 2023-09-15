@@ -10,10 +10,10 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, userData, setUserData } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);
+
   const [profileImageLoaded, setProfileImageLoaded] = useState(false); // Add this state
 
   const authenticate = () => {
@@ -37,6 +37,7 @@ function Navbar() {
     }
   }, [getProfileImage, profileImageLoaded]);
   console.log(userData);
+
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
@@ -70,7 +71,7 @@ function Navbar() {
       {
         icon: PetIcon,
         content: "Your Pet",
-        navigate: () => navigate("/userManagement/:userId/pets"),
+        navigate: () => navigate(`/userManagement/${userData.id}/pets`),
       },
       {
         icon: ListIcon,

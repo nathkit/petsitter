@@ -2,49 +2,18 @@ import usePosts from "../../hooks/usePost";
 import { CreateIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
 import { ButtonPrimary } from "./Button";
-
-const data = [
-  {
-    id: "1",
-    name: "Bubba",
-    type: "Dog",
-    image: "https://picsum.photos/id/237/200/300",
-  },
-  {
-    id: "2",
-    name: "Daisy",
-    type: "Dog",
-    image: "https://picsum.photos/id/237/200/300",
-  },
-  {
-    id: "3",
-    name: "I Som",
-    type: "Cat",
-    image: "https://bit.ly/fcc-relaxing-cat",
-  },
-  {
-    id: "4",
-    name: "Noodle Birb",
-    type: "Bird",
-    image: "https://i.stack.imgur.com/Cb5uv.jpg",
-  },
-  {
-    id: "5",
-    name: "Toffe",
-    type: "Super Dog",
-    image: "https://cdn.pic.in.th/file/picinth/S__164773890.th.jpeg",
-  },
-  {
-    id: "6",
-    name: "Bubba",
-    type: "Dog",
-    image: "https://picsum.photos/id/237/200/300",
-  },
-];
+import { useEffect } from "react";
 
 export function CardPet1() {
-  const { getTypeStyle } = usePosts();
+  const { getTypeStyle, petData, getAllPetList } = usePosts();
+
+  useEffect(() => {
+    getAllPetList();
+  }, []);
+  // console.log(petData);
+
   const navigate = useNavigate();
+
   return (
     <>
       <div className=" bg-etc-white w-full h-fit">
@@ -59,8 +28,8 @@ export function CardPet1() {
             }}
           />
         </div>
-        <div className="flex flex-wrap j">
-          {data.map((item, index) => {
+        <div className="flex flex-wrap ">
+          {petData?.map((item, index) => {
             const { textStyle, border, bgColor } = getTypeStyle(item.type);
             const isInvalidType = !["Dog", "Cat", "Bird", "Rabbit"].includes(
               item.type
@@ -81,7 +50,7 @@ export function CardPet1() {
                 >
                   <img
                     className="w-[104px] h-[104px] relative rounded-[99px]"
-                    src={item.image}
+                    src={item.image_path}
                   />
                   <div className="self-stretch h-[68px] flex-col  items-center gap-2 flex">
                     <div className="self-stretch text-center text-headline4">
@@ -104,14 +73,18 @@ export function CardPet1() {
 }
 
 export function CardPet2(props) {
-  const { getTypeStyle } = usePosts();
+  const { getTypeStyle, petData, getAllPetList } = usePosts();
+
+  useEffect(() => {
+    getAllPetList();
+  }, []);
 
   return (
     <>
       <div className=" bg-etc-white p-10 w-full h-fit">
         <p className="mb-4 text-body2">Choose your pet</p>
         <div className="flex flex-wrap relative">
-          {data.map((item, index) => {
+          {petData?.map((item, index) => {
             const { textStyle, border, bgColor } = getTypeStyle(item.type);
             const isInvalidType = !["Dog", "Cat", "Bird", "Rabbit"].includes(
               item.type
@@ -130,7 +103,7 @@ export function CardPet2(props) {
                 >
                   <img
                     className="w-[104px] h-[104px] relative rounded-[99px]"
-                    src={item.image}
+                    src={item.image_path}
                   />
                   <div className="self-stretch h-[68px] flex-col  items-center gap-2 flex">
                     <div className="self-stretch text-center text-headline4">

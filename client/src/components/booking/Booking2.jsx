@@ -1,6 +1,8 @@
 import TextField from "@mui/material/TextField";
+import { useAuth } from "../../contexts/authentication";
 
 function Booking2() {
+  const { userData } = useAuth();
   return (
     <>
       <div className=" bg-etc-white p-10  h-fit">
@@ -9,7 +11,7 @@ function Booking2() {
           fullWidth
           id="name"
           name="name"
-          value={"Full name"}
+          value={userData.fullName}
           InputProps={{
             sx: { borderRadius: " 8px", backgroundColor: "#f6f6f9" },
           }}
@@ -22,7 +24,7 @@ function Booking2() {
               id="email"
               name="email"
               type="email"
-              value={"youremail@company.com"}
+              value={userData.email}
               className="w-[100%]"
               InputProps={{
                 sx: { borderRadius: " 8px", backgroundColor: "#f6f6f9" },
@@ -36,7 +38,7 @@ function Booking2() {
               id="phone"
               name="phone"
               type="tel"
-              value={"xxx-xxx-xxxx"}
+              value={userData.phone}
               className="w-[100%]"
               InputProps={{
                 sx: { borderRadius: " 8px", backgroundColor: "#f6f6f9" },

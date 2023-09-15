@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authentication";
 
 const usePosts = () => {
+  const [petData, setPetData] = useState();
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
 
@@ -87,12 +89,29 @@ const usePosts = () => {
     return { textStyle, border, bgColor };
   };
 
+  const getAllPetList = async () => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      try {
+        const result = await axios.get(
+          `http://localhost:4000/userManagement/${user.id}/pets`
+        );
+        setPetData(result.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return {
     profileImage,
     getProfileImage,
     getTypeStyle,
     createPetProfile,
     updatePetProfile,
+    getAllPetList,
+    petData,
   };
 };
 

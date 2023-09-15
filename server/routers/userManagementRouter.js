@@ -19,23 +19,23 @@ userManagementRouter.put("/:userId", async (req, res) => {
   });
 });
 
-userManagementRouter.get("/:userId/pets", async (req, res) => {});
+userManagementRouter.get("/:userId/pets", async (req, res) => { });
 
-userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {});
+userManagementRouter.get("/:userId/pets/:petId", async (req, res) => { });
 
-userManagementRouter.post("/:userId/pets", async (req, res) => {});
+userManagementRouter.post("/:userId/pets", async (req, res) => { });
 
-userManagementRouter.put("/:userId/pets/:petId", async (req, res) => {});
+userManagementRouter.put("/:userId/pets/:petId", async (req, res) => { });
 
-userManagementRouter.delete("/:userId/pets/:petId", async (req, res) => {});
+userManagementRouter.delete("/:userId/pets/:petId", async (req, res) => { });
 
-userManagementRouter.get("/:userId/booking", async (req, res) => {});
+userManagementRouter.get("/:userId/booking", async (req, res) => { });
 
-userManagementRouter.get("/:userId/booking/:bookingId", async (req, res) => {});
+userManagementRouter.get("/:userId/booking/:bookingId", async (req, res) => { });
 
 userManagementRouter.post(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 export default userManagementRouter;

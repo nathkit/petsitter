@@ -33,10 +33,10 @@ function Navbar() {
       // Check if profileImage has not been loaded yet
       setUserData(userData);
       getProfileImage(userData);
-      setProfileImageLoaded(true); // Set the flag to true after loading the image
+      setProfileImageLoaded(true);
     }
   }, [getProfileImage, profileImageLoaded]);
-
+  console.log(userData);
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
 

@@ -42,11 +42,11 @@ function AuthenticatedApp() {
       />
       <Route
         path="/userManagement/:userId/booking"
-        element={<SitterDetailPage />}
+        element={<BookingHistoryPage />}
       />
       <Route
         path="/sitterManagement/:sitterId"
-        element={<BookingHistoryPage />}
+        element={<SitterDetailPage />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

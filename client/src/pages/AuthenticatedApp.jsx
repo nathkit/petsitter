@@ -12,6 +12,7 @@ import ProfliePage from "./UserManagement/ProfliePage";
 import PetListPage from "./UserManagement/PetListPage";
 import CreatePetPage from "./UserManagement/CreatePetPage";
 import BookingHistoryPage from "./UserManagement/BookingHistoryPage";
+import UpdatePetPage from "./UserManagement/UpdatePetPage";
 function AuthenticatedApp() {
   return (
     <Routes>
@@ -29,10 +30,10 @@ function AuthenticatedApp() {
         path="/userManagement/:userId/pets/create"
         element={<CreatePetPage />}
       />
-      {/* ดูpetID */}
+      {/* อัปเดตpetID */}
       <Route
         path="/userManagement/:userId/pets/:petId"
-        element={<ProfliePage />}
+        element={<UpdatePetPage />}
       />
       ``
       <Route

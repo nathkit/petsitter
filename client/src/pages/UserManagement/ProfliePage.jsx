@@ -1,12 +1,16 @@
-import Navbar from "../components/systemdesign/Navbar";
-import { UserIcon, ListIcon, PetIcon } from "../components/systemdesign/Icons";
+import Navbar from "../../components/systemdesign/Navbar";
+import {
+  UserIcon,
+  ListIcon,
+  PetIcon,
+} from "../../components/systemdesign/Icons";
 import { useState } from "react";
-import Petlist from "../components/UserManagement/Petlist";
-import BookingHistory from "../components/UserManagement/BookingHistory/BookingHistory";
-import { BookingStatusProvider } from "../contexts/BookingStatusContext";
-import UserProfile from "../components/UserManagement/UserProfile";
-import ReviewButton from "../components/UserManagement/UserReview/ReviewButton";
-import YourReviewButton from "../components/UserManagement/UserReview/YourReviewButton";
+import Petlist from "../../components/UserManagement/Petlist";
+import BookingHistory from "../../components/UserManagement/BookingHistory/BookingHistory";
+import { BookingStatusProvider } from "../../contexts/BookingStatusContext";
+import UserProfile from "../../components/UserManagement/UserProfile";
+import ReviewButton from "../../components/UserManagement/UserReview/ReviewButton";
+import YourReviewButton from "../../components/UserManagement/UserReview/YourReviewButton";
 
 function UserManagementPage() {
   const [userIcon, setUserIcon] = useState("#ff7037");
@@ -47,7 +51,8 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setUserIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <UserIcon hoverColor={userIconColor} onFocus={userIcon} />
               <p className="ml-3">Profile</p>
             </button>
@@ -70,7 +75,8 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setPetIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <PetIcon hoverColor={petIconColor} onFocus={petIcon} />
               <p className="ml-3">Your Pet</p>
             </button>
@@ -93,7 +99,8 @@ function UserManagementPage() {
               }}
               onMouseLeave={() => {
                 setListIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <ListIcon hoverColor={listIconColor} onFocus={listIcon} />
               <p className="ml-3">Booking History</p>
             </button>

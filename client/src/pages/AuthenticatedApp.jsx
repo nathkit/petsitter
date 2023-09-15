@@ -8,7 +8,8 @@ import SitterDetailPage from "./SitterDetailPage";
 import Booking4 from "../components/booking/Booking4";
 import { Routes, Route } from "react-router-dom";
 import ResetPassword from "./ResetPassword";
-import UserManagementPage from "./UserManagementPage";
+import ProfliePage from "./UserManagement/ProfliePage";
+import PetListPage from "./UserManagement/PetListPage";
 
 function AuthenticatedApp() {
   return (
@@ -19,21 +20,18 @@ function AuthenticatedApp() {
       <Route path="/resetPassword" element={<ResetPassword />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/search" element={<SearchList />} />
-      <Route path="/userManagement/:userId" element={<UserManagementPage />} />
+      <Route path="/userManagement/:userId" element={<ProfliePage />} />
       {/* หน้ารวมpet */}
-      <Route
-        path="/userManagement/:userId/pets"
-        element={<UserManagementPage />}
-      />
+      <Route path="/userManagement/:userId/pets" element={<PetListPage />} />
       {/* สร้างpet */}
       <Route
         path="/userManagement/:userId/pets/create"
-        element={<UserManagementPage />}
+        element={<ProfliePage />}
       />
       {/* ดูpetID */}
       <Route
         path="/userManagement/:userId/pets/:petId"
-        element={<UserManagementPage />}
+        element={<ProfliePage />}
       />
       ``
       <Route

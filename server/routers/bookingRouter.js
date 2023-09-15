@@ -15,7 +15,9 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
         created_at: new Date()
     }
 
-    const insertBooking = `insert into bookings (user_id, pet_sitter_id, start_date_time, end_date_time, amount, message, payment_method, statuses, created_at) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id`
+    const insertBooking = `insert into bookings (user_id, pet_sitter_id, start_date_time, 
+        end_date_time, amount, message, payment_method, statuses, created_at) 
+        values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id`
 
     const insertBookingPets = `insert into booking_pets (booking_id, pet_id) values ($1, $2)`
 

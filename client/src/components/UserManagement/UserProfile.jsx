@@ -35,13 +35,13 @@ const validationSchema = yup.object({
       return true; // Allow empty value (optional phone number)
     })
     .min(10, "Phone numbers should have 10 character"),
-  idNumbers: yup
+  idNumber: yup
     .number()
     .integer()
     .min(0)
     .test(
       "isNumber",
-      "IdNumber must be a valid number and exactly 13 characters long",
+      "IdNumber must be a valid number and exactly 13 characters",
       (val) =>
         typeof val === "number" && !isNaN(val) && val.toString().length === 13
     ),
@@ -61,7 +61,7 @@ const profile = () => {
     initialValues: {
       yourName: user.fullName,
       email: user.email,
-      idNumbers: user.idNumber,
+      idNumber: user.idNumber,
       phone: user.phone,
       dateOfBirth: user.dateOfBirth,
     },
@@ -148,24 +148,24 @@ const profile = () => {
             </label>
 
             {/* id number *********************************** */}
-            <label htmlFor="idNumbers" className="text-body1">
+            <label htmlFor="idNumber" className="text-body1">
               <p className="mb-4">Id number</p>
               <TextField
                 fullWidth
-                id="idNumbers"
-                name="idNumbers"
-                label="Id number"
+                id="idNumber"
+                name="idNumber"
+                label="idNumber"
                 value={
-                  formik.values.idNumbers !== ""
-                    ? formik.values.idNumbers
-                    : user.idNumbers
+                  formik.values.idNumber !== ""
+                    ? formik.values.idNumber
+                    : user.idNumber
                 }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.idNumbers && Boolean(formik.errors.idNumbers)
+                  formik.touched.idNumber && Boolean(formik.errors.idNumber)
                 }
-                helperText={formik.touched.idNumbers && formik.errors.idNumbers}
+                helperText={formik.touched.idNumber && formik.errors.idNumber}
               />
             </label>
           </Box>

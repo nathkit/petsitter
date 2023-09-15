@@ -18,12 +18,10 @@ function ResetPassword() {
   const {
     sendRequestResetPassword,
     handleResetPasswordSubmit,
-    handleChangeRole,
     handleClickShowPassword,
     showPassword,
     getEvent,
     setGetEvent,
-    role,
     alertMessage,
     setAlertMessage,
   } = useAuth();
@@ -76,22 +74,8 @@ function ResetPassword() {
           <p className="text-headline1 text-etc-black">Reset Password</p>
           <p className="text-headline4">Are you ready to reset your password</p>
         </Box>
-        {/* select role tap ******************************* */}
+
         <Box className="w-full">
-          <p className="text-lg text-etc-black font-medium text-center">
-            Select Role
-          </p>
-          <Tabs
-            value={role}
-            onChange={handleChangeRole}
-            textColor="secondary"
-            indicatorColor="secondary"
-            aria-label="secondary tabs example"
-            sx={{ width: "full" }}
-          >
-            <Tab value="pet_owners" label="Pet User" sx={{ width: "50%" }} />
-            <Tab value="pet_sitters" label="Pet Sitter" sx={{ width: "50%" }} />
-          </Tabs>
           {/* alert box *************************************** */}
           {alertMessage ? (
             <Alert severity={alertMessage.severity}>
@@ -151,7 +135,7 @@ function ResetPassword() {
           <Formik
             initialValues={initialValues}
             onSubmit={(values, formikHelpers) => {
-              handleResetPasswordSubmit(values, formikHelpers, getEvent, role);
+              handleResetPasswordSubmit(values, formikHelpers, getEvent);
             }}
             validationSchema={object({
               password: string()

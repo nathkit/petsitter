@@ -2,40 +2,49 @@ import axios from "axios";
 import React, { useState } from "react";
 import { supabase } from "../contexts/supabase";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../contexts/authentication";
 
 function useUserProfile() {
   const params = useParams();
-  const [alertUserMessage, setAlertUserMessage] = useState();
-
-  // send img to storage *****************************
-  const handleAvatar = async (file) => {
-    const uniqueName = Date.now();
-    const uploadAvatar = await supabase.storage
-      .from("avatars")
-      .upload(`userAvatar/${uniqueName}.png`, file);
-    const { data } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(`userAvatar/${uniqueName}.png`);
-    // return URL ************************************
-    return { avatarUrl: data.publicUrl };
-  };
+  const { alertMessage, setAlertMessage } = useAuth();
 
   const updateUserData = async (data) => {
-    const newData = data;
-    const { user, error } = await supabase.auth.updateUser({
-      data: newData,
-    });
+    // console.log(data.avatarName);
+    const uniqueName = Date.now();
     try {
-      const result = await axios.put(
+      // delete avatar bofore upload condition ********************************
+      if (data.avatarName) {
+        await supabase.storage.from("avatars").remove([data.avatarName]);
+        data.avatarName = `userAvatar/${uniqueName}.png`;
+        await supabase.storage
+          .from("avatars")
+          .upload(data.avatarName, data.avatarFile);
+        // console.log("1");
+      } else {
+        data.avatarName = `userAvatar/${uniqueName}.png`;
+        await supabase.storage
+          .from("avatars")
+          .upload(data.avatarName, data.avatarFile);
+        // console.log("2");
+      }
+      const serverRespond = await axios.put(
         `http://localhost:4000/userManagement/${params.userId}`,
-        newData
+        data
       );
+      setAlertMessage({
+        message: serverRespond.data.message,
+        severity: "success",
+      });
     } catch (err) {
-      console.log(err);
+      setAlertMessage({
+        message: "Error is occured!",
+        severity: "error",
+      });
+      console.log("Error is occured!");
     }
   };
 
-  return { updateUserData, handleAvatar };
+  return { updateUserData };
 }
 
 export default useUserProfile;

@@ -10,10 +10,10 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, userData, setUserData } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);
+
   const [profileImageLoaded, setProfileImageLoaded] = useState(false); // Add this state
 
   const authenticate = () => {
@@ -79,7 +79,7 @@ function Navbar() {
       },
       { icon: LogOutIcon, content: "Log Out", navigate: () => signOut() },
     ];
-
+    // console.log(profileImage);
     if (isAuthenticated) {
       return (
         <div className="dropdown dropdown-end">

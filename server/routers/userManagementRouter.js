@@ -5,18 +5,17 @@ const userManagementRouter = Router();
 
 userManagementRouter.put("/:userId", async (req, res) => {
   const userId = req.params.userId;
-  const query = `update users set full_name = $1, email = $2, id_number = $3, phone = $4, date_of_birth = $5, profile_image_path = $6 where id = $7`;
-  const values = Object.values(req.body);
-  values.push(userId);
-  console.log(userId);
+  const user = { ...req.body };
   try {
+    const query = `update users set full_name = $1, email = $2, id_number = $3, phone = $4, date_of_birth = $5, image_name = $6 where id = $7`;
+    const values = Object.values(user);
+    values.splice(6, 1, userId);
     const result = await pool.query(query, values);
-    console.log(result);
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
   return res.json({
-    message: "Fetch data successfully test",
+    message: "Updated user successfully.",
   });
 });
 

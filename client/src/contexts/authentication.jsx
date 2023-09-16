@@ -9,6 +9,7 @@ const AuthContext = React.createContext();
 
 function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [user, setUser] = useState({});
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
@@ -188,6 +189,8 @@ function AuthProvider(props) {
         showPassword,
         alertMessage,
         user,
+        userData,
+        setUserData,
       }}
     >
       {props.children}

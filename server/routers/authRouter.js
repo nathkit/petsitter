@@ -10,6 +10,7 @@ authRouter.post("/login", async (req, res) => {
   let query = "select * from users where email = $1";
   let value = [req.body.email];
   let result;
+  let url;
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
@@ -24,8 +25,16 @@ authRouter.post("/login", async (req, res) => {
       return res.json({ message: "Invalid password!" });
     }
     result = valid.rows[0];
+    //  get url by result.image_name from supabase storage url ********************
+    const data = supabase.storage
+      .from("avatars")
+      .getPublicUrl(result.image_name);
+    url = data.data.publicUrl;
   } catch (err) {
     return res.json({ message: "Server is error!" });
+  }
+  if (!result.image_name) {
+    url = null;
   }
   // send user data back to client *******************************
   return res.json({
@@ -37,7 +46,7 @@ authRouter.post("/login", async (req, res) => {
       idNumber: result.id_number,
       phone: result.phone,
       dateOfbirth: result.date_of_birth,
-      avatar: result.profile_image_path,
+      avatar: { avatarName: result.image_name, avatarUrl: url },
       sitterAuthen: result.sitter_authen,
     },
   });
@@ -74,7 +83,13 @@ authRouter.post("/register", async (req, res) => {
       email: req.body.email,
       password: req.body.password,
       options: {
-        data: req.body,
+        data: {
+          email: req.body.email,
+          name: req.body.fullName,
+          phone: req.body.phone,
+          created_at,
+          updated_at,
+        },
         emailRedirectTo: "http://localhost:5173/login",
       },
     });
@@ -128,5 +143,8 @@ authRouter.put("/resetPassword", async (req, res) => {
   }
   return res.json({ message: "Reset password successfully" });
 });
+
+// test upload image from server********************
+authRouter.put("/upload/:userId", (req, res) => {});
 
 export default authRouter;

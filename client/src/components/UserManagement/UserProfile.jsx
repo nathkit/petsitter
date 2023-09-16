@@ -7,12 +7,14 @@ import * as React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useState, useEffect } from "react";
 import useUserProfile from "../../hooks/useUserProfile";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../contexts/authentication.jsx";
+import { useAuth } from "../../contexts/authentication";
+import { Alert } from "@mui/material";
+
 dayjs.extend(utc);
 
 const validationSchema = yup.object({
@@ -37,7 +39,6 @@ const validationSchema = yup.object({
     .min(10, "Phone numbers should have 10 character"),
   idNumber: yup
     .number()
-    .integer()
     .min(0)
     .test(
       "isNumber",
@@ -48,34 +49,52 @@ const validationSchema = yup.object({
 });
 
 const profile = () => {
-  // user come from useAuth *****************************************
-  const { user } = useAuth();
+  const { alertMessage } = useAuth();
   const { updateUserData, handleAvatar } = useUserProfile();
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
+  const [userAvatar, setUserAvatar] = useState("");
   const params = useParams();
 
+  const formikValues = {
+    yourName: "",
+    email: "",
+    idNumber: "",
+    phone: "",
+    dateOfBirth: dayjs(new Date()),
+    // avartar: "",
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    const date = dayjs(new Date(user.dateOfbirth));
+    (formikValues.yourName = user.fullName),
+      (formikValues.email = user.email),
+      (formikValues.idNumber = user.idNumber),
+      (formikValues.phone = user.phone),
+      (formikValues.dateOfBirth = date),
+      // (formikValues.avartar = user.avatar.avatarUrl),
+      setUserAvatar(user.avatar);
+  }, []);
+  // const date = dayjs(new Date());
   // formik function ***********************************************
   const formik = useFormik({
-    // pull from server *********************************************
-    initialValues: {
-      yourName: user.fullName,
-      email: user.email,
-      idNumber: user.idNumber,
-      phone: user.phone,
-      dateOfBirth: user.dateOfBirth,
-    },
+    // const avatarName = userAvatar.avatarName,
+    initialValues: formikValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if (avatarFile) {
-        const result = await handleAvatar(avatarFile);
-        const newValue = { ...values, ...result };
+      if (avatarFile || userAvatar) {
+        const newValue = {
+          ...values,
+          avatarName: userAvatar.avatarName,
+          avatarFile: avatarFile,
+        };
         await updateUserData(newValue);
-        // console.log(newValue);
         alert(JSON.stringify(newValue));
       } else {
-        await updateUserData(values);
-        alert(JSON.stringify(values));
+        // await updateUserData(values);
+        console.log(values);
+        alert("Error is occured!");
       }
     },
   });
@@ -83,7 +102,6 @@ const profile = () => {
   return (
     <div className="flex flex-col gap-[4rem] h-[55.5rem] w-full">
       <h1 className="text-headline3 ">Profile</h1>
-
       {/* form *********************************** */}
       <form
         onSubmit={(e, values) => {
@@ -95,11 +113,7 @@ const profile = () => {
         <Box className="h-[15rem] relative mb-10">
           <UploadImage
             img={
-              avatarUrl ? (
-                <img src={avatarUrl} alt="avatar" width="300" height="300" />
-              ) : user.avatar ? (
-                <img src={user.avatar} alt="avatar" width="300" height="300" />
-              ) : null
+              avatarUrl ? avatarUrl : userAvatar ? userAvatar.avatarUrl : null
             }
             onChange={async (e) => {
               setAvatarFile(e.target.files[0]);
@@ -108,6 +122,10 @@ const profile = () => {
             }}
           />
         </Box>
+        {/* alert box *************************************** */}
+        {alertMessage ? (
+          <Alert severity={alertMessage.severity}>{alertMessage.message}</Alert>
+        ) : null}
         {/* your name *********************************** */}
         <label htmlFor="yourName" className="text-body1">
           <p className="mb-4">your name*</p>
@@ -116,11 +134,7 @@ const profile = () => {
             id="yourName"
             name="yourName"
             label="your name"
-            value={
-              formik.values.yourName !== ""
-                ? formik.values.yourName
-                : user.fullName
-            }
+            value={formik.values.yourName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.yourName && Boolean(formik.errors.yourName)}
@@ -137,9 +151,7 @@ const profile = () => {
                 id="email"
                 name="email"
                 label="email"
-                value={
-                  formik.values.email !== "" ? formik.values.email : user.email
-                }
+                value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.email && Boolean(formik.errors.email)}
@@ -154,18 +166,12 @@ const profile = () => {
                 fullWidth
                 id="idNumber"
                 name="idNumber"
-                label="idNumber"
-                value={
-                  formik.values.idNumber !== ""
-                    ? formik.values.idNumber
-                    : user.idNumber
-                }
+                label="Id number"
+                value={formik.values.idNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={
-                  formik.touched.idNumber && Boolean(formik.errors.idNumber)
-                }
-                helperText={formik.touched.idNumber && formik.errors.idNumber}
+                error={Boolean(formik.errors.idNumber)}
+                helperText={formik.errors.idNumber}
               />
             </label>
           </Box>
@@ -178,9 +184,7 @@ const profile = () => {
                 id="phone"
                 name="phone"
                 label="Phone"
-                value={
-                  formik.values.phone !== "" ? formik.values.phone : user.phone
-                }
+                value={formik.values.phone}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.phone && Boolean(formik.errors.phone)}
@@ -196,9 +200,10 @@ const profile = () => {
                   fullWidth
                   sx={{ width: "100%" }}
                   label="Select your date of birth"
+                  value={formik.values.dateOfBirth}
                   format="YYYY-MM-DD"
                   onChange={(value) => {
-                    const newValue = value.local().format("YYYY-MM-DD");
+                    const newValue = value.local();
                     formik.setFieldValue("dateOfBirth", newValue);
                   }}
                 />

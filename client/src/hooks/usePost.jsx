@@ -10,7 +10,7 @@ const usePosts = () => {
     // console.log(userEmail);
     // console.log(user);
     if (user) {
-      setProfileImage(user.avatar);
+      setProfileImage(user.avatar.avatarUrl);
     }
     // else {
     //   try {

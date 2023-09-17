@@ -14,6 +14,7 @@ import useUserProfile from "../../hooks/useUserProfile";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication";
 import { Alert } from "@mui/material";
+// import { makeStyles } from "@material-ui/styles";
 
 dayjs.extend(utc);
 
@@ -49,7 +50,7 @@ const validationSchema = yup.object({
 });
 
 const profile = () => {
-  const { alertMessage } = useAuth();
+  const { alertMessage, setAlertMessage } = useAuth();
   const { updateUserData, handleAvatar } = useUserProfile();
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
@@ -62,12 +63,15 @@ const profile = () => {
     idNumber: "",
     phone: "",
     dateOfBirth: dayjs(new Date()),
-    // avartar: "",
   };
 
   useEffect(() => {
+    setAlertMessage({
+      message: "",
+      severity: "",
+    });
     const user = JSON.parse(window.localStorage.getItem("user"));
-    const date = dayjs(new Date(user.dateOfbirth));
+    const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : null));
     (formikValues.yourName = user.fullName),
       (formikValues.email = user.email),
       (formikValues.idNumber = user.idNumber),
@@ -90,10 +94,10 @@ const profile = () => {
           avatarFile: avatarFile,
         };
         await updateUserData(newValue);
-        alert(JSON.stringify(newValue));
+        // alert(JSON.stringify(newValue));
       } else {
         // await updateUserData(values);
-        console.log(values);
+        // console.log(values);
         alert("Error is occured!");
       }
     },
@@ -130,6 +134,7 @@ const profile = () => {
         <label htmlFor="yourName" className="text-body1">
           <p className="mb-4">your name*</p>
           <TextField
+            className="TextField"
             fullWidth
             id="yourName"
             name="yourName"
@@ -147,6 +152,7 @@ const profile = () => {
             <label htmlFor="email" className="text-body1">
               <p className="mb-4">Email*</p>
               <TextField
+                className="TextField"
                 fullWidth
                 id="email"
                 name="email"
@@ -163,6 +169,7 @@ const profile = () => {
             <label htmlFor="idNumber" className="text-body1">
               <p className="mb-4">Id number</p>
               <TextField
+                className="TextField"
                 fullWidth
                 id="idNumber"
                 name="idNumber"
@@ -180,6 +187,7 @@ const profile = () => {
             <label htmlFor="phone" className="text-body1">
               <p className="mb-4">Phone*</p>
               <TextField
+                className="TextField"
                 fullWidth
                 id="phone"
                 name="phone"
@@ -198,7 +206,10 @@ const profile = () => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   fullWidth
-                  sx={{ width: "100%" }}
+                  className="TextField"
+                  sx={{
+                    width: "100%",
+                  }}
                   label="Select your date of birth"
                   value={formik.values.dateOfBirth}
                   format="YYYY-MM-DD"

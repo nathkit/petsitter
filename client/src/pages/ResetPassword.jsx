@@ -107,6 +107,7 @@ function ResetPassword() {
                     Email address
                   </label>
                   <Field
+                    className="TextField"
                     id="email"
                     name="email"
                     type="email"
@@ -155,7 +156,7 @@ function ResetPassword() {
                   </label>
                   <Box className="relative">
                     <Field
-                      className="w-full"
+                      className="w-full TextField"
                       id="passsword"
                       name="password"
                       variant="outlined"

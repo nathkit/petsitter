@@ -126,6 +126,7 @@ function Register() {
                   Email address
                 </label>
                 <Field
+                  className="TextField"
                   id="email"
                   name="email"
                   type="email"
@@ -145,6 +146,7 @@ function Register() {
                   Your name
                 </label>
                 <Field
+                  className="TextField"
                   id="fullName"
                   name="fullName"
                   type="text"
@@ -164,6 +166,7 @@ function Register() {
                   Phone numbers
                 </label>
                 <Field
+                  className="TextField"
                   id="phone"
                   name="phone"
                   type="text"
@@ -184,7 +187,7 @@ function Register() {
                 </label>
                 <Box className="relative">
                   <Field
-                    className="w-full"
+                    className="w-full TextField"
                     id="passsword"
                     name="password"
                     variant="outlined"

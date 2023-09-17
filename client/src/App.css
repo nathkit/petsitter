@@ -36,3 +36,14 @@ body {
 .modal-box {
   overflow: visible !important;
 }
+
+
+input:-webkit-autofill,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgb(0, 0, 0);
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+}
+
+.TextField:focus-within fieldset ,.TextField:hover fieldset{
+  border:solid #ff986f!important;
+}

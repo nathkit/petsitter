@@ -3,6 +3,7 @@ import { useState } from "react";
 import { supabase } from "./supabase.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { object } from "yup";
 
 const AuthContext = React.createContext();
@@ -10,7 +11,6 @@ const AuthContext = React.createContext();
 function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [user, setUser] = useState({});
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +43,6 @@ function AuthProvider(props) {
           message: serverRespond.data.message,
           severity: "success",
         });
-        setUser(serverRespond.data.data);
         // console.log(serverRespond.data.data);
         localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
         formikHelpers.resetForm();
@@ -188,7 +187,6 @@ function AuthProvider(props) {
         isAuthenticated,
         showPassword,
         alertMessage,
-        user,
         userData,
         setUserData,
       }}

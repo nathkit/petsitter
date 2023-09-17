@@ -26,7 +26,7 @@ authRouter.post("/login", async (req, res) => {
     }
     result = valid.rows[0];
     //  get url by result.image_name from supabase storage url ********************
-    const data = supabase.storage
+    const data = await supabase.storage
       .from("avatars")
       .getPublicUrl(result.image_name);
     url = data.data.publicUrl;
@@ -84,11 +84,8 @@ authRouter.post("/register", async (req, res) => {
       password: req.body.password,
       options: {
         data: {
-          email: req.body.email,
           name: req.body.fullName,
           phone: req.body.phone,
-          created_at,
-          updated_at,
         },
         emailRedirectTo: "http://localhost:5173/login",
       },
@@ -143,8 +140,5 @@ authRouter.put("/resetPassword", async (req, res) => {
   }
   return res.json({ message: "Reset password successfully" });
 });
-
-// test upload image from server********************
-authRouter.put("/upload/:userId", (req, res) => {});
 
 export default authRouter;

@@ -9,6 +9,9 @@ const usePosts = () => {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const params = useParams();
+  const [bookingDetail, setBookingDetail] = useState({});
+  const [petBookingDetail, setPetBookingDetail] = useState([]);
+
   const getProfileImage = async (user) => {
     // console.log(userEmail);
     // console.log(user);
@@ -103,7 +106,7 @@ const usePosts = () => {
         console.log(error);
       }
     }
-    console.log(petData);
+    // console.log(petData);
   };
 
   const getPetProfile = async () => {
@@ -135,8 +138,8 @@ const usePosts = () => {
       const result = await axios.get(
         `http://localhost:4000/booking/${user.id}`
       );
-      console.log(result.data);
-      return result.data;
+      setBookingDetail(result.data.data);
+      setPetBookingDetail(result.data.petNames);
     } catch (error) {
       console.log(error);
     }
@@ -154,6 +157,8 @@ const usePosts = () => {
     petDataById,
     createBooking,
     getBookingDetail,
+    bookingDetail,
+    petBookingDetail,
   };
 };
 

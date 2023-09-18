@@ -7,12 +7,12 @@ import { useEffect, useState } from "react";
 
 function Booking4() {
   const navigate = useNavigate();
-  const { getBookingDetail } = usePost();
-  const [bookingDetail, SetBookingDetail] = useState(null);
+  const { getBookingDetail, petBookingDetail, bookingDetail } = usePost();
 
   useEffect(() => {
-    SetBookingDetail(getBookingDetail());
+    getBookingDetail();
   }, []);
+  console.log(bookingDetail);
 
   return (
     <div className="flex justify-center flex-col items-center  bg-etc-bg_gray relative h-screen">
@@ -29,12 +29,12 @@ function Booking4() {
         <div className="">
           <div className="px-10 pt-10">
             <div className="pb-6 text-body2 text-gray-300 ">
-              <p className="">Transaction Date: Tue, 16 Oct 2022</p>
+              <p className="">Transaction Date: {bookingDetail.created_at}</p>
               <p className="">Transaction No. : {bookingDetail.booking_id}</p>
             </div>
             <div className="pb-6">
               <p className="text-gray-400 text-body3">Pet Sitter:</p>
-              <p className="text-body2">
+              <p className="text-body2 text-etc-black">
                 {bookingDetail.trade_name} By{" "}
                 {bookingDetail.pet_sitter_full_name}
               </p>
@@ -43,28 +43,43 @@ function Booking4() {
               <div className="mr-20">
                 <p className="text-gray-400 text-body3">Date & Time:</p>
                 <div>
-                  <span className="mr-3 text-body2">25 Aug, 2023</span>|
-                  <span className="ml-3 text-body2">7 AM - 10 AM</span>
+                  <p className="text-body2 text-etc-black">
+                    Check-in:&nbsp;&nbsp;&nbsp;&nbsp;
+                    {bookingDetail.start_date_time}
+                  </p>
+                  <p className="text-body2 text-etc-black">
+                    Check-out:&nbsp;&nbsp;{bookingDetail.end_date_time}
+                  </p>
                 </div>
               </div>
               <div>
                 <p className="text-gray-400 text-body3">Duration:</p>
-                <p className="text-body2">{bookingDetail.duration} hours</p>
+                <p className="text-body2 text-etc-black">
+                  {bookingDetail.duration} hours
+                </p>
               </div>
             </div>
             <div className="pb-6">
               <p className="text-gray-400 text-body3">Pet</p>
-              <p className="text-body2">Bubba, Daisy</p>
+              <p className="text-body2 text-etc-black">
+                {petBookingDetail.map((pet, index) => {
+                  return <span key={index}>{pet}, </span>;
+                })}
+              </p>
             </div>
             <div className="pb-6">
               <p className="text-gray-400 text-body3">Additional Message </p>
-              <p className="text-body2">Lorem ipsum dolor sit amet.</p>
+              <p className="text-body2 text-etc-black">
+                {bookingDetail.message}
+              </p>
             </div>
           </div>
           <hr />
           <div className="flex justify-between px-10 pb-10 mt-4 bg-etc-white rounded-b-2xl">
-            <p className="text-body2">Total</p>
-            <p className="text-body1">600.00 THB</p>
+            <p className="text-body2 text-etc-black">Total</p>
+            <p className="text-body1 text-etc-black">
+              {bookingDetail.amount} THB
+            </p>
           </div>
         </div>
       </div>

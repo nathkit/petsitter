@@ -1,8 +1,15 @@
 import TextField from "@mui/material/TextField";
 import { useAuth } from "../../contexts/authentication";
+import { useBooking } from "../../contexts/BookingContext";
 
 function Booking2() {
   const { userData } = useAuth();
+  const { bookingMessage, setBookingMessage } = useBooking();
+
+  const handleTextChange = (e) => {
+    setBookingMessage(e.target.value);
+  };
+
   return (
     <>
       <div className=" bg-etc-white p-10  h-fit">
@@ -56,6 +63,8 @@ function Booking2() {
           rows={4}
           color="warning"
           InputProps={{ sx: { borderRadius: " 8px" } }}
+          value={bookingMessage}
+          onChange={handleTextChange}
         />
       </div>
     </>

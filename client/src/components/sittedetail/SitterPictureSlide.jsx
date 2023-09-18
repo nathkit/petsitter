@@ -8,25 +8,14 @@ import { ArrowRightIcon } from "../systemdesign/Icons";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useBooking } from "../../contexts/BookingContext";
 
 function SitterPictureSlide() {
-  const [sitterDetail, setSitterDetail] = useState([]);
+  const { getSitterDetail, sitterDetail } = useBooking();
   const params = useParams();
 
-  const getSitterDetail = async () => {
-    try {
-      const results = await axios.get(
-        `http://localhost:4000/sitterManagement/${params.sitterId}`
-      );
-      console.log(params.sitterId);
-      setSitterDetail(results.data.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   useEffect(() => {
-    getSitterDetail();
+    getSitterDetail(params.sitterId);
   }, []);
 
   return (
@@ -45,8 +34,7 @@ function SitterPictureSlide() {
             enabled: true,
           }}
           modules={[Navigation, Keyboard]}
-          loop={true}
-        >
+          loop={true}>
           {sitterDetail.map((sitter, sitterIndex) => (
             <SwiperSlide key={sitterIndex}>
               <div>

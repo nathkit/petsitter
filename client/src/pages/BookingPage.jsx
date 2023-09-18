@@ -109,23 +109,23 @@ function BookingPage() {
           <hr />
           <div className="p-6 ">
             <div className="pb-6">
-              <p className="text-body3">Pet</p>
+              <p className="text-body3">Pet Sitter:</p>
               <p className="text-body2">Happy</p>
             </div>
             <div className="pb-6">
-              <p className="text-body3">Date</p>
+              <p className="text-body3">Date&Time:</p>
               <p className="text-body2">25 Aug, 2023</p>
             </div>
             <div className="pb-6">
-              <p className="text-body3">Duration</p>
+              <p className="text-body3">Duration:</p>
               <p className="text-body2">3 hours</p>
             </div>
             <div>
-              <p className="text-body3">Pet</p>
+              <p className="text-body3">Pet:</p>
               <p className="text-body2">-</p>
             </div>
             <div>
-              <p className="text-body3">Additional Message </p>
+              <p className="text-body3">Additional Message:</p>
               <p className="text-body2">Lorem ipsum dolor sit amet.</p>
             </div>
           </div>

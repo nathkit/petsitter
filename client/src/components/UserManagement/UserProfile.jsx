@@ -94,10 +94,7 @@ const profile = () => {
           avatarFile: avatarFile,
         };
         await updateUserData(newValue);
-        // alert(JSON.stringify(newValue));
       } else {
-        // await updateUserData(values);
-        // console.log(values);
         alert("Error is occured!");
       }
     },

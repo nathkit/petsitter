@@ -4,13 +4,12 @@ import { supabase } from "./supabase.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { object } from "yup";
+import { boolean } from "yup";
 
 const AuthContext = React.createContext();
 
 function AuthProvider(props) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
   const nav = useNavigate();
   const [getEvent, setGetEvent] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +17,6 @@ function AuthProvider(props) {
     message: "",
     severity: "",
   });
-  const [userData, setUserData] = useState(null);
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show);
   };
@@ -44,6 +42,7 @@ function AuthProvider(props) {
           severity: "success",
         });
         // console.log(serverRespond.data.data);
+        setUserData(serverRespond.data.data);
         localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
         formikHelpers.resetForm();
         nav("/");
@@ -169,6 +168,9 @@ function AuthProvider(props) {
     nav("login");
   };
 
+  const isAuthenticated = boolean(
+    localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
+  );
   return (
     <AuthContext.Provider
       value={{
@@ -182,13 +184,12 @@ function AuthProvider(props) {
         setGetEvent,
         handleClickShowPassword,
         setAlertMessage,
-        setIsAuthenticated,
+        setUserData,
         getEvent,
-        isAuthenticated,
         showPassword,
         alertMessage,
         userData,
-        setUserData,
+        isAuthenticated,
       }}
     >
       {props.children}

@@ -64,6 +64,7 @@ function BookingHistory() {
       const results = await axios.get(
         `http://localhost:4000/userManagement/${params.userId}/booking`
       );
+      console.log(onclick);
       console.log(params.userId);
       console.log(params.bookingId);
       setBookingHistory(results.data.data);
@@ -81,14 +82,14 @@ function BookingHistory() {
   // const data = status;
 
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
-  // const handleClick = (id) => {
-  //   const updateStatus = bookingHistory.map((card) => {
-  //     return card.id === id
-  //       ? { ...card, statuses: "Waiting for service" }
-  //       : card;
-  //   });
-  //   setStatus(updateStatus);
-  // };
+  const handleClick = (id) => {
+    const updateStatus = bookingHistory.map((card) => {
+      return card.id === id
+        ? { ...card, statuses: "Waiting for service" }
+        : card;
+    });
+    setStatus(updateStatus);
+  };
 
   return (
     <section className="booking-history flex flex-col gap-6">
@@ -97,7 +98,7 @@ function BookingHistory() {
         bookingHistory.map((card) => {
           return (
             <div
-              className={`booking-history-container rounded-2xl p-6 ${
+              className={`booking-history-container rounded-2xl p-6 hover:shadow-2xl ${
                 card.statuses === "In service"
                   ? "border border-blue-500"
                   : card.statuses === "Waiting for confirm"
@@ -111,14 +112,15 @@ function BookingHistory() {
                   : "border border-gray-200"
               }`}
               key={card.booking_no}
-              onClick={() =>
-                document.getElementById("booking-detail").showModal()
-              }
+              onClick={() => {
+                console.log(card.booking_no); // Log the booking number
+                document.getElementById(`booking-detail-${card.booking_no}`).showModal();
+              }}
             >
               <BookingHistoryDetail
                 key={card.booking_no}
                 card={card}
-                // handleClick={handleClick}
+                handleClick={handleClick}
               />
               <header className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4">
                 <div className="flex gap-2 items-center">

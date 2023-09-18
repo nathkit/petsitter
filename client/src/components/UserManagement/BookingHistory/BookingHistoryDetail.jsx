@@ -2,32 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { formatDateToCustomString } from "../BookingHistory/BookingHistory.jsx";
+import { formatTime } from "../BookingHistory/BookingHistory.jsx";
 
-function BookingHistoryDetail() {
-  const [bookingHistory, setBookingHistory] = useState([]);
-
-  const params = useParams();
-
-  const getBookingDetail = async () => {
-    try {
-      const results = await axios.get(
-        `http://localhost:4000/userManagement/${params.userId}/booking`
-      );
-      console.log(params.userId);
-      console.log(params.bookingId);
-      setBookingHistory(results.data.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  useEffect(() => {
-    getBookingDetail();
-  }, []);
+function BookingHistoryDetail({ card }) {
 
   return (
-    <dialog id="booking-detail" className="modal">
-      <div key={bookingHistory.booking_no} className="modal-box bg-etc-white">
+    <dialog id={`booking-detail-${card.booking_no}`}   className="modal ">
+      <div key={card.booking_no} className="modal-box bg-etc-white">
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-etc-white">
             ✕
@@ -37,40 +19,38 @@ function BookingHistoryDetail() {
           Booking Detail
         </h3>
         <hr className=" w-full" />
-        <div className="booking-detail-wraaper flex flex-col gap-6">
+        <div className={`booking-detail-wraaper flex flex-col gap-6`}>
           <h5 className="font-Satoshi text-base font-medium leading-6 pt-6">
             <ul>
               <li
-                className={` list-inside list-disc ${
-                  bookingHistory.statuses === "In service"
-                    ? "text-blue-500"
-                    : ""
+                className={` list-inside list-disc gap-2 ${
+                  card.statuses === "In service" ? "text-blue-500" : ""
                 } ${
-                  bookingHistory.statuses === "Waiting for confirm"
+                  card.statuses === "Waiting for confirm"
                     ? "text-pink-500"
-                    : bookingHistory.statuses === "Waiting for service"
+                    : card.statuses === "Waiting for service"
                     ? "text-yellow-200"
-                    : bookingHistory.statuses === "Success"
+                    : card.statuses === "Success"
                     ? "text-green-500"
-                    : bookingHistory.statuses === "Canceled"
+                    : card.statuses === "Canceled"
                     ? "text-etc-red"
                     : ""
                 }`}
               >
-                {bookingHistory.statuses}
+                {card.statuses}
               </li>
             </ul>
           </h5>
           <div className=" text-gray-300 text-body2 ">
             <p>
-              {/* Booking date: {formatDateToCustomString(bookingHistory.booking_date).data1} */}
+              Booking date: {formatDateToCustomString(card.booking_date).data1}
             </p>
-            <p>Booking No. : {bookingHistory.booking_no}</p>
+            <p>Booking No.: {card.booking_no}</p>
           </div>
           <div className="">
             <h5 className=" text-body3 text-gray-400">Pet Sitter: </h5>
-            <h4 className=" text-body2 text-gray-600 ">
-              {bookingHistory.trade_name} {bookingHistory.full_name}
+            <h4 className=" text-body2 text-gray-600 font-bold">
+              {card.trade_name} {card.name}
             </h4>
           </div>
           <main className="flex flex-col gap-4">
@@ -78,30 +58,28 @@ function BookingHistoryDetail() {
               <div className=" flex flex-col gap-1">
                 <div className=" text-body3 text-gray-400">Date & Time:</div>{" "}
                 <div className=" text-body3 text-gray-600">
-                  {/* {formatDateToCustomString(bookingHistory.booking_date).data2} |{" "}
-                  {formatTime(bookingHistory.start_date_time)} -{" "}
-                  {formatTime(bookingHistory.end_date_time)} */}
+                  {formatDateToCustomString(card.booking_date).data2} |{" "}
+                  {formatTime(card.start_date_time)} -{" "}
+                  {formatTime(card.end_date_time)}
                 </div>
               </div>
               <div className="flex flex-col  w-[50%]">
                 <div className=" text-body3 text-gray-400">Duration:</div>{" "}
                 <div className=" text-body2 text-gray-600 ">
-                  {bookingHistory.duration} hours
+                  {card.duration} hours
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col ">
               <div className=" text-body3 text-gray-400">Pet:</div>
-              <div className=" text-body2 text-gray-600">
-                {bookingHistory.pet_names}
-              </div>
+              <div className=" text-body2 text-gray-600">{card.pet_names}</div>
             </div>
           </main>
           <hr />
           <div className="flex justify-between">
             <h1 className="text-body2">Total: </h1>
-            <p className="text-body1"> {bookingHistory.total_amount} THB</p>
+            <p className="text-body1"> {card.total_amount} THB</p>
           </div>
         </div>
       </div>

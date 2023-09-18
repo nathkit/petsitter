@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { StarIcon } from "../../systemdesign/Icons";
 import { ButtonSecondary, ButtonPrimary } from "../../systemdesign/Button";
-import YourReviewButton from "./YourReviewButton"; // Import YourReviewButton component
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-function ReviewButton() {
+function ReviewButton(props) {
+  const params = useParams();
+
   const [review, setReview] = useState({
-    text: "",
+    comment: "",
     rating: 5,
   });
 
@@ -31,19 +34,32 @@ function ReviewButton() {
   };
 
   const handleReviewText = (event) => {
-    let text = event.target.value;
+    let comment = event.target.value;
     setReview({
       ...review,
-      text: text,
+      comment: comment,
     });
   };
 
   const handleClear = (event) => {
     event.preventDefault();
     setReview({
-      text: "",
+      comment: "",
       rating: 5,
     });
+  };
+
+  const addNewReview = async () => {
+    const apiUrl = `/userManagement/${params.userId}/booking/${props.bookingId}/review`;
+    console.log(apiUrl);
+    await axios
+      .post(apiUrl, review)
+      .then(function (response) {
+        console.log("Success:", response.data);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
   };
 
   return (

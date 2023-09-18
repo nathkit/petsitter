@@ -32,7 +32,7 @@ export function InService() {
   );
 }
 
-export function Success() {
+export function Success(props) {
   return (
     <div className="text-green-500 text-body3 flex-1 w-auto bg-green-100 p-4 mt-9 rounded-lg flex justify-between">
       <div>

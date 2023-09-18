@@ -12,6 +12,13 @@ async function init() {
   const port = 4000;
   dotenv.config();
 
+  const logger = (req, res, next) => {
+    console.log(`${req.method} :  ${req.url} `);
+    next();
+  };
+
+  app.use(logger);
+
   app.use(cors());
   app.use(bodyParser.json());
 

@@ -120,7 +120,12 @@ function BookingHistory() {
                 card={card}
                 // handleClick={handleClick}
               />
-              <header className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4">
+              <header
+                className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4"
+                onClick={() =>
+                  document.getElementById("booking-detail").showModal()
+                }
+              >
                 <div className="flex gap-2 items-center">
                   <Avatar
                     alt="avatar"
@@ -181,12 +186,10 @@ function BookingHistory() {
                 {card.statuses === "Waiting for confirm" && (
                   <WaitingforConfirm />
                 )}
-                {card.statuses === "Waiting for service" && (
-                  <WaitingforService />
-                )}
-                {card.statuses === "In service" && <InService />}
-                {card.statuses === "Success" && <Success />}
-                {card.statuses === "Canceled" && <Canceled />}
+                {card.status === "Waiting for service" && <WaitingforService />}
+                {card.status === "In service" && <InService />}
+                {card.status === "Success" && <Success bookingId={card.id} />}
+                {card.status === "Canceled" && <Canceled />}
               </div>
             </div>
           );

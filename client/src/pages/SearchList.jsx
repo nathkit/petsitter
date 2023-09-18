@@ -6,10 +6,6 @@ import Footer from "../components/systemdesign/Footer.jsx";
 import Navbar from "../components/systemdesign/Navbar.jsx";
 
 function SearchList() {
-  // useEffect(() => {
-  //   searchPets();
-  // }, []);
-
   // const [searchParams, setSearchParams] = useSearchParams();
   const [pets, setPets] = useState([]);
   // const [paging, setPaging] = useState({
@@ -38,10 +34,10 @@ function SearchList() {
     }
 
     const result = await axios.get(
-      "http://localhost:4000/sitter?" + searchParams.toString()
+      "http://localhost:4000/sitterManagement?" + searchParams.toString()
     );
     console.log(result);
-    setPets(result.data.data.rows);
+    setPets(result.data.data);
   };
 
   return (

@@ -13,13 +13,13 @@ function SitterCardList({ items }) {
     <div className="w-[848px] h-[216px] flex flex-col gap-4">
       {items.map((card, index) => {
         return (
-          <Link to={`/sitter/${card.pet_sitter_id}`} key={index}>
+          <Link to={`/sitterManagement/${card.id}`} key={index}>
             <div
               className="flex p-4 gap-10 bg-etc-white rounded-[16px] hover:border-[#FF7037]
               hover:border-solid hover:border-[1px]"
             >
               <img
-                src={card.pet_sitter_carousel}
+                src={card.trade_image_path}
                 alt={card.trade_name}
                 className="object-cover w-[245px] h-[184px] rounded-[8px]"
               />
@@ -27,18 +27,18 @@ function SitterCardList({ items }) {
                 <div className="flex gap-4">
                   <div>
                     <img
-                      src={card.pet_sitter_image}
-                      alt={card.trade_name}
+                      src={card.profile_image_path}
+                      alt={card.full_name}
                       className="object-cover w-[64px] h-[64px] rounded-full"
                     />
                   </div>
                   <div className="w-[315px] ">
                     <span className="text-[24px] font-bold text-[#000]">
-                      {card.pet_sitter_trade_name}
+                      {card.trade_name}
                       <br />
                     </span>
                     <span className="text-[18px] font-medium text-[#000]">
-                      By {card.pet_sitter_name}
+                      By {card.full_name}
                     </span>
                   </div>
                   <div className="flex w-[120px] h-[32px] p-[6px] gap-[2px] justify-end">
@@ -52,11 +52,11 @@ function SitterCardList({ items }) {
                     <MapMakerIcon color="#AEB1C3" />
                   </div>
                   <div className="text-[#7B7E8F] text-[16px] font-medium">
-                    {card.pet_sitter_district}, {card.pet_sitter_province}
+                    {card.district}, {card.province}
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  {card.pet_sitter_pet_type.map((pet, index) => (
+                  {card.pet_type.map((pet, index) => (
                     <span key={index}>
                       {pet === "Dog" && <DogType />}
                       {pet === "Cat" && <CatType />}

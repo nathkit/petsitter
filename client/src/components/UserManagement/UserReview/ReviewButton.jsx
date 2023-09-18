@@ -69,7 +69,9 @@ function ReviewButton() {
                     onClick={(e) => handleRatingReview(e, index)}
                   >
                     <StarIcon
-                      color={`${index + 1 <= review.rating ? "#1ccd83" : ""}`}
+                      color={`${
+                        index + 1 <= review.rating ? "#1ccd83" : "#DCDFED"
+                      }`}
                       height="60px"
                       width="60px"
                     />

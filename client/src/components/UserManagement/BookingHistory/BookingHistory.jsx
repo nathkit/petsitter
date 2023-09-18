@@ -14,78 +14,14 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-// export const petData = [
-//   {
-//     id: 1,
-//     trade_name: "Kid friendly",
-//     pet_sitter_name: "Jane",
-//     transaction_date: "8/16/2023",
-//     status: "Waiting for confirmation",
-//     date: "3/11/2022",
-//     starttime: "12 PM",
-//     endtime: "13 PM",
-//     duration: 1,
-//     pet_name: "I som",
-//     status_message: "Pet in care",
-//     transaction_number: 122315,
-//     imageSrc: "http://dummyimage.com/64x64.png/cc0000/ffffff",
-//     total: 600,
-//   },
-//   {
-//     id: 2,
-//     trade_name: "We love cat and your cat",
-//     pet_sitter_name: "Maison",
-//     transaction_date: "8/16/2023",
-//     status: "Canceled",
-//     date: "2/3/2023",
-//     starttime: "12 PM",
-//     endtime: "13 PM",
-//     duration: 2,
-//     pet_name: "Daisy",
-//     status_message: "Pet in care",
-//     transaction_number: 122313,
-//     imageSrc: "http://dummyimage.com/64x64.png/dddddd/000000",
-//     total: 600,
-//   },
-//   {
-//     id: 3,
-//     trade_name: "Kid friendly",
-//     pet_sitter_name: "Maison",
-//     transaction_date: "8/16/2023",
-//     status: "In service",
-//     date: "11/6/2023",
-//     starttime: "12 PM",
-//     endtime: "13 PM",
-//     duration: 3,
-//     pet_name: "Bubba",
-//     status_message: "Waiting for confirmation",
-//     transaction_number: 122312,
-//     imageSrc: "http://dummyimage.com/64x64.png/cc0000/ffffff",
-//     total: 600,
-//   },
-//   {
-//     id: 4,
-//     trade_name: "Kid friendly",
-//     pet_sitter_name: "Maison",
-//     transaction_date: "8/16/2023",
-//     status: "Success",
-//     date: "28/2/2022",
-//     starttime: "12 PM",
-//     endtime: "13 PM",
-//     duration: 4,
-//     pet_name: "Noodle Birb",
-//     status_message: "Waiting for confirmation",
-//     transaction_number: 122316,
-//     imageSrc: "http://dummyimage.com/64x64.png/ff4444/ffffff",
-//     total: 600,
-//   },
-// ];
+
 
 
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
   const params = useParams();
+
   // const uniquePetTypeIds = [
   //   ...new Set(sitterDetail.map((petType) => petType.pet_type)),
   // ];
@@ -112,14 +48,14 @@ function BookingHistory() {
   // const data = status;
 
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
-  const handleClick = (id) => {
-    const updateStatus = bookingHistory.map((card) => {
-      return card.id === id
-        ? { ...card, statuses: "Waiting for service" }
-        : card;
-    });
-    setStatus(updateStatus);
-  };
+  // const handleClick = (id) => {
+  //   const updateStatus = bookingHistory.map((card) => {
+  //     return card.id === id
+  //       ? { ...card, statuses: "Waiting for service" }
+  //       : card;
+  //   });
+  //   setStatus(updateStatus);
+  // };
 
   
 
@@ -149,9 +85,9 @@ function BookingHistory() {
               }
             >
               <BookingHistoryDetail
-                key={card.booking_no}
+                key={card.id}
                 card={card}
-                handleClick={handleClick}
+                // handleClick={handleClick}
               />
               <header className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4">
                 <div className="flex gap-2 items-center">
@@ -184,7 +120,7 @@ function BookingHistory() {
                         ? "text-etc-red"
                         : ""
                     }`}
-                    onClick={() => handleClick(card.id)}
+                    // onClick={() => handleClick(card.id)}
                   >
                     {card.statuses}
                   </h5>

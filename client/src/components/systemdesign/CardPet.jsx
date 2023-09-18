@@ -3,6 +3,7 @@ import { CreateIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
 import { ButtonPrimary } from "./Button";
 import { useEffect } from "react";
+import { useAuth } from "../../contexts/authentication";
 
 export function CardPet1() {
   const { getTypeStyle, petData, getAllPetList } = usePosts();
@@ -45,7 +46,6 @@ export function CardPet1() {
                 <div
                   id="card"
                   className={`border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
-               
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
                   <img
@@ -74,7 +74,8 @@ export function CardPet1() {
 
 export function CardPet2(props) {
   const { getTypeStyle, petData, getAllPetList } = usePosts();
-
+  const { userData } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
     getAllPetList();
   }, []);
@@ -122,7 +123,11 @@ export function CardPet2(props) {
           })}
           <div className="border-gray-200 w-60 h-60 p-6 rounded-2xl border border-zinc-200 relative mb-4 bg-orange-100">
             <div className=" flex flex-col items-center mt-10">
-              <button>
+              <button
+                onClick={() => {
+                  navigate(`/userManagement/${userData.id}/pets/create`);
+                }}
+              >
                 <CreateIcon />
               </button>
               <p className="text-orange-500 text-bodyButton px-6 py-3">

@@ -64,4 +64,23 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
     })
 });
 
+bookingRouter.get("/:userId/", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const query = `select * from bookings_history_detail where user_id = $1 order by booking_no desc limit 1`;
+
+        const lastestBookingId = await pool.query(query, [userId]);
+        if (lastestBookingId.rows.length === 0) {
+            return res.status(404).json({ message: "No available booking" });
+        }
+        return res.status(200).json({
+            data: lastestBookingId.rows[0],
+            message: "Get detail successfully",
+        });
+    } catch (error) {
+        console.error("Error fetching booking detail:", error);
+        return res.status(500).json({ message: "Request error occurred" });
+    }
+});
+
 export default bookingRouter;

@@ -2,9 +2,15 @@ import { ButtonPrimary, ButtonSecondary } from "../systemdesign/Button";
 import catPaw from "../../assets/img/catPaw.png";
 import starCat from "../../assets/img/starCat.png";
 import { useNavigate } from "react-router-dom";
+import { getBookingDetail } from "../../hooks/usePost";
+import { useEffect, useState } from "react";
 
 function Booking4() {
   const navigate = useNavigate();
+  const [bookingDetail, SetBookingDetail] = useState(null);
+  useEffect(() => {
+    SetBookingDetail(getBookingDetail());
+  }, []);
   return (
     <div className="flex justify-center flex-col items-center  bg-etc-bg_gray relative h-screen">
       <div className=" absolute top-[0px] left-[16px]">

@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts/authentication";
 
 export function CardPet1() {
   const { getTypeStyle, petData, getAllPetList } = usePosts();
+  const { userData } = useAuth();
 
   useEffect(() => {
     getAllPetList();
@@ -42,7 +43,7 @@ export function CardPet1() {
                 className="flex mx-[5px]"
                 onClick={() => {
                   console.log(item.id);
-                  navigate(`/userManagement/1/pets/${item.id}`);
+                  navigate(`/userManagement/${userData.id}/pets/${item.id}`);
                 }}
               >
                 <div

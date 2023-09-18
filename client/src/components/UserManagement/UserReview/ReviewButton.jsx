@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { StarIcon } from "../../systemdesign/Icons";
 import { ButtonSecondary, ButtonPrimary } from "../../systemdesign/Button";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-function ReviewButton() {
+function ReviewButton(props) {
+  const params = useParams();
+
   const [review, setReview] = useState({
-    text: "",
+    comment: "",
     rating: 5,
   });
 
@@ -28,19 +32,32 @@ function ReviewButton() {
   };
 
   const handleReviewText = (event) => {
-    let text = event.target.value;
+    let comment = event.target.value;
     setReview({
       ...review,
-      text: text,
+      comment: comment,
     });
   };
 
   const handleClear = (event) => {
     event.preventDefault();
     setReview({
-      text: "",
+      comment: "",
       rating: 5,
     });
+  };
+
+  const addNewReview = async () => {
+    const apiUrl = `/userManagement/${params.userId}/booking/${props.bookingId}/review`;
+    console.log(apiUrl);
+    await axios
+      .post(apiUrl, review)
+      .then(function (response) {
+        console.log("Success:", response.data);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -87,7 +104,7 @@ function ReviewButton() {
                  border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
                 placeholder="Your Review..."
                 onChange={(e) => handleReviewText(e)}
-                value={review.text}
+                value={review.comment}
                 style={{ verticalAlign: "top" }}
               ></textarea>
             </div>
@@ -101,6 +118,7 @@ function ReviewButton() {
                   content="Send Review&Rating"
                   width="202px"
                   className="btn"
+                  onClick={(e) => addNewReview(e)}
                 />
               </div>
             </form>

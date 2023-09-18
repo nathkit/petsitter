@@ -104,16 +104,18 @@ function BookingHistory() {
                   : "border border-gray-200"
               }`}
               key={card.id}
-              onClick={() =>
-                document.getElementById("booking-detail").showModal()
-              }
             >
               <BookingHistoryDetail
                 key={card.id}
                 card={card}
                 handleClick={handleClick}
               />
-              <header className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4">
+              <header
+                className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4"
+                onClick={() =>
+                  document.getElementById("booking-detail").showModal()
+                }
+              >
                 <div className="flex gap-2 items-center">
                   <Avatar alt="avatar" src={card.imageSrc} className="border" />
                   <div>
@@ -169,7 +171,7 @@ function BookingHistory() {
                 )}
                 {card.status === "Waiting for service" && <WaitingforService />}
                 {card.status === "In service" && <InService />}
-                {card.status === "Success" && <Success />}
+                {card.status === "Success" && <Success bookingId={card.id} />}
                 {card.status === "Canceled" && <Canceled />}
               </div>
             </div>

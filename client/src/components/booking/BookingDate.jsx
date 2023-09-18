@@ -6,6 +6,8 @@ import "./Booking.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns-tz";
+import { useAuth } from "../../contexts/authentication";
+import { useParams } from "react-router-dom";
 
 function BookingDate() {
   const [startTime, setStartTime] = useState("");
@@ -13,7 +15,8 @@ function BookingDate() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const navigate = useNavigate();
   const isTimeValid = startTime < endTime;
-
+  const { userData } = useAuth();
+  const params = useParams();
   return (
     <>
       {" "}
@@ -71,7 +74,7 @@ function BookingDate() {
             {startTime && endTime ? (
               <div
                 onClick={() => {
-                  navigate(`/booking`);
+                  navigate(`/booking/${userData.id}/${params.sitterId}`);
                 }}
               >
                 {isTimeValid ? (

@@ -64,6 +64,35 @@ userManagementRouter.get("/:userId/pets", async (req, res) => {
 });
 
 userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {});
+userManagementRouter.get("/:userId/pets", async (req, res) => {
+  const userId = req.params.userId;
+
+  if (!userId) {
+    return res.status(401).json({
+      message: "Please specified user id in order to get the pets",
+    });
+  }
+  try {
+    const result = await pool.query(
+      `SELECT * 
+    FROM  pets
+    inner join pet_type
+    on pets.pet_type_id = pet_type.id
+    where user_id=$1`,
+      [userId]
+    );
+    return res.status(200).json({
+      data: result.rows,
+      message: "Get detail successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Request error occurred",
+    });
+  }
+});
+
+userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {});
 
 userManagementRouter.post("/:userId/pets", async (req, res) => {
   try {

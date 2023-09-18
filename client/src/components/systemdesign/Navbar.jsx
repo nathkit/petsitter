@@ -11,7 +11,6 @@ import usePosts from "../../hooks/usePost";
 function Navbar() {
   const navigate = useNavigate();
   const { signOut, userData, setUserData } = useAuth();
-  const { signOut, userData, setUserData } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

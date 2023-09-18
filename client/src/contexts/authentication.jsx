@@ -18,7 +18,7 @@ function AuthProvider(props) {
     message: "",
     severity: "",
   });
-
+  const [userData, setUserData] = useState(null);
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show);
   };
@@ -187,6 +187,7 @@ function AuthProvider(props) {
         isAuthenticated,
         showPassword,
         alertMessage,
+        user,
         userData,
         setUserData,
       }}

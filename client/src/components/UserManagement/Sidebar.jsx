@@ -6,7 +6,7 @@ import {
 } from "../../components/systemdesign/Icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../contexts/authentication";
 import UserProfile from "../UserManagement/UserProfile";
 import BookingHistory from "./BookingHistory/BookingHistory";
 import { CreatePet, EditPet } from "./PetProfile";
@@ -23,6 +23,7 @@ function Sidebar(props) {
   const isPetlistPage = props.children.type === CardPet1;
   const isCreatePetPage = props.children.type === CreatePet;
 
+  const { userData } = useAuth();
   const navigate = useNavigate();
   return (
     <>
@@ -37,7 +38,7 @@ function Sidebar(props) {
             ${isProfilePage ? "bg-orange-100 text-orange-500" : ""}
             text-body1 flex items-center `}
             onClick={() => {
-              navigate("/userManagement/:userId");
+              navigate(`/userManagement/${userData.id}`);
             }}
             onMouseEnter={() => {
               setUserIconColor("#ff7037");
@@ -59,7 +60,7 @@ function Sidebar(props) {
                 : ""
             } text-body1 flex items-center `}
             onClick={() => {
-              navigate("/userManagement/:userId/pets");
+              navigate(`/userManagement/${userData.id}/pets`);
             }}
             onMouseEnter={() => {
               setPetIconColor("#ff7037");

@@ -36,7 +36,8 @@ function Navbar() {
       setProfileImageLoaded(true);
     }
   }, [getProfileImage, profileImageLoaded]);
-  // console.log(userData);
+  console.log(userData);
+
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
@@ -70,7 +71,7 @@ function Navbar() {
       {
         icon: PetIcon,
         content: "Your Pet",
-        navigate: () => navigate("/userManagement/:userId/pets"),
+        navigate: () => navigate(`/userManagement/${userData.id}/pets`),
       },
       {
         icon: ListIcon,

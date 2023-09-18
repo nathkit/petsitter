@@ -64,4 +64,32 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
     })
 });
 
+bookingRouter.get("/:userId/", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const latestBookingIdQuery = `select * from bookings_detail_for_booking4 where user_id = $1 order by booking_id desc limit 1`;
+
+        const latestBookingIdResult = await pool.query(latestBookingIdQuery, [userId]);
+        if (latestBookingIdResult.rows.length === 0) {
+            return res.status(404).json({ message: "No available booking" });
+        }
+
+        const latestBookingId = latestBookingIdResult.rows[0].booking_id
+
+        const petNamesQuery = `select pet_name from bookings_detail_for_booking4 where booking_id = $1`
+        const petNamesResult = await pool.query(petNamesQuery, [latestBookingId])
+
+        const petNames = petNamesResult.rows.map((row) => row.pet_name);
+
+        return res.status(200).json({
+            data: latestBookingIdResult.rows[0],
+            petNames: petNames,
+            message: "Get detail successfully",
+        });
+    } catch (error) {
+        console.error("Error fetching booking detail:", error);
+        return res.status(500).json({ message: "Request error occurred" });
+    }
+});
+
 export default bookingRouter;

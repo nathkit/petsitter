@@ -117,6 +117,31 @@ const usePosts = () => {
     }
   };
 
+  const createBooking = async (data) => {
+    try {
+      const createBookingResult = await axios.post(
+        `http://localhost:4000/booking/:userId/:sitterId`,
+        data
+      );
+      navigate("/userManagement/:userId/booking/:bookingId");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBookingDetail = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/booking/${user.id}`
+      );
+      console.log(result.data);
+      return result.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     profileImage,
     getProfileImage,
@@ -127,6 +152,8 @@ const usePosts = () => {
     getPetProfile,
     petData,
     petDataById,
+    createBooking,
+    getBookingDetail,
   };
 };
 

@@ -1,10 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
-import { petData } from "../components/UserManagement/BookingHistory/BookingHistory"; // Adjust the import path as needed
+// import { petData } from "../components/UserManagement/BookingHistory/BookingHistory"; // Adjust the import path as needed
 
 const BookingStatusContext = createContext({});
 
 function BookingStatusProvider({ children }) {
-  const [status, setStatus] = useState(petData);
+  const [status, setStatus] = useState([]);
 
   useEffect(() => {
     console.log(status);

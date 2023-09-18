@@ -1,9 +1,32 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function BookingHistoryDetail({ card }) {
+  const [bookingHistory, setBookingHistory] = useState([]);
+  const params = useParams();
+
+  const getBookingDetail = async () => {
+    try {
+      const results = await axios.get(
+        `http://localhost:4000/userManagement/${params.userId}/booking/${params.bookingId}`
+      );
+      console.log(params.userId);
+      console.log(params.bookingId);
+      setBookingHistory(results.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getBookingDetail();
+  }, []);
+
   return (
     <dialog id="booking-detail" className="modal">
-      <div key={card.id} className="modal-box bg-etc-white">
+      <div key={card.booking_no} className="modal-box bg-etc-white">
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-etc-white">
             ✕
@@ -36,13 +59,16 @@ function BookingHistoryDetail({ card }) {
             </ul>
           </h5>
           <div className=" text-gray-300 text-body2 ">
-            <p>Transaction date: {card.transaction_date}</p>
+            <p>
+              Transaction date:{" "}
+              {new Date(card.booking_date).toLocaleDateString()}
+            </p>
             <p>Transaction No.: {card.transaction_number}</p>
           </div>
           <div className="">
             <h5 className=" text-body3 text-gray-400">Pet Sitter: </h5>
             <h4 className=" text-body2 text-gray-600 font-bold">
-              {card.trade_name}
+              {card.trade_name} {card.name}
             </h4>
           </div>
           <main className="flex flex-col gap-4">

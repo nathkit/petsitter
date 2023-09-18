@@ -80,7 +80,7 @@ bookingRouter.get("/:userId/", async (req, res) => {
         const petNamesResult = await pool.query(petNamesQuery, [latestBookingId])
 
         const petNames = petNamesResult.rows.map((row) => row.pet_name);
-
+        // console.log(latestBookingIdResult.rows[0])
         return res.status(200).json({
             data: latestBookingIdResult.rows[0],
             petNames: petNames,

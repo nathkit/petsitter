@@ -39,9 +39,85 @@ userManagementRouter.get("/:userId/pets", async (req, res) => {});
 
 userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {});
 
-userManagementRouter.post("/:userId/pets", async (req, res) => {});
+userManagementRouter.post("/:userId/pets", async (req, res) => {
+  try {
+    const userIdString = req.params.userId;
+    const userId = parseInt(userIdString, 10);
+    const newPet = {
+      ...req.body,
+      user_id: userId,
+      created_at: new Date(),
+    };
+    console.log(newPet);
+    const pets = await pool.query(
+      `INSERT INTO pets (pet_type_id, user_id, image_path, name, breed, sex, age, color, weight, description, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+      [
+        newPet.pet_type_id,
+        newPet.user_id,
+        newPet.image_path,
+        newPet.name,
+        newPet.breed,
+        newPet.sex,
+        newPet.age,
+        newPet.color,
+        newPet.weight,
+        newPet.description,
+        newPet.created_at,
+        newPet.created_at,
+      ]
+    );
+    console.log(pets);
 
-userManagementRouter.put("/:userId/pets/:petId", async (req, res) => {});
+    return res.json({
+      message: "Your pet has been created successfully",
+      data: pets,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
+
+userManagementRouter.put("/:userId/pets/:petId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const petId = req.params.petId;
+    const updatedPet = {
+      ...req.body,
+      updated_at: new Date(),
+    };
+
+    const result = await pool.query(
+      `UPDATE pets 
+       SET pet_type_id = $1, image_path = $2, name = $3, breed = $4, sex = $5, age = $6, color = $7, weight = $8, description = $9, updated_at = $10
+       WHERE user_id = $11 AND id = $12`,
+      [
+        updatedPet.pet_type_id,
+        updatedPet.image_path,
+        updatedPet.name,
+        updatedPet.breed,
+        updatedPet.sex,
+        updatedPet.age,
+        updatedPet.color,
+        updatedPet.weight,
+        updatedPet.description,
+        updatedPet.updated_at,
+        userId,
+        petId,
+      ]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Pet not found" });
+    }
+
+    return res.json({
+      message: "Your pet has been updated successfully",
+      data: updatedPet,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
 
 userManagementRouter.delete("/:userId/pets/:petId", async (req, res) => {
   try {
@@ -122,7 +198,27 @@ userManagementRouter.get("/:userId/booking/:bookingId", async (req, res) => {
 
 userManagementRouter.post(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => {}
+  async (req, res) => {
+    try {
+      const bookingId = req.params.bookingId;
+      const newReview = {
+        ...req.body,
+        created_at: new Date(),
+      };
+      await pool.query(
+        `insert into sitter_reviews (booking_id, rating, comment, created_at)
+              value ($1, $2, $3, $4)`,
+        [bookingId, newReview.rating, newReview.comment, newReview.created_at]
+      );
+
+      return res.json({
+        message: "Rating has been created successfully",
+        data: newReview,
+      });
+    } catch (error) {
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
 );
 
 export default userManagementRouter;

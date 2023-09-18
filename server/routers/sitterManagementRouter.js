@@ -58,7 +58,7 @@ sitterManagementRouter.get("/", async (req, res) => {
 
     query += ` limit 5`;
 
-    console.log(query);
+    // console.log(query);
 
     const result = await pool.query(query, value);
 
@@ -83,26 +83,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {
-  try {
-    const newReview = {
-      ...req.body,
-      created_at: new Date(),
-    };
-    await pool.query(
-      `insert into sitter_reviews (rating, comment, created_at)
-            value ($1, $2, $3)`,
-      [newReview.rating, newReview.comment, newReview.created_at]
-    );
-
-    return res.json({
-      message: "Rating has been created successfully",
-      data: newReview,
-    });
-  } catch (error) {
-    return res.status(500).json({ message: "Request error occurred" });
-  }
-});
+sitterManagementRouter.post("/", async (req, res) => {});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {

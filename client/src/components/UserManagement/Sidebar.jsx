@@ -6,6 +6,8 @@ import {
 } from "../../components/systemdesign/Icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 
 import UserProfile from "../UserManagement/UserProfile";
 import BookingHistory from "./BookingHistory/BookingHistory";
@@ -16,6 +18,7 @@ function Sidebar(props) {
   const [userIconColor, setUserIconColor] = useState(null);
   const [petIconColor, setPetIconColor] = useState(null);
   const [listIconColor, setListIconColor] = useState(null);
+  const params = useParams();
 
   const isUpdatePetPage = props.children.type === EditPet;
   const isProfilePage = props.children.type === UserProfile;
@@ -89,7 +92,7 @@ function Sidebar(props) {
               setListIconColor("#aeb1c3");
             }}
             onClick={() => {
-              navigate("/sitterManagement/:sitterId");
+              navigate(`/userManagement/${params.userId}/booking`);
             }}
           >
             <ListIcon

@@ -3,22 +3,17 @@ import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import union from "../../assets/SitterReview/Union.png";
-import { Variant3 } from "../systemdesign/Pagination";
-import { Variant4 } from "../systemdesign/Pagination";
 import { StarIcon } from "../systemdesign/Icons";
 
 function SitterReview() {
   const starRates = ["All Reviews", 5, 4, 3, 2, 1];
   const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState(reviews);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [averageRating, setAverageRating] = useState(0.0);
   const [totalReviews, setTotalReviews] = useState(0);
   const params = useParams();
 
   const [searchData, setSearchData] = useState({ rate: undefined });
-  
 
   const handleRating = (event, rate) => {
     event.preventDefault();
@@ -47,9 +42,7 @@ function SitterReview() {
 
   const getSitterReviewById = async () => {
     try {
-      const queryParams = {
-        page: currentPage,
-      };
+      const queryParams = {};
 
       if (searchData.rate !== "All Reviews") {
         queryParams.rate = searchData.rate;
@@ -63,8 +56,8 @@ function SitterReview() {
       );
 
       setReviews(response.data.reviews);
+      console.log("data", reviews);
       setAverageRating(response.data.reviews[0].avg_rating);
-      setTotalPages(response.data.pagination.totalPages);
       setTotalReviews(response.data.pagination.totalData);
     } catch (error) {
       console.error("Request error occurred", error);
@@ -73,23 +66,11 @@ function SitterReview() {
 
   useEffect(() => {
     getSitterReviewById();
-  }, [currentPage]);
+  }, []);
 
   useEffect(() => {
     setFilteredReviews(reviews);
   }, [reviews]);
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
 
   return (
     <div className="sitter-review w-[100%] min-h-screen bg-etc-bg_gray">
@@ -141,7 +122,7 @@ function SitterReview() {
                 className="review flex h-[204px] w-[100%] border border-gray-100 border-b-gray-200 "
                 key={index}
               >
-                <div className="flex gap-4 w-[30%]">
+                <div className="flex gap-4 w-[30%] items-start">
                   <Avatar
                     alt="avatar"
                     src={review.profile_image_path}
@@ -171,17 +152,6 @@ function SitterReview() {
             <div>No reviews available</div>
           )}
         </div>
-      </div>
-      <div className="pagination flex justify-center items-center gap-4 py-10">
-        <button className="prev-btn" onClick={handlePrevPage}>
-          <Variant3 />
-        </button>
-        <div className="current-page">
-          {currentPage} / {totalPages}
-        </div>
-        <button className="next-btn" onClick={handleNextPage}>
-          <Variant4 />
-        </button>
       </div>
     </div>
   );

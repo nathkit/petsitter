@@ -132,11 +132,11 @@ const usePosts = () => {
   const getBookingDetail = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     try {
-      const getBookingDetail = await axios.get(
+      const result = await axios.get(
         `http://localhost:4000/booking/${user.id}`
       );
-      console.log(getBookingDetail);
-      return getBookingDetail.data.data;
+      console.log(result.data);
+      return result.data;
     } catch (error) {
       console.log(error);
     }

@@ -2,15 +2,18 @@ import { ButtonPrimary, ButtonSecondary } from "../systemdesign/Button";
 import catPaw from "../../assets/img/catPaw.png";
 import starCat from "../../assets/img/starCat.png";
 import { useNavigate } from "react-router-dom";
-import { getBookingDetail } from "../../hooks/usePost";
+import usePost from "../../hooks/usePost";
 import { useEffect, useState } from "react";
 
 function Booking4() {
   const navigate = useNavigate();
+  const { getBookingDetail } = usePost();
   const [bookingDetail, SetBookingDetail] = useState(null);
+
   useEffect(() => {
     SetBookingDetail(getBookingDetail());
   }, []);
+
   return (
     <div className="flex justify-center flex-col items-center  bg-etc-bg_gray relative h-screen">
       <div className=" absolute top-[0px] left-[16px]">
@@ -27,11 +30,14 @@ function Booking4() {
           <div className="px-10 pt-10">
             <div className="pb-6 text-body2 text-gray-300 ">
               <p className="">Transaction Date: Tue, 16 Oct 2022</p>
-              <p className="">Transaction No. : 122312</p>
+              <p className="">Transaction No. : {bookingDetail.booking_id}</p>
             </div>
             <div className="pb-6">
               <p className="text-gray-400 text-body3">Pet Sitter:</p>
-              <p className="text-body2">Happy House! By Jane Maison</p>
+              <p className="text-body2">
+                {bookingDetail.trade_name} By{" "}
+                {bookingDetail.pet_sitter_full_name}
+              </p>
             </div>
             <div className="pb-6 flex ">
               <div className="mr-20">
@@ -43,7 +49,7 @@ function Booking4() {
               </div>
               <div>
                 <p className="text-gray-400 text-body3">Duration:</p>
-                <p className="text-body2">3 hours</p>
+                <p className="text-body2">{bookingDetail.duration} hours</p>
               </div>
             </div>
             <div className="pb-6">

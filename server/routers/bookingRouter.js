@@ -67,14 +67,23 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
 bookingRouter.get("/:userId/", async (req, res) => {
     try {
         const userId = req.params.userId;
-        const query = `select * from bookings_history_detail where user_id = $1 order by booking_no desc limit 1`;
+        const latestBookingIdQuery = `select * from bookings_detail where user_id = $1 order by booking_id desc limit 1`;
 
-        const lastestBookingId = await pool.query(query, [userId]);
-        if (lastestBookingId.rows.length === 0) {
+        const latestBookingIdResult = await pool.query(latestBookingIdQuery, [userId]);
+        if (latestBookingIdResult.rows.length === 0) {
             return res.status(404).json({ message: "No available booking" });
         }
+
+        const latestBookingId = latestBookingIdResult.rows[0].booking_id
+
+        const petNamesQuery = `select pet_name from bookings_detail where booking_id = $1`
+        const petNamesResult = await pool.query(petNamesQuery, [latestBookingId])
+
+        const petNames = petNamesResult.rows.map((row) => row.pet_name);
+
         return res.status(200).json({
-            data: lastestBookingId.rows[0],
+            data: latestBookingIdResult.rows[0],
+            petNames: petNames,
             message: "Get detail successfully",
         });
     } catch (error) {

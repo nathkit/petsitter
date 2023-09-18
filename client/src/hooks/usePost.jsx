@@ -1,13 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
 
 const usePosts = () => {
   const [petData, setPetData] = useState();
+  const [petDataById, setPetDataById] = useState({});
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
-
+  const params = useParams();
   const getProfileImage = async (user) => {
     // console.log(userEmail);
     // console.log(user);
@@ -102,6 +103,18 @@ const usePosts = () => {
         console.log(error);
       }
     }
+    console.log(petData);
+  };
+
+  const getPetProfile = async () => {
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
+      );
+      setPetDataById(result.data.data);
+    } catch (err) {
+      console.log("Error is occured from client!");
+    }
   };
 
   return {
@@ -111,7 +124,9 @@ const usePosts = () => {
     createPetProfile,
     updatePetProfile,
     getAllPetList,
+    getPetProfile,
     petData,
+    petDataById,
   };
 };
 

@@ -5,7 +5,6 @@ import { useAuth } from "../../contexts/authentication";
 import frame2 from "../../assets/SitterReview/frame427320942.png";
 import { UserIcon, PetIcon, ListIcon, LogOutIcon } from "./Icons";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import usePosts from "../../hooks/usePost";
 
 function Navbar() {
@@ -28,15 +27,16 @@ function Navbar() {
   };
 
   useEffect(() => {
-    const userData = authenticate();
-    if (userData && !profileImageLoaded) {
+    const user = authenticate();
+    setProfileImageLoaded(false);
+    if (user && !profileImageLoaded) {
       // Check if profileImage has not been loaded yet
-      setUserData(userData);
-      getProfileImage(userData);
+      setUserData(user);
+      getProfileImage(user);
       setProfileImageLoaded(true);
     }
-  }, [getProfileImage, profileImageLoaded]);
-  console.log(userData);
+    // console.log(userData);
+  }, [userData]);
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);

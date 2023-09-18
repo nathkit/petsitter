@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, response } from "express";
 import pool from "../utils/db.js";
 import multer from "multer";
 import { supabase, supabaseUpload } from "../utils/supabase.js";
@@ -15,23 +15,51 @@ const avatarUpload = multerUpload.fields([{ name: "avatarFile" }]);
 userManagementRouter.put("/:userId", avatarUpload, async (req, res) => {
   const userId = req.params.userId;
   const user = { ...req.body };
+  user.updated_at = new Date();
+  user.id = userId;
+  let result;
+  let url;
   try {
-    // use supabase function for uploading **************************************
-    const respondes = await supabaseUpload(
-      req.files.avatarFile[0],
-      user.avatarName
-    );
-    user.avatarName = respondes;
-    user.updated_at = new Date();
     const query = `update users set full_name = $1, email = $2, id_number = $3, phone = $4, date_of_birth = $5, image_name = $6, updated_at = $7 where id = $8`;
     const values = Object.values(user);
-    values.splice(7, 1, userId);
-    const result = await pool.query(query, values);
+    // use supabase function for uploading **************************************
+    if (req.files) {
+      const respondesUpload = await supabaseUpload(
+        req.files.avatarFile[0],
+        user.avatarName
+      );
+      // splice avatarName out and reassige ************************************
+      values.splice(5, 1, respondesUpload);
+    } else {
+      // splice avatarFile out ************************************
+      values.splice(6, 1);
+    }
+    await pool.query(query, values);
+    // user query after update *****************************************************
+    const serverRespondes = await pool.query(
+      `select * from users where id = $1`,
+      [userId]
+    );
+    result = serverRespondes.rows[0];
+    const data = supabase.storage
+      .from("avatars")
+      .getPublicUrl(result.image_name);
+    url = data.data.publicUrl;
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
   return res.json({
     message: "Updated user successfully.",
+    data: {
+      id: result.id,
+      fullName: result.full_name,
+      email: result.email,
+      idNumber: result.id_number,
+      phone: result.phone,
+      dateOfbirth: result.date_of_birth,
+      avatar: { avatarName: result.image_name, avatarUrl: url },
+      sitterAuthen: result.sitter_authen,
+    },
   });
 });
 
@@ -63,7 +91,24 @@ userManagementRouter.get("/:userId/pets", async (req, res) => {
   }
 });
 
-userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {});
+userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {
+  const userId = req.params.userId;
+  const petId = req.params.petId;
+  const query = `select *,pet_type.type 
+  from pets
+  inner join pet_type
+  on pets.pet_type_id = pet_type.id
+  where pets.user_id = $1 and pets.id = $2`;
+  const values = [userId, petId];
+  let result;
+  try {
+    const response = await pool.query(query, values);
+    result = response.rows[0];
+  } catch (err) {
+    return res.json({ message: "Server is error!" });
+  }
+  return res.json({ message: "Fetch data successfully", data: result });
+});
 
 userManagementRouter.post("/:userId/pets", async (req, res) => {
   try {

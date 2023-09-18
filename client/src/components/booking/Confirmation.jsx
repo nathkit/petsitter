@@ -4,11 +4,13 @@ import {
   ButtonSecondary,
   ButtonGhost,
 } from "../systemdesign/Button";
+import usePosts from "../../hooks/usePost";
 
 import { TrashIcon } from "../systemdesign/Icons";
 
 function Confirmation(props) {
   const navigate = useNavigate();
+  const { createBooking } = usePosts();
 
   return (
     <>

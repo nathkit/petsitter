@@ -106,7 +106,7 @@ const usePosts = () => {
         console.log(error);
       }
     }
-    console.log(petData);
+    // console.log(petData);
   };
 
   const getPetProfile = async () => {

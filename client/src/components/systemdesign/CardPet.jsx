@@ -44,13 +44,11 @@ export function CardPet1() {
                 onClick={() => {
                   console.log(item.id);
                   navigate(`/userManagement/${userData.id}/pets/${item.id}`);
-                }}
-              >
+                }}>
                 <div
                   id="card"
                   className={`border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
-                  ${isInvalidType ? "opacity-40" : ""} }`}
-                >
+                  ${isInvalidType ? "opacity-40" : ""} }`}>
                   <img
                     className="w-[104px] h-[104px] relative rounded-[99px]"
                     src={item.image_path}
@@ -60,8 +58,7 @@ export function CardPet1() {
                       {item.name}
                     </div>
                     <div
-                      className={`px-4 py-1 rounded-[99px] justify-center items-center gap-2.5 inline-flex border ${textStyle} ${border} ${bgColor}`}
-                    >
+                      className={`px-4 py-1 rounded-[99px] justify-center items-center gap-2.5 inline-flex border ${textStyle} ${border} ${bgColor}`}>
                       <div className="">{item.type}</div>
                     </div>
                   </div>
@@ -103,8 +100,7 @@ export function CardPet2(props) {
                       ? "border-orange-500"
                       : ""
                   }
-                  ${isInvalidType ? "opacity-40" : ""} }`}
-                >
+                  ${isInvalidType ? "opacity-40" : ""} }`}>
                   <img
                     className="w-[104px] h-[104px] relative rounded-[99px]"
                     src={item.image_path}
@@ -114,12 +110,11 @@ export function CardPet2(props) {
                       {item.name}
                     </div>
                     <div
-                      className={`px-4 py-1 rounded-[99px] justify-center items-center gap-2.5 inline-flex border ${textStyle} ${border} ${bgColor}`}
-                    >
+                      className={`px-4 py-1 rounded-[99px] justify-center items-center gap-2.5 inline-flex border ${textStyle} ${border} ${bgColor}`}>
                       <div className="">{item.type}</div>
                     </div>
                   </div>
-                  {props.children(index, isInvalidType, item.id)}
+                  {props.children(index, isInvalidType, item.id, item.name)}
                 </div>
               </div>
             );
@@ -129,8 +124,7 @@ export function CardPet2(props) {
               <button
                 onClick={() => {
                   navigate(`/userManagement/${userData.id}/pets/create`);
-                }}
-              >
+                }}>
                 <CreateIcon />
               </button>
               <p className="text-orange-500 text-bodyButton px-6 py-3">

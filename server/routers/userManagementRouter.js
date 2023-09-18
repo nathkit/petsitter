@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, response } from "express";
 import pool from "../utils/db.js";
 import multer from "multer";
 import { supabase, supabaseUpload } from "../utils/supabase.js";
@@ -91,7 +91,24 @@ userManagementRouter.get("/:userId/pets", async (req, res) => {
   }
 });
 
-userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {});
+userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {
+  const userId = req.params.userId;
+  const petId = req.params.petId;
+  const query = `select *,pet_type.type 
+  from pets
+  inner join pet_type
+  on pets.pet_type_id = pet_type.id
+  where pets.user_id = $1 and pets.id = $2`;
+  const values = [userId, petId];
+  let result;
+  try {
+    const response = await pool.query(query, values);
+    result = response.rows[0];
+  } catch (err) {
+    return res.json({ message: "Server is error!" });
+  }
+  return res.json({ message: "Fetch data successfully", data: result });
+});
 
 userManagementRouter.post("/:userId/pets", async (req, res) => {
   try {

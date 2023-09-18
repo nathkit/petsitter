@@ -3,7 +3,7 @@ import {
   ButtonPrimary,
   ButtonSecondary,
 } from "../../components/systemdesign/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { UploadPetImage } from "../../components/systemdesign/uploadImage";
@@ -28,21 +28,28 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { createPetProfile, updatePetProfile } = usePosts();
+  const { createPetProfile, updatePetProfile, getPetProfile, petDataById } =
+    usePosts();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
+
+  useEffect(() => {
+    getPetProfile();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
-      petName: "",
-      petType: "",
-      breed: "",
-      sex: "",
-      age: "",
-      color: "",
-      weight: "",
-      about: "",
+      petName: petDataById.name,
+      petType: petDataById.type,
+      breed: petDataById.breed,
+      sex: petDataById.sex,
+      age: petDataById.age,
+      color: petDataById.color,
+      weight: petDataById.weight,
+      about: petDataById.description,
     },
     validationSchema: PetProfileSchema,
+    enableReinitialize: true,
     onSubmit: (values, { setSubmitting }) => {
       console.log(values);
       props.editPet ? updatePetProfile(values) : createPetProfile(values);
@@ -77,6 +84,7 @@ function PetInputForm(props) {
           type="text"
           onChange={formik.handleChange}
           value={formik.values.petName}
+          // value="dddddd"
           onBlur={formik.handleBlur}
           placeholder="Enter Pet Name"
         />

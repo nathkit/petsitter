@@ -14,9 +14,42 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+export function formatDateToCustomString(dateString) {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
+  const date = new Date(dateString);
+  const day = date.toLocaleDateString("en-US", { weekday: "short" });
+  const dayOfMonth = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
 
+  return {
+    data1: `${day}, ${dayOfMonth} ${month} ${year}`,
+    data2: ` ${dayOfMonth} ${month}, ${year}`,
+  };
+}
 
+export function formatTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  return `${formattedHours} ${ampm}`;
+}
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
@@ -57,8 +90,6 @@ function BookingHistory() {
   //   setStatus(updateStatus);
   // };
 
-  
-
   return (
     <section className="booking-history flex flex-col gap-6">
       <p className=" pb-[60px] text-headline3">Booking History</p>
@@ -85,7 +116,7 @@ function BookingHistory() {
               }
             >
               <BookingHistoryDetail
-                key={card.id}
+                key={card.booking_no}
                 card={card}
                 // handleClick={handleClick}
               />
@@ -98,13 +129,13 @@ function BookingHistory() {
                   />
                   <div>
                     <h1 className=" text-headline3">{card.trade_name}</h1>
-                    <h3 className=" text-body1">By {card.name}</h3>
+                    <h3 className=" text-body1">By {card.full_name}</h3>
                   </div>
                 </div>
                 <div>
                   <p className=" text-body3 text-gray-300 text-right">
-                    Transaction date:{" "}
-                    {new Date(card.booking_date).toLocaleDateString()}
+                    Booking date:{" "}
+                    {formatDateToCustomString(card.booking_date).data1}
                   </p>
                   <h5
                     className={`text-right text-body2 ${
@@ -130,9 +161,9 @@ function BookingHistory() {
                 <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                   <div className=" text-body3">Date & Time:</div>{" "}
                   <div className="text-gray-600 text-body3 ">
-                    {new Date(card.booking_date).toLocaleDateString()}|
-                    {new Date(card.start_date_time).toLocaleDateString()} -{" "}
-                    {new Date(card.end_date_time).toLocaleDateString()}
+                    {formatDateToCustomString(card.start_date_time).data2} |{" "}
+                    {formatTime(card.start_date_time)} -{" "}
+                    {formatTime(card.end_date_time)}
                   </div>
                 </div>
                 <img src={Line} alt="line" className="h-9" />
@@ -143,7 +174,7 @@ function BookingHistory() {
                 <img src={Line} alt="line" className="h-9" />
                 <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                   <div className=" text-body3">Pet:</div>
-                  <div className="text-gray-600">{card.name}</div>
+                  <div className="text-gray-600">{card.pet_names}</div>
                 </div>
               </main>
               <div className="card-status" onClick={(e) => e.stopPropagation()}>

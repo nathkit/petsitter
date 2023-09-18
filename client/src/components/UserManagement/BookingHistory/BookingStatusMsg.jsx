@@ -34,13 +34,13 @@ export function InService() {
 
 export function Success(props) {
   return (
-    <div className="text-green-500 text-body3 flex-1 w-auto bg-green-100 p-4 mt-9 rounded-lg flex justify-between">
+    <div className="flex justify-between text-green-500 text-body3 flex-1 w-auto bg-green-100 p-4 mt-9 rounded-lg">
       <div>
-        <h3>Success date :</h3> {/* Fixed typo here: Succes to Success */}
-        <h3>Tue, 13 Apr 2023 | 8.40 PM</h3>
+        <h3>Succes date :</h3>
+        <h3>Tue,13 Apr 2023 | 8.40 PM</h3>
       </div>
       <div>
-        <ReviewButton />
+        <ReviewButton bookingId={props.bookingId} />
       </div>
     </div>
   );

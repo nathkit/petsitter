@@ -130,9 +130,41 @@ function ReviewButton(props) {
                 </form>
               </div>
             </div>
+<<<<<<< HEAD
           </dialog>
         </>
       )}
+=======
+            <div className="w-full flex flex-col gap-6 items-center">
+              <h3>Share more about your experience</h3>
+              <textarea
+                id="search"
+                className="outline-none w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
+                 border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
+                placeholder="Your Review..."
+                onChange={(e) => handleReviewText(e)}
+                value={review.comment}
+                style={{ verticalAlign: "top" }}
+              ></textarea>
+            </div>
+            <form method="dialog">
+              <button className="btn btn-lg btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+              <div className="flex justify-between">
+                <ButtonSecondary className="btn" content="Cancel" />
+                <ButtonPrimary
+                  content="Send Review&Rating"
+                  width="202px"
+                  className="btn"
+                  onClick={(e) => addNewReview(e)}
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </dialog>
+>>>>>>> 0b2eb59 (feat: add font-end for post review)
     </div>
   );
 }

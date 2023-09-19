@@ -307,7 +307,7 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
-          // onClick={handleDelete}
+          
         />
       </div>
     </form>

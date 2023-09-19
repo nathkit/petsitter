@@ -1,98 +1,128 @@
-import { CalendarIcon, ClockIcon } from "../systemdesign/Icons";
+import { CalendarIcon, ClockIcon, Close } from "../systemdesign/Icons";
 import { ButtonPrimary } from "../systemdesign/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Booking.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns-tz";
+import dayjs from "dayjs";
 import { useAuth } from "../../contexts/authentication";
 import { useParams } from "react-router-dom";
 
+import { DatePicker } from "antd";
+const { RangePicker } = DatePicker;
+
 function BookingDate() {
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const navigate = useNavigate();
-  const isTimeValid = startTime < endTime;
   const { userData } = useAuth();
   const params = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dateFormat = "DD MMM YYYY";
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const isContinueDisabled = !startDate || !endDate || !startTime || !endTime;
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const disabledDate = (current) => {
+    return current && current.isBefore(dayjs(), "day");
+  };
+
+  const handleDateChange = (dates) => {
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+      const startYear = startDate.year();
+      const startMonth = startDate.month() + 1;
+      const startDay = startDate.date();
+
+      const endYear = endDate.year();
+      const endMonth = endDate.month() + 1;
+      const endDay = endDate.date();
+
+      setStartDate(`${startYear}-${startMonth}-${startDay}`);
+      setEndDate(`${endYear}-${endMonth}-${endDay}`);
+    }
+  };
+  console.log(`${startDate}  ${startTime}`);
+  console.log(`${endDate}  ${endTime}`);
+
   return (
-    <>
-      {" "}
-      <button
-        onClick={() => {
-          window.my_modal_3.showModal();
-        }}>
-        <ButtonPrimary content="Book Now" width=" 250px" />
-      </button>
-      <dialog id="my_modal_3" className="modal ">
-        <form
-          method="dialog"
-          className="modal-box max-w-[560px] px-10 py-0 bg-etc-white ">
-          <div className="flex justify-between my-6">
-            <h3 className="text-headline3">Booking</h3>
-            <button className="btn btn-sm btn-circle btn-ghost ">✕</button>
+    <div className="">
+      <ButtonPrimary content="Book Now" width=" 250px" onClick={openModal} />
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <div className="w-full h-full ">
+          <p className="mb-6 text-body1 text-start">
+            Select date and time you want to schedule the service.
+          </p>
+          <div className="mb-6 flex items-center justify-between">
+            <CalendarIcon />
+            <RangePicker
+              style={{ width: "92%", height: "48px" }}
+              onChange={handleDateChange}
+              format={dateFormat}
+              disabledDate={disabledDate}
+              defaultValue={[dayjs(), dayjs()]}
+            />
           </div>
-          <hr />
-          <div className="my-10 h-[20%]">
-            <p className="mb-6 text-body1 text-start">
-              Select date and time you want to schedule the service.
-            </p>
-            <div>
-              <div className=" flex items-center justify-around mb-6 ">
-                <CalendarIcon />
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="dd MMM yyyy"
-                  minDate={new Date()}
-                  placeholderText={format(new Date(), "dd MMMM yyyy")}
-                  className="input input-bordered w-[27.5rem]"
-                  calendarClassName="rounded-xl "
-                />
-              </div>
-              <div className="flex items-center justify-around mb-[3.75rem]">
-                <ClockIcon />
-                <input
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  className="input input-bordered w-52"
-                />
-                -
-                <input
-                  type="time"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                  className="input input-bordered w-52"
-                />
-              </div>
-            </div>
-            {startTime && endTime ? (
-              <div
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/booking/${userData.id}/${params.sitterId}`);
-                }}>
-                {isTimeValid ? (
-                  <ButtonPrimary width={"100%"} content={"Continue"} />
-                ) : (
-                  <ButtonPrimary
-                    width={"100%"}
-                    content={"Continue"}
-                    disabled={!isTimeValid}
-                  />
-                )}
-              </div>
-            ) : (
-              <p className=" text-body1">Please select time</p>
-            )}
+          <div className="flex items-center justify-between mb-[3.75rem]">
+            <ClockIcon />
+            <input
+              id="startTime"
+              type="time"
+              className="input input-bordered w-52 hover:border-orange-500 focus:border-orange-500 "
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+            -
+            <input
+              id="endTime"
+              type="time"
+              className="input input-bordered w-52 hover:border-orange-500 focus:border-orange-500"
+              onChange={(e) => setEndTime(e.target.value)}
+            />
           </div>
-        </form>
-      </dialog>
-    </>
+          <div
+            onClick={() => {
+              if (!isContinueDisabled) {
+                navigate(`/booking/${userData.id}/${params.sitterId}`);
+              }
+            }}
+          >
+            <ButtonPrimary
+              width={"100%"}
+              content={"Continue"}
+              disabled={isContinueDisabled}
+            />
+          </div>
+        </div>
+      </Modal>
+    </div>
   );
 }
+
+export const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+  return (
+    <div
+      className="fixed inset-0 flex items-center justify-center z-0 "
+      style={{ background: "rgba(0, 0, 0, 0.75)" }}
+    >
+      <div className="relative z-10">
+        <div className="w-[560px] bg-etc-white h-[440px] rounded-2xl opacity-1">
+          <div className="px-10 py-6 border-b justify-between items-center gap-2.5 flex">
+            <div className="text-headline3">Booking</div>
+            <Close onClick={onClose} />
+          </div>
+          <div className="m-10">{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default BookingDate;

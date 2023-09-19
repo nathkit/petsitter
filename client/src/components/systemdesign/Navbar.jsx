@@ -76,7 +76,7 @@ function Navbar() {
       {
         icon: ListIcon,
         content: "History",
-        navigate: () => navigate("/sitterManagement/:sitterId"),
+        navigate: () => navigate(`/userManagement/${userData.id}/booking`),
       },
       { icon: LogOutIcon, content: "Log Out", navigate: () => signOut() },
     ];

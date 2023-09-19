@@ -34,7 +34,7 @@ function SearchList() {
     }
 
     const result = await axios.get(
-      "http://localhost:4000/sitterManagement?" + searchParams.toString()
+      "/sitterManagement?" + searchParams.toString()
     );
     console.log(result);
     setPets(result.data.data);

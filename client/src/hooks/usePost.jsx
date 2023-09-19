@@ -21,7 +21,7 @@ const usePosts = () => {
     // else {
     //   try {
     //     const result = await axios.get(
-    //       `http://localhost:4000/accounts/${userEmail}`
+    //       `/accounts/${userEmail}`
     //     );
     //     setProfileImage(result.data.data.pet_owner_image);
     //     console.log(result.data);
@@ -34,10 +34,7 @@ const usePosts = () => {
   const createPetProfile = async (user, data) => {
     const userEmail = user.email;
     try {
-      const result = await axios.post(
-        `http://localhost:4000/accounts/${userEmail}/pets/`,
-        data
-      );
+      const result = await axios.post(`/accounts/${userEmail}/pets/`, data);
       navigate("/usermanagement");
     } catch (error) {
       console.log(error);
@@ -47,10 +44,7 @@ const usePosts = () => {
   const updatePetProfile = async (user, data) => {
     const userEmail = user.email;
     try {
-      const result = await axios.put(
-        `http://localhost:4000/accounts/${userEmail}/pets/`,
-        data
-      );
+      const result = await axios.put(`/accounts/${userEmail}/pets/`, data);
       navigate("/usermanagement");
     } catch (error) {
       console.log(error);
@@ -98,9 +92,7 @@ const usePosts = () => {
     if (userData) {
       const user = JSON.parse(userData);
       try {
-        const result = await axios.get(
-          `http://localhost:4000/userManagement/${user.id}/pets`
-        );
+        const result = await axios.get(`/userManagement/${user.id}/pets`);
         setPetData(result.data.data);
       } catch (error) {
         console.log(error);
@@ -112,7 +104,7 @@ const usePosts = () => {
   const getPetProfile = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
+        `/userManagement/${params.userId}/pets/${params.petId}`
       );
       setPetDataById(result.data.data);
     } catch (err) {
@@ -123,7 +115,7 @@ const usePosts = () => {
   const createBooking = async (data) => {
     try {
       const createBookingResult = await axios.post(
-        `http://localhost:4000/booking/:userId/:sitterId`,
+        `/booking/:userId/:sitterId`,
         data
       );
       navigate("/userManagement/:userId/booking/:bookingId");
@@ -135,9 +127,7 @@ const usePosts = () => {
   const getBookingDetail = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     try {
-      const result = await axios.get(
-        `http://localhost:4000/booking/${user.id}`
-      );
+      const result = await axios.get(`/booking/${user.id}`);
       setBookingDetail(result.data.data);
       setPetBookingDetail(result.data.petNames);
     } catch (error) {

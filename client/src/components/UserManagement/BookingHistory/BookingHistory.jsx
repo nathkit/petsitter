@@ -62,10 +62,11 @@ function BookingHistory() {
   const getBookingDetail = async () => {
     try {
       const results = await axios.get(
-        `http://localhost:4000/userManagement/${params.userId}/booking`
+        `/userManagement/${params.userId}/booking`
       );
       console.log(params.userId);
       console.log(params.bookingId);
+      console.log(results);
       const uniqueBookings = removeDuplicates(results.data.data, "booking_no");
       setBookingHistory(uniqueBookings);
     } catch (error) {
@@ -188,7 +189,13 @@ function BookingHistory() {
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}
               {card.statuses === "Waiting for service" && <WaitingforService />}
               {card.statuses === "In service" && <InService />}
-              {card.statuses === "Success" && <Success />}
+              {card.statuses === "Success" && (
+                <Success
+                  bookingId={card.booking_no}
+                  isReview={!!card.review_id}
+                  fetch={getBookingDetail}
+                />
+              )}
               {card.statuses === "Canceled" && <Canceled />}
             </div>
           </div>

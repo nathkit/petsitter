@@ -276,9 +276,10 @@ userManagementRouter.post(
         ...req.body,
         created_at: new Date(),
       };
+      console.log("Hello");
       await pool.query(
         `insert into sitter_reviews (booking_id, rating, comment, created_at)
-              value ($1, $2, $3, $4)`,
+        VALUES ($1, $2, $3, $4)`,
         [bookingId, newReview.rating, newReview.comment, newReview.created_at]
       );
 
@@ -287,6 +288,32 @@ userManagementRouter.post(
         data: newReview,
       });
     } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
+);
+
+userManagementRouter.get(
+  "/:userId/booking/:bookingId/review",
+  async (req, res) => {
+    try {
+      const bookingId = req.params.bookingId;
+      const result = await pool.query(
+        `select * from booking_reviews_by_user where booking_id = $1`,
+        [bookingId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(500).json({ message: "Request error occurred" });
+      }
+
+      return res.json({
+        message: "Get review successfully",
+        data: result.rows[0],
+      });
+    } catch (error) {
+      console.log(error);
       return res.status(500).json({ message: "Request error occurred" });
     }
   }

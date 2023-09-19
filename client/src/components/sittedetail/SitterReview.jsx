@@ -48,12 +48,9 @@ function SitterReview() {
         queryParams.rate = searchData.rate;
       }
 
-      const response = await axios.get(
-        `http://localhost:4000/sitterManagement/${params.sitterId}`,
-        {
-          params: queryParams,
-        }
-      );
+      const response = await axios.get(`/sitterManagement/${params.sitterId}`, {
+        params: queryParams,
+      });
 
       setReviews(response.data.reviews);
       console.log("data", reviews);

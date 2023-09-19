@@ -12,12 +12,14 @@ import {
   ButtonSecondary,
 } from "../components/systemdesign/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authentication";
 
 function BookingPage() {
   const navigate = useNavigate();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
+  const { userData } = useAuth();
   const nextStep = () => {
     if (step < 3) {
       setStep(step + 1);
@@ -99,7 +101,9 @@ function BookingPage() {
                 buttonName={"Confirm Booking"}
                 buttonWidth={"175px"}
                 disabled={disableButtonBooking3}
-                onClick={() => navigate("/booking/confirmation")}
+                onClick={() =>
+                  navigate(`/userManagement/${userData.id}/booking/:bookingId`)
+                }
               />
             )}
           </div>

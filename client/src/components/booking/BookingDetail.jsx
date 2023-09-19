@@ -12,9 +12,26 @@ export default function BookingDatail() {
     petIdsNames,
     bookingMessage,
     totalAmount,
+    startDateTime,
+    endDateTime,
+    duration,
   } = useBooking();
   const navigate = useNavigate();
   const params = useParams();
+
+  const options = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
+  const formattedDateStart = startDateTime.toLocaleString("en-UK", options);
+  const formattedDateEnd = endDateTime.toLocaleString("en-UK", options);
+
+  console.log(formattedDateEnd);
+  console.log(formattedDateStart);
 
   useEffect(() => {
     getSitterDetail(params.sitterId);
@@ -37,13 +54,13 @@ export default function BookingDatail() {
         <div className="pb-6">
           <p className="text-body3">Date & Time:</p>
           <p className="text-body2">
-            Check-in:&nbsp;&nbsp;&nbsp;&nbsp;25 Aug, 2023
+            Check-in:&nbsp;&nbsp;&nbsp;&nbsp;{formattedDateStart}
           </p>
-          <p className="text-body2">Check-out:&nbsp;&nbsp;25 Aug, 2023</p>
+          <p className="text-body2">Check-out:&nbsp;&nbsp;{formattedDateEnd}</p>
         </div>
         <div className="pb-6">
           <p className="text-body3">Duration</p>
-          <p className="text-body2">3 hours</p>
+          <p className="text-body2">{duration} hours</p>
         </div>
         <div>
           <p className="text-body3">Pet</p>

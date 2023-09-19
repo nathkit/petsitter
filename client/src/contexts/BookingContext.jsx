@@ -11,6 +11,14 @@ function BookingProvider(props) {
   const [sitterDetail, setSitterDetail] = useState([]);
   const [bookingMessage, setBookingMessage] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
+
   const navigate = useNavigate();
 
   const getSitterDetail = async (sitterId) => {
@@ -37,8 +45,21 @@ function BookingProvider(props) {
         setBookingMessage,
         totalAmount,
         setTotalAmount,
-      }}
-    >
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
+        startTime,
+        setStartTime,
+        endTime,
+        setEndTime,
+        startDateTime,
+        setStartDateTime,
+        endDateTime,
+        setEndDateTime,
+        duration,
+        setDuration,
+      }}>
       {props.children}
     </BookingContext.Provider>
   );

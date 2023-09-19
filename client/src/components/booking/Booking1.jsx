@@ -5,8 +5,16 @@ import { useBooking } from "../../contexts/BookingContext";
 
 function booking1({ setDisableButtonBooking1 }) {
   const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
-  const { petIds, setPetIds, petIdsNames, setPetIdsNames, setTotalAmount } =
-    useBooking();
+  const {
+    petIds,
+    setPetIds,
+    petIdsNames,
+    setPetIdsNames,
+    setTotalAmount,
+    setDuration,
+    startDateTime,
+    endDateTime,
+  } = useBooking();
 
   const handleCheckboxChange = (index, petId, petName) => {
     let updatedSelectedButtons = [...selectedButtons];
@@ -44,12 +52,13 @@ function booking1({ setDisableButtonBooking1 }) {
     const numberOfPets = Object.keys(updatedPets).length;
     console.log(numberOfPets);
     let totalAmount = 0;
-    const duration = 2;
+    const duration = (endDateTime - startDateTime) / 3600000;
     if (numberOfPets > 1) {
       totalAmount = 100 * (numberOfPets - 1) * duration + 200 * duration;
     } else {
       totalAmount = duration * numberOfPets * 200;
     }
+    setDuration(duration);
     setTotalAmount(totalAmount);
   };
   // console.log(petIds);

@@ -54,9 +54,13 @@ export default function BookingDatail() {
             {Object.keys(petIdsNames).length === 0 ? (
               <span>-</span>
             ) : (
-              Object.keys(petIdsNames).map((key) => {
-                return <span>{petIdsNames[key]}, </span>;
-              })
+              <>
+                {Object.keys(petIdsNames).map((key, index) => (
+                  <span key={key}>
+                    {index > 0 && ","} {petIdsNames[key]}
+                  </span>
+                ))}
+              </>
             )}
           </p>
         </div>

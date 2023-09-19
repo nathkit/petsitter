@@ -69,22 +69,23 @@ function PetInputForm(props) {
 
     validationSchema: PetProfileSchema,
     enableReinitialize: true,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values, formikHelpers) => {
       // check pet type condition and convert *****************************
       values.petType = checkPetType(values.petType);
-
       const newValues = {
         ...values,
-        avatarName: petDataById.petAvatar.petAvatarName,
+        avatarName: props.editPet ? petDataById.image_name : null,
         avatarFile: petAvatarFile,
       };
+      // console.log(values);
+      // console.log(newValues);
       props.editPet
         ? await updatePetProfile(newValues)
         : await createPetProfile(newValues);
-      setTimeout(() => {
-        alert(JSON.stringify(newValues, null, 2));
-        setSubmitting(false);
-      }, 1000);
+
+      alert(JSON.stringify(newValues));
+
+      // props.editPet ? null : formikHelpers.resetForm();
     },
   });
   const errorForm = {
@@ -98,7 +99,12 @@ function PetInputForm(props) {
   };
 
   return (
-    <form onSubmit={formik.handleSubmit} className="outline-none flex flex-col">
+    <form
+      onSubmit={(values, formikHelpers) => {
+        formik.handleSubmit(values, formikHelpers);
+      }}
+      className="outline-none flex flex-col"
+    >
       <div className="outline-none flex flex-col item-start gap-1 w-full mb-10">
         <label className="text-etc-black text-body2" htmlFor="petName">
           Pet Name*
@@ -316,11 +322,24 @@ export function TurnBack() {
 }
 
 export function CreatePet() {
+  const { petAvatarUrl, setPetAvatarUrl, setPetAvatarFile } = usePet();
+  useEffect(() => {
+    setPetAvatarUrl("");
+    setPetAvatarFile(null);
+  }, []);
+
   return (
     <div className="pet-input-container">
       <TurnBack />
       <Box className="h-[15rem] relative mb-10">
-        <UploadPetImage />
+        <UploadPetImage
+          img={petAvatarUrl ? petAvatarUrl : null}
+          onChange={(e) => {
+            setPetAvatarFile(e.target.files[0]);
+            const imgUrl = URL.createObjectURL(e.target.files[0]);
+            setPetAvatarUrl(imgUrl);
+          }}
+        />
       </Box>
       <div className="pet-input">
         <PetInputForm />
@@ -335,8 +354,9 @@ export function EditPet() {
   const { getPetProfile } = usePetProfile();
   useEffect(() => {
     getPetProfile();
+    setPetAvatarUrl("");
+    setPetAvatarFile(null);
   }, []);
-  // console.log(petDataById);
   return (
     <div className="pet-input-container">
       <TurnBack />
@@ -345,11 +365,11 @@ export function EditPet() {
           img={
             petAvatarUrl
               ? petAvatarUrl
-              : petDataById.petAvatar
-              ? petDataById.petAvatar.petAvatarUrl
+              : petDataById.image_path
+              ? petDataById.image_path
               : null
           }
-          onChange={async (e) => {
+          onChange={(e) => {
             setPetAvatarFile(e.target.files[0]);
             const imgUrl = URL.createObjectURL(e.target.files[0]);
             setPetAvatarUrl(imgUrl);

@@ -51,46 +51,36 @@ const validationSchema = yup.object({
 
 const profile = () => {
   const { alertMessage, setAlertMessage } = useAuth();
-  const { updateUserData, handleAvatar } = useUserProfile();
+  const { updateUserData } = useUserProfile();
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const [userAvatar, setUserAvatar] = useState("");
-  const params = useParams();
-
-  const formikValues = {
-    yourName: "",
-    email: "",
-    idNumber: "",
-    phone: "",
-    dateOfBirth: dayjs(new Date()),
-  };
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     setAlertMessage({
       message: "",
       severity: "",
     });
-    const user = JSON.parse(window.localStorage.getItem("user"));
-    const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : null));
-    (formikValues.yourName = user.fullName),
-      (formikValues.email = user.email),
-      (formikValues.idNumber = user.idNumber),
-      (formikValues.phone = user.phone),
-      (formikValues.dateOfBirth = date),
-      // (formikValues.avartar = user.avatar.avatarUrl),
-      setUserAvatar(user.avatar);
+    const newUser = JSON.parse(window.localStorage.getItem("user"));
+    setUser(newUser);
   }, []);
-  // const date = dayjs(new Date());
-  // formik function ***********************************************
+
+  const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : null));
   const formik = useFormik({
-    // const avatarName = userAvatar.avatarName,
-    initialValues: formikValues,
+    initialValues: {
+      yourName: user.fullName,
+      email: user.email,
+      idNumber: user.idNumber,
+      phone: user.phone,
+      dateOfBirth: date,
+    },
+    enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if (avatarFile || userAvatar) {
+      if (avatarFile || user) {
         const newValue = {
           ...values,
-          avatarName: userAvatar.avatarName,
+          avatarName: user.image_name,
           avatarFile: avatarFile,
         };
         await updateUserData(newValue);
@@ -105,17 +95,15 @@ const profile = () => {
       <h1 className="text-headline3 ">Profile</h1>
       {/* form *********************************** */}
       <form
-        onSubmit={(e, values) => {
-          formik.handleSubmit(e, values);
+        onSubmit={(values, formikHelpers) => {
+          formik.handleSubmit(values, formikHelpers);
         }}
         className="h-auto flex flex-col gap-[2rem] relative"
       >
         {/* upload image *********************************** */}
         <Box className="h-[15rem] relative mb-10">
           <UploadImage
-            img={
-              avatarUrl ? avatarUrl : userAvatar ? userAvatar.avatarUrl : null
-            }
+            img={avatarUrl ? avatarUrl : user ? user.image_path : null}
             onChange={async (e) => {
               setAvatarFile(e.target.files[0]);
               const imgUrl = URL.createObjectURL(e.target.files[0]);
@@ -135,7 +123,6 @@ const profile = () => {
             fullWidth
             id="yourName"
             name="yourName"
-            label="your name"
             value={formik.values.yourName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -153,7 +140,6 @@ const profile = () => {
                 fullWidth
                 id="email"
                 name="email"
-                label="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -170,7 +156,6 @@ const profile = () => {
                 fullWidth
                 id="idNumber"
                 name="idNumber"
-                label="Id number"
                 value={formik.values.idNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -188,7 +173,6 @@ const profile = () => {
                 fullWidth
                 id="phone"
                 name="phone"
-                label="Phone"
                 value={formik.values.phone}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

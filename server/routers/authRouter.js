@@ -10,7 +10,6 @@ authRouter.post("/login", async (req, res) => {
   let query = "select * from users where email = $1";
   let value = [req.body.email];
   let result;
-  let url;
   try {
     // check email condition **********************
     const valid = await pool.query(query, value);
@@ -26,16 +25,10 @@ authRouter.post("/login", async (req, res) => {
     }
     result = valid.rows[0];
     //  get url by result.image_name from supabase storage url ********************
-    const data = await supabase.storage
-      .from("avatars")
-      .getPublicUrl(result.image_name);
-    url = data.data.publicUrl;
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
-  if (!result.image_name) {
-    url = null;
-  }
+
   // send user data back to client *******************************
   return res.json({
     message: "User has been verified successfully",
@@ -46,7 +39,8 @@ authRouter.post("/login", async (req, res) => {
       idNumber: result.id_number,
       phone: result.phone,
       dateOfbirth: result.date_of_birth,
-      avatar: { avatarName: result.image_name, avatarUrl: url },
+      image_name: result.image_name,
+      image_path: result.profile_image_path,
       sitterAuthen: result.sitter_authen,
     },
   });

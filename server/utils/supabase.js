@@ -6,9 +6,14 @@ const supabase_url = process.env.SUPABASE_URL;
 const anon_key = process.env.SUPABASE_KEY;
 export const supabase = createClient(supabase_url, anon_key);
 
-export const supabaseUpload = async (file, avatarName) => {
+export const supabaseUpload = async (file, avatarName, breed) => {
   const uniqueName = Date.now();
-  const bucketName = avatarName.split("/")[0];
+  let bucketName;
+  if (breed) {
+    bucketName = "petAvatar";
+  } else {
+    bucketName = "userAvatar";
+  }
   // need to use fs for read file.path first *********************************
   const rawData = fs.readFileSync(file.path);
   // delete avatar bofore upload condition because cannot directly replace there is bug on supabase storage replace query ********************************
@@ -26,5 +31,7 @@ export const supabaseUpload = async (file, avatarName) => {
     });
     // console.log("2");
   }
-  return avatarName;
+  const data = supabase.storage.from("avatars").getPublicUrl(avatarName);
+  const url = data.data.publicUrl;
+  return { avatarName, url };
 };

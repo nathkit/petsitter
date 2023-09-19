@@ -24,10 +24,7 @@ function AuthProvider(props) {
 
   const handleLoginSubmit = async (values, formikHelpers) => {
     try {
-      const serverRespond = await axios.post(
-        "http://localhost:4000/auth/login",
-        values
-      );
+      const serverRespond = await axios.post("/auth/login", values);
       if (
         serverRespond.data.message === "User has been verified successfully"
       ) {
@@ -72,10 +69,7 @@ function AuthProvider(props) {
 
   const handleRegisterSubmit = async (values, formikHelpers) => {
     try {
-      const serverRespond = await axios.post(
-        "http://localhost:4000/auth/register",
-        values
-      );
+      const serverRespond = await axios.post("/auth/register", values);
       if (
         serverRespond.data.message ===
         "User profile has been created successfully and please confirm you email first"
@@ -102,7 +96,7 @@ function AuthProvider(props) {
   const sendRequestResetPassword = async (values, formikHelpers) => {
     try {
       const serverRespond = await axios.post(
-        "http://localhost:4000/auth/requestResetPassword",
+        "/auth/requestResetPassword",
         values
       );
       if (serverRespond.data.message === "Please check your email!") {
@@ -134,10 +128,7 @@ function AuthProvider(props) {
     };
     if (getEvent.event !== "INITIAL_SESSION") {
       try {
-        const serverRespond = await axios.put(
-          "http://localhost:4000/auth/resetPassword",
-          newValue
-        );
+        const serverRespond = await axios.put("/auth/resetPassword", newValue);
         if (serverRespond.data.message === "Reset password successfully") {
           setAlertMessage({
             message: serverRespond.data.message,

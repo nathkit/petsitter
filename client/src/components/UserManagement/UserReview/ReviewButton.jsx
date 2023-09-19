@@ -3,24 +3,14 @@ import { StarIcon } from "../../systemdesign/Icons";
 import { ButtonSecondary, ButtonPrimary } from "../../systemdesign/Button";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-<<<<<<< HEAD
-import YourReviewButton from "./YourReviewButton"; // Import YourReviewButton component
 
 function ReviewButton(props) {
   const params = useParams();
 
-=======
-
-function ReviewButton(props) {
-  const params = useParams();
-
->>>>>>> 09fb36fcfe49ffc0e143e2f66b2dd60130c782a8
   const [review, setReview] = useState({
     comment: "",
     rating: 5,
   });
-
-  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   useEffect(() => {
     console.log(review);
@@ -64,28 +54,13 @@ function ReviewButton(props) {
       .post(apiUrl, review)
       .then(function (response) {
         console.log("Success:", response.data);
+        props.fetch();
       })
       .catch(function (error) {
         console.error("Error:", error);
       });
   };
 
-<<<<<<< HEAD
-=======
-  const addNewReview = async () => {
-    const apiUrl = `/userManagement/${params.userId}/booking/${props.bookingId}/review`;
-    console.log(apiUrl);
-    await axios
-      .post(apiUrl, review)
-      .then(function (response) {
-        console.log("Success:", response.data);
-      })
-      .catch(function (error) {
-        console.error("Error:", error);
-      });
-  };
-
->>>>>>> 09fb36fcfe49ffc0e143e2f66b2dd60130c782a8
   return (
     <div>
       <ButtonPrimary
@@ -122,27 +97,15 @@ function ReviewButton(props) {
                 ))}
               </div>
             </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-          </dialog>
-        </>
-      )}
-=======
-=======
->>>>>>> 17b88aa (feat: change style)
             <div className="w-full flex flex-col gap-6 items-center">
               <h3>Share more about your experience</h3>
               <textarea
                 id="search"
                 className="outline-none w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
-<<<<<<< HEAD
-                 border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
-=======
                      border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
->>>>>>> 17b88aa (feat: change style)
                 placeholder="Your Review..."
                 onChange={(e) => handleReviewText(e)}
-                value={review.comment}
+                value={review.text}
                 style={{ verticalAlign: "top" }}
               ></textarea>
             </div>
@@ -156,23 +119,13 @@ function ReviewButton(props) {
                   content="Send Review&Rating"
                   width="202px"
                   className="btn"
-<<<<<<< HEAD
-                  onClick={(e) => addNewReview(e)}
-=======
-                  onClick={() => {
-                    addNewReview();
-                  }}
->>>>>>> 17b88aa (feat: change style)
+                  onClick={() => addNewReview()}
                 />
               </div>
             </form>
           </div>
         </div>
       </dialog>
-<<<<<<< HEAD
->>>>>>> 0b2eb59 (feat: add font-end for post review)
-=======
->>>>>>> 17b88aa (feat: change style)
     </div>
   );
 }

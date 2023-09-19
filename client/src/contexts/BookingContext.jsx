@@ -15,9 +15,7 @@ function BookingProvider(props) {
 
   const getSitterDetail = async (sitterId) => {
     try {
-      const results = await axios.get(
-        `http://localhost:4000/sitterManagement/${sitterId}`
-      );
+      const results = await axios.get(`/sitterManagement/${sitterId}`);
       // console.log(results);
       // console.log(sitterId);
       setSitterDetail(results.data.data);
@@ -39,7 +37,8 @@ function BookingProvider(props) {
         setBookingMessage,
         totalAmount,
         setTotalAmount,
-      }}>
+      }}
+    >
       {props.children}
     </BookingContext.Provider>
   );

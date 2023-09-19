@@ -1,5 +1,6 @@
 import { PhoneIcon } from "../../systemdesign/Icons";
 import ReviewButton from "../UserReview/ReviewButton";
+import YourReviewButton from "../UserReview/YourReviewButton";
 
 export function WaitingforConfirm() {
   return (
@@ -40,7 +41,11 @@ export function Success(props) {
         <h3>Tue,13 Apr 2023 | 8.40 PM</h3>
       </div>
       <div>
-        <ReviewButton bookingId={props.bookingId} />
+        {props.isReview === true ? (
+          <YourReviewButton bookingId={props.bookingId} />
+        ) : (
+          <ReviewButton bookingId={props.bookingId} fetch={props.fetch} />
+        )}
       </div>
     </div>
   );

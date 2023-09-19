@@ -3,22 +3,23 @@ import { ButtonSecondary } from "../../systemdesign/Button";
 import { StarIcon } from "../../systemdesign/Icons";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import timeFormat from "../../../utils/timeFormat";
 
 function YourReviewButton(props) {
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState({});
   const params = useParams();
 
   const getReview = async () => {
     const result = await axios.get(
-      `http://localhost:4000/userManagement/${params.userId}/booking/${props.bookingId}/review`
+      `/userManagement/${params.userId}/booking/${props.bookingId}/review`
     );
     console.log(result);
-    setReviews(result.data.data.rows);
+    setReviews(result.data.data);
   };
 
   useEffect(() => {
     getReview();
-  });
+  }, []);
 
   return (
     <div>
@@ -51,7 +52,7 @@ function YourReviewButton(props) {
                       {reviews.full_name}
                     </div>
                     <div className="text-[14px] text-gray-400">
-                      Tue, 13 Apr 2023
+                      {timeFormat(reviews.date)}
                     </div>
                   </div>
                 </div>
@@ -61,7 +62,7 @@ function YourReviewButton(props) {
                       <StarIcon key={index} color="#1CCD83" />
                     ))}
                   </div>
-                  <div className="text-[16px] text-gray-500">
+                  <div className="text-[16px] text-gray-500 font-medium">
                     {reviews.comment}
                   </div>
                 </div>

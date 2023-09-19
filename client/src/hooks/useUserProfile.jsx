@@ -10,7 +10,7 @@ function useUserProfile() {
   const updateUserData = async (data) => {
     try {
       const serverRespond = await axios.put(
-        `http://localhost:4000/userManagement/${params.userId}`,
+        `/userManagement/${params.userId}`,
         data,
         data.avatarFile
           ? {

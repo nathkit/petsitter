@@ -17,6 +17,8 @@ function BookingProvider(props) {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("credit");
+  const [bookingDetail, setBookingDetail] = useState({});
+  const [petBookingDetail, setPetBookingDetail] = useState([]);
 
   const navigate = useNavigate();
 
@@ -28,6 +30,15 @@ function BookingProvider(props) {
       setSitterDetail(results.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    }
+  };
+  const getBookingDetail = async () => {
+    try {
+      const result = await axios.get(`/booking/${userData?.id}`);
+      setBookingDetail(result?.data.data);
+      setPetBookingDetail(result?.data.petNames);
+    } catch (error) {
+      console.log(error);
     }
   };
   const bookingTime = JSON.parse(window.localStorage.getItem("bookingTime"));
@@ -66,6 +77,9 @@ function BookingProvider(props) {
         duration,
         paymentMethod,
         setPaymentMethod,
+        bookingDetail,
+        petBookingDetail,
+        getBookingDetail,
       }}>
       {props.children}
     </BookingContext.Provider>

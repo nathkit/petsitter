@@ -94,6 +94,7 @@ function BookingDate() {
               id="startTime"
               type="time"
               className="input input-bordered w-52 hover:border-orange-500 focus:border-orange-500 "
+              step={1800}
               onChange={(e) => setStartTime(e.target.value)}
             />
             -
@@ -101,6 +102,7 @@ function BookingDate() {
               id="endTime"
               type="time"
               className="input input-bordered w-52 hover:border-orange-500 focus:border-orange-500"
+              step={1800}
               onChange={(e) => setEndTime(e.target.value)}
             />
           </div>

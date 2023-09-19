@@ -26,7 +26,7 @@ export function CardPet1() {
           <ButtonPrimary
             content={"Create Pet"}
             onClick={() => {
-              navigate(`/userManagement/:userId/pets/create`);
+              navigate(`/userManagement/${userData.id}/pets/create`);
             }}
           />
         </div>

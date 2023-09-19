@@ -3,11 +3,18 @@ import { StarIcon } from "../../systemdesign/Icons";
 import { ButtonSecondary, ButtonPrimary } from "../../systemdesign/Button";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+<<<<<<< HEAD
 import YourReviewButton from "./YourReviewButton"; // Import YourReviewButton component
 
 function ReviewButton(props) {
   const params = useParams();
 
+=======
+
+function ReviewButton(props) {
+  const params = useParams();
+
+>>>>>>> 09fb36fcfe49ffc0e143e2f66b2dd60130c782a8
   const [review, setReview] = useState({
     comment: "",
     rating: 5,
@@ -63,6 +70,22 @@ function ReviewButton(props) {
       });
   };
 
+<<<<<<< HEAD
+=======
+  const addNewReview = async () => {
+    const apiUrl = `/userManagement/${params.userId}/booking/${props.bookingId}/review`;
+    console.log(apiUrl);
+    await axios
+      .post(apiUrl, review)
+      .then(function (response) {
+        console.log("Success:", response.data);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  };
+
+>>>>>>> 09fb36fcfe49ffc0e143e2f66b2dd60130c782a8
   return (
     <div>
       <ButtonPrimary

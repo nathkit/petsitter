@@ -293,26 +293,4 @@ userManagementRouter.post(
   }
 );
 
-userManagementRouter.get(
-  "/:userId/booking/:bookingId/review",
-  async (req, res) => {
-    try {
-      const bookingId = req.params.bookingId;
-
-      const result = await pool.query(
-        `select * from booking_reviews_by_user where booking_id = $1`,
-        [bookingId]
-      );
-
-      return res.json({
-        message: "Get review successfully",
-        data: result,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Request error occurred" });
-    }
-  }
-);
-
 export default userManagementRouter;

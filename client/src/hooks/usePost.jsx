@@ -13,7 +13,7 @@ const usePosts = () => {
 
   const getProfileImage = async (user) => {
     if (user) {
-      setProfileImage(user.avatar.avatarUrl);
+      setProfileImage(user.image_path);
     }
   };
 

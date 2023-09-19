@@ -10,13 +10,13 @@ function usePetProfile() {
   const params = useParams();
 
   const checkPetType = (petType) => {
-    if (petType === "Dog") {
+    if (petType === "dog") {
       petType = 1;
-    } else if (petType === "Cat") {
+    } else if (petType === "cat") {
       petType = 2;
-    } else if (petType === "Bird") {
+    } else if (petType === "bird") {
       petType = 3;
-    } else {
+    } else if (petType === "rabbit") {
       petType = 4;
     }
     return petType;
@@ -44,6 +44,7 @@ function usePetProfile() {
             }
           : null
       );
+      console.log(result.data.data);
       setPetDataById(result.data.data);
       setAlertMessage({
         message: result.data.message,
@@ -54,14 +55,21 @@ function usePetProfile() {
     }
   };
 
-  const createPetProfile = async (user, data) => {
-    const userEmail = user.email;
+  const createPetProfile = async (data) => {
+    console.log(data);
     try {
       const result = await axios.post(
-        `http://localhost:4000/accounts/${userEmail}/pets/`,
-        data
+        `http://localhost:4000/userManagement/${params.userId}/pets`,
+        data,
+        data.avatarFile
+          ? { headers: { "Content-Type": "multipart/form-data" } }
+          : null
       );
-      navigate("/usermanagement");
+      console.log(result.data.message);
+      // setAlertMessage({
+      //   message: result.data.message,
+      //   severity: "success",
+      // });
     } catch (error) {
       console.log(error);
     }

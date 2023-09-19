@@ -61,7 +61,7 @@ function BookingPage() {
   return (
     <>
       <Navbar />
-      <div className=" bg-etc-bg_gray w-full h-screen px-20 pt-10 pb-20 flex">
+      <div className=" bg-etc-bg_gray w-full min-h-screen px-20 pt-10 pb-20 flex">
         <div className="mr-[2.25rem] w-[68.5%]">
           <div className=" flex justify-around bg-etc-white mb-4 p-6 text-body1 text-gray-500 items-center">
             <div className=" flex items-center">

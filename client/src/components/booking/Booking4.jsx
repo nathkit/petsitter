@@ -1,14 +1,15 @@
 import { ButtonPrimary, ButtonSecondary } from "../systemdesign/Button";
 import catPaw from "../../assets/img/catPaw.png";
 import starCat from "../../assets/img/starCat.png";
-import { useNavigate } from "react-router-dom";
-import usePost from "../../hooks/usePost";
+import { useNavigate, useParams } from "react-router-dom";
+import { useBooking } from "../../contexts/BookingContext";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authentication";
 
 function Booking4() {
   const navigate = useNavigate();
-  const { getBookingDetail, petBookingDetail, bookingDetail } = usePost();
+  const params = useParams();
+  const { getBookingDetail, petBookingDetail, bookingDetail } = useBooking();
   const { userData } = useAuth();
 
   useEffect(() => {

@@ -49,7 +49,7 @@ function BookingHistoryDetail({ card }) {
           </div>
           <div className="">
             <h5 className=" text-body3 text-gray-400">Pet Sitter: </h5>
-            <h4 className=" text-body2 text-gray-600 font-bold">
+            <h4 className=" text-body2 text-gray-600 ">
               {card.trade_name} {card.name}
             </h4>
           </div>
@@ -76,7 +76,7 @@ function BookingHistoryDetail({ card }) {
               <div className=" text-body2 text-gray-600">{card.pet_names}</div>
             </div>
           </main>
-          <div className=" pt-6 text-gray-400">
+          <div className=" pb-2 text-gray-400">
             <h1 className=" text-body3">Additional Message</h1>
             <p className=" text-gray-600">{card.messages}</p>
           </div>

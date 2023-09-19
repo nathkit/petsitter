@@ -34,6 +34,7 @@ userManagementRouter.put("/:userId", avatarUpload, async (req, res) => {
       // splice avatarFile out ************************************
       values.splice(6, 1);
     }
+    // update query ****************************************************************
     await pool.query(query, values);
     // user query after update *****************************************************
     const serverRespondes = await pool.query(
@@ -101,13 +102,24 @@ userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {
   where pets.user_id = $1 and pets.id = $2`;
   const values = [userId, petId];
   let result;
+  let url;
   try {
     const response = await pool.query(query, values);
     result = response.rows[0];
+    const data = supabase.storage
+      .from("avatars")
+      .getPublicUrl(result.image_name);
+    url = data.data.publicUrl;
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
-  return res.json({ message: "Fetch data successfully", data: result });
+  return res.json({
+    message: "Fetch data successfully",
+    data: {
+      ...result,
+      petAvatar: { petAvatarName: result.image_name, petAvatarUrl: url },
+    },
+  });
 });
 
 userManagementRouter.post("/:userId/pets", async (req, res) => {
@@ -148,47 +160,56 @@ userManagementRouter.post("/:userId/pets", async (req, res) => {
   }
 });
 
-userManagementRouter.put("/:userId/pets/:petId", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const petId = req.params.petId;
-    const updatedPet = {
-      ...req.body,
-      updated_at: new Date(),
-    };
-
-    const result = await pool.query(
-      `UPDATE pets 
-       SET pet_type_id = $1, image_path = $2, name = $3, breed = $4, sex = $5, age = $6, color = $7, weight = $8, description = $9, updated_at = $10
-       WHERE user_id = $11 AND id = $12`,
-      [
-        updatedPet.pet_type_id,
-        updatedPet.image_path,
-        updatedPet.name,
-        updatedPet.breed,
-        updatedPet.sex,
-        updatedPet.age,
-        updatedPet.color,
-        updatedPet.weight,
-        updatedPet.description,
-        updatedPet.updated_at,
-        userId,
-        petId,
-      ]
-    );
-
-    if (result.rowCount === 0) {
-      return res.status(404).json({ message: "Pet not found" });
+userManagementRouter.put(
+  "/:userId/pets/:petId",
+  avatarUpload,
+  async (req, res) => {
+    const pet = { ...req.body };
+    pet.updated_at = new Date();
+    pet.user_id = req.params.userId;
+    pet.id = req.params.petId;
+    let result;
+    let url;
+    try {
+      const query = `UPDATE pets SET name = $1, pet_type_id = $2, breed = $3, sex = $4, age = $5, color = $6, weight = $7, description = $8, image_name = $9, updated_at = $10 WHERE user_id = $11 AND id = $12`;
+      const values = Object.values(pet);
+      // use supabase function for uploading **************************************
+      if (req.files) {
+        const respondesUpload = await supabaseUpload(
+          req.files.avatarFile[0],
+          pet.avatarName
+        );
+        // splice avatarName out and reassige ************************************
+        values.splice(8, 1, respondesUpload);
+      } else {
+        // splice avatarFile out ************************************
+        values.splice(9, 1);
+      }
+      // update query ****************************************************************
+      await pool.query(query, values);
+      // user query after update *****************************************************
+      const serverRespondes = await pool.query(
+        `select *,pet_type.type from pets inner join pet_type on pets.pet_type_id = pet_type.id where pets.user_id = $1 and pets.id = $2`,
+        [pet.user_id, pet.id]
+      );
+      result = serverRespondes.rows[0];
+      const data = supabase.storage
+        .from("avatars")
+        .getPublicUrl(result.image_name);
+      url = data.data.publicUrl;
+    } catch (err) {
+      return res.json({ message: "Request error occurred" });
     }
 
     return res.json({
       message: "Your pet has been updated successfully",
-      data: updatedPet,
+      data: {
+        ...result,
+        petAvatar: { petAvatarName: result.image_name, petAvatarUrl: url },
+      },
     });
-  } catch (error) {
-    return res.status(500).json({ message: "Request error occurred" });
   }
-});
+);
 
 userManagementRouter.delete("/:userId/pets/:petId", async (req, res) => {
   try {

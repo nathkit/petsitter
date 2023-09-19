@@ -11,6 +11,8 @@ import { Box } from "@mui/system";
 import { Delete } from "../../components/booking/Confirmation";
 import usePosts from "../../hooks/usePost";
 import { useNavigate } from "react-router-dom";
+import { usePet } from "../../contexts/petContext";
+import usePetProfile from "../../hooks/usePetProfile";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -28,38 +30,63 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { createPetProfile, updatePetProfile, getPetProfile, petDataById } =
-    usePosts();
+  const { petAvatarFile, petDataById } = usePet();
+  const { getPetProfile, createPetProfile, updatePetProfile, checkPetType } =
+    usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
 
-  useEffect(() => {
-    getPetProfile();
-  }, []);
-
+  props.editPet
+    ? useEffect(() => {
+        getPetProfile();
+      }, [props.editPet])
+    : null;
+  // console.log(petAvatarFile);
+  // console.log(petDataById);
+  // console.log(props.editPet);
   const formik = useFormik({
-    initialValues: {
-      petName: petDataById.name,
-      petType: petDataById.type,
-      breed: petDataById.breed,
-      sex: petDataById.sex,
-      age: petDataById.age,
-      color: petDataById.color,
-      weight: petDataById.weight,
-      about: petDataById.description,
-    },
+    initialValues: props.editPet
+      ? {
+          petName: petDataById.name,
+          petType: petDataById.type,
+          breed: petDataById.breed,
+          sex: petDataById.sex,
+          age: petDataById.age,
+          color: petDataById.color,
+          weight: petDataById.weight,
+          about: petDataById.description,
+        }
+      : {
+          petName: "",
+          petType: "",
+          breed: "",
+          sex: "",
+          age: "",
+          color: "",
+          weight: "",
+          about: "",
+        },
+
     validationSchema: PetProfileSchema,
     enableReinitialize: true,
-    onSubmit: (values, { setSubmitting }) => {
-      console.log(values);
-      props.editPet ? updatePetProfile(values) : createPetProfile(values);
+    onSubmit: async (values, { setSubmitting }) => {
+      // check pet type condition and convert *****************************
+      values.petType = checkPetType(values.petType);
+
+      const newValues = {
+        ...values,
+        avatarName: petDataById.petAvatar.petAvatarName,
+        avatarFile: petAvatarFile,
+      };
+      props.editPet
+        ? await updatePetProfile(newValues)
+        : await createPetProfile(newValues);
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
+        alert(JSON.stringify(newValues, null, 2));
         setSubmitting(false);
       }, 1000);
     },
   });
-
   const errorForm = {
     border: "1px solid red",
   };
@@ -289,11 +316,10 @@ export function TurnBack() {
 }
 
 export function CreatePet() {
-  const [haveImage, setImage] = useState(false);
   return (
     <div className="pet-input-container">
       <TurnBack />
-      <Box className="h-[15rem] mb-[60px]">
+      <Box className="h-[15rem] relative mb-10">
         <UploadPetImage />
       </Box>
       <div className="pet-input">
@@ -304,12 +330,31 @@ export function CreatePet() {
 }
 
 export function EditPet() {
-  const [haveImage, setImage] = useState(false);
+  const { petAvatarUrl, setPetAvatarUrl, setPetAvatarFile, petDataById } =
+    usePet();
+  const { getPetProfile } = usePetProfile();
+  useEffect(() => {
+    getPetProfile();
+  }, []);
+  // console.log(petDataById);
   return (
     <div className="pet-input-container">
       <TurnBack />
-      <Box className="h-[15rem] mb-[60px]">
-        <UploadPetImage />
+      <Box className="h-[15rem] relative mb-10">
+        <UploadPetImage
+          img={
+            petAvatarUrl
+              ? petAvatarUrl
+              : petDataById.petAvatar
+              ? petDataById.petAvatar.petAvatarUrl
+              : null
+          }
+          onChange={async (e) => {
+            setPetAvatarFile(e.target.files[0]);
+            const imgUrl = URL.createObjectURL(e.target.files[0]);
+            setPetAvatarUrl(imgUrl);
+          }}
+        />
       </Box>
       <div className="pet-input">
         <PetInputForm editPet={true} />

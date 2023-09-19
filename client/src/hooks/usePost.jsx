@@ -1,14 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../contexts/authentication";
+import { useNavigate } from "react-router-dom";
 
 const usePosts = () => {
   const [petData, setPetData] = useState();
-  const [petDataById, setPetDataById] = useState({});
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
-  const params = useParams();
   const [bookingDetail, setBookingDetail] = useState({});
   const [petBookingDetail, setPetBookingDetail] = useState([]);
 
@@ -29,26 +26,6 @@ const usePosts = () => {
     //     console.log(error);
     //   }
     // }
-  };
-
-  const createPetProfile = async (user, data) => {
-    const userEmail = user.email;
-    try {
-      const result = await axios.post(`/accounts/${userEmail}/pets/`, data);
-      navigate("/usermanagement");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const updatePetProfile = async (user, data) => {
-    const userEmail = user.email;
-    try {
-      const result = await axios.put(`/accounts/${userEmail}/pets/`, data);
-      navigate("/usermanagement");
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const getTypeStyle = (type) => {
@@ -101,17 +78,6 @@ const usePosts = () => {
     // console.log(petData);
   };
 
-  const getPetProfile = async () => {
-    try {
-      const result = await axios.get(
-        `/userManagement/${params.userId}/pets/${params.petId}`
-      );
-      setPetDataById(result.data.data);
-    } catch (err) {
-      console.log("Error is occured from client!");
-    }
-  };
-
   const createBooking = async (data) => {
     try {
       const createBookingResult = await axios.post(
@@ -139,12 +105,8 @@ const usePosts = () => {
     profileImage,
     getProfileImage,
     getTypeStyle,
-    createPetProfile,
-    updatePetProfile,
     getAllPetList,
-    getPetProfile,
     petData,
-    petDataById,
     createBooking,
     getBookingDetail,
     bookingDetail,

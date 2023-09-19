@@ -35,6 +35,7 @@ function PetInputForm(props) {
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
+  const [petIds, setPetIds] = useState([]);
 
   props.editPet
     ? useEffect(() => {
@@ -44,6 +45,27 @@ function PetInputForm(props) {
   // console.log(petAvatarFile);
   // console.log(petDataById);
   // console.log(props.editPet);
+  useEffect(() => {
+    getPetProfile();
+  }, []);
+
+  const handleDelete = async () => { // Removed the petIds parameter
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      await axios.delete(
+        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
+      );
+      const newPetIds = petIds.filter((id) => id !== params.petId);
+      setPetIds(newPetIds);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error deleting pet:", error);
+      setIsError(true);
+      setIsLoading(false);
+    }
+  };
+
   const formik = useFormik({
     initialValues: props.editPet
       ? {
@@ -298,6 +320,7 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
+          onClick={handleDelete}
         />
       </div>
     </form>

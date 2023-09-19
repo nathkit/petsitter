@@ -62,6 +62,19 @@ function ReviewButton(props) {
       });
   };
 
+  const addNewReview = async () => {
+    const apiUrl = `/userManagement/${params.userId}/booking/${props.bookingId}/review`;
+    console.log(apiUrl);
+    await axios
+      .post(apiUrl, review)
+      .then(function (response) {
+        console.log("Success:", response.data);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  };
+
   return (
     <div>
       {reviewSubmitted ? (

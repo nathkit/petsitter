@@ -7,8 +7,6 @@ const usePosts = () => {
   const [petData, setPetData] = useState();
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
-  const [bookingDetail, setBookingDetail] = useState({});
-  const [petBookingDetail, setPetBookingDetail] = useState([]);
   const { userData } = useAuth();
 
   const getProfileImage = async (user) => {
@@ -73,17 +71,8 @@ const usePosts = () => {
         `/booking/${userData.id}/${data.pet_sitter_id}`,
         data
       );
+      console.log(createBookingResult.data.data);
       navigate(`/userManagement/${userData.id}/booking/:bookingId`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getBookingDetail = async () => {
-    try {
-      const result = await axios.get(`/booking/${userData.id}`);
-      setBookingDetail(result.data.data);
-      setPetBookingDetail(result.data.petNames);
     } catch (error) {
       console.log(error);
     }
@@ -96,9 +85,6 @@ const usePosts = () => {
     getAllPetList,
     petData,
     createBooking,
-    getBookingDetail,
-    bookingDetail,
-    petBookingDetail,
   };
 };
 

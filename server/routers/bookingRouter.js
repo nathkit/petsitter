@@ -38,7 +38,7 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
                 newBooking.created_at,
             ]
         );
-        console.log(insertBookingResult)
+        // console.log(insertBookingResult)
 
         const bookingId = insertBookingResult.rows[0].id
         // console.log(bookingId)
@@ -49,6 +49,10 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
         }
 
         await pool.query('commit')
+        return res.status(201).json({
+            "bookingId": bookingId,
+            "message": "Your booking has been created successfully"
+        })
 
     } catch (error) {
 
@@ -59,9 +63,6 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
         })
     }
 
-    return res.status(201).json({
-        "message": "Your booking has been created successfully"
-    })
 });
 
 bookingRouter.get("/:userId/", async (req, res) => {

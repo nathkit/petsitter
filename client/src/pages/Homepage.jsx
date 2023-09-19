@@ -8,6 +8,7 @@ import Showcase from "../components/landingpage/ShowCase";
 import Banner from "../components/landingpage/Banner";
 import Footer from "../components/systemdesign/Footer";
 import Navbar from "../components/systemdesign/Navbar";
+import TimePicker from "../components/timepicker/TimePicker";
 
 import {
   ButtonPrimary,
@@ -22,9 +23,10 @@ function HomePage() {
   const { getUserData, user } = useAuth();
 
   return (
-    <div className="bg-etc-white">
+    <div className="bg-etc-white min-h-screen">
       <Navbar />
       <Header />
+      <TimePicker />
       <FilterBar />
       <Showcase />
       <Banner />

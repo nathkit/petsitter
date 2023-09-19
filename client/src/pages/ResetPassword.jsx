@@ -50,7 +50,7 @@ function ResetPassword() {
   }, []);
 
   return (
-    <div className="bg-etc-white m-0 py-[10%]  h-[100vh] w-full relative flex justify-center ">
+    <div className="bg-etc-white m-0 py-[10%]  min-h-screen w-full relative flex justify-center ">
       {/* image ************************************* */}
 
       <div className="h-[45%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
@@ -94,16 +94,14 @@ function ResetPassword() {
               email: string()
                 .required("Please enter email")
                 .email("Invalid email"),
-            })}
-          >
+            })}>
             {({ errors, isValid, touched, dirty }) => {
               return (
                 <Form className="flex flex-col gap-5 text-left w-full">
                   {/* email ********************************* */}
                   <label
                     className="text-lg text-etc-black font-medium"
-                    htmlFor="email"
-                  >
+                    htmlFor="email">
                     Email address
                   </label>
                   <Field
@@ -142,16 +140,14 @@ function ResetPassword() {
               password: string()
                 .required("Please enter password")
                 .min(12, "Password should have atleast 12 character"),
-            })}
-          >
+            })}>
             {({ errors, isValid, touched, dirty }) => {
               return (
                 <Form className="flex flex-col gap-5 text-left w-full">
                   {/* password ********************************* */}
                   <label
                     className="text-lg text-etc-black font-medium"
-                    htmlFor="passsword"
-                  >
+                    htmlFor="passsword">
                     New password
                   </label>
                   <Box className="relative">
@@ -167,8 +163,9 @@ function ResetPassword() {
                       error={
                         Boolean(errors.password) && Boolean(touched.password)
                       }
-                      helperText={Boolean(touched.password) && errors.password}
-                    ></Field>
+                      helperText={
+                        Boolean(touched.password) && errors.password
+                      }></Field>
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
@@ -177,8 +174,7 @@ function ResetPassword() {
                         top: "0.5rem",
                         right: "1rem",
                         color: `${showPassword ? "red" : null}`,
-                      }}
-                    >
+                      }}>
                       <VisibilityIcon />
                     </IconButton>
                   </Box>

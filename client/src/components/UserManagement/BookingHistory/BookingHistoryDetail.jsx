@@ -2,8 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { formatDateToCustomString } from "../BookingHistory/BookingHistory.jsx";
-import { formatTime } from "../BookingHistory/BookingHistory.jsx";
+// import { formatDateToCustomString } from "../BookingHistory/BookingHistory.jsx";
+// import { formatTime } from "../BookingHistory/BookingHistory.jsx";
+import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
 
 function BookingHistoryDetail({ card }) {
   return (
@@ -41,12 +42,10 @@ function BookingHistoryDetail({ card }) {
             </ul>
           </h5>
           <div className=" text-gray-300 text-body2 ">
-            <p>
-              Booking date: {formatDateToCustomString(card.booking_date).data1}
-            </p>
+            <p>Booking date: {timeFormat(card.booking_date)}</p>
             <p>Booking No.: {card.booking_no}</p>
           </div>
-          <div className="">
+          <div>
             <h5 className=" text-body3 text-gray-400">Pet Sitter: </h5>
             <h4 className=" text-body2 text-gray-600 ">
               {card.trade_name} {card.name}
@@ -57,8 +56,11 @@ function BookingHistoryDetail({ card }) {
               <div className=" flex flex-col gap-1">
                 <div className=" text-body3 text-gray-400">Date & Time:</div>{" "}
                 <div className=" text-body3 text-gray-600">
-                  {formatDateToCustomString(card.booking_date).data2} |{" "}
-                  {formatTime(card.start_date_time)} -{" "}
+                  {dateFormat(card.start_date_time)} |{" "}
+                  {formatTime(card.start_date_time)}
+                </div>
+                <div className=" text-body3 text-gray-600">
+                  {dateFormat(card.end_date_time)} |{" "}
                   {formatTime(card.end_date_time)}
                 </div>
               </div>
@@ -77,7 +79,7 @@ function BookingHistoryDetail({ card }) {
           </main>
           <div className=" pb-2 text-gray-400">
             <h1 className=" text-body3">Additional Message</h1>
-            <p className=" text-gray-600">{card.messages}</p>
+            <p className="text-gray-600">{card.messages}</p>
           </div>
           <hr />
           <div className="flex justify-between">

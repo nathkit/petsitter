@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CardPet2 } from "../systemdesign/CardPet";
 import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
 import { useBooking } from "../../contexts/BookingContext";
+import { format, parseISO } from "date-fns";
 
 function booking1({ setDisableButtonBooking1 }) {
   const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
@@ -11,9 +12,7 @@ function booking1({ setDisableButtonBooking1 }) {
     petIdsNames,
     setPetIdsNames,
     setTotalAmount,
-    setDuration,
-    startDateTime,
-    endDateTime,
+    duration,
   } = useBooking();
 
   const handleCheckboxChange = (index, petId, petName) => {
@@ -52,16 +51,14 @@ function booking1({ setDisableButtonBooking1 }) {
     const numberOfPets = Object.keys(updatedPets).length;
     console.log(numberOfPets);
     let totalAmount = 0;
-    const duration = (endDateTime - startDateTime) / 3600000;
+
     if (numberOfPets > 1) {
       totalAmount = 100 * (numberOfPets - 1) * duration + 200 * duration;
     } else {
       totalAmount = duration * numberOfPets * 200;
     }
-    setDuration(duration);
     setTotalAmount(totalAmount);
   };
-  // console.log(petIds);
 
   return (
     <>

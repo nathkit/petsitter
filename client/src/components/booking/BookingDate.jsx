@@ -22,8 +22,6 @@ function BookingDate() {
     setStartTime,
     endTime,
     setEndTime,
-    setStartDateTime,
-    setEndDateTime,
   } = useBooking();
   const params = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,6 +30,7 @@ function BookingDate() {
 
   const openModal = () => {
     setIsModalOpen(true);
+    window.localStorage.removeItem("bookingTime");
   };
 
   const closeModal = () => {
@@ -55,19 +54,21 @@ function BookingDate() {
 
       setStartDate(`${startYear}-${startMonth}-${startDay}`);
       setEndDate(`${endYear}-${endMonth}-${endDay}`);
-      // setStartDateTime(new Date(`${startDate}  ${startTime}`));
-      // setEndDateTime(new Date(`${endDate}  ${endTime}`));
-      localStorage.setItem(
-        "bookingTime",
-        JSON.stringify({
-          startDateTime: new Date(`${startDate}  ${startTime}`),
-          endDateTime: new Date(`${endDate}  ${endTime}`),
-        })
-      );
     }
   };
   // console.log(`${startDate}  ${startTime}`);
   // console.log(`${endDate}  ${endTime}`);
+  localStorage.setItem(
+    "bookingTime",
+    JSON.stringify({
+      startDateTime: new Date(`${startDate}  ${startTime}`),
+      endDateTime: new Date(`${endDate}  ${endTime}`),
+      duration:
+        (new Date(`${endDate}  ${endTime}`) -
+          new Date(`${startDate}  ${startTime}`)) /
+        3600000,
+    })
+  );
 
   return (
     <div className="">

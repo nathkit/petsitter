@@ -13,9 +13,21 @@ import {
 } from "../components/systemdesign/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
+import { useBooking } from "../contexts/BookingContext";
+import usePosts from "../hooks/usePost";
 
 function BookingPage() {
   const navigate = useNavigate();
+  const { createBooking } = usePosts();
+  const {
+    sitterDetail,
+    startDateTime,
+    endDateTime,
+    totalAmount,
+    bookingMessage,
+    paymentMethod,
+    petIdsNames,
+  } = useBooking();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
@@ -34,6 +46,17 @@ function BookingPage() {
       setStep(step - 1);
     }
   };
+  const bookingData = {
+    user_id: userData.id,
+    pet_sitter_id: sitterDetail[0].pet_sitter_id,
+    pet_id: Object.keys(petIdsNames),
+    start_date_time: startDateTime,
+    end_date_time: endDateTime,
+    amount: totalAmount,
+    message: bookingMessage,
+    payment_method: paymentMethod,
+  };
+  console.log(bookingData);
 
   return (
     <>
@@ -101,9 +124,9 @@ function BookingPage() {
                 buttonName={"Confirm Booking"}
                 buttonWidth={"175px"}
                 disabled={disableButtonBooking3}
-                onClick={() =>
-                  navigate(`/userManagement/${userData.id}/booking/:bookingId`)
-                }
+                onClick={() => {
+                  createBooking(bookingData);
+                }}
               />
             )}
           </div>

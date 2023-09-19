@@ -4,19 +4,21 @@ import * as yup from "yup";
 import TextField from "@mui/material/TextField";
 import { Vector } from "../systemdesign/image";
 import { useState } from "react";
+import { useBooking } from "../../contexts/BookingContext";
+import usePosts from "../../hooks/usePost";
 
 function Booking3({ setDisableButtonBooking3 }) {
-  const [selectedOption, setSelectedOption] = useState("credit");
+  const { paymentMethod, setPaymentMethod } = useBooking();
 
   const [credit, setCredit] = useState("#ff7037");
   const [wallet, setWallet] = useState(null);
 
   const handleCreditClick = () => {
-    setSelectedOption("credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
+    setPaymentMethod("credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
     setWallet(null);
   };
   const handleCashClick = () => {
-    setSelectedOption("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
+    setPaymentMethod("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
     setCredit(null);
   };
 
@@ -28,22 +30,21 @@ function Booking3({ setDisableButtonBooking3 }) {
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
           
             ${
-              selectedOption === "credit"
+              paymentMethod === "credit"
                 ? "border-orange-500 text-orange-500"
                 : ""
             }`}
             onClick={() => {
               handleCreditClick();
               setCredit("#ff7037");
-            }}
-          >
+            }}>
             <CreditCardIcon color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
             ${
-              selectedOption === "cash"
+              paymentMethod === "cash"
                 ? "border-orange-500 text-orange-500"
                 : ""
             }`}
@@ -51,13 +52,12 @@ function Booking3({ setDisableButtonBooking3 }) {
               handleCashClick();
               setWallet("#ff7037");
               setDisableButtonBooking3(false);
-            }}
-          >
+            }}>
             <WalletIcon color={wallet} />
             <p className="ml-2">Cash</p>
           </button>
         </div>
-        {selectedOption === "credit" ? (
+        {paymentMethod === "credit" ? (
           <Credit setDisableButtonBooking3={setDisableButtonBooking3} />
         ) : (
           <Cash />

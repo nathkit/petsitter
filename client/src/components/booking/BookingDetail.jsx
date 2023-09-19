@@ -19,20 +19,6 @@ export default function BookingDatail() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const options = {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  };
-  const formattedDateStart = startDateTime.toLocaleString("en-UK", options);
-  const formattedDateEnd = endDateTime.toLocaleString("en-UK", options);
-
-  console.log(formattedDateEnd);
-  console.log(formattedDateStart);
-
   useEffect(() => {
     getSitterDetail(params.sitterId);
   }, []);
@@ -54,9 +40,9 @@ export default function BookingDatail() {
         <div className="pb-6">
           <p className="text-body3">Date & Time:</p>
           <p className="text-body2">
-            Check-in:&nbsp;&nbsp;&nbsp;&nbsp;{formattedDateStart}
+            Check-in:&nbsp;&nbsp;&nbsp;&nbsp;{startDateTime}
           </p>
-          <p className="text-body2">Check-out:&nbsp;&nbsp;{formattedDateEnd}</p>
+          <p className="text-body2">Check-out:&nbsp;&nbsp;{endDateTime}</p>
         </div>
         <div className="pb-6">
           <p className="text-body3">Duration</p>

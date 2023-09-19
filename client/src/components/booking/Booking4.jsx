@@ -4,15 +4,17 @@ import starCat from "../../assets/img/starCat.png";
 import { useNavigate } from "react-router-dom";
 import usePost from "../../hooks/usePost";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authentication";
 
 function Booking4() {
   const navigate = useNavigate();
   const { getBookingDetail, petBookingDetail, bookingDetail } = usePost();
+  const { userData } = useAuth();
 
   useEffect(() => {
     getBookingDetail();
   }, []);
-  console.log(bookingDetail);
+  // console.log(bookingDetail);
 
   return (
     <div className="flex justify-center flex-col items-center  bg-etc-bg_gray relative h-screen">
@@ -84,7 +86,13 @@ function Booking4() {
         </div>
       </div>
       <div className="mt-10 relative flex">
-        <ButtonSecondary content={"Booking History"} width={"167px"} />
+        <ButtonSecondary
+          content={"Booking History"}
+          width={"167px"}
+          onClick={() => {
+            navigate(`/userManagement/${userData.id}/booking`);
+          }}
+        />
         &nbsp;&nbsp;&nbsp;&nbsp;
         <ButtonPrimary
           content={"Back To Home"}

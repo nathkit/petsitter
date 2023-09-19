@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CardPet2 } from "../systemdesign/CardPet";
 import { BaseCheckbox } from "../systemdesign/BaseCheckbox";
 import { useBooking } from "../../contexts/BookingContext";
+
 function booking1({ setDisableButtonBooking1 }) {
   const [selectedButtons, setSelectedButtons] = useState([]); // ปุ่มที่ถูกเลือก
   const { petIds, setPetIds, petIdsNames, setPetIdsNames, setTotalAmount } =

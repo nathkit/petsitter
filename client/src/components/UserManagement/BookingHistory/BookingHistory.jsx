@@ -114,7 +114,9 @@ function BookingHistory() {
               key={card.booking_no}
               onClick={() => {
                 console.log(card.booking_no); // Log the booking number
-                document.getElementById(`booking-detail-${card.booking_no}`).showModal();
+                document
+                  .getElementById(`booking-detail-${card.booking_no}`)
+                  .showModal();
               }}
             >
               <BookingHistoryDetail
@@ -179,6 +181,10 @@ function BookingHistory() {
                   <div className="text-gray-600">{card.pet_names}</div>
                 </div>
               </main>
+              <div className=" pt-6 text-gray-400">
+                <h1 className=" text-body3">Additional Message</h1>
+                <p className=" text-gray-600">{card.messages}</p>
+              </div>
               <div className="card-status" onClick={(e) => e.stopPropagation()}>
                 {card.statuses === "Waiting for confirm" && (
                   <WaitingforConfirm />

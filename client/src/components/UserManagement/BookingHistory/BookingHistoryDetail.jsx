@@ -76,6 +76,10 @@ function BookingHistoryDetail({ card }) {
               <div className=" text-body2 text-gray-600">{card.pet_names}</div>
             </div>
           </main>
+          <div className=" pt-6 text-gray-400">
+            <h1 className=" text-body3">Additional Message</h1>
+            <p className=" text-gray-600">{card.messages}</p>
+          </div>
           <hr />
           <div className="flex justify-between">
             <h1 className="text-body2">Total: </h1>

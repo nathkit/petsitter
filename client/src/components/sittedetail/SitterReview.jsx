@@ -76,7 +76,7 @@ function SitterReview() {
           <div className="image-wrapper relative">
             <img src={union} alt="union-icon" />
             <h1 className="average text-headline2 text-etc-white absolute top-[27%] left-[31%]">
-              {averageRating ? averageRating.toFixed(1) : "N/A"}
+              {averageRating ? averageRating : "N/A"}
             </h1>
             <h3 className="total-reviews text-body3 text-etc-white absolute top-[59%] left-[26%]">
               {totalReviews} Reviews
@@ -122,7 +122,7 @@ function SitterReview() {
                 <div className="flex gap-4 w-[30%] items-start">
                   <Avatar
                     alt="avatar"
-                    src={review.profile_image_path}
+                    src={review.user_profile_image_path}
                     className="border"
                   />
                   <div>

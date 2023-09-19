@@ -267,26 +267,26 @@ userManagementRouter.get("/:userId/booking", async (req, res) => {
   }
 });
 
-userManagementRouter.get("/:userId/booking/:bookingId", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const bookingId = req.params.bookingId;
-    const query = `SELECT * FROM bookings_history WHERE user_id = $1 AND booking_no = $2;`;
+// userManagementRouter.get("/:userId/booking/:bookingId", async (req, res) => {
+//   try {
+//     const userId = req.params.userId;
+//     const bookingId = req.params.bookingId;
+//     const query = `SELECT * FROM bookings_history WHERE user_id = $1 AND booking_no = $2;`;
 
-    const bookingById = await pool.query(query, [userId, bookingId]);
-    if (bookingById.rows.length === 0) {
-      return res.status(404).json({ message: "No available booking" });
-    }
+//     const bookingById = await pool.query(query, [userId, bookingId]);
+//     if (bookingById.rows.length === 0) {
+//       return res.status(404).json({ message: "No available booking" });
+//     }
 
-    return res.status(200).json({
-      data: bookingById.rows[0],
-      message: "Get detail successfully",
-    });
-  } catch (error) {
-    console.error("Error fetching booking history:", error);
-    return res.status(500).json({ message: "Request error occurred" });
-  }
-});
+//     return res.status(200).json({
+//       data: bookingById.rows[0],
+//       message: "Get detail successfully",
+//     });
+//   } catch (error) {
+//     console.error("Error fetching booking history:", error);
+//     return res.status(500).json({ message: "Request error occurred" });
+//   }
+// });
 
 userManagementRouter.post(
   "/:userId/booking/:bookingId/review",

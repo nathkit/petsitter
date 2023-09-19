@@ -93,9 +93,9 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
 
     const queryForDetail = `SELECT * FROM pet_sitter_details WHERE pet_sitter_id = $1;`;
 
-    const queryForReviews = `SELECT * FROM sitter_reviews_by_id 
-    WHERE sitter_id = $1;`;
-    // console.log("Parameter (sitterId):", sitterId);
+    // Use "sitter_reviews_view" instead of "sitter_reviews_by_id" for reviews
+    const queryForReviews = `SELECT *
+    FROM sitter_reviews_view WHERE pet_sitter_id = $1;`;
 
     const sitterDetails = await pool.query(queryForDetail, [sitterId]);
     const sitterReview = await pool.query(queryForReviews, [sitterId]);

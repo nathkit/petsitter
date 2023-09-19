@@ -3,7 +3,7 @@ import { ButtonSecondary } from "../../systemdesign/Button";
 import { StarIcon } from "../../systemdesign/Icons";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import timeFormat from "../../../utils/timeFormat";
+import { timeFormat } from "../../../utils/timeFormat";
 
 function YourReviewButton(props) {
   const [reviews, setReviews] = useState({});

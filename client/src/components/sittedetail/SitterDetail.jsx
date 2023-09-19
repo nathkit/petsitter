@@ -19,7 +19,6 @@ function SitterDetail() {
   // // const uniquePetTypeIds = [
   // //   ...new Set(sitterDetail.map((petType) => petType.pet_type)),
   // // ];
-  console.log(sitterDetail);
   useEffect(() => {
     getSitterDetail(params.sitterId);
   }, []);

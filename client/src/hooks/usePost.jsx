@@ -11,24 +11,12 @@ const usePosts = () => {
   const params = useParams();
   const [bookingDetail, setBookingDetail] = useState({});
   const [petBookingDetail, setPetBookingDetail] = useState([]);
+  const { userData } = useAuth();
 
   const getProfileImage = async (user) => {
-    // console.log(userEmail);
-    // console.log(user);
     if (user) {
       setProfileImage(user.avatar.avatarUrl);
     }
-    // else {
-    //   try {
-    //     const result = await axios.get(
-    //       `/accounts/${userEmail}`
-    //     );
-    //     setProfileImage(result.data.data.pet_owner_image);
-    //     console.log(result.data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
   };
 
   const createPetProfile = async (user, data) => {
@@ -115,19 +103,18 @@ const usePosts = () => {
   const createBooking = async (data) => {
     try {
       const createBookingResult = await axios.post(
-        `/booking/:userId/:sitterId`,
+        `/booking/${userData.id}/${data.pet_sitter_id}`,
         data
       );
-      navigate("/userManagement/:userId/booking/:bookingId");
+      navigate(`/userManagement/${userData.id}/booking/:bookingId`);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getBookingDetail = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
     try {
-      const result = await axios.get(`/booking/${user.id}`);
+      const result = await axios.get(`/booking/${userData.id}`);
       setBookingDetail(result.data.data);
       setPetBookingDetail(result.data.petNames);
     } catch (error) {

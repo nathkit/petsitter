@@ -5,25 +5,32 @@ import { useNavigate } from "react-router-dom";
 import "./Booking.css";
 import dayjs from "dayjs";
 import { useAuth } from "../../contexts/authentication";
+import { useBooking } from "../../contexts/BookingContext";
 import { useParams } from "react-router-dom";
-
 import { DatePicker } from "antd";
 const { RangePicker } = DatePicker;
 
 function BookingDate() {
   const navigate = useNavigate();
   const { userData } = useAuth();
+  const {
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime,
+  } = useBooking();
   const params = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dateFormat = "DD MMM YYYY";
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
   const isContinueDisabled = !startDate || !endDate || !startTime || !endTime;
 
   const openModal = () => {
     setIsModalOpen(true);
+    window.localStorage.removeItem("bookingTime");
   };
 
   const closeModal = () => {
@@ -49,8 +56,19 @@ function BookingDate() {
       setEndDate(`${endYear}-${endMonth}-${endDay}`);
     }
   };
-  console.log(`${startDate}  ${startTime}`);
-  console.log(`${endDate}  ${endTime}`);
+  // console.log(`${startDate}  ${startTime}`);
+  // console.log(`${endDate}  ${endTime}`);
+  localStorage.setItem(
+    "bookingTime",
+    JSON.stringify({
+      startDateTime: new Date(`${startDate}  ${startTime}`),
+      endDateTime: new Date(`${endDate}  ${endTime}`),
+      duration:
+        (new Date(`${endDate}  ${endTime}`) -
+          new Date(`${startDate}  ${startTime}`)) /
+        3600000,
+    })
+  );
 
   return (
     <div className="">
@@ -91,8 +109,7 @@ function BookingDate() {
               if (!isContinueDisabled) {
                 navigate(`/booking/${userData.id}/${params.sitterId}`);
               }
-            }}
-          >
+            }}>
             <ButtonPrimary
               width={"100%"}
               content={"Continue"}
@@ -110,8 +127,7 @@ export const Modal = ({ isOpen, onClose, children }) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-0 "
-      style={{ background: "rgba(0, 0, 0, 0.75)" }}
-    >
+      style={{ background: "rgba(0, 0, 0, 0.75)" }}>
       <div className="relative z-10">
         <div className="w-[560px] bg-etc-white h-[440px] rounded-2xl opacity-1">
           <div className="px-10 py-6 border-b justify-between items-center gap-2.5 flex">

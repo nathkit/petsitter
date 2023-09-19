@@ -12,6 +12,9 @@ export default function BookingDatail() {
     petIdsNames,
     bookingMessage,
     totalAmount,
+    startDateTime,
+    endDateTime,
+    duration,
   } = useBooking();
   const navigate = useNavigate();
   const params = useParams();
@@ -37,13 +40,13 @@ export default function BookingDatail() {
         <div className="pb-6">
           <p className="text-body3">Date & Time:</p>
           <p className="text-body2">
-            Check-in:&nbsp;&nbsp;&nbsp;&nbsp;25 Aug, 2023
+            Check-in:&nbsp;&nbsp;&nbsp;&nbsp;{startDateTime}
           </p>
-          <p className="text-body2">Check-out:&nbsp;&nbsp;25 Aug, 2023</p>
+          <p className="text-body2">Check-out:&nbsp;&nbsp;{endDateTime}</p>
         </div>
         <div className="pb-6">
           <p className="text-body3">Duration</p>
-          <p className="text-body2">3 hours</p>
+          <p className="text-body2">{duration} hours</p>
         </div>
         <div>
           <p className="text-body3">Pet</p>

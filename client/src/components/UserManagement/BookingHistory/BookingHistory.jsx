@@ -11,43 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
-export function formatDateToCustomString(dateString) {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const date = new Date(dateString);
-  const day = date.toLocaleDateString("en-US", { weekday: "short" });
-  const dayOfMonth = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-
-  return {
-    data1: `${day}, ${dayOfMonth} ${month} ${year}`,
-    data2: ` ${dayOfMonth} ${month}, ${year}`,
-  };
-}
-
-export function formatTime(dateTimeString) {
-  const date = new Date(dateTimeString);
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  return `${formattedHours} ${ampm}`;
-}
+import { timeFormat, dateFormat , formatTime } from "../../../utils/timeFormat";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
@@ -72,7 +36,7 @@ function BookingHistory() {
     getBookingDetail();
   }, []);
 
-  // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
+  // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status //เอาไปใช้ต่อ
   const handleClick = (id) => {
     const updatedBookingHistory = bookingHistory.map((card) => {
       if (card.booking_no === id) {
@@ -138,8 +102,7 @@ function BookingHistory() {
               </div>
               <div>
                 <p className=" text-body3 text-gray-300 text-right">
-                  Booking date:{" "}
-                  {formatDateToCustomString(card.booking_date).data1}
+                  Booking date: {timeFormat(card.booking_date)}
                 </p>
                 <h5
                   className={`text-right text-body2 ${
@@ -164,9 +127,12 @@ function BookingHistory() {
             <main className="pt-4 flex gap-x-7 items-center">
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Date & Time:</div>{" "}
-                <div className="text-gray-600 text-body3 ">
-                  {formatDateToCustomString(card.start_date_time).data2} |{" "}
-                  {formatTime(card.start_date_time)} -{" "}
+                <div className=" text-body3 text-gray-600">
+                  {dateFormat(card.start_date_time)} |{" "}
+                  {formatTime(card.start_date_time)} {" "}
+                </div>
+                <div className=" text-body3 text-gray-600">
+                  {dateFormat(card.end_date_time)} |{" "}
                   {formatTime(card.end_date_time)}
                 </div>
               </div>
@@ -183,7 +149,8 @@ function BookingHistory() {
             </main>
             <div className=" pt-6 text-gray-400">
               <h1 className=" text-body3">Additional Message</h1>
-              <p className=" text-gray-600">{card.messages}</p>
+              {/* format to array and split choose only [0] */}
+              <p className="text-gray-600">{card.messages.split(",")[0]}</p>
             </div>
             <div className="card-status" onClick={(e) => e.stopPropagation()}>
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}

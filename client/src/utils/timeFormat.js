@@ -5,12 +5,6 @@ export function timeFormat(time) {
   return formattedDate;
 }
 
-export default timeFormat;
-
-export const timeFormatForSitterReviews = function (time) {
-  const format = moment(time).format("ll");
-  return format;
-};
 
 export function dateFormat(time) {
   const formattedDate = moment(time).format("DD MMM, YYYY");

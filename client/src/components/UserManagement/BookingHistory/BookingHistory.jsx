@@ -1,8 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import Line from "../../../assets/img/Line.png";
 import BookingHistoryDetail from "./BookingHistoryDetail";
-import { useContext } from "react";
-import { BookingStatusContext } from "../../../contexts/BookingStatusContext";
 import {
   InService,
   WaitingforConfirm,
@@ -55,10 +53,6 @@ function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
   const params = useParams();
 
-  // const uniqueBookingId = [
-  //   ...new Set(bookingHistory.map((card) => card.booking_no)),
-  // ];
-
   const getBookingDetail = async () => {
     try {
       const results = await axios.get(
@@ -78,18 +72,25 @@ function BookingHistory() {
     getBookingDetail();
   }, []);
 
-  // const { status, setStatus } = useContext(BookingStatusContext);
-  // console.log("data", status);
-  // const data = status;
-
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
   const handleClick = (id) => {
-    const updateStatus = bookingHistory.map((card) => {
-      return card.id === id
-        ? { ...card, statuses: "Waiting for service" }
-        : card;
+    const updatedBookingHistory = bookingHistory.map((card) => {
+      if (card.booking_no === id) {
+        switch (card.statuses) {
+          case "Waiting for confirm":
+            return { ...card, statuses: "Waiting for service" };
+          case "Waiting for service":
+            return { ...card, statuses: "In service" };
+          case "In service":
+            return { ...card, statuses: "Success" };
+          default:
+            return card;
+        }
+      } else {
+        return card;
+      }
     });
-    setStatus(updateStatus);
+    setBookingHistory(updatedBookingHistory);
   };
 
   return (
@@ -98,7 +99,7 @@ function BookingHistory() {
       {bookingHistory.map((card) => {
         return (
           <div
-            className={`booking-history-container rounded-2xl p-6 hover:shadow-2xl ${
+            className={`booking-history-container rounded-2xl p-6 hover:shadow-md transform transition-transform hover:scale-105   ${
               card.statuses === "In service"
                 ? "border border-blue-500"
                 : card.statuses === "Waiting for confirm"
@@ -113,7 +114,6 @@ function BookingHistory() {
             }`}
             key={card.booking_no}
             onClick={() => {
-              console.log(card.booking_no); // Log the booking number
               document
                 .getElementById(`booking-detail-${card.booking_no}`)
                 .showModal();
@@ -155,7 +155,7 @@ function BookingHistory() {
                       ? "text-etc-red"
                       : ""
                   }`}
-                  // onClick={() => handleClick(card.id)}
+                  onClick={() => handleClick(card.booking_no)}
                 >
                   {card.statuses}
                 </h5>

@@ -1,7 +1,25 @@
+import { useEffect, useState } from "react";
 import { ButtonSecondary } from "../../systemdesign/Button";
 import { StarIcon } from "../../systemdesign/Icons";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-function YourReviewButton() {
+function YourReviewButton(props) {
+  const [reviews, setReviews] = useState([]);
+  const params = useParams();
+
+  const getReview = async () => {
+    const result = await axios.get(
+      `http://localhost:4000/userManagement/${params.userId}/booking/${props.bookingId}/review`
+    );
+    console.log(result);
+    setReviews(result.data.data.rows);
+  };
+
+  useEffect(() => {
+    getReview();
+  });
+
   return (
     <div>
       <ButtonSecondary
@@ -22,14 +40,16 @@ function YourReviewButton() {
               <div className="flex h-[128px] px-6 pt-6 pb-10">
                 <div className="flex w-[220px] h-[56px] font-medium gap-4">
                   <img
-                    src="./src/assets/img/Johnwick.png"
-                    alt="Johnwick"
+                    src={reviews.profile_image_path}
+                    alt={reviews.full_name}
                     className="rounded-full"
                     width={56}
                     height={56}
                   />
                   <div>
-                    <div className="text-[18px] text-[#000]">John Wick</div>
+                    <div className="text-[18px] text-[#000]">
+                      {reviews.full_name}
+                    </div>
                     <div className="text-[14px] text-gray-400">
                       Tue, 13 Apr 2023
                     </div>
@@ -37,12 +57,12 @@ function YourReviewButton() {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex gap-[2px]">
-                    {Array.from({ length: 5 }, (_, index) => (
+                    {Array.from({ length: reviews.rating }, (_, index) => (
                       <StarIcon key={index} color="#1CCD83" />
                     ))}
                   </div>
                   <div className="text-[16px] text-gray-500">
-                    Thanks for I Som.
+                    {reviews.comment}
                   </div>
                 </div>
               </div>

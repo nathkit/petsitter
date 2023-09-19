@@ -6,9 +6,8 @@ import { formatDateToCustomString } from "../BookingHistory/BookingHistory.jsx";
 import { formatTime } from "../BookingHistory/BookingHistory.jsx";
 
 function BookingHistoryDetail({ card }) {
-
   return (
-    <dialog id={`booking-detail-${card.booking_no}`}   className="modal ">
+    <dialog id={`booking-detail-${card.booking_no}`} className="modal ">
       <div key={card.booking_no} className="modal-box bg-etc-white">
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-etc-white">

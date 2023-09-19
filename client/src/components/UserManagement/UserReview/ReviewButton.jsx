@@ -3,6 +3,7 @@ import { StarIcon } from "../../systemdesign/Icons";
 import { ButtonSecondary, ButtonPrimary } from "../../systemdesign/Button";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import YourReviewButton from "./YourReviewButton"; // Import YourReviewButton component
 
 function ReviewButton(props) {
   const params = useParams();
@@ -64,83 +65,58 @@ function ReviewButton(props) {
 
   return (
     <div>
-      {reviewSubmitted ? (
-        <YourReviewButton />
-      ) : (
-        <>
-          <ButtonPrimary
-            className="btn"
-            onClick={(e) => {
-              document.getElementById("my_modal_1").showModal();
-              handleClear(e);
-            }}
-            content="Review"
-          />
-          <dialog id="my_modal_1" className="modal">
-            <div className="modal-box w-5/12 max-w-5xl h-[800px] font-bold text-[24px] text-gray-600 p-0 bg-etc-white">
-              <div className="flex px-10 py-6">
-                <h3>Rating & Review</h3>
-              </div>
-              <hr />
-              <div className="flex flex-col gap-20 p-10">
-                <div className="flex flex-col gap-6 items-center">
-                  <h3>What is your rate?</h3>
-                  <div className="flex gap-4">
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <button
-                        key={index}
-                        onClick={(e) => handleRatingReview(e, index)}
-                      >
-                        <StarIcon
-                          color={`${
-                            index + 1 <= review.rating ? "#1ccd83" : "#DCDFED"
-                          }`}
-                          height="60px"
-                          width="60px"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="w-full flex flex-col gap-6 items-center">
-                  <h3>Share more about your experience</h3>
-                  <textarea
-                    id="search"
-                    className="outline-none w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
-                     border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
-                    placeholder="Your Review..."
-                    onChange={(e) => handleReviewText(e)}
-                    value={review.text}
-                    style={{ verticalAlign: "top" }}
-                  ></textarea>
-                </div>
-                <form method="dialog">
-                  <button className="btn btn-lg btn-circle btn-ghost absolute right-2 top-2">
-                    ✕
-                  </button>
-                  <div className="flex justify-between">
-                    <ButtonSecondary className="btn" content="Cancel" />
-                    <ButtonPrimary
-                      content="Send Review&Rating"
-                      width="202px"
-                      className="btn"
-                      onClick={() => setReviewSubmitted(true)}
+      <ButtonPrimary
+        className="btn"
+        onClick={(e) => {
+          document.getElementById("my_modal_1").showModal();
+          handleClear(e);
+        }}
+        content="Review"
+      />
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box w-5/12 max-w-5xl h-[800px] font-bold text-[24px] text-gray-600 p-0 bg-etc-white">
+          <div className="flex px-10 py-6">
+            <h3>Rating & Review</h3>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-20 p-10">
+            <div className="flex flex-col gap-6 items-center">
+              <h3>What is your rate?</h3>
+              <div className="flex gap-4">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => handleRatingReview(e, index)}
+                  >
+                    <StarIcon
+                      color={`${
+                        index + 1 <= review.rating ? "#1ccd83" : "#DCDFED"
+                      }`}
+                      height="60px"
+                      width="60px"
                     />
-                  </div>
-                </form>
+                  </button>
+                ))}
               </div>
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
           </dialog>
         </>
       )}
 =======
+=======
+>>>>>>> 17b88aa (feat: change style)
             <div className="w-full flex flex-col gap-6 items-center">
               <h3>Share more about your experience</h3>
               <textarea
                 id="search"
                 className="outline-none w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
+<<<<<<< HEAD
                  border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
+=======
+                     border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
+>>>>>>> 17b88aa (feat: change style)
                 placeholder="Your Review..."
                 onChange={(e) => handleReviewText(e)}
                 value={review.comment}
@@ -157,14 +133,23 @@ function ReviewButton(props) {
                   content="Send Review&Rating"
                   width="202px"
                   className="btn"
+<<<<<<< HEAD
                   onClick={(e) => addNewReview(e)}
+=======
+                  onClick={() => {
+                    addNewReview();
+                  }}
+>>>>>>> 17b88aa (feat: change style)
                 />
               </div>
             </form>
           </div>
         </div>
       </dialog>
+<<<<<<< HEAD
 >>>>>>> 0b2eb59 (feat: add font-end for post review)
+=======
+>>>>>>> 17b88aa (feat: change style)
     </div>
   );
 }

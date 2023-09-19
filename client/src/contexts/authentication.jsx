@@ -3,7 +3,6 @@ import { useState } from "react";
 import { supabase } from "./supabase.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { boolean } from "yup";
 
 const AuthContext = React.createContext();

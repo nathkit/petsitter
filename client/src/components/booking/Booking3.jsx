@@ -37,7 +37,8 @@ function Booking3({ setDisableButtonBooking3 }) {
             onClick={() => {
               handleCreditClick();
               setCredit("#ff7037");
-            }}>
+            }}
+          >
             <CreditCardIcon color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
@@ -52,7 +53,8 @@ function Booking3({ setDisableButtonBooking3 }) {
               handleCashClick();
               setWallet("#ff7037");
               setDisableButtonBooking3(false);
-            }}>
+            }}
+          >
             <WalletIcon color={wallet} />
             <p className="ml-2">Cash</p>
           </button>

@@ -91,7 +91,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const reviewPerPage = 5;
 
-    const queryForDetail = `SELECT * FROM pet_sitter_details WHERE pet_sitter_id = $1;`;
+    const queryForDetail = `SELECT * FROM pet_sitter_view WHERE id = $1;`;
 
     // Use "sitter_reviews_view" instead of "sitter_reviews_by_id" for reviews
     const queryForReviews = `SELECT *
@@ -144,14 +144,115 @@ sitterManagementRouter.get(
 
 // Reject / Confirm /In Service
 sitterManagementRouter.put(
-  "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  "/:sitterId/booking/:bookingId",
+  async (req, res) => {
+    try {
+      const sitterId = req.params.sitterId;
+      const bookingId = req.params.bookingId;
+      const statusBody = { ...req.body };
+
+      console.log("sitterId:", sitterId);
+      console.log("bookingId:", bookingId);
+      console.log("statusBody:", statusBody);
+
+      const updateData = {
+        statuses: statusBody.statuses,
+      };
+
+      console.log("updateData:", updateData);
+      console.log("Hello");
+      const updateQuery = `
+        UPDATE bookings
+        SET statuses = $1
+        WHERE pet_sitter_id = $2 AND id = $3
+      `;
+
+      console.log("updateQuery:", updateQuery);
+
+      const { rowCount } = await pool.query(updateQuery, [
+        updateData.statuses,
+        sitterId,
+        bookingId,
+      ]);
+
+      console.log("rowCount:", rowCount);
+
+      if (rowCount === 0) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      return res.status(200).json({
+        message: "Booking has been updated successfully",
+        data: {
+          bookingId,
+          updatedStatus: updateData.statuses,
+        },
+      });
+    } catch (error) {
+      console.error("Error updating booking:", error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
 );
 
 // Success
 sitterManagementRouter.put(
-  "/sitterManagement/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  "/:sitterId/booking/:bookingId/success",
+  async (req, res) => {
+    try {
+      const sitterId = req.params.sitterId;
+      const bookingId = req.params.bookingId;
+      const statusBody = {
+        ...req.body,
+        success_date_time: new Date().toISOString(),
+      };
+
+      console.log("sitterId:", sitterId);
+      console.log("bookingId:", bookingId);
+      console.log("statusBody:", statusBody);
+
+      const updateData = {
+        statuses: statusBody.statuses,
+        success_date_time: statusBody.success_date_time,
+      };
+
+      console.log("updateData:", updateData);
+      console.log("Hello Success");
+
+      const updateQuery = `
+      UPDATE bookings
+      SET statuses = $1, success_date_time = $2
+      WHERE pet_sitter_id = $3 AND id = $4
+    `;
+
+      console.log("updateQuery:", updateQuery);
+
+      const { rowCount } = await pool.query(updateQuery, [
+        updateData.statuses,
+        updateData.success_date_time,
+        sitterId,
+        bookingId,
+      ]);
+
+      console.log("rowCount:", rowCount);
+
+      if (rowCount === 0) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      return res.status(200).json({
+        message: "Booking has been updated successfully",
+        data: {
+          bookingId,
+          updatedStatus: updateData.statuses,
+          success_date_time: updateData.success_date_time,
+        },
+      });
+    } catch (error) {
+      console.error("Error updating booking:", error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
 );
 
 sitterManagementRouter.put(

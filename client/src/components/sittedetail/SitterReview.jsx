@@ -12,9 +12,8 @@ function SitterReview() {
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0.0);
   const [totalReviews, setTotalReviews] = useState(0);
-  const params = useParams();
-
   const [searchData, setSearchData] = useState({ rate: undefined });
+  const params = useParams();
 
   const handleRating = (event, rate) => {
     event.preventDefault();
@@ -79,7 +78,7 @@ function SitterReview() {
                       }`}
                       onClick={(e) => handleRating(e, rate)}
                     >
-                      <span className="pr-[3px] font-Satoshi">{rate}</span>
+                      <span className="pr-[3px] font-Satoshi ">{rate}</span>
                       {Array.from({ length: rate }, (_, index) => (
                         <StarIcon key={index} color="#1CCD83" />
                       ))}
@@ -119,7 +118,7 @@ function SitterReview() {
                   </div>
                   <hr />
                   <div className="rating flex flex-col w-[65%] gap-5">
-                    <div className="star flex gap-1 pt-1">
+                    <div className="star flex gap-1 items-center">
                       {Array.from({ length: rating }, (_, starIndex) => (
                         <StarIcon key={starIndex} color="#1CCD83" />
                       ))}

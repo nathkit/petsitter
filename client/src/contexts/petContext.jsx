@@ -13,13 +13,13 @@ function PetProvider(props) {
   const navigate = useNavigate();
   const params = useParams();
 
-  const handleDelete = async (params) => {
+  const handleDelete = async (userId,petId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
+        `http://localhost:4000/userManagement/${userId}/pets/${petId}`
       );
       if (response.status === 200) {
-        const newPetIds = petIds.filter((id) => id !== params.petId);
+        const newPetIds = petIds.filter((id) => id !== petId);
         setPetIds(newPetIds);
         console.log("Pet deleted successfully.");
         navigate("/");

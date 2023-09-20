@@ -48,7 +48,7 @@ export function CardPet1() {
               >
                 <div
                   id="card"
-                  className={`hover:border-orange-400 hover:shadow-lg border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
+                  className={`border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
                   <img

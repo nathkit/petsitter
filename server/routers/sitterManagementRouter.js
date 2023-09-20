@@ -91,7 +91,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const reviewPerPage = 5;
 
-    const queryForDetail = `SELECT * FROM pet_sitter_details WHERE pet_sitter_id = $1;`;
+    const queryForDetail = `SELECT * FROM pet_sitter_view WHERE id = $1;`;
 
     // Use "sitter_reviews_view" instead of "sitter_reviews_by_id" for reviews
     const queryForReviews = `SELECT *

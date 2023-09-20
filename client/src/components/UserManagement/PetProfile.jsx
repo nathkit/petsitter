@@ -32,12 +32,11 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { petAvatarFile, petDataById , handleDelete } = usePet();
+  const { petAvatarFile, petDataById, handleDelete } = usePet();
   const { getPetProfile, createPetProfile, updatePetProfile, checkPetType } =
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
-  // const [petIds, setPetIds] = useState([]);
   const params = useParams();
 
   props.editPet
@@ -51,25 +50,6 @@ function PetInputForm(props) {
   useEffect(() => {
     getPetProfile();
   }, []);
-
-  // const handleDelete = async () => {
-  //   try {
-  //     const response = await axios.delete(
-  //       `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
-  //     );
-  //     if (response.status === 200) {
-  //       const newPetIds = petIds.filter((id) => id !== params.petId);
-  //       setPetIds(newPetIds);
-
-  //       console.log("Pet deleted successfully.");
-  //       navigate("/");
-  //     } else {
-  //       console.error("Error deleting pet:", response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting pet:", error);
-  //   }
-  // };
 
   const formik = useFormik({
     initialValues: props.editPet

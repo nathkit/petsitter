@@ -7,7 +7,19 @@ const userManagementRouter = Router();
 const multerUpload = multer({
   dest: "uploads/",
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10 MB in bytes
+    fileSize: 2 * 1024 * 1024, // 2 MB in bytes
+  },
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+    }
   },
 });
 const avatarUpload = multerUpload.fields([{ name: "avatarFile" }]);
@@ -42,7 +54,6 @@ userManagementRouter.put("/:userId", avatarUpload, async (req, res) => {
     // update query ****************************************************************
     await pool.query(query, values);
     // user query after update *****************************************************
-    console.log("first");
     const serverRespondes = await pool.query(
       `select * from users where id = $1`,
       [userId]

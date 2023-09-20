@@ -119,7 +119,7 @@ function Navbar() {
   };
 
   return (
-    <div className="min-w-[1440px] h-20 px-20 flex justify-between items-center flex-shrink-0">
+    <div className="bg-etc-white min-w-[1440px] h-20 px-20 flex justify-between items-center flex-shrink-0">
       <button onClick={() => navigate("/")}>
         <SitterIconBlack width="131" height="40" />
       </button>

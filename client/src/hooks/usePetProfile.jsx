@@ -10,13 +10,13 @@ function usePetProfile() {
   const params = useParams();
 
   const checkPetType = (petType) => {
-    if (petType === "dog") {
+    if (petType === "Dog") {
       petType = 1;
-    } else if (petType === "cat") {
+    } else if (petType === "Cat") {
       petType = 2;
-    } else if (petType === "bird") {
+    } else if (petType === "Bird") {
       petType = 3;
-    } else if (petType === "rabbit") {
+    } else if (petType === "Rabbit") {
       petType = 4;
     }
     return petType;
@@ -44,7 +44,7 @@ function usePetProfile() {
             }
           : null
       );
-      console.log(result.data.data);
+      // console.log(result.data.data);
       setPetDataById(result.data.data);
       setAlertMessage({
         message: result.data.message,
@@ -65,7 +65,7 @@ function usePetProfile() {
           ? { headers: { "Content-Type": "multipart/form-data" } }
           : null
       );
-      console.log(result.data.message);
+      // console.log(result.data.message);
       // setAlertMessage({
       //   message: result.data.message,
       //   severity: "success",

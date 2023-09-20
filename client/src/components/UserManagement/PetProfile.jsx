@@ -13,6 +13,8 @@ import usePosts from "../../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 import { usePet } from "../../contexts/petContext";
 import usePetProfile from "../../hooks/usePetProfile";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -30,11 +32,12 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { petAvatarFile, petDataById } = usePet();
+  const { petAvatarFile, petDataById, handleDelete } = usePet();
   const { getPetProfile, createPetProfile, updatePetProfile, checkPetType } =
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
+  const params = useParams();
 
   props.editPet
     ? useEffect(() => {
@@ -44,6 +47,10 @@ function PetInputForm(props) {
   // console.log(petAvatarFile);
   // console.log(petDataById);
   // console.log(props.editPet);
+  useEffect(() => {
+    getPetProfile();
+  }, []);
+
   const formik = useFormik({
     initialValues: props.editPet
       ? {
@@ -285,7 +292,9 @@ function PetInputForm(props) {
             primaryWidth={"142px"}
             buttonName={"Delete"}
             buttonWidth={"175px"}
-            onClick={() => navigate("/booking/confirmation")}
+            onClick={() => {
+              handleDelete(params.userId, params.petId);
+            }}
           />
         </div>
       )}
@@ -298,6 +307,7 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
+          
         />
       </div>
     </form>

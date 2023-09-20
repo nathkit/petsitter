@@ -1,8 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import Line from "../../../assets/img/Line.png";
 import BookingHistoryDetail from "./BookingHistoryDetail";
-import { useContext } from "react";
-import { BookingStatusContext } from "../../../contexts/BookingStatusContext";
 import {
   InService,
   WaitingforConfirm,
@@ -13,51 +11,11 @@ import {
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
-export function formatDateToCustomString(dateString) {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const date = new Date(dateString);
-  const day = date.toLocaleDateString("en-US", { weekday: "short" });
-  const dayOfMonth = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-
-  return {
-    data1: `${day}, ${dayOfMonth} ${month} ${year}`,
-    data2: ` ${dayOfMonth} ${month}, ${year}`,
-  };
-}
-
-export function formatTime(dateTimeString) {
-  const date = new Date(dateTimeString);
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  return `${formattedHours} ${ampm}`;
-}
+import { timeFormat, dateFormat , formatTime } from "../../../utils/timeFormat";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
   const params = useParams();
-
-  // const uniqueBookingId = [
-  //   ...new Set(bookingHistory.map((card) => card.booking_no)),
-  // ];
 
   const getBookingDetail = async () => {
     try {
@@ -78,18 +36,25 @@ function BookingHistory() {
     getBookingDetail();
   }, []);
 
-  // const { status, setStatus } = useContext(BookingStatusContext);
-  // console.log("data", status);
-  // const data = status;
-
-  // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status
+  // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status //เอาไปใช้ต่อ
   const handleClick = (id) => {
-    const updateStatus = bookingHistory.map((card) => {
-      return card.id === id
-        ? { ...card, statuses: "Waiting for service" }
-        : card;
+    const updatedBookingHistory = bookingHistory.map((card) => {
+      if (card.booking_no === id) {
+        switch (card.statuses) {
+          case "Waiting for confirm":
+            return { ...card, statuses: "Waiting for service" };
+          case "Waiting for service":
+            return { ...card, statuses: "In service" };
+          case "In service":
+            return { ...card, statuses: "Success" };
+          default:
+            return card;
+        }
+      } else {
+        return card;
+      }
     });
-    setStatus(updateStatus);
+    setBookingHistory(updatedBookingHistory);
   };
 
   return (
@@ -98,7 +63,7 @@ function BookingHistory() {
       {bookingHistory.map((card) => {
         return (
           <div
-            className={`booking-history-container rounded-2xl p-6 hover:shadow-2xl ${
+            className={`booking-history-container rounded-2xl p-6 hover:shadow-md transform transition-transform hover:scale-105   ${
               card.statuses === "In service"
                 ? "border border-blue-500"
                 : card.statuses === "Waiting for confirm"
@@ -113,7 +78,6 @@ function BookingHistory() {
             }`}
             key={card.booking_no}
             onClick={() => {
-              console.log(card.booking_no); // Log the booking number
               document
                 .getElementById(`booking-detail-${card.booking_no}`)
                 .showModal();
@@ -138,8 +102,7 @@ function BookingHistory() {
               </div>
               <div>
                 <p className=" text-body3 text-gray-300 text-right">
-                  Booking date:{" "}
-                  {formatDateToCustomString(card.booking_date).data1}
+                  Booking date: {timeFormat(card.booking_date)}
                 </p>
                 <h5
                   className={`text-right text-body2 ${
@@ -155,7 +118,7 @@ function BookingHistory() {
                       ? "text-etc-red"
                       : ""
                   }`}
-                  // onClick={() => handleClick(card.id)}
+                  onClick={() => handleClick(card.booking_no)}
                 >
                   {card.statuses}
                 </h5>
@@ -164,9 +127,12 @@ function BookingHistory() {
             <main className="pt-4 flex gap-x-7 items-center">
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Date & Time:</div>{" "}
-                <div className="text-gray-600 text-body3 ">
-                  {formatDateToCustomString(card.start_date_time).data2} |{" "}
-                  {formatTime(card.start_date_time)} -{" "}
+                <div className=" text-body3 text-gray-600">
+                  {dateFormat(card.start_date_time)} |{" "}
+                  {formatTime(card.start_date_time)} {" "}
+                </div>
+                <div className=" text-body3 text-gray-600">
+                  {dateFormat(card.end_date_time)} |{" "}
                   {formatTime(card.end_date_time)}
                 </div>
               </div>
@@ -183,7 +149,8 @@ function BookingHistory() {
             </main>
             <div className=" pt-6 text-gray-400">
               <h1 className=" text-body3">Additional Message</h1>
-              <p className=" text-gray-600">{card.messages}</p>
+              {/* format to array and split choose only [0] */}
+              <p className="text-gray-600">{card.messages.split(",")[0]}</p>
             </div>
             <div className="card-status" onClick={(e) => e.stopPropagation()}>
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}

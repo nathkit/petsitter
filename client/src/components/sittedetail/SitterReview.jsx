@@ -8,7 +8,7 @@ import { timeFormatForSitterReviews } from "../../utils/timeFormat";
 
 function SitterReview() {
   const starRates = ["All Reviews", 5, 4, 3, 2, 1];
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([starRates]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0.0);
   const [totalReviews, setTotalReviews] = useState(0);
@@ -44,6 +44,9 @@ function SitterReview() {
 
   useEffect(() => {
     getSitterReviewById();
+  }, []);
+
+  useEffect(() => {
     setFilteredReviews(reviews);
   }, [reviews]);
 

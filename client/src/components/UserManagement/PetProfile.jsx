@@ -13,6 +13,8 @@ import usePosts from "../../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 import { usePet } from "../../contexts/petContext";
 import usePetProfile from "../../hooks/usePetProfile";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -30,12 +32,13 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { petAvatarFile, petDataById } = usePet();
+  const { petAvatarFile, petDataById , handleDelete } = usePet();
   const { getPetProfile, createPetProfile, updatePetProfile, checkPetType } =
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
-  const [petIds, setPetIds] = useState([]);
+  // const [petIds, setPetIds] = useState([]);
+  const params = useParams();
 
   props.editPet
     ? useEffect(() => {
@@ -49,22 +52,24 @@ function PetInputForm(props) {
     getPetProfile();
   }, []);
 
-  const handleDelete = async () => { // Removed the petIds parameter
-    try {
-      setIsError(false);
-      setIsLoading(true);
-      await axios.delete(
-        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
-      );
-      const newPetIds = petIds.filter((id) => id !== params.petId);
-      setPetIds(newPetIds);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error deleting pet:", error);
-      setIsError(true);
-      setIsLoading(false);
-    }
-  };
+  // const handleDelete = async () => {
+  //   try {
+  //     const response = await axios.delete(
+  //       `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
+  //     );
+  //     if (response.status === 200) {
+  //       const newPetIds = petIds.filter((id) => id !== params.petId);
+  //       setPetIds(newPetIds);
+
+  //       console.log("Pet deleted successfully.");
+  //       navigate("/");
+  //     } else {
+  //       console.error("Error deleting pet:", response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting pet:", error);
+  //   }
+  // };
 
   const formik = useFormik({
     initialValues: props.editPet
@@ -307,7 +312,9 @@ function PetInputForm(props) {
             primaryWidth={"142px"}
             buttonName={"Delete"}
             buttonWidth={"175px"}
-            onClick={() => navigate("/booking/confirmation")}
+            onClick={() => {
+              handleDelete(params.userId, params.petId);
+            }}
           />
         </div>
       )}
@@ -320,7 +327,7 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
-          onClick={handleDelete}
+          // onClick={handleDelete}
         />
       </div>
     </form>

@@ -144,10 +144,10 @@ function PetInputForm(props) {
             <option value="" disabled>
               Select your pet type
             </option>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-            <option value="bird">Bird</option>
-            <option value="rabbit">Rabbit</option>
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+            <option value="Bird">Bird</option>
+            <option value="Rabbit">Rabbit</option>
           </select>
           {formik.touched.petType && formik.errors.petType ? (
             <div style={error}>{formik.errors.petType}</div>

@@ -92,7 +92,19 @@ const profile = () => {
 
   return (
     <div className="flex flex-col gap-[4rem] h-[55.5rem] w-full">
-      <h1 className="text-headline3 ">Profile</h1>
+      <Box className="flex justify-between">
+        <h1 className="text-headline3 ">Profile</h1>
+        {/* alert box *************************************** */}
+        {alertMessage ? (
+          <Alert
+            severity={alertMessage.severity}
+            className="min-w-[30%] w-auto"
+            sx={alertMessage.severity ? { boxShadow: 1 } : null}
+          >
+            {alertMessage.message}
+          </Alert>
+        ) : null}
+      </Box>
       {/* form *********************************** */}
       <form
         onSubmit={(values, formikHelpers) => {
@@ -111,10 +123,6 @@ const profile = () => {
             }}
           />
         </Box>
-        {/* alert box *************************************** */}
-        {alertMessage ? (
-          <Alert severity={alertMessage.severity}>{alertMessage.message}</Alert>
-        ) : null}
         {/* your name *********************************** */}
         <label htmlFor="yourName" className="text-body1">
           <p className="mb-4">your name*</p>

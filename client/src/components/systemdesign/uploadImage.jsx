@@ -10,7 +10,7 @@ export const UploadImage = (props) => {
           <UserIcon width="6.5rem" height="6.5rem" color="white" />
         )}
       </div>
-      <label className="bg-etc-white w-[3.75rem] h-[3.75rem] cursor-pointer absolute bottom-0 left-[11rem] flex items-center justify-center rounded-full">
+      <label className="bg-etc-white w-[3.75rem] hover:shadow-lg h-[3.75rem] cursor-pointer absolute bottom-0 left-[11rem] flex items-center justify-center rounded-full">
         <PlusIcon color="#FF7037" />
         <input
           id="avatar"
@@ -34,7 +34,7 @@ export const UploadPetImage = (props) => {
           <PetIcon width="6.5rem" height="6.5rem" color="white" />
         )}
       </div>
-      <label className="bg-etc-white w-[3.75rem] h-[3.75rem] cursor-pointer absolute bottom-0 left-[11rem] flex items-center justify-center rounded-full">
+      <label className="bg-etc-white w-[3.75rem] hover:shadow-lg h-[3.75rem] cursor-pointer absolute bottom-0 left-[11rem] flex items-center justify-center rounded-full">
         <PlusIcon color="#FF7037" />
         <input
           id="avatar"

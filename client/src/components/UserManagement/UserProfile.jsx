@@ -11,10 +11,8 @@ import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useState, useEffect } from "react";
 import useUserProfile from "../../hooks/useUserProfile";
-import { useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication";
 import { Alert } from "@mui/material";
-// import { makeStyles } from "@material-ui/styles";
 
 dayjs.extend(utc);
 
@@ -64,8 +62,8 @@ const profile = () => {
     const newUser = JSON.parse(window.localStorage.getItem("user"));
     setUser(newUser);
   }, []);
-
-  const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : null));
+  const today = dayjs();
+  const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : today));
   const formik = useFormik({
     initialValues: {
       yourName: user.fullName,
@@ -124,7 +122,7 @@ const profile = () => {
           />
         </Box>
         {/* your name *********************************** */}
-        <label htmlFor="yourName" className="text-body1">
+        <label htmlFor="yourName" className="text-body1 text-etc-black">
           <p className="mb-4">your name*</p>
           <TextField
             className="TextField"
@@ -141,7 +139,7 @@ const profile = () => {
         <Box className="flex gap-10">
           <Box className="w-[50%] flex flex-col gap-10">
             {/* email *********************************** */}
-            <label htmlFor="email" className="text-body1">
+            <label htmlFor="email" className="text-body1 text-etc-black">
               <p className="mb-4">Email*</p>
               <TextField
                 className="TextField"
@@ -157,7 +155,7 @@ const profile = () => {
             </label>
 
             {/* id number *********************************** */}
-            <label htmlFor="idNumber" className="text-body1">
+            <label htmlFor="idNumber" className="text-body1 text-etc-black">
               <p className="mb-4">Id number</p>
               <TextField
                 className="TextField"
@@ -174,7 +172,7 @@ const profile = () => {
           </Box>
           <Box className="w-[50%] flex flex-col gap-10 ">
             {/* phone *********************************** */}
-            <label htmlFor="phone" className="text-body1">
+            <label htmlFor="phone" className="text-body1 text-etc-black">
               <p className="mb-4">Phone*</p>
               <TextField
                 className="TextField"
@@ -190,7 +188,7 @@ const profile = () => {
             </label>
 
             {/* date of birth *********************************** */}
-            <label htmlFor="dateOfBirth" className="text-body1">
+            <label htmlFor="dateOfBirth" className="text-body1 text-etc-black">
               <p className="mb-4">Date of birth</p>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
@@ -200,11 +198,11 @@ const profile = () => {
                     width: "100%",
                   }}
                   label="Select your date of birth"
+                  maxDate={today}
                   value={formik.values.dateOfBirth}
-                  format="YYYY-MM-DD"
+                  format="DD-MM-YYYY"
                   onChange={(value) => {
-                    const newValue = value.local();
-                    formik.setFieldValue("dateOfBirth", newValue);
+                    formik.setFieldValue("dateOfBirth", value);
                   }}
                 />
               </LocalizationProvider>

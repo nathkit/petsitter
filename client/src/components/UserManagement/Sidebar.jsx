@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication";
 import { useParams } from "react-router-dom";
 
-
 import UserProfile from "../UserManagement/UserProfile";
 import BookingHistory from "./BookingHistory/BookingHistory";
 import { CreatePet, EditPet } from "./PetProfile";
@@ -32,7 +31,7 @@ function Sidebar(props) {
   return (
     <>
       <Navbar />
-      <div className=" bg-etc-bg_gray w-full px-20 pt-10 pb-20 flex">
+      <div className=" bg-etc-bg_gray min-w-full px-20 pt-10 pb-20 flex">
         <div className=" flex flex-col bg-etc-white py-6 w-[292px] h-[289px] rounded-2xl shadow mr-10 text-gray-500">
           <div className="px-6 pb-3 text-headline4">
             <p className="">Account</p>

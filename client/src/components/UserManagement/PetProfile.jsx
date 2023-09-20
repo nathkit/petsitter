@@ -13,8 +13,8 @@ import usePosts from "../../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 import { usePet } from "../../contexts/petContext";
 import usePetProfile from "../../hooks/usePetProfile";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useAuth } from "../../contexts/authentication";
+import AlertBox from "../systemdesign/AlertBox";
 
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
@@ -89,10 +89,7 @@ function PetInputForm(props) {
       props.editPet
         ? await updatePetProfile(newValues)
         : await createPetProfile(newValues);
-
-      alert(JSON.stringify(newValues));
-
-      // props.editPet ? null : formikHelpers.resetForm();
+      props.editPet ? null : formikHelpers.resetForm();
     },
   });
   const errorForm = {
@@ -307,7 +304,6 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
-          
         />
       </div>
     </form>
@@ -317,14 +313,14 @@ function PetInputForm(props) {
 export function TurnBack() {
   const navigate = useNavigate();
   return (
-    <div className=" bg-etc-white w-full flex justify-between items-center pb-[60px]">
+    <div
+      className=" bg-etc-white h-[3rem] flex justify-between items-center mb-[60px] cursor-pointer"
+      onClick={() => {
+        navigate("/userManagement/:userId/pets");
+      }}
+    >
       <p className=" text-headline3 flex items-center gap-[10px]">
-        <ArrowLeftIcon
-          color="#7B7E8F"
-          onClick={() => {
-            navigate("/");
-          }}
-        />
+        <ArrowLeftIcon color="#7B7E8F" />
         Your Pet
       </p>
     </div>
@@ -333,14 +329,19 @@ export function TurnBack() {
 
 export function CreatePet() {
   const { petAvatarUrl, setPetAvatarUrl, setPetAvatarFile } = usePet();
+  const { setAlertMessage } = useAuth();
   useEffect(() => {
+    setAlertMessage({
+      message: "",
+      severity: "",
+    });
     setPetAvatarUrl("");
     setPetAvatarFile(null);
   }, []);
 
   return (
     <div className="pet-input-container">
-      <TurnBack />
+      <AlertBox />
       <Box className="h-[15rem] relative mb-10">
         <UploadPetImage
           img={petAvatarUrl ? petAvatarUrl : null}
@@ -361,15 +362,20 @@ export function CreatePet() {
 export function EditPet() {
   const { petAvatarUrl, setPetAvatarUrl, setPetAvatarFile, petDataById } =
     usePet();
+  const { setAlertMessage } = useAuth();
   const { getPetProfile } = usePetProfile();
   useEffect(() => {
+    setAlertMessage({
+      message: "",
+      severity: "",
+    });
     getPetProfile();
     setPetAvatarUrl("");
     setPetAvatarFile(null);
   }, []);
   return (
     <div className="pet-input-container">
-      <TurnBack />
+      <AlertBox />
       <Box className="h-[15rem] relative mb-10">
         <UploadPetImage
           img={

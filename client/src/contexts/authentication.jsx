@@ -38,10 +38,16 @@ function AuthProvider(props) {
           severity: "success",
         });
         // console.log(serverRespond.data.data);
-        setUserData(serverRespond.data.data);
-        localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
-        formikHelpers.resetForm();
-        nav("/");
+        setTimeout(() => {
+          setAlertMessage({
+            message: "",
+            severity: "",
+          });
+          setUserData(serverRespond.data.data);
+          localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
+          formikHelpers.resetForm();
+          nav("/");
+        }, 1000);
       } else {
         // console.log(serverRespond.data.message);
         setAlertMessage({
@@ -77,10 +83,14 @@ function AuthProvider(props) {
           message: serverRespond.data.message,
           severity: "success",
         });
-        formikHelpers.resetForm();
         setTimeout(() => {
+          setAlertMessage({
+            message: "",
+            severity: "",
+          });
+          formikHelpers.resetForm();
           nav("/login");
-        }, 3000);
+        }, 1500);
       } else {
         setAlertMessage({
           message: serverRespond.data.message,

@@ -28,6 +28,7 @@
 
 body {
   background-color: #ffff;
+  min-width: 1440px;
 }
 
 :root {
@@ -43,7 +44,7 @@ select:-webkit-autofill:focus {
 
 .TextField:focus-within fieldset,
 .TextField:hover fieldset {
-  border: solid #ff986f !important;
+  border: 1px solid #ff986f !important;
 }
 
 .swiper {

@@ -27,6 +27,11 @@ const avatarUpload = multerUpload.fields([{ name: "avatarFile" }]);
 userManagementRouter.put("/:userId", avatarUpload, async (req, res) => {
   const userId = req.params.userId;
   const user = { ...req.body };
+  // reassign user.dateOfBirth to be UTC+7 *********************************
+  const dateOfBirth = new Date(user.dateOfBirth);
+  dateOfBirth.setHours(dateOfBirth.getHours() + 7);
+  user.dateOfBirth = dateOfBirth;
+
   user.avatarName ? null : (user.avatarName = null);
   user.updated_at = new Date();
   user.id = userId;

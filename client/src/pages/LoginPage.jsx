@@ -41,7 +41,7 @@ function LoginPage() {
   }, []);
 
   return (
-    <div className="bg-etc-white m-0 p-0  h-[100%] w-full relative flex justify-center ">
+    <div className="bg-etc-white m-0 p-0  min-h-screen w-full relative flex justify-center ">
       {/* image ************************************* */}
       <div className="h-[35%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
         <div className="absolute top-0 left-7 rotate-45">
@@ -65,8 +65,7 @@ function LoginPage() {
             className="text-headline1 text-etc-black cursor-pointer"
             onClick={() => {
               nav("/");
-            }}
-          >
+            }}>
             Welcome back!
           </p>
           <p className="text-headline4">Find your perfect pet sitter with us</p>
@@ -85,8 +84,7 @@ function LoginPage() {
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),
-          })}
-        >
+          })}>
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
@@ -99,8 +97,7 @@ function LoginPage() {
                 {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="email"
-                >
+                  htmlFor="email">
                   Email address
                 </label>
                 <Field
@@ -119,8 +116,7 @@ function LoginPage() {
                 {/* password ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium relative"
-                  htmlFor="passsword"
-                >
+                  htmlFor="passsword">
                   Password
                 </label>
                 <Box className="relative">
@@ -136,8 +132,9 @@ function LoginPage() {
                     error={
                       Boolean(errors.password) && Boolean(touched.password)
                     }
-                    helperText={Boolean(touched.password) && errors.password}
-                  ></Field>
+                    helperText={
+                      Boolean(touched.password) && errors.password
+                    }></Field>
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
@@ -146,8 +143,7 @@ function LoginPage() {
                       top: "0.5rem",
                       right: "1rem",
                       color: `${showPassword ? "red" : null}`,
-                    }}
-                  >
+                    }}>
                     <VisibilityIcon />
                   </IconButton>
                 </Box>

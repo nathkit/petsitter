@@ -48,7 +48,7 @@ function BookingPage() {
   };
   const bookingData = {
     user_id: userData?.id,
-    pet_sitter_id: sitterDetail[0]?.pet_sitter_id,
+    pet_sitter_id: sitterDetail?.id,
     pet_id: Object.keys(petIdsNames),
     start_date_time: startDateTime,
     end_date_time: endDateTime,
@@ -56,12 +56,12 @@ function BookingPage() {
     message: bookingMessage,
     payment_method: paymentMethod,
   };
-  // console.log(bookingData);
+  console.log(bookingData);
 
   return (
     <>
       <Navbar />
-      <div className=" bg-etc-bg_gray w-full h-screen px-20 pt-10 pb-20 flex">
+      <div className=" bg-etc-bg_gray w-full min-h-screen px-20 pt-10 pb-20 flex">
         <div className="mr-[2.25rem] w-[68.5%]">
           <div className=" flex justify-around bg-etc-white mb-4 p-6 text-body1 text-gray-500 items-center">
             <div className=" flex items-center">

@@ -3,10 +3,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
+import { useAuth } from "./authentication";
 
 const BookingContext = React.createContext();
 
 function BookingProvider(props) {
+  const {userData} = useAuth()
   const [petIds, setPetIds] = useState([]);
   const [petIdsNames, setPetIdsNames] = useState({});
   const [sitterDetail, setSitterDetail] = useState([]);
@@ -25,8 +27,8 @@ function BookingProvider(props) {
   const getSitterDetail = async (sitterId) => {
     try {
       const results = await axios.get(`/sitterManagement/${sitterId}`);
-      console.log(results);
-      console.log(sitterId);
+      // console.log(results.data.data[0]);
+      // console.log(sitterId);
       setSitterDetail(results.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

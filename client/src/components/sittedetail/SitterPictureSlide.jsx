@@ -7,8 +7,8 @@ import { ArrowLeftIcon } from "../systemdesign/Icons";
 import { ArrowRightIcon } from "../systemdesign/Icons";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useBooking } from "../../contexts/BookingContext";
+import { tuple } from "yup";
 
 function SitterPictureSlide() {
   const { getSitterDetail, sitterDetail } = useBooking();
@@ -18,12 +18,18 @@ function SitterPictureSlide() {
     getSitterDetail(params.sitterId);
   }, []);
 
+  useEffect(() => {}, [sitterDetail]);
+
+  function getImageArray(imageString) {
+    return imageString.split(",");
+  }
+
   return (
     <div className="justify-center items-center py-[40px]">
       <div className="w-full">
         <Swiper
-          className="w-full h-[417px] relative"
-          slidesPerView={2.5}
+          className="w-full relative swiper-container"
+          slidesPerView={1.5}
           spaceBetween={16}
           centeredSlides={true}
           navigation={{
@@ -34,19 +40,27 @@ function SitterPictureSlide() {
             enabled: true,
           }}
           modules={[Navigation, Keyboard]}
-          loop={true}>
-          {sitterDetail.map((sitter, sitterIndex) => (
-            <SwiperSlide key={sitterIndex}>
-              <div>
-                <div className="flex justify-center items-center h-full">
-                  <img
-                    src={`${sitter.trade_image_path}?width=640&height=480`}
-                    alt={`Picture ${sitterIndex + 1}`}
-                  />
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+          loop={true}
+        >
+          {sitterDetail.length > 0 && (
+            <>
+              {getImageArray(sitterDetail[0].trade_image_path).map(
+                (imageUrl, sitterIndex) => (
+                  <SwiperSlide key={sitterIndex}>
+                    <div>
+                      <div className="w-full">
+                        <img
+                          className=" w-full h-[550px] object-cover"
+                          src={imageUrl}
+                          alt={`Picture ${sitterIndex + 1}`}
+                        />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                )
+              )}
+            </>
+          )}
 
           <div className="custom-button-next absolute z-10 top-[45%] w-14 h-14 right-[80px] rounded-full bg-etc-white grid place-items-center">
             <ArrowRightIcon />

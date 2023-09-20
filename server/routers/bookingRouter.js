@@ -65,7 +65,7 @@ bookingRouter.post("/:userId/:sitterId", async (req, res) => {
 
 });
 
-bookingRouter.get("/:userId/", async (req, res) => {
+bookingRouter.get("/:userId", async (req, res) => {
     try {
         const userId = req.params.userId;
         const latestBookingIdQuery = `select * from bookings_detail_for_booking4 where user_id = $1 order by booking_id desc limit 1`;
@@ -90,6 +90,35 @@ bookingRouter.get("/:userId/", async (req, res) => {
     } catch (error) {
         console.error("Error fetching booking detail:", error);
         return res.status(500).json({ message: "Request error occurred" });
+    }
+});
+
+bookingRouter.get("/sitter/:sitterId", async (req, res) => {
+    try {
+        const sitterId = req.params.sitterId;
+        console.log(sitterId)
+        const query = `select * from bookings_test_timepicker where pet_sitter_id = $1 order by start_date_time`;
+        const result = await pool.query(query, [sitterId]);
+
+        // Fixed the reference here to check `result.rows` instead of `latestBookingIdResult.rows`
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No available booking" });
+        }
+
+        const data = result.rows.map(row => {
+            return {
+                startDateTime: row.start_date_time,
+                endDateTime: row.end_date_time,
+                status: row.statuses
+            };
+        });
+
+        // Returning the transformed data
+        res.json(data);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 });
 

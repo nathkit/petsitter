@@ -48,7 +48,7 @@ function BookingPage() {
   };
   const bookingData = {
     user_id: userData?.id,
-    pet_sitter_id: sitterDetail[0]?.pet_sitter_id,
+    pet_sitter_id: sitterDetail?.id,
     pet_id: Object.keys(petIdsNames),
     start_date_time: startDateTime,
     end_date_time: endDateTime,
@@ -56,7 +56,7 @@ function BookingPage() {
     message: bookingMessage,
     payment_method: paymentMethod,
   };
-  // console.log(bookingData);
+  console.log(bookingData);
 
   return (
     <>

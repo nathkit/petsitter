@@ -25,8 +25,8 @@ function BookingProvider(props) {
   const getSitterDetail = async (sitterId) => {
     try {
       const results = await axios.get(`/sitterManagement/${sitterId}`);
-      // console.log(results);
-      // console.log(sitterId);
+      console.log(results);
+      console.log(sitterId);
       setSitterDetail(results.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

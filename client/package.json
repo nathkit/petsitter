@@ -33,6 +33,7 @@
     "react-datepicker": "^4.17.0",
     "react-daterangepicker": "^0.1.2",
     "react-dom": "^18.2.0",
+    "react-load-script": "^0.0.6",
     "react-router-dom": "^6.15.0",
     "styled-components": "^5.3.11",
     "swiper": "^10.2.0",

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ButtonSecondary } from "../../systemdesign/Button";
 import { StarIcon } from "../../systemdesign/Icons";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { timeFormat } from "../../../utils/timeFormat";
 
@@ -73,11 +73,13 @@ function YourReviewButton(props) {
               <button className="btn btn-lg btn-circle btn-ghost absolute right-2 top-2">
                 ✕
               </button>
-              <ButtonSecondary
-                className="btn"
-                content="View Pet Sitter"
-                width="157px"
-              />
+              <Link to={`/sitterManagement/${props.sitterId}`}>
+                <ButtonSecondary
+                  className="btn"
+                  content="View Pet Sitter"
+                  width="157px"
+                />
+              </Link>
             </form>
           </div>
         </div>

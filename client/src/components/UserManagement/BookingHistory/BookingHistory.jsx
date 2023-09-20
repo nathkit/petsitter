@@ -159,6 +159,7 @@ function BookingHistory() {
               {card.statuses === "Success" && (
                 <Success
                   bookingId={card.booking_no}
+                  sitterId={card.pet_sitter_id}
                   isReview={!!card.review_id}
                   fetch={getBookingDetail}
                 />

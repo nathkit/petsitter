@@ -30,7 +30,7 @@ function SitterPictureSlide() {
         <Swiper
           className="w-full relative swiper-container"
           slidesPerView={1.5}
-          spaceBetween={16}
+          spaceBetween={-450}
           centeredSlides={true}
           navigation={{
             nextEl: ".custom-button-next",
@@ -48,9 +48,9 @@ function SitterPictureSlide() {
                 (imageUrl, sitterIndex) => (
                   <SwiperSlide key={sitterIndex}>
                     <div>
-                      <div className="w-full">
+                      <div className=" flex justify-center ">
                         <img
-                          className=" w-full h-[550px] object-cover"
+                          className=" w-[640px] h-[400px] object-cover"
                           src={imageUrl}
                           alt={`Picture ${sitterIndex + 1}`}
                         />

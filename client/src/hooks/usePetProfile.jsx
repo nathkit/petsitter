@@ -29,7 +29,10 @@ function usePetProfile() {
       );
       setPetDataById(result.data.data);
     } catch (err) {
-      console.log("Error is occured from client!");
+      setAlertMessage({
+        message: "Error is occurred from client!",
+        severity: "error",
+      });
     }
   };
 
@@ -50,8 +53,17 @@ function usePetProfile() {
         message: result.data.message,
         severity: "success",
       });
+      setTimeout(() => {
+        setAlertMessage({
+          message: "",
+          severity: "",
+        });
+      }, 4000);
     } catch (error) {
-      console.log(error);
+      setAlertMessage({
+        message: "Error is occurred from client!",
+        severity: "error",
+      });
     }
   };
 
@@ -66,12 +78,21 @@ function usePetProfile() {
           : null
       );
       // console.log(result.data.message);
-      // setAlertMessage({
-      //   message: result.data.message,
-      //   severity: "success",
-      // });
+      setAlertMessage({
+        message: result.data.message,
+        severity: "success",
+      });
+      setTimeout(() => {
+        setAlertMessage({
+          message: "",
+          severity: "",
+        });
+      }, 4000);
     } catch (error) {
-      console.log(error);
+      setAlertMessage({
+        message: "Error is occurred from client!",
+        severity: "error",
+      });
     }
   };
 

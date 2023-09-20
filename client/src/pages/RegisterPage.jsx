@@ -111,7 +111,10 @@ function Register() {
               <Form className="flex flex-col gap-5 text-left ">
                 {/* alert box *************************************** */}
                 {alertMessage ? (
-                  <Alert severity={alertMessage.severity}>
+                  <Alert
+                    severity={alertMessage.severity}
+                    sx={alertMessage.severity ? { boxShadow: 1 } : null}
+                  >
                     {alertMessage.message}
                   </Alert>
                 ) : null}

@@ -83,12 +83,12 @@ function Navbar() {
     // console.log(profileImage);
     if (isAuthenticated) {
       return (
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end ">
           <label tabIndex={0}>
             <img
               src={profileImage ? profileImage : frame2}
               alt=""
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 rounded-full cursor-pointer object-cover hover:shadow-lg"
             />
           </label>
           <ul
@@ -126,7 +126,7 @@ function Navbar() {
       <div
         className={
           isAuthenticated
-            ? "flex items-center gap-6"
+            ? "flex items-center gap-6 "
             : "flex items-center gap-4"
         }
       >

@@ -26,8 +26,8 @@ function BookingDate() {
   const params = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dateFormat = "DD MMM YYYY";
-  const now = dayjs();
-  const startInputTime = now.add(4, "hour").startOf("hour");
+
+  const startInputTime = dayjs().startOf("hour").minute(0);
   const endInputTime = startInputTime.add(30, "minute");
 
   const openModal = () => {
@@ -123,18 +123,14 @@ function BookingDate() {
           </div>
           <div className="flex items-center justify-between mb-[3.75rem]">
             <ClockIcon />
-            <input
-              id="startTime"
-              type="time"
-              className="input input-bordered w-52 hover:border-orange-500 focus:border-orange-500 "
-              onChange={(e) => setStartTime(e.target.value)}
-            />
-            -
-            <input
-              id="endTime"
-              type="time"
-              className="input input-bordered w-52 hover:border-orange-500 focus:border-orange-500"
-              onChange={(e) => setEndTime(e.target.value)}
+            <TimePicker.RangePicker
+              style={{ width: "92%", height: "48px" }}
+              format="h:mm a"
+              minuteStep={30}
+              onChange={handleTimeChange}
+              defaultValue={[startInputTime, endInputTime]}
+              inputReadOnly={true}
+              allowClear={false}
             />
           </div>
           <div

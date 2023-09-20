@@ -1,27 +1,27 @@
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
-    color: #fff;
-    background: #ff7037;
-    border-radius: 15px;
+    color: #fff !important;
+    background: #ff7037 !important;
+    border-radius: 15px !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner {
-    border-radius: 15px;
+    border-radius: 15px !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner {
-    border-radius: 15px;
-    border-radius: 15px;
+    border-radius: 15px !important;
+    border-radius: 15px !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
-    background: #ffd5c2
+    background: #ffd5c2 !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
-    background: #ffd5c2
+    background: #ffd5c2 !important;
 }
 
 .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
@@ -30,24 +30,24 @@
 }
 
 .ant-picker-focused {
-    border-color: #ff7037;
+    border-color: #ff7037 !important;
 }
 
 .ant-picker:hover,
 .ant-picker-focused {
-    border-color: #ff7037;
+    border-color: #ff7037 !important;
 }
 
 .ant-picker-focused {
-    border-color: #ff7037;
+    border-color: #ff7037 !important;
 }
 
 .ant-picker .ant-picker-input>input {
-    font-family: Satoshi;
-    font-size: 1rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%;
+    font-family: Satoshi !important;
+    font-size: 1rem !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 150% !important;
 }
 
 /* button, */

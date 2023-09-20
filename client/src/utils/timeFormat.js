@@ -6,3 +6,8 @@ function timeFormat(time) {
 }
 
 export default timeFormat;
+
+export const timeFormatForSitterReviews = function (time) {
+  const format = moment(time).format("ll");
+  return format;
+};

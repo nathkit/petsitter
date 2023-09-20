@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const petContext = React.createContext();
 
@@ -11,9 +11,8 @@ function PetProvider(props) {
   const [petIds, setPetIds] = useState([]);
 
   const navigate = useNavigate();
-  const params = useParams();
 
-  const handleDelete = async (userId,petId) => {
+  const handleDelete = async (userId, petId) => {
     try {
       const response = await axios.delete(
         `http://localhost:4000/userManagement/${userId}/pets/${petId}`
@@ -22,7 +21,7 @@ function PetProvider(props) {
         const newPetIds = petIds.filter((id) => id !== petId);
         setPetIds(newPetIds);
         console.log("Pet deleted successfully.");
-        navigate("/");
+        navigate(`/userManagement/${userId}/pets`);
       } else {
         console.error("Error deleting pet:", response.data.message);
       }

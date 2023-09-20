@@ -34,3 +34,8 @@ export function successTime(time) {
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Ensure two-digit minutes
   return `${formattedHours}:${formattedMinutes} ${ampm}`;
 }
+
+export const timeFormatForSitterReviews = function (time) {
+  const format = moment(time).format("ll");
+  return format;
+};

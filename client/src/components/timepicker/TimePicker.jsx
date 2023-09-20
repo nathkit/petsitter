@@ -71,10 +71,34 @@ function TimePicker({ selectedDate, scheduledAppointments, isStart }) {
   return (
     <div>
       <h1>Time Picker</h1>
-      <select value={selectedTime} onChange={handleTimeChange}>
-        <option value="">Select a time</option>
+      <div className="dropdown">
+        <label tabIndex={0} className="btn m-1 w-[208.5px] ">
+          {selectedTime}
+        </label>
+        <ul
+          onChange={handleTimeChange}
+          tabIndex={0}
+          className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-[208.5px] h-[264px] overflow-y-scroll grid"
+          style={{
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+          }}>
+          {validTimes.map((time, index) => (
+            <li key={index} value={time}>
+              <a>{time}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <select
+        className="text-body2 appearance-none py-3 px-4 gap-2 w-[208.5px] bg-etc-white border-gray-200 border-2 rounded-[8px]"
+        value={selectedTime}
+        onChange={handleTimeChange}>
+        <option className="h-[264px]" value="">
+          Select a time
+        </option>
         {validTimes.map((time, index) => (
-          <option key={index} value={time}>
+          <option className="h-[264px]" key={index} value={time}>
             {time}
           </option>
         ))}

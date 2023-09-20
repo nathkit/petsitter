@@ -17,16 +17,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-          (value.length + 1) +
-          ` or Lower(address_detail) like $` +
-          (value.length + 1) +
-          ` or Lower(district) like $` +
-          (value.length + 1) +
-          ` or Lower(sub_district) like $` +
-          (value.length + 1) +
-          `  or Lower(province) like $` +
-          (value.length + 1) +
-          ` )`
+        (value.length + 1) +
+        ` or Lower(address_detail) like $` +
+        (value.length + 1) +
+        ` or Lower(district) like $` +
+        (value.length + 1) +
+        ` or Lower(sub_district) like $` +
+        (value.length + 1) +
+        `  or Lower(province) like $` +
+        (value.length + 1) +
+        ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -91,7 +91,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -112,7 +112,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const skip = (page - 1) * reviewPerPage;
     const end = skip + reviewPerPage;
 
-    console.log("Database Query Result:", sitterReview.rows);
+    // console.log("Database Query Result:", sitterReview.rows);
 
     if (totalData === 0) {
       return res.status(404).json({ message: "Sitter not found" });
@@ -120,7 +120,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
 
     const paginatedReviews = sitterReview.rows.slice(skip, end);
 
-    console.log("Database Query Result:", paginatedReviews);
+    // console.log("Database Query Result:", paginatedReviews);
 
     return res.status(200).json({
       data: sitterDetails.rows,
@@ -138,13 +138,13 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => {});
+sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 
-sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {});
+sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => { });
 
 sitterManagementRouter.get(
   "/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 // Reject / Confirm /In Service
@@ -262,7 +262,7 @@ sitterManagementRouter.put(
 
 sitterManagementRouter.put(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 export default sitterManagementRouter;

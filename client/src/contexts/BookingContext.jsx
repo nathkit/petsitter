@@ -8,7 +8,7 @@ import { useAuth } from "./authentication";
 const BookingContext = React.createContext();
 
 function BookingProvider(props) {
-  const {userData} = useAuth()
+  const { userData } = useAuth();
   const [petIds, setPetIds] = useState([]);
   const [petIdsNames, setPetIdsNames] = useState({});
   const [sitterDetail, setSitterDetail] = useState([]);
@@ -21,15 +21,27 @@ function BookingProvider(props) {
   const [paymentMethod, setPaymentMethod] = useState("credit");
   const [bookingDetail, setBookingDetail] = useState({});
   const [petBookingDetail, setPetBookingDetail] = useState([]);
+  const [scheduledAppointments, setScheduledAppointments] = useState([]);
 
   const navigate = useNavigate();
 
   const getSitterDetail = async (sitterId) => {
+    // console.log(sitterId);
     try {
       const results = await axios.get(`/sitterManagement/${sitterId}`);
       // console.log(results.data.data[0]);
       // console.log(sitterId);
       setSitterDetail(results.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const getSitterSchedule = async (sitterId) => {
+    try {
+      const results = await axios.get(`/booking/sitter/${sitterId}`);
+      // console.log(results.data);
+      // console.log(sitterId);
+      setScheduledAppointments(results.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -82,6 +94,9 @@ function BookingProvider(props) {
         bookingDetail,
         petBookingDetail,
         getBookingDetail,
+        scheduledAppointments,
+        setScheduledAppointments,
+        getSitterSchedule,
       }}>
       {props.children}
     </BookingContext.Provider>

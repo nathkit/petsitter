@@ -7,7 +7,7 @@ function BookingStatusProvider({ children }) {
   const [status, setStatus] = useState([]);
 
   useEffect(() => {
-    console.log(status);
+    // console.log(status);
   }, []);
 
   return (

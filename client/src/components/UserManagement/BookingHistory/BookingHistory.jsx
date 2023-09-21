@@ -124,7 +124,7 @@ function BookingHistory() {
                 </h5>
               </div>
             </header>
-            <main className="pt-4 flex gap-x-7 items-center">
+            <main className="pt-4 flex  gap-x-7 items-start">
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Date & Time:</div>{" "}
                 <div className=" text-body3 text-gray-600">
@@ -136,12 +136,12 @@ function BookingHistory() {
                   {formatTime(card.end_date_time)}
                 </div>
               </div>
-              <img src={Line} alt="line" className="h-9" />
+              <img src={Line} alt="line" className=" mt-5 h-9" />
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Duration:</div>{" "}
                 <div className="text-gray-600">{card.duration} hours</div>
               </div>
-              <img src={Line} alt="line" className="h-9" />
+              <img src={Line} alt="line" className=" mt-5 h-9" />
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Pet:</div>
                 <div className="text-gray-600">{card.pet_names}</div>
@@ -150,7 +150,7 @@ function BookingHistory() {
             <div className=" pt-6 text-gray-400">
               <h1 className=" text-body3">Additional Message</h1>
               {/* format to array and split choose only [0] */}
-              <p className="text-gray-600">{card.messages.split(",")[0]}</p>
+              <p className="text-gray-600"> {card.messages || "N/A"}</p>
             </div>
             <div className="card-status" onClick={(e) => e.stopPropagation()}>
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}

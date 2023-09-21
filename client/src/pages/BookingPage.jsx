@@ -30,6 +30,7 @@ function BookingPage() {
     setTotalAmount,
     setPetIdsNames,
     setPetIds,
+    setBookingMessage,
   } = useBooking();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
   const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
@@ -47,6 +48,7 @@ function BookingPage() {
       setTotalAmount();
       setPetIds([]);
       setPetIdsNames({});
+      setBookingMessage("");
     }
     if (step > 1) {
       setStep(step - 1);

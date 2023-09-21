@@ -96,7 +96,16 @@ function Register() {
                   return true; // Allow empty value (optional phone number)
                 }
               )
-              .min(10, "Phone numbers should have 10 character"),
+              .test(
+                "isExactlyTenCharacters",
+                "Phone numbers should have exactly 10 characters",
+                (value) => {
+                  if (value) {
+                    return value.length === 10;
+                  }
+                  return true; // Allow empty value (optional phone number)
+                }
+              ),
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),

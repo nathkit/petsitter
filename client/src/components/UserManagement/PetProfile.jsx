@@ -37,7 +37,8 @@ function PetInputForm(props) {
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
-
+  const params = useParams();
+  const { userData } = useAuth();
   props.editPet
     ? useEffect(() => {
         getPetProfile();
@@ -297,7 +298,7 @@ function PetInputForm(props) {
       <div className="pet-input-button flex justify-between">
         <ButtonSecondary
           content="Cancel"
-          onClick={() => navigate("/userManagement/:userId/pets")}
+          onClick={() => navigate(`/userManagement/${userData.id}/pets`)}
           type="cancel"
         />{" "}
         <ButtonPrimary

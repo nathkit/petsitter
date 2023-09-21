@@ -25,8 +25,8 @@ function Navbar() {
     const authToken = JSON.parse(
       window.localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
     );
-    // console.log("1");
-    if (authToken) {
+    if (authToken?.access_token) {
+      console.log(0);
       setIsAuthenticated(true);
       return JSON.parse(window.localStorage.getItem("user"));
     }

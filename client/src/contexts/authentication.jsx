@@ -114,8 +114,12 @@ function AuthProvider(props) {
           message: serverRespond.data.message,
           severity: "success",
         });
-        formikHelpers.resetForm();
         setTimeout(() => {
+          setAlertMessage({
+            message: "",
+            severity: "",
+          });
+          formikHelpers.resetForm();
           nav("/login");
         }, 3000);
       } else {
@@ -143,8 +147,12 @@ function AuthProvider(props) {
             message: serverRespond.data.message,
             severity: "success",
           });
-          formikHelpers.resetForm();
           setTimeout(() => {
+            setAlertMessage({
+              message: "",
+              severity: "",
+            });
+            formikHelpers.resetForm();
             nav("/login");
           }, 3000);
         } else {

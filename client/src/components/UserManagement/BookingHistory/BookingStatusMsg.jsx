@@ -45,7 +45,10 @@ export function Success(props) {
       </div>
       <div>
         {props.isReview === true ? (
-          <YourReviewButton bookingId={props.bookingId} />
+          <YourReviewButton
+            bookingId={props.bookingId}
+            sitterId={props.sitterId}
+          />
         ) : (
           <ReviewButton bookingId={props.bookingId} fetch={props.fetch} />
         )}

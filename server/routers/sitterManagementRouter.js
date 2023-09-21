@@ -73,9 +73,17 @@ sitterManagementRouter.get("/", async (req, res) => {
       };
     });
 
+    const tradeImageRows = parseTypeRows.map((e) => {
+      const tradeImage = e.trade_image_path.split(",");
+      return {
+        ...e,
+        trade_image_path: tradeImage,
+      };
+    });
+
     return res.json({
       message: "Get detail successfully",
-      data: parseTypeRows,
+      data: tradeImageRows,
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);

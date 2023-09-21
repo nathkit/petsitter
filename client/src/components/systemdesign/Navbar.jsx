@@ -126,8 +126,8 @@ function Navbar() {
             : "flex items-center gap-4"
         }>
         <ButtonSitter
-          content={isPetSitter ? "Pet Sitter" : "Become A Pet Sitter"}
-          width={isPetSitter ? "150px" : "230px"}
+          content={isPetSitter ? "For Pet Sitter" : "Become A Pet Sitter"}
+          width={isPetSitter ? "200px" : "240px"}
         />
         <LoginButton />
         <div>

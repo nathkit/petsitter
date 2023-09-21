@@ -19,7 +19,7 @@ function SitterCardList({ items }) {
               hover:border-solid hover:border-[1px]"
             >
               <img
-                src={card.trade_image_path}
+                src={card.trade_image_path[0]}
                 alt={card.trade_name}
                 className="object-cover w-[245px] h-[184px] rounded-[8px]"
               />
@@ -42,9 +42,11 @@ function SitterCardList({ items }) {
                     </span>
                   </div>
                   <div className="flex w-[120px] h-[32px] p-[6px] gap-[2px] justify-end">
-                    {Array.from({ length: card.avg_rating }).map((_, index) => (
-                      <StarIcon key={index} color="#1CCD83" />
-                    ))}
+                    {Array.from({ length: Math.floor(card.avg_rating) }).map(
+                      (_, index) => (
+                        <StarIcon key={index} color="#1CCD83" />
+                      )
+                    )}
                   </div>
                 </div>
                 <div className="flex gap-[6px]">

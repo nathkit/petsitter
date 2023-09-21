@@ -27,8 +27,8 @@ function BookingDate() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dateFormat = "DD MMM YYYY";
 
-  const startInputTime = dayjs().startOf("hour").minute(0);
-  const endInputTime = startInputTime.add(30, "minute");
+  const startInputTime = dayjs().add(3, "hour").startOf("hour").minute(0);
+  const endInputTime = startInputTime.add(3, "hour");
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -61,26 +61,36 @@ function BookingDate() {
       setEndDate(`${endYear}-${endMonth}-${endDay}`);
     }
   };
-  // console.log(`${startDate}  ${startTime}`);
-  // console.log(`${endDate}  ${endTime}`);
+  // console.log(`${startDate} `);
+  // console.log(`${endDate}  `);
 
   const handleTimeChange = (selectedTimes) => {
     if (selectedTimes.length === 2) {
       const start = selectedTimes[0];
       const end = selectedTimes[1];
-
+      console.log("start", start);
       const startTimeString = start.format("h:mm a");
       const endTimeString = end.format("h:mm a");
 
       // คำนวณเวลาปัจจุบัน
       const currentTime = dayjs();
+
       // แปลงเวลาที่ผู้ใช้เลือกมาเป็น Day.js object
       const selectedStartTime = dayjs(startTimeString, "h:mm a");
       // เพิ่ม 3 ชั่วโมงเพื่อให้ผู้ใช้จองล่วงหน้า
-      const minimumBookingTime = currentTime.add(3, "hour");
-
+      const minimumBookingTime = currentTime.add(1, "hour");
+      console.log(startTimeString);
+      console.log(endTimeString);
+      console.log("currentTime", currentTime);
+      console.log("minimumBookingTime", minimumBookingTime);
+      console.log(
+        "selectedStartTime.isAfter(minimumBookingTime)",
+        selectedStartTime.isAfter(minimumBookingTime)
+      );
+      console.log("selectedStartTime", selectedStartTime);
       // ตรวจสอบว่าเวลาที่ผู้ใช้เลือกมาอยู่หลังเวลาขั้นต่ำหรือไม่
       if (selectedStartTime.isAfter(minimumBookingTime)) {
+        // console.log(selectedStartTime.isAfter(minimumBookingTime));
         setStartTime(startTimeString);
         setEndTime(endTimeString);
       } else {
@@ -111,6 +121,8 @@ function BookingDate() {
         <div className="w-full h-full ">
           <p className="mb-6 text-body1 text-start">
             Select date and time you want to schedule the service.
+            <br />
+            Booking at least 3 hours in advance, please.
           </p>
           <div className="mb-6 flex items-center justify-between">
             <CalendarIcon />
@@ -125,7 +137,7 @@ function BookingDate() {
             <ClockIcon />
             <TimePicker.RangePicker
               style={{ width: "92%", height: "48px" }}
-              format="h:mm a"
+              format="h:mm "
               minuteStep={30}
               onChange={handleTimeChange}
               defaultValue={[startInputTime, endInputTime]}

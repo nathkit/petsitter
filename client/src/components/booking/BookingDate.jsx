@@ -68,39 +68,46 @@ function BookingDate() {
     if (selectedTimes.length === 2) {
       const start = selectedTimes[0];
       const end = selectedTimes[1];
-      console.log("start", start);
+
       const startTimeString = start.format("h:mm a");
       const endTimeString = end.format("h:mm a");
 
-      // คำนวณเวลาปัจจุบัน
       const currentTime = dayjs();
 
-      // แปลงเวลาที่ผู้ใช้เลือกมาเป็น Day.js object
       const selectedStartTime = dayjs(startTimeString, "h:mm a");
-      // เพิ่ม 3 ชั่วโมงเพื่อให้ผู้ใช้จองล่วงหน้า
-      const minimumBookingTime = currentTime.add(1, "hour");
-      console.log(startTimeString);
-      console.log(endTimeString);
-      console.log("currentTime", currentTime);
-      console.log("minimumBookingTime", minimumBookingTime);
-      console.log(
-        "selectedStartTime.isAfter(minimumBookingTime)",
-        selectedStartTime.isAfter(minimumBookingTime)
-      );
-      console.log("selectedStartTime", selectedStartTime);
-      // ตรวจสอบว่าเวลาที่ผู้ใช้เลือกมาอยู่หลังเวลาขั้นต่ำหรือไม่
-      if (selectedStartTime.isAfter(minimumBookingTime)) {
-        // console.log(selectedStartTime.isAfter(minimumBookingTime));
+      const selectedEndTime = dayjs(endTimeString, "h:mm a");
+      const minimumBookingTime = currentTime.add(3, "hour");
+      const date1 = dayjs(startDate);
+      const date2 = dayjs(endDate);
+
+      const date11 = new Date(selectedStartTime.$d);
+      const date22 = new Date(selectedEndTime.$d);
+
+      const time1 =
+        date11.getHours() * 3600 +
+        date11.getMinutes() * 60 +
+        date11.getSeconds();
+      const time2 =
+        date22.getHours() * 3600 +
+        date22.getMinutes() * 60 +
+        date22.getSeconds();
+      if (
+        selectedStartTime.isAfter(minimumBookingTime) &&
+        date1.$D == date2.$D
+      ) {
         setStartTime(startTimeString);
         setEndTime(endTimeString);
-      } else {
-        // แสดงข้อความแจ้งเตือนหรือให้ผู้ใช้ทราบว่าต้องจองล่วงหน้าอย่างน้อย 3 ชั่วโมง
+      } else if (
+        !selectedStartTime.isAfter(minimumBookingTime) &&
+        date1.$D == date2.$D
+      ) {
         alert("Please select a booking time at least 3 hours in advance.");
+      } else if (date1.isBefore(date2) && time2 < time1) {
+        setStartTime(startTimeString);
+        setEndTime(endTimeString);
       }
     }
   };
-  // console.log(startTime);
-  // console.log(endTime);
 
   localStorage.setItem(
     "bookingTime",
@@ -137,12 +144,13 @@ function BookingDate() {
             <ClockIcon />
             <TimePicker.RangePicker
               style={{ width: "92%", height: "48px" }}
-              format="h:mm "
+              format="h:mm a"
               minuteStep={30}
               onChange={handleTimeChange}
-              defaultValue={[startInputTime, endInputTime]}
+              // defaultValue={[startInputTime, endInputTime]}
               inputReadOnly={true}
               allowClear={false}
+              order={false}
             />
           </div>
           <div

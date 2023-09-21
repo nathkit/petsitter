@@ -7,6 +7,7 @@ const authRouter = Router();
 
 // login router ****************************
 authRouter.post("/login", async (req, res) => {
+  // console.log("nknkn");
   let query = "select * from users where email = $1";
   let value = [req.body.email];
   let result;
@@ -17,12 +18,18 @@ authRouter.post("/login", async (req, res) => {
     if (!valid.rows.length) {
       return res.json({ message: "Invalid email!" });
     }
-    // check password condition **********************
-    const resPassword = valid.rows[0].password;
-    const validPassword = await bcrypt.compare(req.body.password, resPassword);
-    if (!validPassword) {
-      return res.json({ message: "Invalid password!" });
+    if (req.body.password) {
+      // check password condition **********************
+      const resPassword = valid.rows[0].password;
+      const validPassword = await bcrypt.compare(
+        req.body.password,
+        resPassword
+      );
+      if (!validPassword) {
+        return res.json({ message: "Invalid password!" });
+      }
     }
+
     result = valid.rows[0];
     //  get url by result.image_name from supabase storage url ********************
   } catch (err) {
@@ -133,6 +140,32 @@ authRouter.put("/resetPassword", async (req, res) => {
     return res.json({ message: "Error is occured!" });
   }
   return res.json({ message: "Reset password successfully" });
+});
+
+// google auth first regiter ************************************************************
+authRouter.post("/googleRegister", async (req, res) => {
+  const user = { ...req.body, created_at: new Date(), updated_at: new Date() };
+  const query = `insert into users(email,google_auth_id,created_at,updated_at)
+                 values($1,$2,$3,$4)`;
+  const values = Object.values(user);
+  // console.log(user);
+  let result;
+  try {
+    // console.log("kkkk");
+    await pool.query(query, values);
+    result = await pool.query(`select * from users where google_auth_id = $1`, [
+      user.googleId,
+    ]);
+    // console.log("2222");
+  } catch (err) {
+    // console.log("3");
+    return res.json({ message: "Error is occurred!" });
+  }
+  // console.log("4");
+  return res.json({
+    message: "User profile has been created successfully",
+    data: result.rows[0],
+  });
 });
 
 export default authRouter;

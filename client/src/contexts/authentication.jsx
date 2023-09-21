@@ -60,6 +60,25 @@ function AuthProvider(props) {
     }
   };
 
+  const checkGooggleFirstSignIn = async (data) => {
+    console.log("loop1");
+    try {
+      let serverRespond = await axios.post("/auth/login", data);
+      if (
+        serverRespond.data.message === "User has been verified successfully"
+      ) {
+        setUserData(serverRespond.data.data);
+        localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
+      } else {
+        serverRespond = await axios.post("/auth/googleRegister", data);
+        setUserData(serverRespond.data.data);
+        localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -188,6 +207,7 @@ function AuthProvider(props) {
         handleRegisterSubmit,
         signInWithFacebook,
         signInWithGoogle,
+        checkGooggleFirstSignIn,
         handleLoginSubmit,
         sendRequestResetPassword,
         handleResetPasswordSubmit,
@@ -202,7 +222,8 @@ function AuthProvider(props) {
         userData,
         isAuthenticated,
         isPetSitter,
-      }}>
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

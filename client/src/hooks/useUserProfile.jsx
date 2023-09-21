@@ -18,18 +18,25 @@ function useUserProfile() {
             }
           : null
       );
-      setUserData(serverRespond.data.data);
-      localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
-      setAlertMessage({
-        message: serverRespond.data.message,
-        severity: "success",
-      });
-      setTimeout(() => {
+      if (serverRespond.data.message === "Updated user successfully.") {
+        setUserData(serverRespond.data.data);
+        localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
         setAlertMessage({
-          message: "",
-          severity: "",
+          message: serverRespond.data.message,
+          severity: "success",
         });
-      }, 4000);
+        setTimeout(() => {
+          setAlertMessage({
+            message: "",
+            severity: "",
+          });
+        }, 4000);
+      } else {
+        setAlertMessage({
+          message: serverRespond.data.message,
+          severity: "info",
+        });
+      }
     } catch (err) {
       setAlertMessage({
         message: "Error is occured!",

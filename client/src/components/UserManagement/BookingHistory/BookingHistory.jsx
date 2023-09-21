@@ -11,7 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { timeFormat, dateFormat , formatTime } from "../../../utils/timeFormat";
+import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
@@ -56,6 +56,24 @@ function BookingHistory() {
     });
     setBookingHistory(updatedBookingHistory);
   };
+
+  function getFirstSentencesFromMessages(jsonData) {
+    // Extract the "messages" field from the JSON data
+    const messages = jsonData.data.map((item) => item.messages);
+
+    // Create an array to store the first sentences
+    const firstSentences = messages.map((message) => {
+      // Split the message into sentences using a regular expression
+      const sentences = message.split(/[.!?]/);
+
+      // Select the first sentence (the [0] index) and trim any leading/trailing spaces
+      const firstSentence = sentences[0].trim();
+
+      return firstSentence;
+    });
+
+    return firstSentences;
+  }
 
   return (
     <section className="booking-history flex flex-col gap-6">
@@ -124,24 +142,24 @@ function BookingHistory() {
                 </h5>
               </div>
             </header>
-            <main className="pt-4 flex gap-x-7 items-center">
+            <main className="pt-4 flex  gap-x-7 items-start">
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Date & Time:</div>{" "}
                 <div className=" text-body3 text-gray-600">
                   {dateFormat(card.start_date_time)} |{" "}
-                  {formatTime(card.start_date_time)} {" "}
+                  {formatTime(card.start_date_time)}{" "}
                 </div>
                 <div className=" text-body3 text-gray-600">
                   {dateFormat(card.end_date_time)} |{" "}
                   {formatTime(card.end_date_time)}
                 </div>
               </div>
-              <img src={Line} alt="line" className="h-9" />
+              <img src={Line} alt="line" className=" mt-5 h-9" />
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Duration:</div>{" "}
                 <div className="text-gray-600">{card.duration} hours</div>
               </div>
-              <img src={Line} alt="line" className="h-9" />
+              <img src={Line} alt="line" className=" mt-5 h-9" />
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Pet:</div>
                 <div className="text-gray-600">{card.pet_names}</div>
@@ -150,7 +168,7 @@ function BookingHistory() {
             <div className=" pt-6 text-gray-400">
               <h1 className=" text-body3">Additional Message</h1>
               {/* format to array and split choose only [0] */}
-              <p className="text-gray-600">{card.messages.split(",")[0]}</p>
+              <p className="text-gray-600"> {card.messages || "N/A"}</p>
             </div>
             <div className="card-status" onClick={(e) => e.stopPropagation()}>
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}

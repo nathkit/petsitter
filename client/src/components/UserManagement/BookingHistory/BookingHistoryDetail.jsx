@@ -6,6 +6,9 @@ import axios from "axios";
 // import { formatTime } from "../BookingHistory/BookingHistory.jsx";
 import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
 
+
+
+
 function BookingHistoryDetail({ card }) {
   return (
     <dialog id={`booking-detail-${card.booking_no}`} className="modal ">
@@ -74,12 +77,12 @@ function BookingHistoryDetail({ card }) {
 
             <div className="flex flex-col ">
               <div className=" text-body3 text-gray-400">Pet:</div>
-              <div className=" text-body2 text-gray-600">{card.pet_names}</div>
+              <div className=" text-body2 text-gray-600">{card.name}</div>
             </div>
           </main>
           <div className=" pb-2 text-gray-400">
             <h1 className=" text-body3">Additional Message</h1>
-            <p className="text-gray-600">{card.messages}</p>
+            <p className="text-gray-600">{card.messages || "N/A"}</p>
           </div>
           <hr />
           <div className="flex justify-between">

@@ -110,7 +110,7 @@ function SitterDetail() {
               </h2>
               <h4 className="text-[20px] m-0">
                 {" "}
-                {sitterDetail[0]?.sitter_name}{" "}
+                {sitterDetail[0]?.full_name}{" "}
                 <span className="text-[16px] text-green-500">
                   {" "}
                   {sitterDetail[0]?.experience} Years Exp.

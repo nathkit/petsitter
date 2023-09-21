@@ -7,7 +7,7 @@ function PetListPage() {
     <>
       <Sidebar>
         <CardPet1 />
-        {/* <PaymentGateway /> */}
+        <PaymentGateway />
       </Sidebar>
     </>
   );

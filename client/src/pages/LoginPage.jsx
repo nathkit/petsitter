@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
-import { TextField, Box, Tabs, Tab, IconButton, Alert } from "@mui/material";
+import { TextField, Box, IconButton, Alert } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   ButtonPrimary,
@@ -16,8 +16,6 @@ import { useAuth } from "../contexts/authentication.jsx";
 
 function LoginPage() {
   const nav = useNavigate();
-
-  // supabase handle ****************************************
   const {
     signInWithFacebook,
     signInWithGoogle,
@@ -27,11 +25,6 @@ function LoginPage() {
     alertMessage,
     setAlertMessage,
   } = useAuth();
-
-  const initialValues = {
-    email: "",
-    password: "",
-  };
 
   useEffect(() => {
     setAlertMessage({
@@ -43,12 +36,12 @@ function LoginPage() {
   return (
     <div className="bg-etc-white m-0 p-0  min-h-screen w-full relative flex justify-center ">
       {/* image ************************************* */}
-      <div className="h-[35%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
-        <div className="absolute top-0 left-7 rotate-45">
-          <Ellipse15 />
+      <div className="h-[38%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
+        <div className="absolute top-0 left-7 rotate-45 scale-90">
+          <Ellipse15 width="100%" color="#76D0FC" />
         </div>
-        <div className="absolute w-auto bottom-[-5.5rem] left-[-5rem] rotate-90">
-          <Star1 width="310" height="310" />
+        <div className="absolute bottom-[-5.5rem] left-[-4.5rem] rotate-90">
+          <Star1 width="100%" height="310" />
         </div>
       </div>
       <div className="h-[45%] w-[15%]  absolute top-0 right-0 overflow-hidden">
@@ -60,12 +53,13 @@ function LoginPage() {
       {/* input box ************************************ */}
       <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col">
         {/* header **************************************** */}
-        <Box className="mb-[1rem] ">
+        <Box>
           <p
             className="text-headline1 text-etc-black cursor-pointer"
             onClick={() => {
               nav("/");
-            }}>
+            }}
+          >
             Welcome back!
           </p>
           <p className="text-headline4">Find your perfect pet sitter with us</p>
@@ -73,7 +67,10 @@ function LoginPage() {
 
         {/* form ************************************* */}
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            email: "",
+            password: "",
+          }}
           onSubmit={(values, formikHelpers) => {
             handleLoginSubmit(values, formikHelpers);
           }}
@@ -84,7 +81,8 @@ function LoginPage() {
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),
-          })}>
+          })}
+        >
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
@@ -100,7 +98,8 @@ function LoginPage() {
                 {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="email">
+                  htmlFor="email"
+                >
                   Email address
                 </label>
                 <Field
@@ -119,7 +118,8 @@ function LoginPage() {
                 {/* password ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium relative"
-                  htmlFor="passsword">
+                  htmlFor="passsword"
+                >
                   Password
                 </label>
                 <Box className="relative">
@@ -135,9 +135,8 @@ function LoginPage() {
                     error={
                       Boolean(errors.password) && Boolean(touched.password)
                     }
-                    helperText={
-                      Boolean(touched.password) && errors.password
-                    }></Field>
+                    helperText={Boolean(touched.password) && errors.password}
+                  ></Field>
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
@@ -146,7 +145,8 @@ function LoginPage() {
                       top: "0.5rem",
                       right: "1rem",
                       color: `${showPassword ? "red" : null}`,
-                    }}>
+                    }}
+                  >
                     <VisibilityIcon />
                   </IconButton>
                 </Box>

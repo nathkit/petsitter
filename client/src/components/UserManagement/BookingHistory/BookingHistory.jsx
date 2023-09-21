@@ -12,16 +12,16 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
+import { useAuth } from "../../../contexts/authentication";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
   const params = useParams();
+  const { userData } = useAuth();
 
   const getBookingDetail = async () => {
     try {
-      const results = await axios.get(
-        `/userManagement/${params.userId}/booking`
-      );
+      const results = await axios.get(`/userManagement/${userData.id}/booking`);
       console.log(params.userId);
       console.log(params.bookingId);
       console.log(results);
@@ -159,6 +159,7 @@ function BookingHistory() {
               {card.statuses === "Success" && (
                 <Success
                   bookingId={card.booking_no}
+                  sitterId={card.pet_sitter_id}
                   isReview={!!card.review_id}
                   fetch={getBookingDetail}
                 />

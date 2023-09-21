@@ -16,10 +16,6 @@ import { useAuth } from "../contexts/authentication.jsx";
 
 function Register() {
   const nav = useNavigate();
-  // const [facebookLogin, SetFacebookLogin] = useState(false);
-  // const [googleLogin, SetGoogleLogin] = useState(false);
-
-  // supabase handle ****************************************
   const {
     handleRegisterSubmit,
     signInWithFacebook,
@@ -30,13 +26,6 @@ function Register() {
     setAlertMessage,
   } = useAuth();
 
-  const initialValues = {
-    email: "",
-    fullName: "",
-    phone: "",
-    password: "",
-  };
-
   useEffect(() => {
     setAlertMessage({
       message: "",
@@ -45,13 +34,13 @@ function Register() {
   }, []);
 
   return (
-    <div className="bg-etc-white h-screen w-full relative flex justify-center ">
+    <div className="bg-etc-white h-auto w-full relative flex justify-center ">
       {/* image ************************************* */}
       <div className="h-[32%] w-[30%]  absolute bottom-0 left-0 overflow-hidden">
-        <div className="absolute top-0 left-[10%] rotate-45">
-          <Ellipse15 width="100%" />
+        <div className="absolute top-0 left-7 rotate-45 scale-90">
+          <Ellipse15 width="100%" color="#76D0FC" />
         </div>
-        <div className="absolute bottom-[-5.5rem] left-[-5rem] rotate-90">
+        <div className="absolute bottom-[-5.5rem] left-[-4.5rem] rotate-90">
           <Star1 width="100%" height="310" />
         </div>
       </div>
@@ -64,12 +53,13 @@ function Register() {
       {/* input box ************************************ */}
       <Box className="w-[30%] my-[5%] text-center pb-[24px] gap-[32px] flex flex-col">
         {/* header **************************************** */}
-        <Box className="mb-[1rem] ">
+        <Box>
           <p
             className="text-headline1 text-etc-black cursor-pointer"
             onClick={() => {
               nav("/");
-            }}>
+            }}
+          >
             Join Us!
           </p>
           <p className="text-headline4">Find your perfect pet stter with us</p>
@@ -77,7 +67,12 @@ function Register() {
 
         {/* form ************************************* */}
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            email: "",
+            fullName: "",
+            phone: "",
+            password: "",
+          }}
           onSubmit={(values, formikHelpers) => {
             handleRegisterSubmit(values, formikHelpers);
           }}
@@ -105,7 +100,8 @@ function Register() {
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),
-          })}>
+          })}
+        >
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
@@ -122,7 +118,8 @@ function Register() {
                 {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="email">
+                  htmlFor="email"
+                >
                   Email address
                 </label>
                 <Field
@@ -141,7 +138,8 @@ function Register() {
                 {/* full name ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="fullName">
+                  htmlFor="fullName"
+                >
                   Your name
                 </label>
                 <Field
@@ -160,7 +158,8 @@ function Register() {
                 {/* phone ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="phone">
+                  htmlFor="phone"
+                >
                   Phone numbers
                 </label>
                 <Field
@@ -179,7 +178,8 @@ function Register() {
                 {/* password ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="passsword">
+                  htmlFor="passsword"
+                >
                   Password
                 </label>
                 <Box className="relative">
@@ -195,9 +195,8 @@ function Register() {
                     error={
                       Boolean(errors.password) && Boolean(touched.password)
                     }
-                    helperText={
-                      Boolean(touched.password) && errors.password
-                    }></Field>
+                    helperText={Boolean(touched.password) && errors.password}
+                  ></Field>
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
@@ -206,7 +205,8 @@ function Register() {
                       top: "0.5rem",
                       right: "1rem",
                       color: `${showPassword ? "red" : null}`,
-                    }}>
+                    }}
+                  >
                     <VisibilityIcon />
                   </IconButton>
                 </Box>

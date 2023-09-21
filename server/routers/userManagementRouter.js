@@ -5,7 +5,6 @@ import { supabase, supabaseUpload } from "../utils/supabase.js";
 
 const userManagementRouter = Router();
 const multerUpload = multer({
-  dest: "uploads/",
   limits: {
     fileSize: 2 * 1024 * 1024, // 2 MB in bytes
   },

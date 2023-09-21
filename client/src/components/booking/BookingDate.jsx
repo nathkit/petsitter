@@ -147,7 +147,7 @@ function BookingDate() {
               format="h:mm a"
               minuteStep={30}
               onChange={handleTimeChange}
-              // defaultValue={[startInputTime, endInputTime]}
+              defaultValue={[startInputTime, endInputTime]}
               inputReadOnly={true}
               allowClear={false}
               order={false}

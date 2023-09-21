@@ -1,4 +1,3 @@
-import React from "react";
 import { StarIcon, MapMakerIcon } from "../systemdesign/Icons.jsx";
 import {
   DogType,

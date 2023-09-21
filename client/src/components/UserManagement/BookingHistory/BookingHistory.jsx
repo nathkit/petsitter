@@ -16,13 +16,16 @@ import { useAuth } from "../../../contexts/authentication";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
+
   const params = useParams();
   const { userData } = useAuth();
 
   const getBookingDetail = async () => {
     try {
-      const results = await axios.get(`/userManagement/${userData.id}/booking`);
-      console.log(params.userId);
+      const results = await axios.get(
+        `/userManagement/${userData.id}/booking`
+      );
+      console.log("userData",userData.id);
       console.log(params.bookingId);
       console.log(results);
       const uniqueBookings = removeDuplicates(results.data.data, "booking_no");
@@ -34,7 +37,7 @@ function BookingHistory() {
 
   useEffect(() => {
     getBookingDetail();
-  }, []);
+  }, [userData]);
 
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status //เอาไปใช้ต่อ
   const handleClick = (id) => {
@@ -60,8 +63,8 @@ function BookingHistory() {
   return (
     <section className="booking-history flex flex-col gap-6">
       <p className=" pb-[60px] text-headline3">Booking History</p>
-      {bookingHistory.map((card) => {
-        return (
+      {bookingHistory && bookingHistory.length > 0 ? (
+        bookingHistory.map((card) => (
           <div
             className={`booking-history-container rounded-2xl p-6 hover:shadow-md transform transition-transform hover:scale-105   ${
               card.statuses === "In service"
@@ -97,7 +100,9 @@ function BookingHistory() {
                 />
                 <div>
                   <h1 className=" text-headline3">{card.trade_name}</h1>
-                  <h3 className=" text-body1">By {card.full_name}</h3>
+                  <h3 className=" text-body1">
+                    By {card.pet_sitter_full_name}
+                  </h3>
                 </div>
               </div>
               <div>
@@ -150,7 +155,9 @@ function BookingHistory() {
             <div className=" pt-6 text-gray-400">
               <h1 className=" text-body3">Additional Message</h1>
               {/* format to array and split choose only [0] */}
-              <p className="text-gray-600"> {card.messages || "N/A"}</p>
+              <p className="text-gray-600">
+                {card.message || "No additional message"}
+              </p>
             </div>
             <div className="card-status" onClick={(e) => e.stopPropagation()}>
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}
@@ -167,8 +174,10 @@ function BookingHistory() {
               {card.statuses === "Canceled" && <Canceled />}
             </div>
           </div>
-        );
-      })}
+        ))
+      ) : (
+        <p className="text-center"> No available booking 🐾 </p>
+      )}
     </section>
   );
 }

@@ -18,11 +18,8 @@ export function dateTimeFormat(time) {
 
 
 export function formatTime(time) {
-  const date = new Date(time);
-  const hours = date.getUTCHours(time);
-  const ampm = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  return `${formattedHours} ${ampm}`;
+  const format = moment(time).format("LT");
+  return format;
 }
 
 export function successTime(time) {

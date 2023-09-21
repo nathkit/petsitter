@@ -312,11 +312,12 @@ function PetInputForm(props) {
 
 export function TurnBack() {
   const navigate = useNavigate();
+  const { userData } = useAuth();
   return (
     <div
       className=" bg-etc-white h-[3rem] flex justify-between items-center mb-[60px] cursor-pointer"
       onClick={() => {
-        navigate("/userManagement/:userId/pets");
+        navigate(`/userManagement/${userData.id}/pets`);
       }}
     >
       <p className=" text-headline3 flex items-center gap-[10px]">

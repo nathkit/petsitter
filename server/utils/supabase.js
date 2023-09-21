@@ -14,19 +14,17 @@ export const supabaseUpload = async (file, avatarName, breed) => {
   } else {
     bucketName = "userAvatar";
   }
-  // need to use fs for read file.path first *********************************
-  const rawData = fs.readFileSync(file.path);
   // delete avatar bofore upload condition because cannot directly replace there is bug on supabase storage replace query ********************************
   if (avatarName) {
     await supabase.storage.from("avatars").remove([avatarName]);
     avatarName = `${bucketName}/${uniqueName}`;
-    await supabase.storage.from("avatars").upload(avatarName, rawData, {
+    await supabase.storage.from("avatars").upload(avatarName, file.buffer, {
       contentType: file.mimetype,
     });
     // console.log("1");
   } else {
     avatarName = `${bucketName}/${uniqueName}`;
-    await supabase.storage.from("avatars").upload(avatarName, rawData, {
+    await supabase.storage.from("avatars").upload(avatarName, file.buffer, {
       contentType: file.mimetype,
     });
     // console.log("2");

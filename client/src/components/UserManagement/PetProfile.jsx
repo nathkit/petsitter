@@ -10,7 +10,7 @@ import { UploadPetImage } from "../../components/systemdesign/uploadImage";
 import { Box } from "@mui/system";
 import { Delete } from "../../components/booking/Confirmation";
 import usePosts from "../../hooks/usePost";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePet } from "../../contexts/petContext";
 import usePetProfile from "../../hooks/usePetProfile";
 import { useAuth } from "../../contexts/authentication";

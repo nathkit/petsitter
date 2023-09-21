@@ -11,17 +11,17 @@ import {
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { timeFormat, dateFormat , formatTime } from "../../../utils/timeFormat";
+import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
+import { useAuth } from "../../../contexts/authentication";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
   const params = useParams();
+  const { userData } = useAuth();
 
   const getBookingDetail = async () => {
     try {
-      const results = await axios.get(
-        `/userManagement/${params.userId}/booking`
-      );
+      const results = await axios.get(`/userManagement/${userData.id}/booking`);
       console.log(params.userId);
       console.log(params.bookingId);
       console.log(results);
@@ -129,7 +129,7 @@ function BookingHistory() {
                 <div className=" text-body3">Date & Time:</div>{" "}
                 <div className=" text-body3 text-gray-600">
                   {dateFormat(card.start_date_time)} |{" "}
-                  {formatTime(card.start_date_time)} {" "}
+                  {formatTime(card.start_date_time)}{" "}
                 </div>
                 <div className=" text-body3 text-gray-600">
                   {dateFormat(card.end_date_time)} |{" "}

@@ -195,7 +195,7 @@ function AuthProvider(props) {
     nav("login");
   };
 
-  const isAuthenticated = boolean(
+  const isAuthenticated = Boolean(
     localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
   );
 

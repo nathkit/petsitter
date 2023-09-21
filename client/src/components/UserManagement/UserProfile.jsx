@@ -73,6 +73,8 @@ const profile = () => {
     initialValues.dateOfBirth = date;
     setUser(newUser);
   }, []);
+  const today = dayjs();
+  const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : null));
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,

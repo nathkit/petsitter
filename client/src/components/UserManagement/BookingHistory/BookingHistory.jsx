@@ -22,10 +22,8 @@ function BookingHistory() {
 
   const getBookingDetail = async () => {
     try {
-      const results = await axios.get(
-        `/userManagement/${userData.id}/booking`
-      );
-      console.log("userData",userData.id);
+      const results = await axios.get(`/userManagement/${userData.id}/booking`);
+      console.log("userData", userData.id);
       console.log(params.bookingId);
       console.log(results);
       const uniqueBookings = removeDuplicates(results.data.data, "booking_no");
@@ -166,7 +164,7 @@ function BookingHistory() {
               {card.statuses === "Success" && (
                 <Success
                   bookingId={card.booking_no}
-                  sitterId={card.pet_sitter_id}
+                  sitterId={card.id}
                   isReview={!!card.review_id}
                   fetch={getBookingDetail}
                 />

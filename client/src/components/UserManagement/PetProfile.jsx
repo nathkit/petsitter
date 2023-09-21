@@ -46,9 +46,9 @@ function PetInputForm(props) {
   // console.log(petAvatarFile);
   // console.log(petDataById);
   // console.log(props.editPet);
-  useEffect(() => {
-    getPetProfile();
-  }, []);
+  // useEffect(() => {
+  //   getPetProfile();
+  // }, []);
 
   const formik = useFormik({
     initialValues: props.editPet

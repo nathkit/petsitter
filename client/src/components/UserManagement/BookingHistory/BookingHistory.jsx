@@ -56,6 +56,24 @@ function BookingHistory() {
     });
     setBookingHistory(updatedBookingHistory);
   };
+  
+  function getFirstSentencesFromMessages(jsonData) {
+    // Extract the "messages" field from the JSON data
+    const messages = jsonData.data.map((item) => item.messages);
+
+    // Create an array to store the first sentences
+    const firstSentences = messages.map((message) => {
+      // Split the message into sentences using a regular expression
+      const sentences = message.split(/[.!?]/);
+
+      // Select the first sentence (the [0] index) and trim any leading/trailing spaces
+      const firstSentence = sentences[0].trim();
+
+      return firstSentence;
+    });
+
+    return firstSentences;
+  }
 
   function getFirstSentencesFromMessages(jsonData) {
     // Extract the "messages" field from the JSON data

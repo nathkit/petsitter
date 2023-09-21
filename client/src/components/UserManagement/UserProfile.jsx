@@ -55,7 +55,6 @@ const profile = () => {
   const [user, setUser] = useState({});
 
   const initialValues = {};
-  const today = dayjs();
 
   useEffect(() => {
     setAlertMessage({
@@ -63,9 +62,6 @@ const profile = () => {
       severity: "",
     });
     const newUser = JSON.parse(window.localStorage.getItem("user"));
-    const date = dayjs(
-      new Date(newUser.dateOfbirth ? newUser.dateOfbirth : today)
-    );
     initialValues.fullName = newUser.fullName;
     initialValues.email = newUser.email;
     initialValues.idNumber = newUser.idNumber;

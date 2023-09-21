@@ -30,7 +30,7 @@ function booking1({ setDisableButtonBooking1 }) {
       // ลบ petId ที่เกี่ยวข้องออกจาก petId
       updatedPetIds = updatedPetIds.filter((id) => id !== petId);
 
-      // Remove the petId from the petIdNameMapping object
+      // Remove the petId from the Mapping object
       delete updatedPets[petId];
     } else {
       // ถ้ายังไม่มีให้เพิ่ม index เข้าไปใน selectedButtons

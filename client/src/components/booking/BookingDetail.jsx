@@ -33,8 +33,7 @@ export default function BookingDatail() {
         <div className="pb-6">
           <p className="text-body3">Pet Sitter:</p>
           <p className="text-body2">
-            {sitterDetail[0]?.trade_name}&nbsp; By{" "}
-            {sitterDetail[0]?.sitter_name}
+            {sitterDetail[0]?.trade_name}&nbsp; By {sitterDetail[0]?.full_name}
           </p>
         </div>
         <div className="pb-6">

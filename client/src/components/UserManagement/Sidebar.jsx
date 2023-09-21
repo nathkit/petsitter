@@ -8,7 +8,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication";
 import { useParams } from "react-router-dom";
-
 import UserProfile from "../UserManagement/UserProfile";
 import BookingHistory from "./BookingHistory/BookingHistory";
 import { CreatePet, EditPet } from "./PetProfile";

@@ -56,45 +56,6 @@ function BookingHistory() {
     });
     setBookingHistory(updatedBookingHistory);
   };
-  
-  function getFirstSentencesFromMessages(jsonData) {
-    // Extract the "messages" field from the JSON data
-    const messages = jsonData.data.map((item) => item.messages);
-
-    // Create an array to store the first sentences
-    const firstSentences = messages.map((message) => {
-      // Split the message into sentences using a regular expression
-      const sentences = message.split(/[.!?]/);
-
-      // Select the first sentence (the [0] index) and trim any leading/trailing spaces
-      const firstSentence = sentences[0].trim();
-
-      return firstSentence;
-    });
-
-    return firstSentences;
-  }
-<<<<<<< Updated upstream
-
-  function getFirstSentencesFromMessages(jsonData) {
-    // Extract the "messages" field from the JSON data
-    const messages = jsonData.data.map((item) => item.messages);
-
-    // Create an array to store the first sentences
-    const firstSentences = messages.map((message) => {
-      // Split the message into sentences using a regular expression
-      const sentences = message.split(/[.!?]/);
-
-      // Select the first sentence (the [0] index) and trim any leading/trailing spaces
-      const firstSentence = sentences[0].trim();
-
-      return firstSentence;
-    });
-
-    return firstSentences;
-  }
-=======
->>>>>>> Stashed changes
 
   return (
     <section className="booking-history flex flex-col gap-6">
@@ -189,11 +150,7 @@ function BookingHistory() {
             <div className=" pt-6 text-gray-400">
               <h1 className=" text-body3">Additional Message</h1>
               {/* format to array and split choose only [0] */}
-<<<<<<< Updated upstream
               <p className="text-gray-600"> {card.messages || "N/A"}</p>
-=======
-              <p className="text-gray-600"> {card.messages}</p>
->>>>>>> Stashed changes
             </div>
             <div className="card-status" onClick={(e) => e.stopPropagation()}>
               {card.statuses === "Waiting for confirm" && <WaitingforConfirm />}

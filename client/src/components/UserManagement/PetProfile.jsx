@@ -10,12 +10,12 @@ import { UploadPetImage } from "../../components/systemdesign/uploadImage";
 import { Box } from "@mui/system";
 import { Delete } from "../../components/booking/Confirmation";
 import usePosts from "../../hooks/usePost";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { usePet } from "../../contexts/petContext";
 import usePetProfile from "../../hooks/usePetProfile";
 import { useAuth } from "../../contexts/authentication";
 import AlertBox from "../systemdesign/AlertBox";
-import { useParams } from "react-router-dom";
+
 const PetProfileSchema = Yup.object().shape({
   petName: Yup.string()
     .min(6, "The name should be at minimum 6 charactors")
@@ -37,7 +37,6 @@ function PetInputForm(props) {
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
-  const params = useParams();
 
   props.editPet
     ? useEffect(() => {

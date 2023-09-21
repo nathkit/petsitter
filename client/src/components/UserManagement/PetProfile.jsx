@@ -37,7 +37,7 @@ function PetInputForm(props) {
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
-  const params = useParams();
+  // const params = useParams();
   const { userData } = useAuth();
   props.editPet
     ? useEffect(() => {

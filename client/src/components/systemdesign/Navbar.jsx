@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { SitterIconBlack } from "./Icons";
 import { ButtonPrimary, ButtonSitter } from "./Button";
 import { useAuth } from "../../contexts/authentication";
@@ -9,7 +9,13 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { signOut, userData, setUserData, isPetSitter } = useAuth();
+  const {
+    signOut,
+    userData,
+    setUserData,
+    checkGooggleFirstSignIn,
+    isPetSitter,
+  } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -19,13 +25,15 @@ function Navbar() {
     const authToken = JSON.parse(
       window.localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
     );
-    if (authToken?.access_token) {
+    // console.log("1");
+    if (authToken) {
       setIsAuthenticated(true);
       return JSON.parse(window.localStorage.getItem("user"));
     }
+    // console.log("2");
     return null;
   };
-
+  // const effectRan = useRef(false);
   useEffect(() => {
     const user = authenticate();
     setProfileImageLoaded(false);
@@ -36,7 +44,12 @@ function Navbar() {
       setProfileImageLoaded(true);
     }
     // console.log(userData);
-  }, [userData]);
+
+    // if (!effectRan.current) {
+    //   console.log("4");
+    // }
+    // effectRan.current = true;
+  }, []);
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);
@@ -50,7 +63,8 @@ function Navbar() {
             ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500 active:text-etc-white"
             : ""
         } ${content === "Log Out" ? "border-t-2" : ""}`}
-        onClick={navigate}>
+        onClick={navigate}
+      >
         <a>
           <Icon
             color="#3A3B46"
@@ -92,7 +106,8 @@ function Navbar() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2">
+            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2"
+          >
             {menuItems.map((item, idx) => (
               <ListItem
                 key={idx}
@@ -109,7 +124,8 @@ function Navbar() {
     return (
       <button
         className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600"
-        onClick={() => navigate("/login")}>
+        onClick={() => navigate("/login")}
+      >
         Login
       </button>
     );
@@ -124,7 +140,8 @@ function Navbar() {
           isAuthenticated
             ? "flex items-center gap-6 "
             : "flex items-center gap-4"
-        }>
+        }
+      >
         <ButtonSitter
           content={isPetSitter ? "For Pet Sitter" : "Become A Pet Sitter"}
           width={isPetSitter ? "200px" : "240px"}

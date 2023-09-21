@@ -53,14 +53,14 @@ function PetInputForm(props) {
   const formik = useFormik({
     initialValues: props.editPet
       ? {
-          petName: petDataById.name,
-          petType: petDataById.type,
-          breed: petDataById.breed,
-          sex: petDataById.sex,
-          age: petDataById.age,
-          color: petDataById.color,
-          weight: petDataById.weight,
-          about: petDataById.description,
+          petName: petDataById?.name,
+          petType: petDataById?.type,
+          breed: petDataById?.breed,
+          sex: petDataById?.sex,
+          age: petDataById?.age,
+          color: petDataById?.color,
+          weight: petDataById?.weight,
+          about: petDataById?.description,
         }
       : {
           petName: "",
@@ -100,7 +100,7 @@ function PetInputForm(props) {
     fontSize: "0.875rem",
     marginTop: "0.25rem",
   };
-
+  console.log(formik.values);
   return (
     <form
       onSubmit={(values, formikHelpers) => {
@@ -120,7 +120,6 @@ function PetInputForm(props) {
           type="text"
           onChange={formik.handleChange}
           value={formik.values.petName}
-          // value="dddddd"
           onBlur={formik.handleBlur}
           placeholder="Enter Pet Name"
         />
@@ -380,8 +379,8 @@ export function EditPet() {
           img={
             petAvatarUrl
               ? petAvatarUrl
-              : petDataById.image_path
-              ? petDataById.image_path
+              : petDataById?.image_path
+              ? petDataById?.image_path
               : null
           }
           onChange={(e) => {

@@ -25,6 +25,16 @@ const avatarUpload = multerUpload.fields([{ name: "avatarFile" }]);
 
 userManagementRouter.put("/:userId", avatarUpload, async (req, res) => {
   const userId = req.params.userId;
+
+  // check id number condition ******************************************
+  const checkIdNumber = await pool.query(
+    "select id_number from users where id_number = $1 and id != $2",
+    [req.body.idNumber, userId]
+  );
+  if (checkIdNumber.rows.length) {
+    return res.json({ message: "Id numbers has been already used!" });
+  }
+
   const user = { ...req.body };
   // reassign user.dateOfBirth to be UTC+7 *********************************
   const dateOfBirth = new Date(user.dateOfBirth);

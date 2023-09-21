@@ -17,7 +17,7 @@ import { Alert } from "@mui/material";
 dayjs.extend(utc);
 
 const validationSchema = yup.object({
-  yourName: yup
+  fullName: yup
     .string("Enter your your name")
     .required("your name is required")
     .min(6, "your name is too short")
@@ -54,25 +54,27 @@ const profile = () => {
   const [avatarFile, setAvatarFile] = useState(null);
   const [user, setUser] = useState({});
 
+  const initialValues = {};
+  const today = dayjs();
+
   useEffect(() => {
     setAlertMessage({
       message: "",
       severity: "",
     });
     const newUser = JSON.parse(window.localStorage.getItem("user"));
+    const date = dayjs(
+      new Date(newUser.dateOfbirth ? newUser.dateOfbirth : today)
+    );
+    initialValues.fullName = newUser.fullName;
+    initialValues.email = newUser.email;
+    initialValues.idNumber = newUser.idNumber;
+    initialValues.phone = newUser.phone;
+    initialValues.dateOfBirth = date;
     setUser(newUser);
   }, []);
-  const today = dayjs();
-  const date = dayjs(new Date(user.dateOfbirth ? user.dateOfbirth : null));
   const formik = useFormik({
-    initialValues: {
-      yourName: user.fullName,
-      email: user.email,
-      idNumber: user.idNumber,
-      phone: user.phone,
-      dateOfBirth: date,
-    },
-    enableReinitialize: true,
+    initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       if (avatarFile || user) {
@@ -87,7 +89,6 @@ const profile = () => {
       }
     },
   });
-
   return (
     <div className="flex flex-col gap-[4rem] h-[55.5rem] w-full">
       <Box className="flex justify-between">
@@ -122,18 +123,18 @@ const profile = () => {
           />
         </Box>
         {/* your name *********************************** */}
-        <label htmlFor="yourName" className="text-body1 text-etc-black">
+        <label htmlFor="fullName" className="text-body1 text-etc-black">
           <p className="mb-4">your name*</p>
           <TextField
             className="TextField"
             fullWidth
-            id="yourName"
-            name="yourName"
-            value={formik.values.yourName}
+            id="fullName"
+            name="fullName"
             onChange={formik.handleChange}
+            value={formik.values.fullName}
             onBlur={formik.handleBlur}
-            error={formik.touched.yourName && Boolean(formik.errors.yourName)}
-            helperText={formik.touched.yourName && formik.errors.yourName}
+            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+            helperText={formik.touched.fullName && formik.errors.fullName}
           />
         </label>
         <Box className="flex gap-10">
@@ -146,8 +147,9 @@ const profile = () => {
                 fullWidth
                 id="email"
                 name="email"
-                value={formik.values.email}
+                // disabled={formik.values.email ? true : null}
                 onChange={formik.handleChange}
+                value={formik.values.email}
                 onBlur={formik.handleBlur}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
@@ -165,8 +167,10 @@ const profile = () => {
                 value={formik.values.idNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={Boolean(formik.errors.idNumber)}
-                helperText={formik.errors.idNumber}
+                error={
+                  formik.touched.idNumber && Boolean(formik.errors.idNumber)
+                }
+                helperText={formik.touched.idNumber && formik.errors.idNumber}
               />
             </label>
           </Box>

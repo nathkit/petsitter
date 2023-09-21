@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SitterIconBlack } from "./Icons";
-import { ButtonPrimary } from "./Button";
+import { ButtonPrimary, ButtonSitter } from "./Button";
 import { useAuth } from "../../contexts/authentication";
 import frame2 from "../../assets/SitterReview/frame427320942.png";
 import { UserIcon, PetIcon, ListIcon, LogOutIcon } from "./Icons";
@@ -9,7 +9,7 @@ import usePosts from "../../hooks/usePost";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { signOut, userData, setUserData } = useAuth();
+  const { signOut, userData, setUserData, isPetSitter } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -50,8 +50,7 @@ function Navbar() {
             ? "hover:text-gray-400 hover:bg-orange-200 hover:rounded-[10px] active:bg-orange-500 active:text-etc-white"
             : ""
         } ${content === "Log Out" ? "border-t-2" : ""}`}
-        onClick={navigate}
-      >
+        onClick={navigate}>
         <a>
           <Icon
             color="#3A3B46"
@@ -93,8 +92,7 @@ function Navbar() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2"
-          >
+            className="dropdown-content z-[10] menu pt-2 shadow bg-etc-white rounded-box w-[186px] text-etc-black text-body2">
             {menuItems.map((item, idx) => (
               <ListItem
                 key={idx}
@@ -111,13 +109,11 @@ function Navbar() {
     return (
       <button
         className="px-6 py-4 text-body1 text-etc-black hover:text-orange-400 active:text-orange-600"
-        onClick={() => navigate("/login")}
-      >
+        onClick={() => navigate("/login")}>
         Login
       </button>
     );
   };
-
   return (
     <div className="bg-etc-white min-w-[1440px] h-20 px-20 flex justify-between items-center flex-shrink-0">
       <button onClick={() => navigate("/")}>
@@ -128,8 +124,11 @@ function Navbar() {
           isAuthenticated
             ? "flex items-center gap-6 "
             : "flex items-center gap-4"
-        }
-      >
+        }>
+        <ButtonSitter
+          content={isPetSitter ? "Pet Sitter" : "Become A Pet Sitter"}
+          width={isPetSitter ? "150px" : "230px"}
+        />
         <LoginButton />
         <div>
           <ButtonPrimary

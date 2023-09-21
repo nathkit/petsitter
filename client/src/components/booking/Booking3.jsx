@@ -14,11 +14,11 @@ function Booking3({ setDisableButtonBooking3 }) {
   const [wallet, setWallet] = useState(null);
 
   const handleCreditClick = () => {
-    setPaymentMethod("credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
+    setPaymentMethod("Credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
     setWallet(null);
   };
   const handleCashClick = () => {
-    setPaymentMethod("cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
+    setPaymentMethod("Cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
     setCredit(null);
   };
 
@@ -37,8 +37,7 @@ function Booking3({ setDisableButtonBooking3 }) {
             onClick={() => {
               handleCreditClick();
               setCredit("#ff7037");
-            }}
-          >
+            }}>
             <CreditCardIcon color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
@@ -53,8 +52,7 @@ function Booking3({ setDisableButtonBooking3 }) {
               handleCashClick();
               setWallet("#ff7037");
               setDisableButtonBooking3(false);
-            }}
-          >
+            }}>
             <WalletIcon color={wallet} />
             <p className="ml-2">Cash</p>
           </button>

@@ -69,7 +69,8 @@ function Register() {
             className="text-headline1 text-etc-black cursor-pointer"
             onClick={() => {
               nav("/");
-            }}>
+            }}
+          >
             Join Us!
           </p>
           <p className="text-headline4">Find your perfect pet stter with us</p>
@@ -101,11 +102,21 @@ function Register() {
                   return true; // Allow empty value (optional phone number)
                 }
               )
-              .min(10, "Phone numbers should have 10 character"),
+              .test(
+                "isExactlyTenCharacters",
+                "Phone numbers should have exactly 10 characters",
+                (value) => {
+                  if (value) {
+                    return value.length === 10;
+                  }
+                  return true; // Allow empty value (optional phone number)
+                }
+              ),
             password: string()
               .required("Please enter password")
               .min(12, "Password should have atleast 12 character"),
-          })}>
+          })}
+        >
           {({ errors, isValid, touched, dirty }) => {
             return (
               <Form className="flex flex-col gap-5 text-left ">
@@ -122,7 +133,8 @@ function Register() {
                 {/* email ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="email">
+                  htmlFor="email"
+                >
                   Email address
                 </label>
                 <Field
@@ -141,7 +153,8 @@ function Register() {
                 {/* full name ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="fullName">
+                  htmlFor="fullName"
+                >
                   Your name
                 </label>
                 <Field
@@ -160,7 +173,8 @@ function Register() {
                 {/* phone ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="phone">
+                  htmlFor="phone"
+                >
                   Phone numbers
                 </label>
                 <Field
@@ -179,7 +193,8 @@ function Register() {
                 {/* password ********************************* */}
                 <label
                   className="text-lg text-etc-black font-medium"
-                  htmlFor="passsword">
+                  htmlFor="passsword"
+                >
                   Password
                 </label>
                 <Box className="relative">
@@ -195,9 +210,8 @@ function Register() {
                     error={
                       Boolean(errors.password) && Boolean(touched.password)
                     }
-                    helperText={
-                      Boolean(touched.password) && errors.password
-                    }></Field>
+                    helperText={Boolean(touched.password) && errors.password}
+                  ></Field>
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
@@ -206,7 +220,8 @@ function Register() {
                       top: "0.5rem",
                       right: "1rem",
                       color: `${showPassword ? "red" : null}`,
-                    }}>
+                    }}
+                  >
                     <VisibilityIcon />
                   </IconButton>
                 </Box>

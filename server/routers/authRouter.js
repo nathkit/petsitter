@@ -70,12 +70,13 @@ authRouter.post("/register", async (req, res) => {
     password: req.body.password,
     created_at,
     updated_at,
+    sitter_authen: false,
   };
   const salt = await bcrypt.genSalt(10);
   // user password to hashed password
   user.password = await bcrypt.hash(user.password, salt);
-  const query = `insert into users(email,full_name,phone,password,created_at, updated_at)
-                 values($1,$2,$3,$4,$5,$6)`;
+  const query = `insert into users(email,full_name,phone,password,created_at, updated_at, sitter_authen)
+                 values($1,$2,$3,$4,$5,$6,$7)`;
   const value = Object.values(user);
   try {
     const result = pool.query(query, value);
@@ -83,13 +84,6 @@ authRouter.post("/register", async (req, res) => {
     await supabase.auth.signUp({
       email: req.body.email,
       password: req.body.password,
-      options: {
-        data: {
-          name: req.body.fullName,
-          phone: req.body.phone,
-        },
-        emailRedirectTo: "http://localhost:5173/login",
-      },
     });
   } catch (err) {
     return res.json({ message: "Server is error!" });
@@ -144,9 +138,14 @@ authRouter.put("/resetPassword", async (req, res) => {
 
 // google auth first regiter ************************************************************
 authRouter.post("/googleRegister", async (req, res) => {
-  const user = { ...req.body, created_at: new Date(), updated_at: new Date() };
-  const query = `insert into users(email,google_auth_id,created_at,updated_at)
-                 values($1,$2,$3,$4)`;
+  const user = {
+    ...req.body,
+    created_at: new Date(),
+    updated_at: new Date(),
+    sitter_authen: false,
+  };
+  const query = `insert into users(email,google_auth_id,created_at,updated_at,sitter_authen)
+                 values($1,$2,$3,$4,$5)`;
   const values = Object.values(user);
   // console.log(user);
   let result;

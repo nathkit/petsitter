@@ -49,7 +49,7 @@ function Navbar() {
     //   console.log("4");
     // }
     // effectRan.current = true;
-  }, []);
+  }, [userData]);
 
   const LoginButton = () => {
     const [hoveredItemId, setHoveredItemId] = useState(null);

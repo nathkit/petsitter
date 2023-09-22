@@ -140,13 +140,10 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
 
 sitterManagementRouter.put("/:sitterId", async (req, res) => {});
 
-sitterManagementRouter.get(
-  "/sitterManagement/:sitterId/booking/",
-  async (req, res) => {}
-);
+sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {});
 
 sitterManagementRouter.get(
-  "/sitterManagement/:sitterId/booking/:bookingId",
+  "/:sitterId/booking/:bookingId",
   async (req, res) => {}
 );
 
@@ -264,7 +261,7 @@ sitterManagementRouter.put(
 );
 
 sitterManagementRouter.put(
-  "/sitterManagement/:userId/booking/:bookingId/review",
+  "/:userId/booking/:bookingId/review",
   async (req, res) => {}
 );
 

@@ -294,4 +294,25 @@ sitterManagementRouter.put(
   async (req, res) => {}
 );
 
+sitterManagementRouter.get(
+  "/:sitterId/payoutOption",
+  async (req, res) => {
+    try {
+      const sitterId = req.params.sitterId;
+
+      const queryForPayout = `SELECT * FROM payout_option WHERE pet_sitter_id = $1;`;
+      const sitterPayout = await pool.query(queryForPayout, [sitterId]);
+      console.log("Database Query Result:", sitterPayout.rows);
+      
+      return res.status(200).json({
+        message: "Get payout option successfully",
+        data: sitterPayout.rows,
+      });
+    } catch (error) {
+      console.error("Error fetching sitter details:", error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
+);
+
 export default sitterManagementRouter;

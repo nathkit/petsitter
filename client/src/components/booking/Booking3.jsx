@@ -30,21 +30,22 @@ function Booking3({ setDisableButtonBooking3 }) {
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
           
             ${
-              paymentMethod === "credit"
+              paymentMethod === "Credit"
                 ? "border-orange-500 text-orange-500"
                 : ""
             }`}
             onClick={() => {
               handleCreditClick();
               setCredit("#ff7037");
-            }}>
+            }}
+          >
             <CreditCardIcon color={credit} />
             <p className="ml-2">Credit Card</p>
           </button>
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
             ${
-              paymentMethod === "cash"
+              paymentMethod === "Cash"
                 ? "border-orange-500 text-orange-500"
                 : ""
             }`}
@@ -52,12 +53,13 @@ function Booking3({ setDisableButtonBooking3 }) {
               handleCashClick();
               setWallet("#ff7037");
               setDisableButtonBooking3(false);
-            }}>
+            }}
+          >
             <WalletIcon color={wallet} />
             <p className="ml-2">Cash</p>
           </button>
         </div>
-        {paymentMethod === "credit" ? (
+        {paymentMethod === "Credit" ? (
           <Credit setDisableButtonBooking3={setDisableButtonBooking3} />
         ) : (
           <Cash />

@@ -8,7 +8,7 @@ import { useAuth } from "./authentication";
 const BookingContext = React.createContext();
 
 function BookingProvider(props) {
-  const {userData} = useAuth()
+  const { userData } = useAuth();
   const [petIds, setPetIds] = useState([]);
   const [petIdsNames, setPetIdsNames] = useState({});
   const [sitterDetail, setSitterDetail] = useState([]);
@@ -18,7 +18,7 @@ function BookingProvider(props) {
   const [endDate, setEndDate] = useState(null);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("credit");
+  const [paymentMethod, setPaymentMethod] = useState("Credit");
   const [bookingDetail, setBookingDetail] = useState({});
   const [petBookingDetail, setPetBookingDetail] = useState([]);
 
@@ -82,7 +82,8 @@ function BookingProvider(props) {
         bookingDetail,
         petBookingDetail,
         getBookingDetail,
-      }}>
+      }}
+    >
       {props.children}
     </BookingContext.Provider>
   );

@@ -27,7 +27,7 @@ function PayoutOption() {
 
   useEffect(() => {
     getSitterPayoutOption();
-  }, [params.sitterId]);
+  }, []);
 
   return (
     <section className="flex flex-col gap-6 p-10 bg-gray-100">
@@ -72,7 +72,7 @@ function PayoutOption() {
           payoutOption.map((card) => (
             <div
               className="flex flex-row w-full bg-etc-white border-b border-gray-200 text-body2"
-              key={card.booking_no} // Add a unique key for each entry
+              key={card.booking_no}
             >
               <div className="w-[240px] px-4 py-6">
                 <h3 className="w-full h-auto">{dateTimeFormat(card.booking_date)}</h3>

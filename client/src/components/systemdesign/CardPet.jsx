@@ -52,7 +52,7 @@ export function CardPet1() {
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
                   <img
-                    className="w-[104px] h-[104px] relative rounded-[99px]"
+                    className="w-[104px] h-[104px] relative rounded-[99px] object-cover"
                     src={item.image_path}
                   />
                   <div className="self-stretch h-[68px] flex-col  items-center gap-2 flex">
@@ -97,7 +97,7 @@ export function CardPet2(props) {
               <div key={index} className="flex mr-[14px]">
                 <div
                   id="card"
-                  className={`border-gray-200 w-60 h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
+                  className={`border-gray-200 w-60 h-60 p-6 bg-white hover:border-orange-400 hover:shadow-lg cursor-pointer rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
                   ${
                     props.selectedButtons.includes(index)
                       ? "border-orange-500"
@@ -106,7 +106,7 @@ export function CardPet2(props) {
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
                   <img
-                    className="w-[104px] h-[104px] relative rounded-[99px]"
+                    className="w-[104px] h-[104px] relative rounded-[99px] object-cover"
                     src={item.image_path}
                   />
                   <div className="self-stretch h-[68px] flex-col  items-center gap-2 flex">
@@ -124,8 +124,8 @@ export function CardPet2(props) {
               </div>
             );
           })}
-          <div className="border-gray-200 w-60 h-60 p-6 rounded-2xl border border-zinc-200 relative mb-4 bg-orange-100">
-            <div className=" flex flex-col items-center mt-10">
+          <div className="border-gray-200 w-60 h-60 p-6 rounded-2xl cursor-pointer hover:border-orange-400 hover:shadow-lg border border-zinc-200 relative mb-4 bg-orange-100">
+            <div className=" flex flex-col items-center mt-10 ">
               <button
                 onClick={() => {
                   navigate(`/userManagement/${userData.id}/pets/create`);

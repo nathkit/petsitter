@@ -58,6 +58,8 @@ const profile = () => {
   const today = dayjs();
 
   useEffect(() => {
+    setAvatarUrl("");
+    setAvatarFile(null);
     setAlertMessage({
       message: "",
       severity: "",

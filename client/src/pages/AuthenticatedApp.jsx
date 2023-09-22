@@ -10,6 +10,10 @@ import PetListPage from "./UserManagement/PetListPage";
 import CreatePetPage from "./UserManagement/CreatePetPage";
 import BookingHistoryPage from "./UserManagement/BookingHistoryPage";
 import UpdatePetPage from "./UserManagement/UpdatePetPage";
+import PayoutOptionPage from "./SitterManagement/PayOutOptionPage";
+import SitterProfilePage from "./SitterManagement/SitterProfilePage";
+import SitterBookingDetailPage from "./SitterManagement/SitterBookingDetailPage";
+import SitterBookingListPage from "./SitterManagement/SitterBookingListPage";
 function AuthenticatedApp() {
   return (
     <Routes>
@@ -34,11 +38,26 @@ function AuthenticatedApp() {
         path="/userManagement/:userId/booking"
         element={<BookingHistoryPage />}
       />
+      <Route path="/sitterDetail/:sitterId" element={<SitterDetailPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+      {/* sitter management */}
       <Route
         path="/sitterManagement/:sitterId"
-        element={<SitterDetailPage />}
+        element={<SitterProfilePage />}
       />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/sitterManagement/create" element={<SitterProfilePage />} />
+      <Route
+        path="/sitterManagement/:sitterId/sitterBookingList"
+        element={<SitterBookingListPage />}
+      />
+      <Route
+        path="/sitterManagement/:sitterId/sitterBookingList/:bookingId"
+        element={<SitterBookingDetailPage />}
+      />
+      <Route
+        path="/sitterManagement/:sitterId/payoutOption"
+        element={<PayoutOptionPage />}
+      />
     </Routes>
   );
 }

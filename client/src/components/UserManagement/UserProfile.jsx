@@ -37,13 +37,21 @@ const validationSchema = yup.object({
     })
     .min(10, "Phone numbers should have 10 character"),
   idNumber: yup
-    .number()
-    .min(0)
+    .string()
+    .matches(
+      /^0\d+$/,
+      "Phone number must start with 0 and contain only numeric characters"
+    )
+    .required("Phone number is required")
     .test(
-      "isNumber",
-      "IdNumber must be a valid number and exactly 13 characters",
-      (val) =>
-        typeof val === "number" && !isNaN(val) && val.toString().length === 13
+      "isExactlyTenCharacters",
+      "Phone numbers should have exactly 10 characters",
+      (value) => {
+        if (value) {
+          return value.length === 10;
+        }
+        return true; // Allow empty value (optional phone number)
+      }
     ),
 });
 

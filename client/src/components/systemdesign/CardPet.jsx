@@ -124,15 +124,15 @@ export function CardPet2(props) {
               </div>
             );
           })}
-          <div className="border-gray-200 w-60 h-60 p-6 rounded-2xl cursor-pointer hover:border-orange-400 hover:shadow-lg border border-zinc-200 relative mb-4 bg-orange-100">
+          <div
+            className="border-gray-200 w-60 h-60 p-6 rounded-2xl cursor-pointer hover:border-orange-400 hover:shadow-lg border border-zinc-200 relative mb-4 bg-orange-100"
+            onClick={() => {
+              navigate(`/userManagement/${userData.id}/pets/create`);
+            }}
+          >
             <div className=" flex flex-col items-center mt-10 ">
-              <button
-                onClick={() => {
-                  navigate(`/userManagement/${userData.id}/pets/create`);
-                }}
-              >
-                <CreateIcon />
-              </button>
+              <CreateIcon />
+
               <p className="text-orange-500 text-bodyButton px-6 py-3">
                 Create New Pet
               </p>

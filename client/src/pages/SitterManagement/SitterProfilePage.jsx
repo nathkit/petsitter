@@ -1,10 +1,12 @@
 import React from "react";
 import SitterProfile from "../../components/sitterManagement/SitterProfile";
 import SitterBar from "../../components/sitterManagement/SitterBar";
+import { useParams } from "react-router-dom";
 function SitterProfilePage() {
+  const params = useParams();
   return (
     <SitterBar>
-      <SitterProfile />
+      <SitterProfile update={params.sitterId ? true : null} />
     </SitterBar>
   );
 }

@@ -48,7 +48,7 @@ function BookingHistoryDetail({ card }) {
           <div>
             <h5 className=" text-body3 text-gray-400">Pet Sitter: </h5>
             <h4 className=" text-body2 text-gray-600 ">
-              {card.trade_name} {card.name}
+              {card.trade_name} by {card.pet_sitter_full_name}
             </h4>
           </div>
           <main className="flex flex-col gap-4">

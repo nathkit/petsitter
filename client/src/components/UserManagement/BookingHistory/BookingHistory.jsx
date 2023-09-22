@@ -142,7 +142,11 @@ function BookingHistory() {
               <img src={Line} alt="line" className=" mt-5 h-9" />
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">
                 <div className=" text-body3">Duration:</div>{" "}
-                <div className="text-gray-600">{card.duration} hours</div>
+                <div className="text-gray-600">
+                  {card.duration <= 1
+                    ? `${card.duration} hour`
+                    : `${card.duration} hours`}
+                </div>
               </div>
               <img src={Line} alt="line" className=" mt-5 h-9" />
               <div className="text-gray-400 w-1/3 flex flex-col gap-2">

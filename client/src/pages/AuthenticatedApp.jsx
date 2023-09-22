@@ -14,10 +14,16 @@ import PayoutOptionPage from "./SitterManagement/PayOutOptionPage";
 import SitterProfilePage from "./SitterManagement/SitterProfilePage";
 import SitterBookingDetailPage from "./SitterManagement/SitterBookingDetailPage";
 import SitterBookingListPage from "./SitterManagement/SitterBookingListPage";
+import LoginPage from "./LoginPage";
+import Register from "./RegisterPage";
+import ResetPassword from "./ResetPassword";
 function AuthenticatedApp() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/booking/:userId/:sitterId" element={<BookingPage />} />
       <Route path="/search" element={<SearchList />} />
       <Route path="/userManagement/:userId" element={<ProfliePage />} />

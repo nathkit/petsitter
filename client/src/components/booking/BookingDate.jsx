@@ -93,7 +93,8 @@ function BookingDate() {
         date22.getSeconds();
       if (
         selectedStartTime.isAfter(minimumBookingTime) &&
-        date1.$D == date2.$D
+        date1.$D == date2.$D &&
+        time1 < time2
       ) {
         setStartTime(startTimeString);
         setEndTime(endTimeString);

@@ -1,7 +1,7 @@
 import React from "react";
 
-function SitterBar() {
-  return <div>SitterBar</div>;
+function SitterBar(props) {
+  return <div>{props.children}</div>;
 }
 
 export default SitterBar;

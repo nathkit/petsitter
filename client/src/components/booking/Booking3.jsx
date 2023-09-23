@@ -40,7 +40,7 @@ function Booking3({ setDisableButtonBooking3 }) {
             }}
           >
             <CreditCardIcon color={credit} />
-            <p className="ml-2">Credit Card</p>
+            <p className="ml-2 text-gray-500">Credit Card</p>
           </button>
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
@@ -56,7 +56,7 @@ function Booking3({ setDisableButtonBooking3 }) {
             }}
           >
             <WalletIcon color={wallet} />
-            <p className="ml-2">Cash</p>
+            <p className="ml-2 text-gray-500">Cash</p>
           </button>
         </div>
         {paymentMethod === "Credit" ? (

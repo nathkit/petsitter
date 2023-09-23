@@ -5,7 +5,8 @@ export function Ellipse15(props) {
       width={!props.width ? 118 : props.width}
       height={!props.height ? 118 : props.height}
       viewBox="0 0 118 118"
-      fill="none">
+      fill="none"
+    >
       <path
         d="M0 117.5C3.68009e-07 102.07 3.03923 86.7905 8.94416 72.5347C14.8491 58.2789 23.5041 45.3258 34.415 34.4149C45.3258 23.5041 58.279 14.8491 72.5347 8.94415C86.7905 3.03922 102.07 -2.88193e-06 117.5 0L117.5 77.3354C112.226 77.3354 107.003 78.3742 102.13 80.3927C97.2567 82.4112 92.8289 85.3697 89.0993 89.0993C85.3697 92.8289 82.4112 97.2566 80.3927 102.13C78.3742 107.003 77.3353 112.226 77.3353 117.5H0Z"
         fill={!props.color ? "#FFCA62" : props.color}
@@ -20,7 +21,8 @@ export function Star1(props) {
       width={!props.width ? 188 : props.width}
       height={!props.height ? 192 : props.height}
       viewBox="0 0 188 192"
-      fill="none">
+      fill="none"
+    >
       <path
         d="M123.387 0.717219L136.384 50.7374L187.827 56.1232L156.791 97.44L184.673 140.976L132.974 142.477L116.299 191.38L82.868 151.935L34.1929 169.379L44.2036 118.691L0.181374 91.5415L46.096 67.7794L39.8763 16.4798L87.1202 37.5372L123.387 0.717219Z"
         fill={!props.color ? "#1CCD83" : props.color}
@@ -35,7 +37,8 @@ export function Vector(props) {
       width={!props.width ? 163 : props.width}
       height={!props.height ? 169 : props.height}
       viewBox="0 0 163 169"
-      fill="none">
+      fill="none"
+    >
       <path
         d="M151.951 87.1469C151.842 87.0623 151.71 87.0175 151.591 86.9505C167.657 64.7346 160.119 43.0141 146.386 32.0517C137.425 24.8994 125.967 22.8068 117.108 24.1907C113.871 15.7984 106.337 6.88797 95.6847 2.67736C79.3572 -3.77656 56.8431 0.53281 45.7025 25.6042C45.5853 25.5343 45.4808 25.4423 45.3534 25.3901C35.6324 21.4105 16.1481 23.6788 6.67511 39.771C-7.307 63.5226 5.1663 80.7418 4.23574 96.6137C2.58639 124.751 15.4151 142.036 40.7749 156.263L41.2958 156.564C66.2532 171.49 87.5852 173.996 111.043 158.494C124.276 149.75 145.373 151.98 158.88 127.953C168.031 111.674 160.245 93.6065 151.952 87.1478L151.951 87.1469Z"
         fill={!props.color ? "#FA8AC0" : props.color}
@@ -70,7 +73,8 @@ export function Ellipse14(props) {
       width={!props.width ? 216 : props.width}
       height={!props.height ? 253 : props.height}
       viewBox="0 0 216 253"
-      fill="none">
+      fill="none"
+    >
       <path
         d="M89.5 0C110.303 2.48074e-07 130.785 5.13047 149.132 14.937C167.478 24.7434 183.123 38.9233 194.681 56.2204C206.238 73.5175 213.352 93.3979 215.391 114.101C217.43 134.804 214.332 155.69 206.371 174.909C198.41 194.129 185.832 211.088 169.751 224.286C153.67 237.483 134.582 246.511 114.179 250.569C93.7756 254.628 72.6863 253.592 52.779 247.553C32.8717 241.514 14.761 230.659 0.0510178 215.949L89.5 126.5V0Z"
         fill={!props.color ? "#1CCD83" : props.color}
@@ -85,7 +89,8 @@ export function Ellipse17(props) {
       width={!props.width ? 337 : props.width}
       height={!props.height ? 168 : props.height}
       viewBox="0 0 337 168"
-      fill="none">
+      fill="none"
+    >
       <path
         d={
           !props.path
@@ -104,7 +109,8 @@ export function Ellipse16(props) {
       width={!props.width ? 230 : props.width}
       height={!props.height ? 230 : props.height}
       viewBox="0 0 230 230"
-      fill="none">
+      fill="none"
+    >
       <circle
         cx="115.233"
         cy="115.233"
@@ -122,7 +128,8 @@ export function Group25(props) {
       width={!props.width ? 253 : props.width}
       height={!props.height ? 253 : props.height}
       viewBox="0 0 253 253"
-      fill="none">
+      fill="none"
+    >
       <path d="M253 253V118L109 253H253Z" fill="#76D0FC" />
       <path
         d="M0 126.5C0 196.364 56.636 253 126.5 253C196.364 253 253 196.364 253 126.5C253 56.636 196.364 0 126.5 0C56.636 0 0 56.636 0 126.5ZM188.047 126.5C188.047 160.491 160.491 188.047 126.5 188.047C92.5085 188.047 64.953 160.491 64.953 126.5C64.953 92.5085 92.5085 64.953 126.5 64.953C160.491 64.953 188.047 92.5085 188.047 126.5Z"
@@ -138,7 +145,8 @@ export function Frame(props) {
       width={!props.width ? 79 : props.width}
       height={!props.height ? 44 : props.height}
       viewBox="0 0 79 44"
-      fill="none">
+      fill="none"
+    >
       <rect
         width="79"
         height="44"
@@ -157,6 +165,20 @@ export function Frame(props) {
         r="7"
         fill={!props.circle ? "#76D0FC" : props.color}
       />
+    </svg>
+  );
+}
+
+export function Ellipse21() {
+  return (
+    <svg
+      width="6"
+      height="6"
+      viewBox="0 0 6 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="3" cy="3" r="3" fill="#FF7037" />
     </svg>
   );
 }

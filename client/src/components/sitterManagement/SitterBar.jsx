@@ -39,13 +39,15 @@ function SitterBar(props) {
         {sidebarOpen && (
           <aside className="sidebar  h-screen pt-4 flex flex-col justify-between text-gray-500 text-body1">
             <ul className="sidebar-links flex flex-col  w-60 ">
-              <li
-                className=" px-6 pt-6 pb-10 cursor-pointer "
-                onClick={() => {
-                  navigate("/");
-                }}
-              >
-                <SitterIconBlack />
+              <li className=" px-6 pt-6 pb-10 ">
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
+                  <SitterIconBlack width="132" height="40" />
+                </div>
               </li>
               <li
                 className={`flex px-6 py-4 cursor-pointer hover:text-orange-500 ${
@@ -134,12 +136,14 @@ function SitterBar(props) {
         )}
         <div className="flex flex-col w-full">
           <nav className="w-full h-[72px] flex items-center py-4 text-gray-600 text-body2">
-            <button
-              className="menu-icon px-[30px] hover:text-orange-500"
-              onClick={toggleSidebar}
-            >
-              ☰
-            </button>
+            <div className="px-[30px]">
+              <button
+                className="hover:text-orange-500 text-3xl"
+                onClick={toggleSidebar}
+              >
+                ☰
+              </button>
+            </div>
             <div className="flex items-center">
               <img
                 src="https://i0.wp.com/www.korseries.com/wp-content/uploads/2021/05/rose-blackpink-photo.jpeg?resize=700%2C874&ssl=1"

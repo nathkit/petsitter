@@ -92,7 +92,7 @@ function PayoutOption() {
             </div>
           ))
         ) : (
-          <p className="text-center">Not found 🐾</p>
+          <p className="text-center py-6 bg-etc-white border-b border-gray-200">No successful jobs found🐾</p>
         )}
       </div>
     </section>

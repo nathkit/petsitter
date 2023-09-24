@@ -18,7 +18,6 @@ function PayoutOption() {
         `/sitterManagement/${params.sitterId}/payoutOption`
       );
       console.log("sitterId", params.sitterId);
-      // console.log(results);
       setPayoutOption(results.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -29,6 +28,8 @@ function PayoutOption() {
     getSitterPayoutOption();
   }, []);
 
+  const successEntries = payoutOption.filter((entry) => entry.statuses === "Success");
+
   return (
     <section className="flex flex-col gap-6 p-10 bg-gray-100">
       <h1 className=" text-headline3 text-gray-900">Payout Option</h1>
@@ -38,7 +39,7 @@ function PayoutOption() {
             <BahtIcon /> Total Earning
           </h3>
           <div className=" w-auto gap-2 flex flex-row">
-          {payoutOption.reduce((total, card) => total + parseFloat(card.amount), 0).toFixed(2)} <h3>THB</h3>
+          {successEntries.reduce((total, card) => total + parseFloat(card.amount), 0).toFixed(2)} <h3>THB</h3>
           </div>
         </div>
         <div className=" w-full flex gap-4 p-6 bg-etc-white rounded-2xl ">
@@ -68,8 +69,8 @@ function PayoutOption() {
             <h3 className=" w-full h-auto text-right">Amount</h3>
           </div>
         </div>
-        {payoutOption && payoutOption.length > 0 ? (
-          payoutOption.map((card) => (
+        {successEntries && successEntries.length > 0 ? (
+          successEntries.map((card) => (
             <div
               className="flex flex-row w-full bg-etc-white border-b border-gray-200 text-body2"
               key={card.booking_no}

@@ -45,7 +45,7 @@ function AuthenticatedApp() {
         element={<BookingHistoryPage />}
       />
       <Route path="/sitterDetail/:sitterId" element={<SitterDetailPage />} />
-      <Route path="*" element={<NotFoundPage />} />
+
       {/* sitter management */}
       <Route
         path="/sitterManagement/:sitterId"
@@ -64,6 +64,8 @@ function AuthenticatedApp() {
         path="/sitterManagement/:sitterId/payoutOption"
         element={<PayoutOptionPage />}
       />
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

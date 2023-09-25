@@ -1,5 +1,5 @@
 import React from "react";
-import SitterBookingDetail from "../../components/sitterManagement/SitterBookingDetail";
+import SitterBookingDetail from "../../components/sitterManagement/sitterBookingDetail/SitterBookingDetail";
 import SitterBar from "../../components/sitterManagement/SitterBar";
 function SitterBookingDetailPage() {
   return (

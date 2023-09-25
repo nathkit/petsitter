@@ -13,7 +13,6 @@ function YourReviewButton(props) {
     const result = await axios.get(
       `/userManagement/${params.userId}/booking/${props.bookingId}/review`
     );
-    console.log(result);
     setReviews(result.data.data);
   };
 

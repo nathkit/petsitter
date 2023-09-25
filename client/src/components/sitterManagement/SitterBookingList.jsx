@@ -10,17 +10,6 @@ import { useState, useEffect } from "react";
 import usePosts from "../../hooks/usePost";
 import { useParams, useNavigate } from "react-router-dom";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 12;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 240,
-    },
-  },
-};
-
 const status = [
   "Waiting for confirm",
   "Waiting for service",
@@ -29,45 +18,6 @@ const status = [
   "Canceled",
 ];
 
-function MultipleSelectCheckmarks() {
-  const { bookingStatus, setbookingStatus } = usePosts();
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setbookingStatus(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
-  return (
-    <div>
-      <FormControl sx={{ m: 1, width: 240 }}>
-        <InputLabel id="demo-multiple-checkbox-label">All status</InputLabel>
-        <Select
-          className="outline-none flex items-center self-stretch border-[1px] rounded-[8px] border-gray-200 text-body2 text-gray-400 hover:border-orange-500 focus:border-orange-500 h-12 bg-etc-white"
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          multiple
-          value={bookingStatus}
-          onChange={handleChange}
-          input={<OutlinedInput label="All status" />}
-          renderValue={(selected) => selected.join(", ")}
-          MenuProps={MenuProps}>
-          {status.map((name) => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={bookingStatus.indexOf(name) > -1} />
-              <ListItemText primary={name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
-  );
-}
-
 function SitterBookingList() {
   const {
     getSitterBookingList,
@@ -75,18 +25,25 @@ function SitterBookingList() {
     searchKeywords,
     setSearchKeywords,
     bookingStatus,
+    setBookingStatus,
   } = usePosts();
 
   const params = useParams();
   const navigate = useNavigate();
 
+  const handleChange = (event) => {
+    setBookingStatus(event.target.value);
+  };
+
   useEffect(() => {
     getSitterBookingList(params.sitterId, searchKeywords, bookingStatus);
-  }, [params.sitterId, searchKeywords, bookingStatus]);
+  }, [searchKeywords, bookingStatus]);
+  console.log(bookingStatus);
+  console.log(bookings);
 
   return (
     <div className="list-container bg-gray-100">
-      <div className="list-filter flex items-center gap-6">
+      <div className="list-filter flex items-center gap-6 mb-6">
         <div className="text-headline3 text-etc-black w-[592px]">
           Booking List
         </div>
@@ -95,11 +52,28 @@ function SitterBookingList() {
             type="Search"
             className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white w-[240px]"
             placeholder="Search..."
-            onChange={(e) => setSearchKeywords(e.target.value)}
+            onChange={(e) => {
+              e.preventDefault;
+              setSearchKeywords(e.target.value);
+            }}
           />
         </div>
         <div>
-          <MultipleSelectCheckmarks />
+          <div>
+            <label htmlFor="status-dropdown"></label>
+            <select
+              id="status-dropdown"
+              className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white w-[240px]"
+              value={bookingStatus}
+              onChange={handleChange}>
+              <option value="">All status</option>
+              {status.map((s) => (
+                <option key={s} value={s} className="hover:bg-orange-500">
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="list-display ">

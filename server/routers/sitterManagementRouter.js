@@ -17,16 +17,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-          (value.length + 1) +
-          ` or Lower(address_detail) like $` +
-          (value.length + 1) +
-          ` or Lower(district) like $` +
-          (value.length + 1) +
-          ` or Lower(sub_district) like $` +
-          (value.length + 1) +
-          `  or Lower(province) like $` +
-          (value.length + 1) +
-          ` )`
+        (value.length + 1) +
+        ` or Lower(address_detail) like $` +
+        (value.length + 1) +
+        ` or Lower(district) like $` +
+        (value.length + 1) +
+        ` or Lower(sub_district) like $` +
+        (value.length + 1) +
+        `  or Lower(province) like $` +
+        (value.length + 1) +
+        ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -91,7 +91,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -138,7 +138,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => {});
+sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const sitterId = req.params.sitterId;
@@ -148,8 +148,12 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const pageSize = 8;
   const offset = (page - 1) * pageSize;
 
+  console.log("search: ", searchKeywords)
+  console.log("status: ", status)
+  console.log("sitterId: ", sitterId)
+
   let query = `
-    SELECT user_full_name, pet_ids, duration, start_date_time, end_date_time, statuses , booking_no
+    SELECT distinct booking_no, user_full_name, pet_ids, duration, start_date_time, end_date_time, statuses
     FROM bookings_history_detail 
     WHERE id = $1
   `;
@@ -182,6 +186,7 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
 
   console.log(query);
   try {
+    console.log(query)
     const results = await pool.query(query, values);
     const totalCountRes = await pool.query(
       `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`,
@@ -189,7 +194,8 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     );
     const totalCount = parseInt(totalCountRes.rows[0].count, 10);
     const totalPages = Math.ceil(totalCount / pageSize);
-
+    console.log("TotalRows:", results.rows.length)
+    console.log("TotalRows:", results.rows)
     return res.status(200).json({
       message: "Get detail successfully",
       data: results.rows,
@@ -340,7 +346,7 @@ sitterManagementRouter.get("/:sitterId/payoutOption", async (req, res) => {
 
 sitterManagementRouter.get(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => {}
+  async (req, res) => { }
 );
 
 export default sitterManagementRouter;

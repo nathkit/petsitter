@@ -25,26 +25,12 @@ function SubNavbar({
         }
       );
       setBooking({ ...booking, statuses: statuses });
-    } catch (err) {
-      console.error("Error updating booking status from client", err);
-    }
-  };
-
-  const updateSuccessStatus = async () => {
-    try {
-      const response = await axios.put(
-        `/sitterManagement/${sitterId}/booking/${bookingId}/success`,
-        {
-          statuses: "Success",
-        }
-      );
-      setBooking({ ...booking, statuses: "Success" });
-      if (response.status === 201) {
-        console.log("Booking status updated to Success successfully.");
+      if (response.status === 200) {
+        console.log(`Booking status updated to ${statuses} successfully.`);
       }
     } catch (err) {
       console.error(
-        "Error updating booking status to Success from client",
+        `Error updating booking status to ${statuses} from client`,
         err
       );
     }
@@ -121,7 +107,10 @@ function SubNavbar({
           />
         )}
         {status === "In service" && (
-          <ButtonPrimary content="Success" onClick={updateSuccessStatus} />
+          <ButtonPrimary
+            content="Success"
+            onClick={() => updateStatus("Success")}
+          />
         )}
         {review_id !== null ? (
           <>

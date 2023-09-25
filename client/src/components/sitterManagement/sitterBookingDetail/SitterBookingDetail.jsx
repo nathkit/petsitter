@@ -14,7 +14,6 @@ function SitterBookingDetail() {
     const result = await axios.get(
       `/sitterManagement/${params.sitterId}/booking/${params.bookingId}`
     );
-    console.log(result.data.data);
     setBooking(result.data.data);
   };
 

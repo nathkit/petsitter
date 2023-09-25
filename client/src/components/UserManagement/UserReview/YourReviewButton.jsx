@@ -25,11 +25,11 @@ function YourReviewButton(props) {
       <ButtonSecondary
         className="btn"
         onClick={(e) => {
-          document.getElementById("my_modal_2").showModal();
+          document.getElementById(props.bookingId).showModal();
         }}
         content="Your Review"
       />
-      <dialog id="my_modal_2" className="modal">
+      <dialog id={props.bookingId} className="modal">
         <div className="modal-box w-5/12 max-w-5xl h-[603px] font-bold text-[24px] text-gray-600 p-0 bg-etc-white">
           <div className="flex px-10 py-6 h-[80px]">
             <h3>Your Rating and Review</h3>
@@ -72,7 +72,7 @@ function YourReviewButton(props) {
               <button className="btn btn-lg btn-circle btn-ghost absolute right-2 top-2">
                 ✕
               </button>
-              <Link to={`/sitterManagement/${props.sitterId}`}>
+              <Link to={`/sitterDetail/${props.sitterId}`}>
                 <ButtonSecondary
                   className="btn"
                   content="View Pet Sitter"

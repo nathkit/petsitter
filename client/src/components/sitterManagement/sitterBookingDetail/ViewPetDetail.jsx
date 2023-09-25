@@ -68,7 +68,7 @@ function ViewPetDetail({ petId, userId }) {
               />
               <p>{pets.name}</p>
             </div>
-            <div className="flex flex-col w-[440px] h-full p-[24px] bg-[#FAFAFB] gap-10">
+            <div className="flex flex-col w-[440px] h-full p-[24px] bg-[#FAFAFB] gap-10 rounded-lg">
               <div className="flex gap-10">
                 <div className="flex flex-col w-[176px]">
                   <p className="text-[#AEB1C3] text-[20px] font-bold">

@@ -158,8 +158,6 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   if (searchKeywords) {
     query += `
       AND (user_full_name ILIKE $${values.length + 1}
-      OR pet_ids::text ILIKE $${values.length + 1}
-      OR duration::text ILIKE $${values.length + 1}
       OR start_date_time::text ILIKE $${values.length + 1}
       OR end_date_time::text ILIKE $${values.length + 1})
     `;

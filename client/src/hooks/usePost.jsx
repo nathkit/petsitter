@@ -87,6 +87,8 @@ const usePosts = () => {
     status = [],
     page = 1
   ) => {
+    console.log(searchKeywords);
+    console.log(status);
     try {
       const response = await axios.get(
         `/sitterManagement/${sitterId}/booking/`,

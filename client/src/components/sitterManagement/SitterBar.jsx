@@ -74,7 +74,7 @@ function SitterBar(props) {
                     : ""
                 }`}
                 onClick={() => {
-                  navigate("/sitterManagement/:sitterId/sitterBookingList/:bookingId");
+                  navigate("/sitterManagement/:sitterId/sitterBookingList");
                 }}
                 onMouseEnter={() => {
                   setListIconColor("#ff7037");

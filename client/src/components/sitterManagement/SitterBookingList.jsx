@@ -6,7 +6,9 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import usePosts from "../../hooks/usePost";
+import { useParams } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 12;
@@ -24,10 +26,11 @@ const status = [
   "Waiting for service",
   "In service",
   "Success",
+  "Canceled",
 ];
 
 function MultipleSelectCheckmarks() {
-  const [bookingStatus, setbookingStatus] = useState([]);
+  const { bookingStatus, setbookingStatus } = usePosts();
 
   const handleChange = (event) => {
     const {
@@ -66,6 +69,19 @@ function MultipleSelectCheckmarks() {
 }
 
 function SitterBookingList() {
+  const {
+    getSitterBookingList,
+    bookings,
+    setBookings,
+    searchKeywords,
+    setSearchKeywords,
+    bookingStatus,
+  } = usePosts();
+  const params = useParams();
+  useEffect(() => {
+    getSitterBookingList(params.sitterId, searchKeywords, bookingStatus);
+  }, [params.sitterId, searchKeywords, bookingStatus]);
+
   return (
     <div className="list-container bg-gray-100">
       <div className="list-filter flex items-center gap-6">
@@ -101,23 +117,50 @@ function SitterBookingList() {
             Status
           </div>
         </div>
-        <div className="flex h-[76px] bg-etc-white last:rounded-b-2xl">
-          <div className="w-[240px] text-body2 text-etc-black px-4 py-6">
-            Pet Owner Name
-          </div>
-          <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
-            Pet(s)
-          </div>
-          <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
-            Duration
-          </div>
-          <div className="w-[420px] text-body2 text-etc-black px-4 py-6">
-            Booked Date
-          </div>
-          <div className="w-[220px] text-body2 text-etc-black px-4 py-6">
-            Status
-          </div>
-        </div>
+        {bookings.map((booking, index) => {
+          let statusColor = "text-etc-black";
+          if (booking.statuses === "Waiting for confirm") {
+            statusColor = "text-pink-500";
+          }
+          if (booking.statuses === "Waiting for service") {
+            statusColor = "text-yellow-200";
+          }
+          if (booking.statuses === "In service") {
+            statusColor = "text-blue-500";
+          }
+          if (booking.statuses === "Success") {
+            statusColor = "text-green-500";
+          }
+          if (booking.statuses === "Canceled") {
+            statusColor = "text-etc-red";
+          }
+          return (
+            <div
+              key={booking.booking_no}
+              className="flex h-[76px] bg-etc-white last:rounded-b-2xl border-t-2 border-t-gray-200">
+              <div className="w-[240px] text-body2 text-etc-black px-4 py-6 ">
+                {booking.statuses === "Waiting for confirm"
+                  ? (
+                      <span className="text-orange-500">•</span>
+                    )` ${booking.user_full_name}`
+                  : booking.user_full_name}
+              </div>
+              <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
+                {booking.pet_ids.length}
+              </div>
+              <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
+                {booking.duration} hours
+              </div>
+              <div className="w-[420px] text-body2 text-etc-black px-4 py-6">
+                Booked Date
+              </div>
+              {}
+              <div className={`w-[220px] text-body2 ${statusColor} px-4 py-6`}>
+                • {booking.statuses}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -8,6 +8,10 @@ const usePosts = () => {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const { userData } = useAuth();
+  const [bookings, setBookings] = useState([]);
+  const [cursor, setCursor] = useState(null); // cursor for pagination
+  const [searchKeywords, setSearchKeywords] = useState("");
+  const [bookingStatus, setbookingStatus] = useState([]);
 
   const getProfileImage = async (user) => {
     if (user) {
@@ -77,7 +81,31 @@ const usePosts = () => {
       console.log(error);
     }
   };
-
+  const getSitterBookingList = async (
+    sitterId,
+    searchKeywords = "",
+    status = [],
+    page = 1
+  ) => {
+    try {
+      const response = await axios.get(
+        `/sitterManagement/${sitterId}/booking/`,
+        {
+          params: {
+            searchKeywords,
+            status: status.join(","),
+            page,
+          },
+        }
+      );
+      // Assuming you have a state variable 'bookings' and a setter function 'setBookings'
+      setBookings(response.data.data);
+      // console.log(response.data.data);
+    } catch (error) {
+      console.error("Error fetching bookings: ", error);
+    }
+  };
+  // console.log(bookings);
   return {
     profileImage,
     getProfileImage,
@@ -85,6 +113,15 @@ const usePosts = () => {
     getAllPetList,
     petData,
     createBooking,
+    getSitterBookingList,
+    bookings,
+    setBookings,
+    cursor,
+    setCursor,
+    searchKeywords,
+    setSearchKeywords,
+    bookingStatus,
+    setbookingStatus,
   };
 };
 

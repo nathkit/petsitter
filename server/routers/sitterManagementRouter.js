@@ -17,16 +17,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-          (value.length + 1) +
-          ` or Lower(address_detail) like $` +
-          (value.length + 1) +
-          ` or Lower(district) like $` +
-          (value.length + 1) +
-          ` or Lower(sub_district) like $` +
-          (value.length + 1) +
-          `  or Lower(province) like $` +
-          (value.length + 1) +
-          ` )`
+        (value.length + 1) +
+        ` or Lower(address_detail) like $` +
+        (value.length + 1) +
+        ` or Lower(district) like $` +
+        (value.length + 1) +
+        ` or Lower(sub_district) like $` +
+        (value.length + 1) +
+        `  or Lower(province) like $` +
+        (value.length + 1) +
+        ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -91,7 +91,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -138,9 +138,9 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => {});
+sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 
-sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {});
+sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => { });
 
 sitterManagementRouter.get(
   "/:sitterId/booking/:bookingId",
@@ -289,9 +289,30 @@ sitterManagementRouter.put(
   }
 );
 
-sitterManagementRouter.put(
+sitterManagementRouter.post(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => {}
+  async (req, res) => {
+    try {
+      const bookingId = req.params.bookingId;
+      const newReview = {
+        ...req.body,
+        created_at: new Date(),
+      };
+      await pool.query(
+        `insert into user_reviews (booking_id, rating, created_at)
+        VALUES ($1, $2, $3)`,
+        [bookingId, newReview.rating, newReview.created_at]
+      );
+
+      return res.json({
+        message: "Rating has been created successfully",
+        data: newReview,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
 );
 
 sitterManagementRouter.get(
@@ -303,7 +324,7 @@ sitterManagementRouter.get(
       const queryForPayout = `SELECT * FROM payout_option WHERE pet_sitter_id = $1;`;
       const sitterPayout = await pool.query(queryForPayout, [sitterId]);
       console.log("Database Query Result:", sitterPayout.rows);
-      
+
       return res.status(200).json({
         message: "Get payout option successfully",
         data: sitterPayout.rows,

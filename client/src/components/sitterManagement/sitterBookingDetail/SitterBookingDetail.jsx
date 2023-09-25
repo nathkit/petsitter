@@ -29,6 +29,10 @@ function SitterBookingDetail() {
       <SubNavbar
         status={booking.statuses}
         userFullName={booking.user_full_name}
+        sitterId={params.sitterId}
+        bookingId={params.bookingId}
+        booking={booking}
+        setBooking={setBooking}
       />
 
       <div className="flex flex-col px-20 py-10 gap-6 bg-etc-white rounded-2xl">
@@ -108,9 +112,7 @@ function SitterBookingDetail() {
         </div>
 
         <div className="flex flex-col">
-          <p className="text-[#AEB1C3] text-[20px] font-bold">
-            Transaction No.
-          </p>
+          <p className="text-[#AEB1C3] text-[20px] font-bold">Booking No.</p>
           <p className="text-[#000] text-[16px] font-medium">
             {booking.booking_id}
           </p>
@@ -121,7 +123,7 @@ function SitterBookingDetail() {
             Additional Message
           </p>
           <p className="text-[#000] text-[16px] font-medium">
-            {booking.message}
+            {booking.message ? booking.message : "No additional message"}
           </p>
         </div>
       </div>

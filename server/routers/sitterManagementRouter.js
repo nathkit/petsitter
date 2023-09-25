@@ -17,16 +17,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-        (value.length + 1) +
-        ` or Lower(address_detail) like $` +
-        (value.length + 1) +
-        ` or Lower(district) like $` +
-        (value.length + 1) +
-        ` or Lower(sub_district) like $` +
-        (value.length + 1) +
-        `  or Lower(province) like $` +
-        (value.length + 1) +
-        ` )`
+          (value.length + 1) +
+          ` or Lower(address_detail) like $` +
+          (value.length + 1) +
+          ` or Lower(district) like $` +
+          (value.length + 1) +
+          ` or Lower(sub_district) like $` +
+          (value.length + 1) +
+          `  or Lower(province) like $` +
+          (value.length + 1) +
+          ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -91,7 +91,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => { });
+sitterManagementRouter.post("/", async (req, res) => {});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -138,9 +138,9 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => { });
+sitterManagementRouter.put("/:sitterId", async (req, res) => {});
 
-sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => { });
+sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {});
 
 sitterManagementRouter.get(
   "/:sitterId/sitterBookingList/:bookingId",
@@ -176,7 +176,6 @@ sitterManagementRouter.get(
   }
 );
 
-// Reject / Confirm /In Service
 sitterManagementRouter.put(
   "/:sitterId/booking/:bookingId",
   async (req, res) => {
@@ -185,26 +184,31 @@ sitterManagementRouter.put(
       const bookingId = req.params.bookingId;
       const statusBody = { ...req.body };
 
-      console.log("sitterId:", sitterId);
-      console.log("bookingId:", bookingId);
-      console.log("statusBody:", statusBody);
+      // console.log("sitterId:", sitterId);
+      // console.log("bookingId:", bookingId);
+      // console.log("statusBody:", statusBody);
 
       const updateData = {
         statuses: statusBody.statuses,
       };
 
+      if (updateData.statuses === "Success") {
+        updateData.success_date_time = new Date().toISOString();
+      }
+
       console.log("updateData:", updateData);
-      console.log("Hello");
+
       const updateQuery = `
         UPDATE bookings
-        SET statuses = $1
-        WHERE pet_sitter_id = $2 AND id = $3
+        SET statuses = $1, success_date_time = $2
+        WHERE pet_sitter_id = $3 AND id = $4
       `;
 
       console.log("updateQuery:", updateQuery);
 
       const { rowCount } = await pool.query(updateQuery, [
         updateData.statuses,
+        updateData.success_date_time || null,
         sitterId,
         bookingId,
       ]);
@@ -220,66 +224,7 @@ sitterManagementRouter.put(
         data: {
           bookingId,
           updatedStatus: updateData.statuses,
-        },
-      });
-    } catch (error) {
-      console.error("Error updating booking:", error);
-      return res.status(500).json({ message: "Request error occurred" });
-    }
-  }
-);
-
-// Success
-sitterManagementRouter.put(
-  "/:sitterId/booking/:bookingId/success",
-  async (req, res) => {
-    try {
-      const sitterId = req.params.sitterId;
-      const bookingId = req.params.bookingId;
-      const statusBody = {
-        ...req.body,
-        success_date_time: new Date().toISOString(),
-      };
-
-      console.log("sitterId:", sitterId);
-      console.log("bookingId:", bookingId);
-      console.log("statusBody:", statusBody);
-
-      const updateData = {
-        statuses: statusBody.statuses,
-        success_date_time: statusBody.success_date_time,
-      };
-
-      console.log("updateData:", updateData);
-      console.log("Hello Success");
-
-      const updateQuery = `
-      UPDATE bookings
-      SET statuses = $1, success_date_time = $2
-      WHERE pet_sitter_id = $3 AND id = $4
-    `;
-
-      console.log("updateQuery:", updateQuery);
-
-      const { rowCount } = await pool.query(updateQuery, [
-        updateData.statuses,
-        updateData.success_date_time,
-        sitterId,
-        bookingId,
-      ]);
-
-      console.log("rowCount:", rowCount);
-
-      if (rowCount === 0) {
-        return res.status(404).json({ message: "Booking not found" });
-      }
-
-      return res.status(200).json({
-        message: "Booking has been updated successfully",
-        data: {
-          bookingId,
-          updatedStatus: updateData.statuses,
-          success_date_time: updateData.success_date_time,
+          success_date_time: updateData.success_date_time || null,
         },
       });
     } catch (error) {
@@ -315,26 +260,23 @@ sitterManagementRouter.post(
   }
 );
 
-sitterManagementRouter.get(
-  "/:sitterId/payoutOption",
-  async (req, res) => {
-    try {
-      const sitterId = req.params.sitterId;
+sitterManagementRouter.get("/:sitterId/payoutOption", async (req, res) => {
+  try {
+    const sitterId = req.params.sitterId;
 
-      const queryForPayout = `SELECT * FROM payout_option WHERE pet_sitter_id = $1;`;
-      const sitterPayout = await pool.query(queryForPayout, [sitterId]);
-      console.log("Database Query Result:", sitterPayout.rows);
+    const queryForPayout = `SELECT * FROM payout_option WHERE pet_sitter_id = $1;`;
+    const sitterPayout = await pool.query(queryForPayout, [sitterId]);
+    console.log("Database Query Result:", sitterPayout.rows);
 
-      return res.status(200).json({
-        message: "Get payout option successfully",
-        data: sitterPayout.rows,
-      });
-    } catch (error) {
-      console.error("Error fetching sitter details:", error);
-      return res.status(500).json({ message: "Request error occurred" });
-    }
+    return res.status(200).json({
+      message: "Get payout option successfully",
+      data: sitterPayout.rows,
+    });
+  } catch (error) {
+    console.error("Error fetching sitter details:", error);
+    return res.status(500).json({ message: "Request error occurred" });
   }
-);
+});
 
 sitterManagementRouter.get(
   "/:userId/booking/:bookingId/review",

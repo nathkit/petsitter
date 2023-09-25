@@ -1,8 +1,6 @@
 import React from "react";
-import { Close } from "../../systemdesign/Icons";
 import { StarIcon } from "../../systemdesign/Icons";
 import { ButtonSecondary, ButtonPrimary } from "../../systemdesign/Button";
-import { dateWithOutComma } from "../../../utils/timeFormat";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -27,6 +25,7 @@ function ReviewModal({ sitterBookingDetail }) {
     } else {
       setReview({
         ...review,
+
         rating: index + 1,
       });
     }
@@ -37,6 +36,7 @@ function ReviewModal({ sitterBookingDetail }) {
     console.log(apiUrl);
     await axios
       .post(apiUrl, review)
+
       .then(function (response) {
         console.log("Success:", response.data);
       })
@@ -46,11 +46,8 @@ function ReviewModal({ sitterBookingDetail }) {
   };
 
   return (
-    <dialog id={`review-${sitterBookingDetail.booking_no}`} className="modal">
-      <div
-        key={sitterBookingDetail.booking_no}
-        className="modal-box max-w-[800px] font-bold text-[24px] text-gray-600 p-0 bg-etc-white"
-      >
+    <dialog id={`review`} className="modal">
+      <div className="modal-box max-w-[800px] font-bold text-[24px] text-gray-600 p-0 bg-etc-white">
         <div className="flex px-10 py-6">
           <h3>Rating & Review</h3>
         </div>
@@ -76,8 +73,7 @@ function ReviewModal({ sitterBookingDetail }) {
             </div>
           </div>
           <form method="dialog">
-          <div className="flex justify-between">
-            
+            <div className="flex justify-between">
               <ButtonSecondary className="btn" content="Cancel" />
 
               <ButtonPrimary
@@ -86,8 +82,7 @@ function ReviewModal({ sitterBookingDetail }) {
                 className="btn"
                 onClick={() => addNewReview()}
               />
-            
-          </div>
+            </div>
           </form>
         </div>
       </div>

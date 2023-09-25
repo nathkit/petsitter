@@ -8,7 +8,7 @@ import {
 } from "../systemdesign/Icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication";
-import PayoutOption from "./PayOutOption";
+import PayoutOption from "./PayoutOption";
 import SitterBookingDetail from "./sitterBookingDetail/SitterBookingDetail";
 import SitterBookingList from "./SitterBookingList";
 import SitterProfile from "./SitterProfile";
@@ -37,7 +37,7 @@ function SitterBar(props) {
     <>
       <div className=" flex ">
         {sidebarOpen && (
-          <aside className="sidebar  h-screen pt-4 flex flex-col justify-between text-gray-500 text-body1 border-r border-gray-200">
+          <aside className="sidebar  h-screen pt-4 flex flex-col justify-between text-gray-500 bg-etc-bg_gray text-body1 border-r border-gray-200">
             <ul className="sidebar-links flex flex-col  w-60 ">
               <li className=" px-6 pt-6 pb-10 ">
                 <div
@@ -135,7 +135,7 @@ function SitterBar(props) {
           </aside>
         )}
         <div className="flex flex-col w-full">
-          <nav className="w-full h-[72px] flex items-center py-4 text-gray-600 text-body2">
+          <nav className="w-full h-[72px] flex items-center py-4 text-gray-600 bg-etc-bg_gray text-body2">
             <div className="px-[30px]">
               <button
                 className="hover:text-orange-500 text-3xl"

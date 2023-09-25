@@ -31,7 +31,7 @@ function PayoutOption() {
   const successEntries = payoutOption.filter((entry) => entry.statuses === "Success");
 
   return (
-    <section className="flex flex-col gap-6 p-10 bg-gray-100">
+    <section className="flex flex-col h-screen gap-6 p-10 bg-gray-100">
       <h1 className=" text-headline3 text-gray-900">Payout Option</h1>
       <div className=" w-full flex gap-6 text-body2">
         <div className=" w-full flex gap-4 p-6 bg-etc-white rounded-2xl text-etc-black">

@@ -143,7 +143,7 @@ sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => { });
 
 sitterManagementRouter.get(
-  "/:sitterId/booking/:bookingId",
+  "/:sitterId/sitterBookingList/:bookingId",
   async (req, res) => {
     try {
       const bookingId = req.params.bookingId;
@@ -331,6 +331,31 @@ sitterManagementRouter.get(
       });
     } catch (error) {
       console.error("Error fetching sitter details:", error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
+);
+
+sitterManagementRouter.get(
+  "/:userId/booking/:bookingId/review",
+  async (req, res) => {
+    try {
+      const bookingId = req.params.bookingId;
+      const result = await pool.query(
+        `select * from bookings_user where booking_id = $1`,
+        [bookingId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(500).json({ message: "Request error occurred" });
+      }
+
+      return res.json({
+        message: "Get review successfully",
+        data: result.rows[0],
+      });
+    } catch (error) {
+      console.log(error);
       return res.status(500).json({ message: "Request error occurred" });
     }
   }

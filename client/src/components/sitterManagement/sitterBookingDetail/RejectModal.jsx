@@ -3,10 +3,10 @@ import { Close } from "../../systemdesign/Icons";
 import { ButtonPrimary } from "../../systemdesign/Button";
 import { ButtonSecondary } from "../../systemdesign/Button";
 
-function RejectModal({sitterBookingDetail}) {
+function RejectModal() {
   return (
-    <dialog id={`reject-${sitterBookingDetail.booking_no}`} className="modal">
-      <div key={sitterBookingDetail.booking_no} className="modal-box p-0 max-w-[400px] ">
+    <dialog id={`reject`} className="modal">
+      <div className="modal-box p-0 max-w-[400px] ">
         <form method="dialog">
           <div className=" flex justify-between  items-center px-6 py-4">
             <h3 className=" text-headline4 ">Reject Confirmation</h3>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { ButtonViewProfile } from "../../systemdesign/Button";
 import axios from "axios";
-import { dateTimeFormat } from "../../../utils/timeFormat";
+import { Close } from "../../systemdesign/Icons";
+import { dateWithOutComma } from "../../../utils/timeFormat";
 
 function ViewProfile({ userId }) {
   const [users, setUsers] = useState({});
@@ -28,75 +29,75 @@ function ViewProfile({ userId }) {
           document.getElementById(users.full_name).showModal();
         }}
       />
-      <dialog id={users.full_name} className="modal">
-        <div className="modal-box w-5/12 max-w-5xl h-[650px] p-0">
-          <div className="w-full px-10 py-6 h-[80px] text-[#000] text-[20px] font-bold">
-            {users.full_name}
-          </div>
-          <hr />
-          <div className="flex w-full h-[568px] p-10 gap-10 rounded-[8px]">
-            <div className="flex flex-col items-center gap-4 text-[20px] text-[#000] font-bold">
-              <img
-                src={users.profile_image_path}
-                alt={users.full_name}
-                style={{
-                  width: "240px",
-                  height: "240px",
-                }}
-                className="rounded-full"
-              />
-              <p>{users.full_name}</p>
-            </div>
-            <div className="flex flex-col w-[440px] h-full p-[24px] bg-[#FAFAFB] gap-10">
-              <div className="flex flex-col w-[176px]">
-                <p className="text-[#AEB1C3] text-[20px] font-bold">
-                  Pet Owner Name
-                </p>
-                <p className="text-[#000] text-[16px] font-[400px]">
-                  {users.full_name}
-                </p>
-              </div>
-
-              <div className="flex flex-col w-[176px]">
-                <p className="text-[#AEB1C3] text-[20px] font-bold">Email</p>
-                <p className="text-[#000] text-[16px] font-[400px]">
-                  {users.email}
-                </p>
-              </div>
-
-              <div className="flex flex-col w-[176px]">
-                <p className="text-[#AEB1C3] text-[20px] font-bold">Phone</p>
-                <p className="text-[#000] text-[16px] font-[400px]">
-                  {users.phone}
-                </p>
-              </div>
-
-              <div className="flex flex-col w-[176px]">
-                <p className="text-[#AEB1C3] text-[20px] font-bold">
-                  ID Number
-                </p>
-                <p className="text-[#000] text-[16px] font-[400px]">
-                  {users.id_number}
-                </p>
-              </div>
-
-              <div className="flex flex-col w-[176px]">
-                <p className="text-[#AEB1C3] text-[20px] font-bold">
-                  Date of Birth
-                </p>
-                <p className="text-[#000] text-[16px] font-[400px]">
-                  {dateTimeFormat(users.date_of_birth)}
-                </p>
-              </div>
-            </div>
-          </div>
-          <form method="dialog">
-            <button className="btn btn-lg btn-circle btn-ghost absolute right-2 top-2">
-              ✕
+<dialog id={users.full_name} className="modal">
+      <div className="modal-box max-w-[800px] h-auto p-0 ">
+        <form method="dialog">
+          <div className=" flex flex-row-reverse justify-between items-center w-full px-10 py-6">
+            <button className="btn btn-ghost">
+              <Close fill="#3A3B46" />
             </button>
-          </form>
-        </div>
-      </dialog>
+            <h3 className=" text-headline3 h-fit ">
+            {users.full_name}
+            </h3>
+          </div>
+        </form>
+
+        <hr className=" w-full " />
+        <section className=" w-full p-10 flex flex-row items-start gap-10">
+          <div className=" flex flex-col justify-center gap-4">
+            <div className=" avatar">
+              <div className=" w-[240px] h-[240px] bg-etc-bg_gray rounded-full">
+                <img src={users.profile_image_path} alt={users.full_name} />
+              </div>
+            </div>
+          </div>
+          <div className=" flex flex-col w-full h-auto gap-10 bg-etc-bg_gray p-6 rounded-lg">
+            <div className=" flex flex-row gap-10 w-full h-auto">
+              <div className=" space-y-1 w-full h-auto ">
+                <h4 className=" text-headline4 text-gray-300">
+                  Pet Owner Name
+                </h4>
+                <h4 className=" text-body2 text-etc-black">
+                {users.full_name}
+                </h4>
+              </div>
+            </div>
+            <div className=" flex flex-row gap-10 w-full h-auto">
+              <div className=" space-y-1 w-full h-auto ">
+                <h4 className=" text-headline4 text-gray-300">Email</h4>
+                <h4 className=" text-body2 text-etc-black">
+                {users.email}
+                </h4>
+              </div>
+            </div>
+            <div className=" flex flex-row gap-10 w-full h-auto">
+              <div className=" space-y-1 w-full h-auto ">
+                <h4 className=" text-headline4 text-gray-300">Phone</h4>
+                <h4 className=" text-body2 text-etc-black">
+                {users.phone}
+                </h4>
+              </div>
+            </div>
+            <div className=" flex flex-row gap-10 w-full h-auto">
+              <div className=" space-y-1 w-full h-auto ">
+                <h4 className=" text-headline4 text-gray-300">ID Number</h4>
+                <h4 className=" text-body2 text-etc-black">
+                {users.id_number}
+                </h4>
+              </div>
+            </div>
+            <div className=" flex flex-row gap-10 w-full h-auto">
+              <div className=" space-y-1 w-full h-auto ">
+                <h4 className=" text-headline4 text-gray-300">Date of Birth</h4>
+                <h4 className=" text-body2 text-etc-black">
+                  {dateWithOutComma(users.date_of_birth)}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </dialog>
     </div>
   );
 }

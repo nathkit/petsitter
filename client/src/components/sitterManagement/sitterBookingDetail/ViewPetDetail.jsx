@@ -50,25 +50,23 @@ function ViewPetDetail({ petId, userId }) {
         </div>
       </div>
       <dialog id={pets.name} className="modal">
-        <div className="modal-box w-5/12 max-w-5xl h-[554px] p-0">
+        <div className="modal-box  max-w-[800px] h-auto p-0">
           <div className="w-full px-10 py-6 h-[80px] text-[#000] text-[20px] font-bold">
             {pets.name}
           </div>
           <hr />
-          <div className="flex w-full h-[472px] p-10 gap-10 rounded-[8px]">
-            <div className="flex flex-col items-center gap-4 text-[20px] text-[#000] font-bold">
-              <img
-                src={pets.image_path}
-                alt={pets.name}
-                style={{
-                  width: "240px",
-                  height: "240px",
-                }}
-                className="rounded-full"
-              />
-              <p>{pets.name}</p>
+          <div className=" w-full p-10 flex flex-row items-start gap-10">
+            <div className=" flex flex-col justify-center gap-4 rounded-lg">
+              <div className=" avatar">
+                <div className=" w-[240px] h-[240px] bg-etc-bg_gray rounded-full">
+                  <img src={pets.image_path} alt={pets.name} />
+                </div>
+              </div>
+              <h4 className=" w-full text-center text-headline4 ">
+                {pets.name}
+              </h4>
             </div>
-            <div className="flex flex-col w-[440px] h-full p-[24px] bg-[#FAFAFB] gap-10 rounded-lg">
+            <div className="flex flex-col w-[440px] h-full p-[24px] bg-etc-bg_gray rounded-lg gap-10">
               <div className="flex gap-10">
                 <div className="flex flex-col w-[176px]">
                   <p className="text-[#AEB1C3] text-[20px] font-bold">

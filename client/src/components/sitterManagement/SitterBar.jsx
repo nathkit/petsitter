@@ -37,7 +37,7 @@ function SitterBar(props) {
     <>
       <div className=" flex ">
         {sidebarOpen && (
-          <aside className="sidebar  h-screen pt-4 flex flex-col justify-between text-gray-500 text-body1">
+          <aside className="sidebar  h-screen pt-4 flex flex-col justify-between text-gray-500 text-body1 border-r border-gray-200">
             <ul className="sidebar-links flex flex-col  w-60 ">
               <li className=" px-6 pt-6 pb-10 ">
                 <div
@@ -118,7 +118,7 @@ function SitterBar(props) {
               </li>
             </ul>
             <div
-              className="flex px-6 py-4 cursor-pointer hover:text-orange-500"
+              className="flex px-6 py-4 cursor-pointer hover:text-orange-500 border-t border-gray-200"
               onClick={() => {
                 signOut();
               }}

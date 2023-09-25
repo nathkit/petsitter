@@ -12,7 +12,7 @@ function SitterBookingDetail() {
 
   const getBooking = async () => {
     const result = await axios.get(
-      `/sitterManagement/${params.sitterId}/booking/${params.bookingId}`
+      `/sitterManagement/${params.sitterId}/sitterBookingList/${params.bookingId}`
     );
     setBooking(result.data.data);
   };
@@ -28,10 +28,11 @@ function SitterBookingDetail() {
       <SubNavbar
         status={booking.statuses}
         userFullName={booking.user_full_name}
-        sitterId={params.sitterId}
         bookingId={params.bookingId}
         booking={booking}
         setBooking={setBooking}
+        review_id={booking.review_id}
+        sitterId={params.sitterId}
       />
 
       <div className="flex flex-col px-20 py-10 gap-6 bg-etc-white rounded-2xl">

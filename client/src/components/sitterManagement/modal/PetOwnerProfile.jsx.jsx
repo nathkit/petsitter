@@ -1,35 +1,10 @@
-import { useEffect, useState } from "react";
-import { ButtonViewProfile } from "../../systemdesign/Button";
-import axios from "axios";
+import React from "react";
 import { Close } from "../../systemdesign/Icons";
 import { dateWithOutComma } from "../../../utils/timeFormat";
 
-function ViewProfile({ userId }) {
-  const [users, setUsers] = useState({});
-
-  const getUser = async () => {
-    const result = await axios.get(`/userManagement/${userId}`);
-    console.log(result.data.data);
-    setUsers(result.data.data);
-  };
-
-  useEffect(() => {
-    if (userId) {
-      getUser();
-    }
-  }, [userId]);
-
+function ProfileModal({ sitterBookingDetail }) {
   return (
-    <div className="flex">
-      <ButtonViewProfile
-        content="View Profile"
-        width="121px"
-        height="32px"
-        onClick={(e) => {
-          document.getElementById(users.full_name).showModal();
-        }}
-      />
-<dialog id={users.full_name} className="modal">
+    <dialog id={users.full_name} className="modal">
       <div className="modal-box max-w-[800px] h-auto p-0 ">
         <form method="dialog">
           <div className=" flex flex-row-reverse justify-between items-center w-full px-10 py-6">
@@ -98,8 +73,7 @@ function ViewProfile({ userId }) {
         </section>
       </div>
     </dialog>
-    </div>
   );
 }
 
-export default ViewProfile;
+export default ProfileModal;

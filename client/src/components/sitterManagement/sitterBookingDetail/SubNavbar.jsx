@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { ArrowLeftIcon, Dot } from "../../systemdesign/Icons";
 import { ButtonPrimary, ButtonSecondary } from "../../systemdesign/Button";
+import ReviewModal from "./ReviewModal";
+import YourReview from "./YourReview";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import RejectModal from "./RejectModal";
 
 function SubNavbar({
   sitterId,
@@ -11,6 +14,7 @@ function SubNavbar({
   status,
   booking,
   setBooking,
+  review_id,
 }) {
   const updateStatus = async (statuses) => {
     try {
@@ -34,7 +38,7 @@ function SubNavbar({
           statuses: "Success",
         }
       );
-
+      setBooking({ ...booking, statuses: "Success" });
       if (response.status === 201) {
         console.log("Booking status updated to Success successfully.");
       }
@@ -96,9 +100,10 @@ function SubNavbar({
               content="Reject Booking"
               width="160px"
               onClick={() => {
-                updateStatus("Canceled");
+                document.getElementById("reject").showModal();
               }}
             />
+            <RejectModal updateStatus={updateStatus} />
 
             <ButtonPrimary
               content="Confirm Booking"
@@ -118,7 +123,32 @@ function SubNavbar({
         {status === "In service" && (
           <ButtonPrimary content="Success" onClick={updateSuccessStatus} />
         )}
-        {status === "Success" && <ButtonPrimary content="Review" />}
+        {review_id !== null ? (
+          <>
+            {status === "Success" && (
+              <ButtonSecondary
+                className="btn"
+                onClick={(e) => {
+                  document.getElementById("yourreview").showModal();
+                }}
+                content="Your Review"
+              />
+            )}
+            <YourReview />
+          </>
+        ) : (
+          <>
+            {status === "Success" && (
+              <ButtonPrimary
+                className="btn"
+                content="Review"
+                onClick={() => document.getElementById(`review`).showModal()}
+              />
+            )}
+
+            <ReviewModal booking={booking} setBooking={setBooking} />
+          </>
+        )}
       </div>
     </div>
   );

@@ -351,4 +351,22 @@ userManagementRouter.get(
   }
 );
 
+userManagementRouter.get("/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const result = await pool.query(
+      `select * from user_information where id = $1`,
+      [userId]
+    );
+
+    return res.json({
+      message: "Get review successfully",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
+
 export default userManagementRouter;

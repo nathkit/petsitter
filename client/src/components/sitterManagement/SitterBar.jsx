@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authentication";
 import PayoutOption from "./PayOutOption";
-import SitterBookingDetail from "./SitterBookingDetail";
+import SitterBookingDetail from "./sitterBookingDetail/SitterBookingDetail";
 import SitterBookingList from "./SitterBookingList";
 import SitterProfile from "./SitterProfile";
 import { Ellipse21 } from "../systemdesign/image";

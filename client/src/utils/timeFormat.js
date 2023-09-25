@@ -5,17 +5,15 @@ export function timeFormat(time) {
   return formattedDate;
 }
 
-
 export function dateFormat(time) {
   const formattedDate = moment(time).format("DD MMM, YYYY");
   return formattedDate;
 }
 
 export function dateTimeFormat(time) {
-  const formattedDate = moment(time).format("DD MMM, YYYY");
+  const formattedDate = moment(time).format("DD MMM YYYY");
   return formattedDate;
 }
-
 
 export function formatTime(time) {
   const format = moment(time).format("LT");

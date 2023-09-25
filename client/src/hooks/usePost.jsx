@@ -11,7 +11,7 @@ const usePosts = () => {
   const [bookings, setBookings] = useState([]);
   const [cursor, setCursor] = useState(null); // cursor for pagination
   const [searchKeywords, setSearchKeywords] = useState("");
-  const [bookingStatus, setbookingStatus] = useState([]);
+  const [bookingStatus, setBookingStatus] = useState([]);
 
   const getProfileImage = async (user) => {
     if (user) {
@@ -95,7 +95,7 @@ const usePosts = () => {
         {
           params: {
             searchKeywords,
-            status: status.join(","),
+            status: status,
             page,
           },
         }
@@ -107,7 +107,6 @@ const usePosts = () => {
       console.error("Error fetching bookings: ", error);
     }
   };
-  // console.log(bookings);
   return {
     profileImage,
     getProfileImage,
@@ -123,7 +122,7 @@ const usePosts = () => {
     searchKeywords,
     setSearchKeywords,
     bookingStatus,
-    setbookingStatus,
+    setBookingStatus,
   };
 };
 

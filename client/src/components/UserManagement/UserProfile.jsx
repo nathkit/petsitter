@@ -37,22 +37,29 @@ const validationSchema = yup.object({
     })
     .min(10, "Phone numbers should have 10 character"),
   idNumber: yup
-    .number()
-    .min(0)
+    .string()
+    .matches(
+      /^0\d+$/,
+      "Phone number must start with 0 and contain only numeric characters"
+    )
+    .required("Phone number is required")
     .test(
-      "isNumber",
-      "IdNumber must be a valid number and exactly 13 characters",
-      (val) =>
-        typeof val === "number" && !isNaN(val) && val.toString().length === 13
+      "isExactlyTenCharacters",
+      "Phone numbers should have exactly 10 characters",
+      (value) => {
+        if (value) {
+          return value.length === 10;
+        }
+        return true; // Allow empty value (optional phone number)
+      }
     ),
 });
 
 const profile = () => {
-  const { alertMessage, setAlertMessage } = useAuth();
+  const { alertMessage, setAlertMessage, userData, setUserData } = useAuth();
   const { updateUserData } = useUserProfile();
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const [user, setUser] = useState({});
 
   const initialValues = {};
   const today = dayjs();
@@ -73,16 +80,16 @@ const profile = () => {
     initialValues.idNumber = newUser.idNumber;
     initialValues.phone = newUser.phone;
     initialValues.dateOfBirth = date;
-    setUser(newUser);
+    setUserData(newUser);
   }, []);
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if (avatarFile || user) {
+      if (avatarFile || userData) {
         const newValue = {
           ...values,
-          avatarName: user.image_name,
+          avatarName: userData.image_name,
           avatarFile: avatarFile,
         };
         await updateUserData(newValue);
@@ -116,7 +123,7 @@ const profile = () => {
         {/* upload image *********************************** */}
         <Box className="h-[15rem] relative mb-10">
           <UploadImage
-            img={avatarUrl ? avatarUrl : user ? user.image_path : null}
+            img={avatarUrl ? avatarUrl : userData ? userData.image_path : null}
             onChange={async (e) => {
               setAvatarFile(e.target.files[0]);
               const imgUrl = URL.createObjectURL(e.target.files[0]);

@@ -85,17 +85,11 @@ function Register() {
               .min(6, "Name is too short")
               .max(20, "Name is too long"),
             phone: string()
-              .required("Please enter phone number")
-              .test(
-                "startsWithZero",
-                "Phone number must start with 0",
-                (value) => {
-                  if (value) {
-                    return value.startsWith("0");
-                  }
-                  return true; // Allow empty value (optional phone number)
-                }
+              .matches(
+                /^0\d+$/,
+                "Phone number must start with 0 and contain only numeric characters"
               )
+              .required("Phone number is required")
               .test(
                 "isExactlyTenCharacters",
                 "Phone numbers should have exactly 10 characters",

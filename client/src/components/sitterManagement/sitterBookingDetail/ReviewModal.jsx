@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-function ReviewModal({ sitterBookingDetail }) {
+function ReviewModal({ setBooking, booking }) {
   const params = useParams();
   const [review, setReview] = useState({
     rating: 5,
@@ -33,16 +33,16 @@ function ReviewModal({ sitterBookingDetail }) {
 
   const addNewReview = async () => {
     const apiUrl = `/sitterManagement/${params.userId}/booking/${params.bookingId}/review`;
-    console.log(apiUrl);
-    await axios
-      .post(apiUrl, review)
 
-      .then(function (response) {
-        console.log("Success:", response.data);
-      })
-      .catch(function (error) {
-        console.error("Error:", error);
-      });
+    try {
+      const response = await axios.post(apiUrl, review);
+      console.log("Success:", response.data);
+
+      const updatedBooking = { ...booking, review_id: response.data.review_id };
+      setBooking(updatedBooking);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (

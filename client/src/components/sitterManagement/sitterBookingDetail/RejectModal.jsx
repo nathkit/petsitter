@@ -3,7 +3,8 @@ import { Close } from "../../systemdesign/Icons";
 import { ButtonPrimary } from "../../systemdesign/Button";
 import { ButtonSecondary } from "../../systemdesign/Button";
 
-function RejectModal() {
+function RejectModal({updateStatus}) {
+
   return (
     <dialog id={`reject`} className="modal">
       <div className="modal-box p-0 max-w-[400px] ">
@@ -23,7 +24,7 @@ function RejectModal() {
               <form method="dialog">
                 <ButtonSecondary content="Cancel"  />
                 </form>
-                <ButtonPrimary content="Reject Booking" width="auto"/>
+                <ButtonPrimary content="Reject Booking" width="auto" onClick={()=>updateStatus("Canceled")}/>
             </div>
         </section>
       </div>

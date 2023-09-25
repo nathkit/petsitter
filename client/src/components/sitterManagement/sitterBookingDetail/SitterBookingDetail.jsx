@@ -28,14 +28,11 @@ function SitterBookingDetail() {
       <SubNavbar
         status={booking.statuses}
         userFullName={booking.user_full_name}
-<<<<<<< HEAD
-        sitterId={params.sitterId}
         bookingId={params.bookingId}
         booking={booking}
         setBooking={setBooking}
-=======
         review_id={booking.review_id}
->>>>>>> bdb8e3d (feat: add your review)
+        sitterId={params.sitterId}
       />
 
       <div className="flex flex-col px-20 py-10 gap-6 bg-etc-white rounded-2xl">

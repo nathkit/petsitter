@@ -40,7 +40,7 @@ function ViewPetDetail({ petId, userId }) {
         className="rounded-full object-cover"
       />
 
-      <div className="flex flex-col gap-2 text-[20px] text-[#3A3B46] font-bold">
+      <div className="flex flex-col items-center gap-2 text-[20px] text-[#3A3B46] font-bold">
         <div>{pets.name}</div>
         <div>
           {pets.pet_type_id === 1 && <DogType />}
@@ -122,7 +122,7 @@ function ViewPetDetail({ petId, userId }) {
               <div className="flex flex-col">
                 <p className="text-[#AEB1C3] text-[20px] font-bold">About</p>
                 <p className="text-[#000] text-[16px] font-[400px]">
-                  {pets.description ? pets.description.substring(0, 200) : "-"}
+                  {pets.description ? pets.description.substring(0, 150) : "-"}
                 </p>
               </div>
             </div>

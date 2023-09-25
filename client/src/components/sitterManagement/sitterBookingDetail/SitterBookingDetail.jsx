@@ -25,13 +25,13 @@ function SitterBookingDetail() {
   const petCount = Array.isArray(booking.pet_id) ? booking.pet_id.length : 0;
 
   return (
-    <div className="flex flex-col w-[1200px] h-[1216px] px-10 pt-10 pb-20 gap-6 ">
+    <div className="flex flex-col w-[1200px] h-[1216px] px-10 pt-10 pb-20 gap-6 bg-gray-100">
       <SubNavbar
         status={booking.statuses}
         userFullName={booking.user_full_name}
       />
 
-      <div className="flex flex-col px-20 py-10 gap-6">
+      <div className="flex flex-col px-20 py-10 gap-6 bg-etc-white rounded-2xl">
         <div className="flex justify-between w-full">
           <div className="flex flex-col">
             <p className="text-[#AEB1C3] text-[20px] font-bold">

@@ -199,7 +199,7 @@ userManagementRouter.put(
           pet.avatarName,
           pet.breed
         );
-        // splice avatarName out and reassige ************************************
+        // splice avatarName out and reassign ************************************
         values.splice(8, 1, avatarName, url);
       } else {
         values.splice(9, 1);

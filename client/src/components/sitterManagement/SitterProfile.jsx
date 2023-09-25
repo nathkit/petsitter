@@ -1,28 +1,69 @@
-import React, { useEffect } from "react";
-import { TextField, Alert, Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { TextField, Alert, Box, MenuItem, Select } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../../contexts/authentication";
 import { UploadImage } from "../systemdesign/uploadImage";
-import { CreateIcon } from "../systemdesign/Icons";
+import { CreateIcon, CloseIcon } from "../systemdesign/Icons";
+import { useSitter } from "../../contexts/sitterContext";
+import useSitterProfile from "../../hooks/useSitterProfile";
+import { ButtonPrimary } from "../systemdesign/Button";
 
 function SitterProfile(props) {
-  const { alertMessage } = useAuth();
+  const { alertMessage, setAlertMessage, userData, setUserData } = useAuth();
+  const {
+    avatarUrl,
+    setAvatarUrl,
+    avatarFile,
+    setAvatarFile,
+    imageGalleryUrls,
+    setImageGalleryUrls,
+    imageGalleryFile,
+    setImageGalleryFile,
+    petType,
+    setPetType,
+  } = useSitter();
+  const {
+    sitterImageUrlsManage,
+    sitterImageFileManage,
+    sitterImageArrayManage,
+    createSitterProfile,
+    updateSitterProfile,
+  } = useSitterProfile();
   // props.update ?
+  // console.log(imageGalleryFile);
+  // console.log(imageGalleryUrls);
+  // console.log(petType);
+  // console.log(userData);
   useEffect(() => {
-    props.update ? console.log("1") : console.log("2");
+    setAvatarUrl("");
+    setAvatarFile(null);
+    setImageGalleryUrls([]);
+    setImageGalleryFile([]);
+    setAlertMessage({
+      message: "",
+      severity: "",
+    });
+    if (props.update) {
+      const newUser = JSON.parse(window.localStorage.getItem("user"));
+      setUserData(newUser);
+    }
+    // const newUser = JSON.parse(window.localStorage.getItem("user"));
+    // setUserData(newUser);
+    // props.update ? console.log("1") : console.log("2");
   }, []);
+
   return (
-    <div>
+    <div className="bg-gray-100 py-10 flex flex-col items-center gap-10">
       <Formik
         initialValues={{
-          fullName: "",
-          phone: "",
-          experience: "",
-          email: "",
+          fullName: userData.fullName,
+          phone: userData.phone,
+          experience: 0,
+          email: userData.email,
           intro: "",
           tradeName: "",
-          petType: "",
+          petType: petType,
           services: "",
           myPlace: "",
           address: "",
@@ -31,7 +72,8 @@ function SitterProfile(props) {
           subDistrict: "",
           postCode: "",
         }}
-        validationSchema={yup.object({
+        enableReinitialize
+        validationSchema={yup.object().shape({
           fullName: yup
             .string()
             .required("Please enter you name")
@@ -39,7 +81,17 @@ function SitterProfile(props) {
             .max("full name should have between 6-20 character"),
           experience: yup
             .number("Experience must be a number of year")
-            .required("Please enter you experience"),
+            .required("Please enter your experience")
+            .test(
+              "your experience",
+              "Your experience must more than 0",
+              (value) => {
+                if (value) {
+                  return value >= 0;
+                }
+                return true; // Allow empty value (optional phone number)
+              }
+            ),
           phone: yup
             .string()
             .matches(
@@ -54,7 +106,7 @@ function SitterProfile(props) {
                 if (value) {
                   return value.length === 10;
                 }
-                return true; // Allow empty value (optional phone number)
+                return true;
               }
             ),
           email: yup
@@ -62,20 +114,45 @@ function SitterProfile(props) {
             .required("Please enter email")
             .email("Invalid email"),
           tradeName: yup.string().required("Please enter your trade name"),
-          petType: yup.string().required("Please select atleast 1 type of pet"),
+          petType: yup
+            .string()
+            .required("Please select atleast 1 type of pet")
+            .min(1, "Select at least one type of pet"),
           address: yup.string().required("Please enter your address"),
           district: yup.string().required("Please enter your district"),
           province: yup.string().required("Please enter your province"),
           subDistrict: yup.string().required("Please enter your sub-district"),
           postCode: yup.string().required("Please enter your post code"),
         })}
-        onSubmit={(values, formikHelpers) => {}}
+        onSubmit={(values, formikHelpers) => {
+          const newValues = {
+            ...values,
+            avatarFile: avatarFile,
+            imageGalleryFile: imageGalleryFile,
+          };
+          // console.log(newValues);
+          props.update
+            ? updateSitterProfile(newValues)
+            : createSitterProfile(newValues);
+        }}
       >
-        {({ errors, isValid, touched, dirty }) => {
+        {({ errors, isValid, touched, dirty, setFieldValue, values }) => {
           return (
-            <Form className="flex flex-col gap-10">
+            <Form className="flex flex-col gap-10 ">
+              <div className="flex justify-between items-center">
+                <h1 className="text-headline3 text-etc-black ">
+                  Pet Sitter Profile
+                </h1>
+                <ButtonPrimary
+                  width="15rem"
+                  content={props.update ? "Update" : "Create Sitter Account"}
+                  type="submit"
+                  disabled={!dirty || !isValid}
+                />
+              </div>
+
               {/* section 1 basic information ************************************************** */}
-              <section className="flex flex-col gap-10 w-[1120px] p-10 bg-gray-100 rounded-xl">
+              <section className="flex flex-col gap-10 w-[1120px] p-10 bg-etc-white rounded-xl">
                 <Box className="flex justify-between">
                   <h1 className="text-headline4 text-gray-300 ">
                     Basic Information
@@ -97,7 +174,13 @@ function SitterProfile(props) {
                 {/* upload image *********************************** */}
                 <Box className="h-[15rem] relative ">
                   <UploadImage
-                    // img={avatarUrl ? avatarUrl : user ? user.image_path : null}
+                    img={
+                      avatarUrl
+                        ? avatarUrl
+                        : userData
+                        ? userData.image_path
+                        : null
+                    }
                     onChange={async (e) => {
                       setAvatarFile(e.target.files[0]);
                       const imgUrl = URL.createObjectURL(e.target.files[0]);
@@ -158,7 +241,8 @@ function SitterProfile(props) {
                       className="TextField"
                       id="experience"
                       name="experience"
-                      type="text"
+                      type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       variant="outlined"
                       color="primary"
                       as={TextField}
@@ -212,7 +296,7 @@ function SitterProfile(props) {
               </section>
 
               {/* section 2 pet sitter information ********************************************************* */}
-              <section className="flex flex-col gap-10 w-[1120px] p-10 bg-gray-100 rounded-xl">
+              <section className="flex flex-col gap-10 w-[1120px] p-10 bg-etc-white rounded-xl">
                 <h1 className="text-headline4 text-gray-300 ">Pet Sitter</h1>
 
                 {/* tradeName ********************************* */}
@@ -245,16 +329,26 @@ function SitterProfile(props) {
                     Pet type
                   </label>
                   <Field
+                    multiple
+                    value={values.petType}
+                    as={Select}
                     className="TextField"
                     id="petType"
                     name="petType"
-                    type="select"
                     variant="outlined"
                     color="primary"
-                    as={TextField}
                     error={Boolean(errors.petType) && Boolean(touched.petType)}
                     helperText={Boolean(touched.petType) && errors.petType}
-                  />
+                    onChange={(e) => {
+                      setPetType(e.target.value);
+                      setFieldValue("petType", e.target.value);
+                    }}
+                  >
+                    <MenuItem value="Dog">Dog</MenuItem>
+                    <MenuItem value="Cat">Cat</MenuItem>
+                    <MenuItem value="Bird">Bird</MenuItem>
+                    <MenuItem value="Rabbit">Rabbit</MenuItem>
+                  </Field>
 
                   {/* services ********************************* */}
                   <label
@@ -292,35 +386,68 @@ function SitterProfile(props) {
                     color="primary"
                   />
                 </Box>
+
                 {/* upload image gallery ****************************************************************** */}
+                {/* upload image gallery ****************************************************************** */}
+                {/* upload image gallery ****************************************************************** */}
+
                 <Box>
                   <h1 className="text-lg text-etc-black font-medium ">
                     Image Gallery (Maximum 10 images)
                   </h1>
-                  {/* {(item,index) => {
-                    return <li key={index}>{ image item}</li>
-                  }} */}
-                  <div
-                    className="mt-5 border-gray-200 w-60 h-60 p-6 rounded-2xl cursor-pointer hover:border-orange-400 hover:shadow-lg border border-zinc-200 relative mb-4 bg-orange-100"
-                    // onClick={() => {
-                    //   navigate(
-                    //     `/userManagement/${userData.id}/pets/create`
-                    //   );
-                    // }}
-                  >
-                    <div className=" flex flex-col items-center mt-10 ">
-                      <CreateIcon />
-
-                      <p className="text-orange-500 text-bodyButton px-6 py-3">
-                        Upload Image
-                      </p>
-                    </div>
+                  <div className="flex gap-5 flex-wrap">
+                    {/* imageGalleryUrls condition ********************************************* */}
+                    {imageGalleryUrls.length > 0
+                      ? imageGalleryUrls.map((item, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="flex flex-col justify-center mt-5 border-gray-200 w-60 h-60 rounded-2xl  hover:border-orange-400 hover:shadow-lg border border-zinc-200 relative mb-4 bg-gray-200"
+                            >
+                              <img
+                                className="w-full h-[70%] object-cover"
+                                src={item}
+                                alt="image gallery"
+                              />
+                              <div
+                                className="flex justify-center items-center rounded-full cursor-pointer shadow-lg z-10 absolute w-10 h-10 bg-gray-500 top-[-0.5rem] right-[-0.5rem]"
+                                onClick={() => {
+                                  sitterImageArrayManage(index);
+                                }}
+                              >
+                                <CloseIcon color="white" />
+                              </div>
+                            </div>
+                          );
+                        })
+                      : null}
+                    <label className="bg-orange-100 flex flex-col mt-5 border-gray-200 w-60 h-60 p-6 rounded-2xl cursor-pointer hover:border-orange-400 hover:shadow-lg border border-zinc-200 relative mb-4 ">
+                      <div className=" flex flex-col items-center mt-10 ">
+                        <CreateIcon />
+                        <input
+                          id="avatar"
+                          name="avatar"
+                          type="file"
+                          className="hidden"
+                          multiple
+                          disabled={imageGalleryUrls.length >= 10 ? true : null}
+                          onChange={(e) => {
+                            const selectFile = Array.from(e.target.files);
+                            sitterImageUrlsManage(selectFile);
+                            sitterImageFileManage(selectFile);
+                          }}
+                        ></input>
+                        <p className="text-orange-500 text-bodyButton px-6 py-3">
+                          Upload Image
+                        </p>
+                      </div>
+                    </label>
                   </div>
                 </Box>
               </section>
 
               {/* section 3 address **************************************************************** */}
-              <section className="flex flex-col gap-10 w-[1120px] p-10 bg-gray-100 rounded-xl">
+              <section className="flex flex-col gap-10 w-[1120px] p-10 bg-etc-white rounded-xl">
                 <h1 className="text-headline4 text-gray-300 ">Address</h1>
 
                 <Box className="grid grid-cols-2 gap-[40px] w-full">

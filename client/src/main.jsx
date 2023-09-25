@@ -8,6 +8,7 @@ import { BookingStatusProvider } from "./contexts/BookingStatusContext";
 import jwtInterceptor from "./utils/jwtIntercepter.js";
 import { BookingProvider } from "./contexts/BookingContext.jsx";
 import { PetProvider } from "./contexts/petContext.jsx";
+import { SitterProvider } from "./contexts/sitterContext.jsx";
 
 jwtInterceptor();
 
@@ -15,13 +16,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <PetProvider>
-          <BookingStatusProvider>
-            <BookingProvider>
-              <App />
-            </BookingProvider>
-          </BookingStatusProvider>
-        </PetProvider>
+        <SitterProvider>
+          <PetProvider>
+            <BookingStatusProvider>
+              <BookingProvider>
+                <App />
+              </BookingProvider>
+            </BookingStatusProvider>
+          </PetProvider>
+        </SitterProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

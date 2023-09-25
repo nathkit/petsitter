@@ -1,5 +1,6 @@
 import { ArrowLeftIcon, Dot } from "../../systemdesign/Icons";
 import { ButtonPrimary } from "../../systemdesign/Button";
+import { ButtonSecondary } from "../../systemdesign/Button";
 
 function SubNavbar(props) {
   return (
@@ -43,9 +44,12 @@ function SubNavbar(props) {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex gap-2">
         {props.status === "Waiting for confirm" && (
-          <ButtonPrimary content="Reject and Confirm" />
+          <>
+            <ButtonSecondary content="Reject Booking" width="160px" />
+            <ButtonPrimary content="Confirm Booking" width="175px" />
+          </>
         )}
         {props.status === "Waiting for service" && (
           <ButtonPrimary content="In service" />

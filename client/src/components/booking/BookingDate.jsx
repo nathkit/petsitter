@@ -26,9 +26,14 @@ function BookingDate() {
   const params = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dateFormat = "DD MMM YYYY";
-
-  const startInputTime = dayjs().add(3, "hour").startOf("hour").minute(0);
-  const endInputTime = startInputTime.add(3, "hour");
+  const [startDay, setStartDay] = useState("");
+  const [endDay, setEndDay] = useState("");
+  // const startInputTime = dayjs().startOf("hour").minute(0);
+  // const endInputTime = startInputTime.add(1, "hour").startOf("hour").minute(0);
+  const [disable, setDisable] = useState(true);
+  const [checkStartTime, setCheckStartTime] = useState(dayjs().add(4, "hour"));
+  const [time1, setTime1] = useState(null);
+  const [time2, setTime2] = useState(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -40,29 +45,115 @@ function BookingDate() {
   };
 
   const disabledDate = (current) => {
-    // ปิดใช้งานวันที่ผ่านมาจากปัจจุบัน
     const isPastDate = current.isBefore(dayjs(), "day");
 
     return isPastDate;
   };
 
-  const handleDateChange = (dates) => {
-    if (dates && dates.length === 2) {
-      const [startDate, endDate] = dates;
-      const startYear = startDate.year();
-      const startMonth = startDate.month() + 1;
-      const startDay = startDate.date();
+  const handleDateChange = (selectedDate) => {
+    if (selectedDate.length === 2) {
+      const start = selectedDate[0];
+      const end = selectedDate[1];
 
-      const endYear = endDate.year();
-      const endMonth = endDate.month() + 1;
-      const endDay = endDate.date();
+      const startYear = start.year();
+      const startMonth = start.month() + 1;
+      const startDay = start.date();
+
+      const endYear = end.year();
+      const endMonth = end.month() + 1;
+      const endDay = end.date();
+
+      setStartDay(startDay);
+      setEndDay(endDay);
 
       setStartDate(`${startYear}-${startMonth}-${startDay}`);
       setEndDate(`${endYear}-${endMonth}-${endDay}`);
+
+      const currentDate = dayjs().$D;
+      const minimumBookingTime = dayjs().add(3, "hour");
+
+      if (
+        checkStartTime.isAfter(minimumBookingTime) &&
+        startDay == currentDate &&
+        endDay == currentDate &&
+        time1 < time2
+      ) {
+        setDisable(false);
+        setStartDate(`${startYear}-${startMonth}-${startDay}`);
+        setEndDate(`${endYear}-${endMonth}-${endDay}`);
+        console.log(1);
+      } else if (
+        // checkStartTime.isAfter(minimumBookingTime) &&
+        startDay == currentDate &&
+        endDay == currentDate &&
+        time1 > time2
+      ) {
+        alert("Please select the correct time.");
+        setDisable(true);
+        console.log(2);
+      } else if (
+        currentDate == startDay &&
+        endDay == currentDate &&
+        !checkStartTime.isAfter(minimumBookingTime)
+      ) {
+        alert("Please select a booking time at least 3 hours in advance.");
+        setDisable(true);
+        console.log(minimumBookingTime);
+        console.log(3);
+      } else if (
+        startDay !== currentDate &&
+        endDay !== currentDate &&
+        startDay !== endDay
+      ) {
+        setDisable(false);
+        setStartDate(`${startYear}-${startMonth}-${startDay}`);
+        setEndDate(`${endYear}-${endMonth}-${endDay}`);
+        console.log(4);
+      } else if (
+        checkStartTime.isAfter(minimumBookingTime) &&
+        startDay == currentDate &&
+        endDay !== currentDate
+      ) {
+        setDisable(false);
+        setStartDate(`${startYear}-${startMonth}-${startDay}`);
+        setEndDate(`${endYear}-${endMonth}-${endDay}`);
+        console.log(5);
+      } else if (
+        startDay == currentDate &&
+        endDay !== currentDate &&
+        !checkStartTime.isAfter(minimumBookingTime)
+      ) {
+        alert("Please select a booking time at least 3 hours in advance.");
+        setDisable(true);
+        console.log(6);
+      } else if (
+        startDay !== currentDate &&
+        endDay !== currentDate &&
+        startDay == endDay &&
+        time1 < time2
+      ) {
+        setDisable(false);
+        setStartDate(`${startYear}-${startMonth}-${startDay}`);
+        setEndDate(`${endYear}-${endMonth}-${endDay}`);
+        console.log(7);
+      } else if (
+        startDay !== currentDate &&
+        endDay !== currentDate &&
+        startDay == endDay &&
+        time1 > time2
+      ) {
+        alert("Please select the correct time.");
+        setDisable(true);
+        console.log(8);
+      } else if (startDay == "" && endDay == "") {
+        alert("Please select a booking time.");
+        setDisable(true);
+        console.log(9);
+      }
     }
   };
-  // console.log(`${startDate} `);
-  // console.log(`${endDate}  `);
+  // console.log(startDate);
+  // console.log(endDate);
 
   const handleTimeChange = (selectedTimes) => {
     if (selectedTimes.length === 2) {
@@ -71,44 +162,109 @@ function BookingDate() {
 
       const startTimeString = start.format("h:mm a");
       const endTimeString = end.format("h:mm a");
-
-      const currentTime = dayjs();
+      console.log(startTimeString, "startTimeString2");
+      const currentDate = dayjs().$D;
 
       const selectedStartTime = dayjs(startTimeString, "h:mm a");
       const selectedEndTime = dayjs(endTimeString, "h:mm a");
-      const minimumBookingTime = currentTime.add(3, "hour");
-      const date1 = dayjs(startDate);
-      const date2 = dayjs(endDate);
+      const minimumBookingTime = dayjs().add(3, "hour");
 
-      const date11 = new Date(selectedStartTime.$d);
-      const date22 = new Date(selectedEndTime.$d);
+      setCheckStartTime(dayjs(startTimeString, "h:mm a"));
+
+      const startTime = new Date(selectedStartTime.$d);
+      const endTime = new Date(selectedEndTime.$d);
 
       const time1 =
-        date11.getHours() * 3600 +
-        date11.getMinutes() * 60 +
-        date11.getSeconds();
+        startTime.getHours() * 3600 +
+        startTime.getMinutes() * 60 +
+        startTime.getSeconds();
       const time2 =
-        date22.getHours() * 3600 +
-        date22.getMinutes() * 60 +
-        date22.getSeconds();
+        endTime.getHours() * 3600 +
+        endTime.getMinutes() * 60 +
+        endTime.getSeconds();
+      setTime1(time1);
+      setTime2(time2);
       if (
         selectedStartTime.isAfter(minimumBookingTime) &&
-        date1.$D == date2.$D &&
+        startDay == currentDate &&
+        endDay == currentDate &&
         time1 < time2
       ) {
         setStartTime(startTimeString);
         setEndTime(endTimeString);
+        setDisable(false);
+        console.log(1);
       } else if (
-        !selectedStartTime.isAfter(minimumBookingTime) &&
-        date1.$D == date2.$D
+        selectedStartTime.isAfter(minimumBookingTime) &&
+        startDay == currentDate &&
+        endDay == currentDate &&
+        time1 >= time2
+      ) {
+        alert("Please select the correct time.");
+        setDisable(true);
+        console.log(2);
+      } else if (
+        currentDate == startDay &&
+        endDay == currentDate &&
+        !selectedStartTime.isAfter(minimumBookingTime)
       ) {
         alert("Please select a booking time at least 3 hours in advance.");
-      } else if (date1.isBefore(date2) && time2 < time1) {
+        setDisable(true);
+        console.log(3);
+      } else if (
+        startDay !== currentDate &&
+        endDay !== currentDate &&
+        startDay !== endDay
+      ) {
         setStartTime(startTimeString);
         setEndTime(endTimeString);
+        setDisable(false);
+        console.log(4);
+      } else if (
+        selectedStartTime.isAfter(minimumBookingTime) &&
+        startDay == currentDate &&
+        endDay !== currentDate
+      ) {
+        setStartTime(startTimeString);
+        setEndTime(endTimeString);
+        setDisable(false);
+        console.log(5);
+      } else if (
+        startDay == currentDate &&
+        endDay !== currentDate &&
+        !selectedStartTime.isAfter(minimumBookingTime)
+      ) {
+        alert("Please select a booking time at least 3 hours in advance.");
+        setDisable(true);
+        console.log(6);
+      } else if (
+        startDay !== currentDate &&
+        endDay !== currentDate &&
+        startDay == endDay &&
+        time1 < time2
+      ) {
+        setStartTime(startTimeString);
+        setEndTime(endTimeString);
+        setDisable(false);
+        console.log(7);
+      } else if (
+        startDay !== currentDate &&
+        endDay !== currentDate &&
+        startDay == endDay &&
+        time1 >= time2
+      ) {
+        alert("Please select the correct time.");
+        setDisable(true);
+        console.log(8);
+      } else if (startDay == "" && endDay == "") {
+        alert("Please select a booking time.");
+        setDisable(true);
+        console.log(9);
       }
     }
   };
+  // console.log(startTime);
+  // console.log(endTime);
 
   localStorage.setItem(
     "bookingTime",
@@ -139,6 +295,8 @@ function BookingDate() {
               onChange={handleDateChange}
               format={dateFormat}
               disabledDate={disabledDate}
+              order={false}
+              allowClear={false}
             />
           </div>
           <div className="flex items-center justify-between mb-[3.75rem]">
@@ -147,8 +305,8 @@ function BookingDate() {
               style={{ width: "92%", height: "48px" }}
               format="h:mm a"
               minuteStep={30}
+              // defaultValue={[startInputTime, endInputTime]}
               onChange={handleTimeChange}
-              defaultValue={[startInputTime, endInputTime]}
               inputReadOnly={true}
               allowClear={false}
               order={false}
@@ -162,7 +320,7 @@ function BookingDate() {
             <ButtonPrimary
               width={"100%"}
               content={"Continue"}
-              disabled={!startDate || !endDate || !startTime || !endTime}
+              disabled={disable}
             />
           </div>
         </div>

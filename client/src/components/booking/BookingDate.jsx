@@ -152,8 +152,8 @@ function BookingDate() {
       }
     }
   };
-  console.log(startDate);
-  console.log(endDate);
+  // console.log(startDate);
+  // console.log(endDate);
 
   const handleTimeChange = (selectedTimes) => {
     if (selectedTimes.length === 2) {
@@ -263,8 +263,8 @@ function BookingDate() {
       }
     }
   };
-  console.log(startTime);
-  console.log(endTime);
+  // console.log(startTime);
+  // console.log(endTime);
 
   localStorage.setItem(
     "bookingTime",

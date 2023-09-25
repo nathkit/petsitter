@@ -75,9 +75,9 @@ function SitterBookingDetail() {
         <div className="flex flex-col">
           <p className="text-[#AEB1C3] text-[20px] font-bold">Duration</p>
           <p className="text-[#000] text-[16px] font-medium">
-            {parseInt(booking.duration) <= 1
-              ? `${parseInt(booking.duration)} hour`
-              : `${parseInt(booking.duration)} hours`}
+            {(booking.duration) <= 1
+              ? `${(booking.duration)} hour`
+              : `${(booking.duration)} hours`}
           </p>
         </div>
 

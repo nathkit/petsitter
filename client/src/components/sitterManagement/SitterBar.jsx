@@ -76,7 +76,7 @@ function SitterBar(props) {
                     : ""
                 }`}
                 onClick={() => {
-                  navigate("/sitterManagement/:sitterId/sitterBookingList");
+                  navigate("/sitterManagement/:sitterId/sitterBookingList/:bookingId");
                 }}
                 onMouseEnter={() => {
                   setListIconColor("#ff7037");
@@ -94,7 +94,7 @@ function SitterBar(props) {
                   }
                 />
                 <p className="ml-4 mr-1">Booking List</p>
-                <Ellipse21 />
+                {/* <Ellipse21 /> */}
               </li>
               <li
                 className={`flex px-6 py-4 cursor-pointer hover:text-orange-500 ${

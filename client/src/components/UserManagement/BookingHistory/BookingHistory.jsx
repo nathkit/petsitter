@@ -171,6 +171,7 @@ function BookingHistory() {
                   sitterId={card.id}
                   isReview={!!card.review_id}
                   fetch={getBookingDetail}
+                  successDate={card.success_date_time}
                 />
               )}
               {card.statuses === "Canceled" && <Canceled />}

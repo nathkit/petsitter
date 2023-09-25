@@ -112,8 +112,18 @@ function SitterDetail() {
                 {" "}
                 {sitterDetail[0]?.full_name}{" "}
                 <span className="text-[16px] text-green-500">
-                  {" "}
-                  {sitterDetail[0]?.experience} Years Exp.
+                  {(() => {
+                    const experience = sitterDetail[0]?.experience;
+
+                    if (experience >= 0 && experience <= 2) {
+                      return "0-2";
+                    } else if (experience >= 3 && experience <= 5) {
+                      return "3-5";
+                    } else {
+                      return "5+";
+                    }
+                  })()}{" "}
+                  Years Exp.
                 </span>
               </h4>
               {/* rating star use logic if number 1 render 1 star */}

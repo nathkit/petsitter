@@ -1,13 +1,13 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { ArrowLeftIcon, ArrowRightIcon } from "../systemdesign/Icons";
+import { useBooking } from "../../contexts/BookingContext";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Keyboard, Navigation } from "swiper/modules";
+import { Keyboard, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { ArrowLeftIcon } from "../systemdesign/Icons";
-import { ArrowRightIcon } from "../systemdesign/Icons";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useBooking } from "../../contexts/BookingContext";
+import "swiper/css/autoplay";
 
 function SitterPictureSlide() {
   const { getSitterDetail, sitterDetail } = useBooking();
@@ -31,6 +31,7 @@ function SitterPictureSlide() {
           slidesPerView={1.5}
           spaceBetween={-450}
           centeredSlides={true}
+          modules={[Navigation, Keyboard, Autoplay]}
           navigation={{
             nextEl: ".custom-button-next",
             prevEl: ".custom-button-prev",
@@ -38,14 +39,14 @@ function SitterPictureSlide() {
           keyboard={{
             enabled: true,
           }}
-          modules={[Navigation, Keyboard]}
+          autoplay={true}
           loop={true}
-          
         >
           {sitterDetail.length > 0 && (
             <>
-              {sitterDetail[0].trade_image_path.split(",").map(
-                (imageUrl, sitterIndex) => (
+              {sitterDetail[0].trade_image_path
+                .split(",")
+                .map((imageUrl, sitterIndex) => (
                   <SwiperSlide key={sitterIndex}>
                     <div>
                       <div className=" flex justify-center ">
@@ -57,8 +58,7 @@ function SitterPictureSlide() {
                       </div>
                     </div>
                   </SwiperSlide>
-                )
-              )}
+                ))}
             </>
           )}
 

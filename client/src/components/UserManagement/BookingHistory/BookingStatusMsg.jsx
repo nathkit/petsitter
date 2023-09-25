@@ -35,17 +35,12 @@ export function InService() {
 }
 
 export function Success(props) {
-  console.log("Debugging Success props:", props);
-  const successDate =
-    Array.isArray(props.end_date_time) && props.end_date_time.length > 0
-      ? props.end_date_time[0]
-      : null;
   return (
     <div className="flex justify-between text-green-500 text-body3 flex-1 w-auto bg-green-100 p-4 mt-9 rounded-lg">
       <div>
         <h3>Success date :</h3>
         <h3>
-          {timeFormat(successDate)} | {formatTime(successDate)}
+          {timeFormat(props.successDate)} | {formatTime(props.successDate)}
         </h3>
       </div>
       <div>

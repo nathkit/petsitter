@@ -44,8 +44,7 @@ function SitterBar(props) {
                   className="cursor-pointer"
                   onClick={() => {
                     navigate("/");
-                  }}
-                >
+                  }}>
                   <SitterIconBlack width="132" height="40" />
                 </div>
               </li>
@@ -61,8 +60,7 @@ function SitterBar(props) {
                 }}
                 onMouseLeave={() => {
                   setUserIconColor("#aeb1c3");
-                }}
-              >
+                }}>
                 <UserIcon
                   hoverColor={userIconColor}
                   onFocus={isSitterProfilePage ? "#ff7037" : undefined}
@@ -76,15 +74,14 @@ function SitterBar(props) {
                     : ""
                 }`}
                 onClick={() => {
-                  navigate("/sitterManagement/:sitterId/sitterBookingList/:bookingId");
+                  navigate("/sitterManagement/:sitterId/sitterBookingList");
                 }}
                 onMouseEnter={() => {
                   setListIconColor("#ff7037");
                 }}
                 onMouseLeave={() => {
                   setListIconColor("#aeb1c3");
-                }}
-              >
+                }}>
                 <ListIcon
                   hoverColor={listIconColor}
                   onFocus={
@@ -108,8 +105,7 @@ function SitterBar(props) {
                 }}
                 onMouseLeave={() => {
                   setPaymentIconColor("#aeb1c3");
-                }}
-              >
+                }}>
                 <CreditCardIcon
                   hoverColor={paymentIconColor}
                   onFocus={isPayoutOptionPage ? "#ff7037" : undefined}
@@ -127,8 +123,7 @@ function SitterBar(props) {
               }}
               onMouseLeave={() => {
                 setLogOutIconColor("#aeb1c3");
-              }}
-            >
+              }}>
               <LogOutIcon hoverColor={logOutIconColor} />
               <p className="ml-4">Log Out</p>
             </div>
@@ -139,8 +134,7 @@ function SitterBar(props) {
             <div className="px-[30px]">
               <button
                 className="hover:text-orange-500 text-3xl"
-                onClick={toggleSidebar}
-              >
+                onClick={toggleSidebar}>
                 ☰
               </button>
             </div>
@@ -152,7 +146,7 @@ function SitterBar(props) {
               <p className="ml-4">Park Chaeyoung</p>
             </div>
           </nav>
-          <div>{props.children}</div>
+          <div className="bg-gray-100 pt-10 pb-20 px-10">{props.children}</div>
         </div>
       </div>
     </>

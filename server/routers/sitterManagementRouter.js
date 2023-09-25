@@ -140,7 +140,66 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
 
 sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 
-sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => { });
+sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
+  const sitterId = req.params.sitterId;
+  const searchKeywords = req.query.searchKeywords || "";
+  const status = req.query.status ? req.query.status.split(',') : [];
+  const page = req.query.page || 1;
+  const pageSize = 8;
+  const offset = (page - 1) * pageSize;
+
+  let query = `
+    SELECT user_full_name, pet_ids, duration, start_date_time, end_date_time, statuses , booking_no
+    FROM bookings_history_detail 
+    WHERE id = $1
+  `;
+  let values = [sitterId];
+
+  if (searchKeywords) {
+    query += `
+      AND (user_full_name ILIKE $${values.length + 1}
+      OR start_date_time::text ILIKE $${values.length + 1}
+      OR end_date_time::text ILIKE $${values.length + 1})
+    `;
+    values.push(`%${searchKeywords}%`);
+  }
+
+  if (status.length) {
+    query += `
+      AND statuses IN (${status.map((_, index) => `$${values.length + index + 1}`).join(',')})
+    `;
+    values.push(...status);
+  }
+
+  query += `
+    ORDER BY booking_no DESC
+    LIMIT $${values.length + 1}
+    OFFSET $${values.length + 2}
+  `;
+  values.push(pageSize, offset);
+
+  console.log(query)
+  try {
+    const results = await pool.query(query, values);
+    const totalCountRes = await pool.query(
+      `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`,
+      [sitterId]
+    );
+    const totalCount = parseInt(totalCountRes.rows[0].count, 10);
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    return res.status(200).json({
+      message: "Get detail successfully",
+      data: results.rows,
+      totalPages,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error("Error fetching booking history:", error);
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
+
 
 sitterManagementRouter.get(
   "/:sitterId/sitterBookingList/:bookingId",
@@ -338,27 +397,7 @@ sitterManagementRouter.get(
 
 sitterManagementRouter.get(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => {
-    try {
-      const bookingId = req.params.bookingId;
-      const result = await pool.query(
-        `select * from bookings_user where booking_id = $1`,
-        [bookingId]
-      );
-
-      if (result.rows.length === 0) {
-        return res.status(500).json({ message: "Request error occurred" });
-      }
-
-      return res.json({
-        message: "Get review successfully",
-        data: result.rows[0],
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Request error occurred" });
-    }
-  }
+  async (req, res) => { }
 );
 
 export default sitterManagementRouter;

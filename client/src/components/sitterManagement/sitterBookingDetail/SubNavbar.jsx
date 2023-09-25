@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeftIcon, Dot } from "../../systemdesign/Icons";
 import { ButtonPrimary, ButtonSecondary } from "../../systemdesign/Button";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function SubNavbar({
   sitterId,
@@ -48,7 +49,9 @@ function SubNavbar({
   return (
     <div className="flex w-[1120px] h-[48px] justify-between ">
       <div className="flex justify-center items-center">
-        <ArrowLeftIcon color="#7B7E8F" />
+        <Link to={`/sitterManagement/${sitterId}/sitterBookingList`}>
+          <ArrowLeftIcon color="#7B7E8F" />
+        </Link>
         <h3 className="pl-2.5 pr-6">{userFullName}</h3>
         <div className="flex justify-center items-center gap-2">
           <Dot

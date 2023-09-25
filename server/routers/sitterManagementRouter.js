@@ -346,7 +346,25 @@ sitterManagementRouter.get("/:sitterId/payoutOption", async (req, res) => {
 
 sitterManagementRouter.get(
   "/:userId/booking/:bookingId/review",
-  async (req, res) => { }
+  async (req, res) => { try {
+    const bookingId = req.params.bookingId;
+    const result = await pool.query(
+      `select * from bookings_user where booking_id = $1`,
+      [bookingId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+
+    return res.json({
+      message: "Get review successfully",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Request error occurred" });
+  } }
 );
 
 export default sitterManagementRouter;

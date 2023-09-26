@@ -32,7 +32,7 @@ export function CardPet1() {
         </div>
         <div className="flex flex-wrap ">
           {petData?.map((item, index) => {
-            console.log(petData);
+            // console.log(petData);
             const { textStyle, border, bgColor } = getTypeStyle(item.type);
             const isInvalidType = !["Dog", "Cat", "Bird", "Rabbit"].includes(
               item.type

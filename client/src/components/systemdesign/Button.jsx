@@ -19,6 +19,7 @@ export function ButtonPrimary(props) {
 export function ButtonSecondary(props) {
   return (
     <button
+      id={props.id}
       onClick={props.onClick ? props.onClick : null}
       type={props.type ? props.type : null}
       className={`inline-flex justify-center items-center py-3 px-6 rounded-full gap-2 border-none

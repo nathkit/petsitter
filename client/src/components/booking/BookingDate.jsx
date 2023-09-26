@@ -162,7 +162,7 @@ function BookingDate() {
 
       const startTimeString = start.format("h:mm a");
       const endTimeString = end.format("h:mm a");
-      console.log(startTimeString, "startTimeString2");
+      // console.log(startTimeString, "startTimeString2");
       const currentDate = dayjs().$D;
 
       const selectedStartTime = dayjs(startTimeString, "h:mm a");

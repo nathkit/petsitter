@@ -136,7 +136,7 @@ function SitterBookingList() {
                 {booking.pet_ids.length}
               </div>
               <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
-                {booking.duration} hours
+                {booking.duration} {booking.duration == 1.0 ? "hour" : "hours"}
               </div>
               <div className="w-[420px] text-body2 text-etc-black px-4 py-6">
                 {booking.bookedDate}

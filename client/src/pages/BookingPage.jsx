@@ -66,7 +66,7 @@ function BookingPage() {
     message: bookingMessage,
     payment_method: paymentMethod,
   };
-  console.log(bookingData);
+  // console.log(bookingData);
 
   return (
     <>

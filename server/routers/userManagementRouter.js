@@ -1,29 +1,10 @@
 import { Router, response } from "express";
 import pool from "../utils/db.js";
-import multer from "multer";
 import { supabase, supabaseUpload } from "../utils/supabase.js";
-
+import { fileUpload } from "../utils/multerUpload.js";
 const userManagementRouter = Router();
-const multerUpload = multer({
-  limits: {
-    fileSize: 2 * 1024 * 1024, // 2 MB in bytes
-  },
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-    }
-  },
-});
-const avatarUpload = multerUpload.fields([{ name: "avatarFile" }]);
 
-userManagementRouter.put("/:userId", avatarUpload, async (req, res) => {
+userManagementRouter.put("/:userId", fileUpload, async (req, res) => {
   const userId = req.params.userId;
 
   // check id number condition ******************************************
@@ -142,7 +123,7 @@ userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {
   });
 });
 
-userManagementRouter.post("/:userId/pets", avatarUpload, async (req, res) => {
+userManagementRouter.post("/:userId/pets", fileUpload, async (req, res) => {
   const pet = { ...req.body };
   pet.avatarName = null;
   pet.updated_at = new Date();
@@ -177,7 +158,7 @@ userManagementRouter.post("/:userId/pets", avatarUpload, async (req, res) => {
 
 userManagementRouter.put(
   "/:userId/pets/:petId",
-  avatarUpload,
+  fileUpload,
   async (req, res) => {
     const pet = { ...req.body };
     pet.updated_at = new Date();

@@ -26,17 +26,21 @@ const validationSchema = yup.object({
     .string("Enter your email")
     .email("Enter a valid email")
     .required("Email is required"),
-  phone: yup
-    .string()
-    .required("Enter your phone number")
-    .test("startsWithZero", "Phone number must start with 0", (value) => {
-      if (value) {
-        return value.startsWith("0");
-      }
-      return true; // Allow empty value (optional phone number)
-    })
-    .min(10, "Phone numbers should have 10 character"),
   idNumber: yup
+    .string()
+    .required("Enter your id number")
+    .matches(/^\d+$/, "Id numbers must contain only numeric characters")
+    .test(
+      "isExactly13Characters",
+      "Id numbers should have exactly 13 characters",
+      (value) => {
+        if (value) {
+          return value.length === 13;
+        }
+        return true;
+      }
+    ),
+  phone: yup
     .string()
     .matches(
       /^0\d+$/,
@@ -50,7 +54,7 @@ const validationSchema = yup.object({
         if (value) {
           return value.length === 10;
         }
-        return true; // Allow empty value (optional phone number)
+        return true;
       }
     ),
 });

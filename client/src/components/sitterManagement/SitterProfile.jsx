@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Alert, Box, MenuItem, Select } from "@mui/material";
+import { TextField, Alert, Box, MenuItem } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../../contexts/authentication";
@@ -20,8 +20,10 @@ function SitterProfile(props) {
     setImageGalleryUrls,
     imageGalleryFile,
     setImageGalleryFile,
-    petType,
-    setPetType,
+    sitterData,
+    setSitterData,
+    // petType,
+    // setPetType,
   } = useSitter();
   const {
     sitterImageUrlsManage,
@@ -29,6 +31,7 @@ function SitterProfile(props) {
     sitterImageArrayManage,
     createSitterProfile,
     updateSitterProfile,
+    getSitterData,
   } = useSitterProfile();
   // props.update ?
   // console.log(imageGalleryFile);
@@ -44,41 +47,61 @@ function SitterProfile(props) {
       message: "",
       severity: "",
     });
-    if (props.update) {
-      const newUser = JSON.parse(window.localStorage.getItem("user"));
-      setUserData(newUser);
-    }
-    // const newUser = JSON.parse(window.localStorage.getItem("user"));
-    // setUserData(newUser);
-    // props.update ? console.log("1") : console.log("2");
-  }, []);
 
+    const newUser = JSON.parse(window.localStorage.getItem("user"));
+    setUserData(newUser);
+
+    if (props.update) {
+      getSitterData();
+    }
+    // console.log("first");
+  }, [sitterData]);
+  // console.log(sitterData);
+
+  const initialValues = props.update
+    ? {
+        fullName: userData.fullName,
+        phone: userData.phone,
+        email: userData.email,
+        petType: sitterData.petType,
+        experience: sitterData.experience,
+        intro: sitterData.intro,
+        tradeName: sitterData.tradeName,
+        services: sitterData.service,
+        myPlace: sitterData.myPlace,
+        address: sitterData.address,
+        district: sitterData.district,
+        province: sitterData.province,
+        subDistrict: sitterData.subDistrict,
+        postCode: sitterData.postCode,
+      }
+    : {
+        fullName: userData.fullName,
+        phone: userData.phone,
+        email: userData.email,
+        petType: [],
+        experience: 0,
+        intro: "",
+        tradeName: "",
+        services: "",
+        myPlace: "",
+        address: "",
+        district: "",
+        province: "",
+        subDistrict: "",
+        postCode: "",
+      };
   return (
-    <div className="bg-gray-100 py-10 flex flex-col items-center gap-10">
+    <div className="bg-gray-100 flex flex-col items-center gap-10">
       <Formik
-        initialValues={{
-          fullName: userData.fullName,
-          phone: userData.phone,
-          experience: 0,
-          email: userData.email,
-          intro: "",
-          tradeName: "",
-          petType: petType,
-          services: "",
-          myPlace: "",
-          address: "",
-          district: "",
-          province: "",
-          subDistrict: "",
-          postCode: "",
-        }}
+        initialValues={initialValues}
         enableReinitialize
         validationSchema={yup.object().shape({
           fullName: yup
             .string()
             .required("Please enter you name")
-            .min("full name should have between 6-20 character")
-            .max("full name should have between 6-20 character"),
+            .min(6, "full name should have between 6-20 character")
+            .max(20, "full name should have between 6-20 character"),
           experience: yup
             .number("Experience must be a number of year")
             .required("Please enter your experience")
@@ -114,10 +137,7 @@ function SitterProfile(props) {
             .required("Please enter email")
             .email("Invalid email"),
           tradeName: yup.string().required("Please enter your trade name"),
-          petType: yup
-            .string()
-            .required("Please select atleast 1 type of pet")
-            .min(1, "Select at least one type of pet"),
+          petType: yup.array().min(1, "Select at least one pet type"),
           address: yup.string().required("Please enter your address"),
           district: yup.string().required("Please enter your district"),
           province: yup.string().required("Please enter your province"),
@@ -125,12 +145,14 @@ function SitterProfile(props) {
           postCode: yup.string().required("Please enter your post code"),
         })}
         onSubmit={(values, formikHelpers) => {
-          const newValues = {
+          let newValues = {
             ...values,
+            userId: userData.id,
+            avatarName: userData.image_name,
             avatarFile: avatarFile,
-            imageGalleryFile: imageGalleryFile,
           };
-          // console.log(newValues);
+
+          console.log(newValues);
           props.update
             ? updateSitterProfile(newValues)
             : createSitterProfile(newValues);
@@ -147,7 +169,7 @@ function SitterProfile(props) {
                   width="15rem"
                   content={props.update ? "Update" : "Create Sitter Account"}
                   type="submit"
-                  disabled={!dirty || !isValid}
+                  // disabled={!dirty || !isValid}
                 />
               </div>
 
@@ -290,6 +312,9 @@ function SitterProfile(props) {
                       type="text"
                       variant="outlined"
                       color="primary"
+                      onChange={(e) => {
+                        setFieldValue("intro", e.target.value);
+                      }}
                     />
                   </div>
                 </Box>
@@ -323,25 +348,24 @@ function SitterProfile(props) {
                   {/* pet type ********************************* */}
                   <label
                     className="text-lg text-etc-black font-medium mt-5"
-                    mt-5
                     htmlFor="petType"
                   >
                     Pet type
                   </label>
                   <Field
-                    multiple
-                    value={values.petType}
-                    as={Select}
+                    select
+                    as={TextField}
                     className="TextField"
                     id="petType"
                     name="petType"
-                    variant="outlined"
-                    color="primary"
                     error={Boolean(errors.petType) && Boolean(touched.petType)}
                     helperText={Boolean(touched.petType) && errors.petType}
-                    onChange={(e) => {
-                      setPetType(e.target.value);
-                      setFieldValue("petType", e.target.value);
+                    SelectProps={{
+                      multiple: true,
+                      value: values.petType,
+                      onChange: (e) => {
+                        setFieldValue("petType", e.target.value);
+                      },
                     }}
                   >
                     <MenuItem value="Dog">Dog</MenuItem>
@@ -367,6 +391,9 @@ function SitterProfile(props) {
                     type="text"
                     variant="outlined"
                     color="primary"
+                    onChange={(e) => {
+                      setFieldValue("services", e.target.value);
+                    }}
                   />
                   {/* myPlace ********************************* */}
                   <label
@@ -384,6 +411,9 @@ function SitterProfile(props) {
                     type="text"
                     variant="outlined"
                     color="primary"
+                    onChange={(e) => {
+                      setFieldValue("myPlace", e.target.value);
+                    }}
                   />
                 </Box>
 

@@ -32,7 +32,7 @@ function PayoutOption() {
 
   return (
     <section className="flex flex-col h-screen gap-6 p-10 bg-gray-100">
-      <h1 className=" text-headline3 text-gray-900">Payout Option</h1>
+      <h1 className=" text-headline3 text-[#2A2E3F]">Payout Option</h1>
       <div className=" w-full flex gap-6 text-body2">
         <div className=" w-full flex gap-4 p-6 bg-etc-white rounded-2xl text-etc-black">
           <h3 className=" w-full gap-2 flex flex-row">
@@ -44,7 +44,7 @@ function PayoutOption() {
         </div>
         <div className=" w-full flex gap-4 p-6 bg-etc-white rounded-2xl ">
           <h3 className=" w-full gap-2 flex flex-row text-etc-black">
-            <WalletIcon color="#AEB1C3" />
+            <WalletIcon color="#000"/>
             Bank Account
           </h3>
           <div className="w-auto gap-2 flex flex-row text-orange-500">
@@ -72,7 +72,7 @@ function PayoutOption() {
         {successEntries && successEntries.length > 0 ? (
           successEntries.map((card) => (
             <div
-              className="flex flex-row w-full bg-etc-white border-b border-gray-200 text-body2"
+              className="flex flex-row w-full bg-etc-white border-b border-gray-200 text-body2 text-[#2A2E3F]"
               key={card.booking_no}
             >
               <div className="w-[240px] px-4 py-6">

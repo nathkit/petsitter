@@ -7,9 +7,9 @@ function RejectModal({updateStatus}) {
 
   return (
     <dialog id={`reject`} className="modal">
-      <div className="modal-box p-0 max-w-[400px] ">
+      <div className="modal-box p-0 max-w-[400px] bg-etc-white ">
         <form method="dialog">
-          <div className=" flex justify-between  items-center px-6 py-4">
+          <div className=" flex justify-between  items-center px-6 py-4 text-[#2A2E3F]">
             <h3 className=" text-headline4 ">Reject Confirmation</h3>
             <button className="btn btn-ghost">
               <Close fill="#AEB1C3"/>

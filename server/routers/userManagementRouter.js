@@ -355,7 +355,7 @@ userManagementRouter.get("/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const result = await pool.query(
-      `select * from user_information where id = $1`,
+      `select * from user_modal where user_ids = $1`,
       [userId]
     );
 

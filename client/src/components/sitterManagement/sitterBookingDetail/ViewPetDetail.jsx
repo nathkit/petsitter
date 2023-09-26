@@ -50,7 +50,7 @@ function ViewPetDetail({ petId, userId }) {
         </div>
       </div>
       <dialog id={pets.name} className="modal">
-        <div className="modal-box  max-w-[800px] h-auto p-0">
+        <div className="modal-box  max-w-[800px] h-auto p-0 bg-etc-white">
           <div className="w-full px-10 py-6 h-[80px] text-[#000] text-[20px] font-bold">
             {pets.name}
           </div>
@@ -62,7 +62,7 @@ function ViewPetDetail({ petId, userId }) {
                   <img src={pets.image_path} alt={pets.name} />
                 </div>
               </div>
-              <h4 className=" w-full text-center text-headline4 ">
+              <h4 className=" w-full text-center text-headline4 text-etc-black ">
                 {pets.name}
               </h4>
             </div>

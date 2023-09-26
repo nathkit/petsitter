@@ -60,7 +60,7 @@ function BookingHistory() {
 
   return (
     <section className="booking-history flex flex-col gap-6">
-      <p className=" pb-[60px] text-headline3">Booking History</p>
+      <p className=" pb-[60px] text-headline3 text-etc-black">Booking History</p>
       {bookingHistory && bookingHistory.length > 0 ? (
         bookingHistory.map((card) => (
           <div
@@ -97,8 +97,8 @@ function BookingHistory() {
                   className="border"
                 />
                 <div>
-                  <h1 className=" text-headline3">{card.trade_name}</h1>
-                  <h3 className=" text-body1">
+                  <h1 className=" text-headline3 text-etc-black">{card.trade_name}</h1>
+                  <h3 className=" text-body1 text-etc-black">
                     By {card.pet_sitter_full_name}
                   </h3>
                 </div>

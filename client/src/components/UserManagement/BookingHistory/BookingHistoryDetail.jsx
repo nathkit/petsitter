@@ -1,9 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-// import { formatDateToCustomString } from "../BookingHistory/BookingHistory.jsx";
-// import { formatTime } from "../BookingHistory/BookingHistory.jsx";
 import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
 
 function BookingHistoryDetail({ card }) {
@@ -11,7 +6,7 @@ function BookingHistoryDetail({ card }) {
     <dialog id={`booking-detail-${card.booking_no}`} className="modal ">
       <div key={card.booking_no} className="modal-box bg-etc-white">
         <form method="dialog">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-etc-white">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-5 text-etc-black bg-etc-white">
             ✕
           </button>
         </form>
@@ -85,8 +80,8 @@ function BookingHistoryDetail({ card }) {
           </div>
           <hr />
           <div className="flex justify-between">
-            <h1 className="text-body2">Total: </h1>
-            <p className="text-body1"> {card.total_amount} THB</p>
+            <h1 className="text-body2 text-etc-black">Total: </h1>
+            <p className="text-body1 text-etc-black"> {card.total_amount} THB</p>
           </div>
         </div>
       </div>

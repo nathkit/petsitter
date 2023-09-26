@@ -24,7 +24,7 @@ function SitterBookingDetail() {
   const petCount = Array.isArray(booking.pet_id) ? booking.pet_id.length : 0;
 
   return (
-    <div className="flex flex-col w-[1200px] h-[1216px] px-10 pt-10 pb-20 gap-6 bg-gray-100">
+    <div className="flex flex-col w-[1120px] h-[1096px] gap-6 ">
       <SubNavbar
         status={booking.statuses}
         userFullName={booking.user_full_name}
@@ -75,9 +75,9 @@ function SitterBookingDetail() {
         <div className="flex flex-col">
           <p className="text-[#AEB1C3] text-[20px] font-bold">Duration</p>
           <p className="text-[#000] text-[16px] font-medium">
-            {(booking.duration) <= 1
-              ? `${(booking.duration)} hour`
-              : `${(booking.duration)} hours`}
+            {booking.duration <= 1
+              ? `${booking.duration} hour`
+              : `${booking.duration} hours`}
           </p>
         </div>
 

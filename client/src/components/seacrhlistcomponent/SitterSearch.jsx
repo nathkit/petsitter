@@ -18,14 +18,7 @@ function SitterSearch({ onSearch }) {
     rate: parseInt(searchParams.get("rate")),
     exp: parseInt(searchParams.get("exp")) ?? 0,
   });
-  console.log(searchData);
-  // useEffect(() => {
-  //   setSearchData({
-  //     types: searchParams.getAll("petType"),
-  //     rate: searchParams.get("rate"),
-  //     exp: searchParams.get("exp"),
-  //   });
-  // }, []);
+
   useEffect(() => {
     onSearch(searchData);
   }, []);
@@ -60,7 +53,6 @@ function SitterSearch({ onSearch }) {
   };
 
   const handleCheckBox = (event, type) => {
-    console.log(event);
     if (searchData.types.includes(type)) {
       setSearchData({
         ...searchData,
@@ -98,7 +90,6 @@ function SitterSearch({ onSearch }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(searchData);
     onSearch(searchData);
   };
 
@@ -170,7 +161,8 @@ function SitterSearch({ onSearch }) {
                       : ""
                   }
                   `}
-                onClick={(e) => handleRating(e, rate)}>
+                onClick={(e) => handleRating(e, rate)}
+              >
                 <span className="pr-[3px] font-Satoshi ">{rate}</span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
@@ -187,7 +179,8 @@ function SitterSearch({ onSearch }) {
           <select
             className="select w-[346px] text-[#7B7E8F] border-[#DCDFED] bg-etc-white"
             onChange={(e) => handleExperience(e)}
-            value={searchData.exp}>
+            value={searchData.exp}
+          >
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}

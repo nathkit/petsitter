@@ -9,6 +9,10 @@ sitterManagementRouter.get("/", async (req, res) => {
     let petType = req.query.petType || "";
     const rate = req.query.rate || "";
     const exp = req.query.exp || "";
+    const page = req.query.page || 1;
+
+    const PAGE_SIZE = 5;
+    const offset = (page - 1) * PAGE_SIZE;
 
     let query = `SELECT * FROM pet_sitter_view`;
     let value = [];
@@ -56,9 +60,9 @@ sitterManagementRouter.get("/", async (req, res) => {
       query += ` where ` + condition.join(` and `);
     }
 
-    query += ` limit 5`;
+    query += ` limit ${PAGE_SIZE} offset ${offset}`;
 
-    // console.log(query);
+    console.log(query);
 
     const result = await pool.query(query, value);
 

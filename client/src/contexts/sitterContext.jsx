@@ -7,6 +7,7 @@ function SitterProvider(props) {
   const [imageGalleryFile, setImageGalleryFile] = useState([]);
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
+  const [sitterData, setSitterData] = useState({});
 
   return (
     <sitterContext.Provider
@@ -16,6 +17,8 @@ function SitterProvider(props) {
         avatarUrl,
         avatarFile,
         petType,
+        sitterData,
+        setSitterData,
         setPetType,
         setAvatarUrl,
         setAvatarFile,

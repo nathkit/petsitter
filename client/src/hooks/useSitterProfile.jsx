@@ -1,12 +1,12 @@
 import React from "react";
 import { useSitter } from "../contexts/sitterContext";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
 
 function useSitterProfile() {
   const param = useParams();
-  const { setAlertMessage } = useAuth();
+  const { setAlertMessage, setUserData } = useAuth();
   const {
     avatarUrl,
     setAvatarUrl,
@@ -16,6 +16,7 @@ function useSitterProfile() {
     setImageGalleryUrls,
     imageGalleryFile,
     setImageGalleryFile,
+    setSitterData,
   } = useSitter();
 
   const sitterImageUrlsManage = (selectFile) => {
@@ -54,21 +55,29 @@ function useSitterProfile() {
     setImageGalleryUrls(newImageGalleryUrls);
   };
 
+  const getSitterData = async () => {};
+
   const createSitterProfile = async (data) => {
-    let result;
     try {
       const serverRespondes = await axios.post(
         "/sitterManagement",
         data,
-        data.avatarFile || data.imageGalleryFile
-          ? { headers: { "Content-Type": "multipart/form-data" } }
+        data.avatarFile
+          ? {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
           : null
       );
       if (
         serverRespondes.data.message ===
         "Sitter Profile has been created successfully"
       ) {
-        result = serverRespondes.data.data;
+        setUserData(serverRespondes.data.userData);
+        setSitterData(serverRespondes.data.sitterData);
+        localStorage.setItem(
+          "user",
+          JSON.stringify(serverRespondes.data.userData)
+        );
         setAlertMessage({
           message: serverRespondes.data.message,
           severity: "success",
@@ -132,12 +141,14 @@ function useSitterProfile() {
     }
   };
 
+  // await supabase.storage.from("avatars").remove([tradeImageName]);
   return {
     sitterImageUrlsManage,
     sitterImageFileManage,
     sitterImageArrayManage,
     createSitterProfile,
     updateSitterProfile,
+    getSitterData,
   };
 }
 

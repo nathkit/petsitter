@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { getPagingData } from "../utils/pagination.js";
 import pool from "../utils/db.js";
-
+import { fileUpload } from "../utils/multerUpload.js";
+import { supabaseUpload, supabaseMultiUpload } from "../utils/supabase.js";
 const sitterManagementRouter = Router();
 
 sitterManagementRouter.get("/", async (req, res) => {
@@ -104,7 +105,131 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", fileUpload, async (req, res) => {
+  let result;
+  // console.log(req.body);
+  // console.log(req.files);
+
+  // update user first *************************************************************
+  const user = {
+    fullName: req.body.fullName,
+    phone: req.body.phone,
+    email: req.body.email,
+    updated_at: new Date(),
+    sitter_authen: true,
+    userId: req.body.userId,
+  };
+
+  const userQuery = `UPDATE users set full_name = $1, phone = $2, email = $3, updated_at = $4, sitter_authen = $5
+  ${
+    req.files
+      ? ", image_name = $7, profile_image_path = $8 where id = $6"
+      : "where id = $6"
+  }`;
+  const userValues = Object.values(user);
+  // console.log(userValues);
+  // upload avatar ************************************************************
+
+  if (req.files) {
+    // console.log("in");
+    // console.log(req.files.avatarFile[0]);
+    const { avatarName, url } = await supabaseUpload(
+      req.files.avatarFile[0],
+      req.body.avatarName
+    );
+    userValues.push(avatarName, url);
+  }
+  // console.log("2");
+  // console.log(userQuery);
+  // console.log(userValues);
+  const updateUserResult = await pool.query(userQuery, userValues);
+
+  //--------------------------------------------------------------------------
+  // create pet_sitter ***********************************************************
+
+  const sitterQuery = `insert into pet_sitter(experience,introduction,trade_name,service_description,place_description,address_detail,district,province,sub_district,post_code,user_id,created_at,updated_at)
+                     values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`;
+
+  const sitterValues = Object.values(req.body);
+  sitterValues.splice(0, 4);
+  sitterValues.splice(11);
+  sitterValues.push(new Date(), new Date());
+  // console.log(sitterValues);
+  const createSitterResult = await pool.query(sitterQuery, sitterValues);
+  const sitterResPondes = await pool.query(
+    `select id from pet_sitter where user_id = $1`,
+    [req.body.userId]
+  );
+
+  // //----------------------------------------------------------------------------
+  // // create pet type ************************************************************
+
+  const petSitterId = sitterResPondes.rows[0].id;
+  const petType = req.body.petType;
+  // reassign pet type condition ******************************************
+  const newPetType = petType.map((item) => {
+    item === "Dog"
+      ? (item = 1)
+      : item === "Cat"
+      ? (item = 2)
+      : item === "Bird"
+      ? (item = 3)
+      : item === "Rabbit"
+      ? (item = 4)
+      : null;
+    return item;
+  });
+  const length = newPetType.length;
+  const petTypeQuery = `insert into pet_sitter_pet_type(pet_sitter_id,pet_type_id)
+                     values${
+                       length === 1
+                         ? "($1,$2)"
+                         : length === 2
+                         ? "($1,$2),($1,$3)"
+                         : length === 3
+                         ? "($1,$2),($1,$3),($1,$4)"
+                         : length === 4
+                         ? "($1,$2),($1,$3),($1,$4),($1,$5)"
+                         : null
+                     }`;
+  newPetType.unshift(petSitterId);
+  const petTypeRusult = await pool.query(petTypeQuery, newPetType);
+
+  //-----------------------------------------------------------------------------------
+  const serverRespondes = await pool.query(
+    `select * from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
+    [petSitterId]
+  );
+  result = serverRespondes.rows[0];
+  return res.json({
+    message: "Sitter Profile has been created successfully",
+    userData: {
+      id: result.user_id,
+      fullName: result.full_name,
+      email: result.email,
+      idNumber: result.id_number,
+      phone: result.phone,
+      dateOfbirth: result.date_of_birth,
+      image_name: result.image_name,
+      image_path: result.profile_image_path,
+      sitterAuthen: result.sitter_authen,
+    },
+    sitterData: {
+      id: result.id,
+      petType: petType,
+      experience: result.experience,
+      intro: result.introduction,
+      tradeName: result.trade_name,
+      service: result.service_description,
+      myPlace: result.place_description,
+      address: result.address_detail,
+      subDistrict: result.sub_district,
+      district: result.district,
+      province: result.province,
+      postCode: result.post_code,
+    },
+  });
+});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -222,37 +347,8 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
 });
 
 sitterManagementRouter.get(
-  "/:sitterId/sitterBookingList/:bookingId",
-  async (req, res) => {
-    try {
-      const bookingId = req.params.bookingId;
-
-      let query = "select * from bookings_user where booking_id = $1";
-      let value = [bookingId];
-
-      const result = await pool.query(query, value);
-
-      const rows = result.rows;
-
-      const newResult = rows.map((e) => {
-        const pet_name = e.pet_names.split(",");
-        const pet_id = e.pet_id.split(",");
-        return {
-          ...e,
-          pet_names: pet_name,
-          pet_id: pet_id,
-        };
-      });
-
-      return res.status(200).json({
-        message: "Get detail successfully",
-        data: newResult[0],
-      });
-    } catch (error) {
-      console.error("Error fetching sitter details:", error);
-      return res.status(500).json({ message: "Request error occurred" });
-    }
-  }
+  "/:sitterId/booking/:bookingId",
+  async (req, res) => {}
 );
 
 sitterManagementRouter.put(
@@ -313,7 +409,7 @@ sitterManagementRouter.put(
   }
 );
 
-sitterManagementRouter.post(
+sitterManagementRouter.put(
   "/:userId/booking/:bookingId/review",
   async (req, res) => {
     try {

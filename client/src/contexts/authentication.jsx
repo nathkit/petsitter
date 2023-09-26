@@ -221,7 +221,7 @@ function AuthProvider(props) {
         alertMessage,
         userData,
         isAuthenticated,
-        // isPetSitter,
+        isPetSitter,
       }}
     >
       {props.children}

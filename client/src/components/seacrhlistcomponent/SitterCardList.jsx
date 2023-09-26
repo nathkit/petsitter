@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 function SitterCardList({ items }) {
   return (
-    <div className="w-[848px] h-[216px] flex flex-col gap-4">
+    <div className="w-[848px]  flex flex-col gap-4">
       {items.map((card, index) => {
         return (
           <Link to={`/sitterDetail/${card.id}`} key={index}>

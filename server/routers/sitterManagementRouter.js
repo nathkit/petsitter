@@ -1,20 +1,23 @@
 import { Router } from "express";
+import { getPagingData } from "../utils/pagination.js";
 import pool from "../utils/db.js";
 
 const sitterManagementRouter = Router();
 
 sitterManagementRouter.get("/", async (req, res) => {
   try {
+    const PAGE_SIZE = 5;
+
     const search = req.query.search || "";
     let petType = req.query.petType || "";
     const rate = req.query.rate || "";
     const exp = req.query.exp || "";
     const page = req.query.page || 1;
-
-    const PAGE_SIZE = 5;
-    const offset = (page - 1) * PAGE_SIZE;
+    const limit = req.query.limit || PAGE_SIZE;
+    const offset = (page - 1) * limit;
 
     let query = `SELECT * FROM pet_sitter_view`;
+    let paginationQuery = `SELECT COUNT(id) FROM pet_sitter_view`;
     let value = [];
     let condition = [];
 
@@ -58,15 +61,20 @@ sitterManagementRouter.get("/", async (req, res) => {
 
     if (condition.length > 0) {
       query += ` where ` + condition.join(` and `);
+      paginationQuery += ` where ` + condition.join(` and `);
     }
 
-    query += ` limit ${PAGE_SIZE} offset ${offset}`;
+    query += ` limit ${limit} offset ${offset}`;
 
     console.log(query);
+    console.log(paginationQuery);
 
     const result = await pool.query(query, value);
+    const paginationResult = await pool.query(paginationQuery, value);
 
     const rows = result.rows;
+    const total = paginationResult.rows[0].count;
+    const pagination = getPagingData(total, page, limit);
     // console.log(rows);
 
     const parseTypeRows = rows.map((e) => {
@@ -88,6 +96,7 @@ sitterManagementRouter.get("/", async (req, res) => {
     return res.json({
       message: "Get detail successfully",
       data: tradeImageRows,
+      paging: pagination,
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);

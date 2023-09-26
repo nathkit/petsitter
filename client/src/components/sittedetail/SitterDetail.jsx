@@ -67,23 +67,23 @@ function SitterDetail() {
         {/* Detail */}
         <div className=" w-[70%] px-14 flex flex-col items-start justify-center gap-[48px]">
           <div className=" flex flex-col gap-12 px-14">
-            <h1 className="text-headline1"> {sitterDetail[0]?.trade_name}</h1>
+            <h1 className="text-headline1 text-etc-black"> {sitterDetail[0]?.trade_name}</h1>
 
             <div>
-              <h3 className="text-headline3 mb-[12px]">Introduction</h3>
+              <h3 className="text-headline3 mb-[12px] text-etc-black">Introduction</h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {sitterDetail[0]?.introduction}
               </p>
             </div>
 
             <div>
-              <h3 className="text-headline3 mb-[12px]">Services</h3>
+              <h3 className="text-headline3 mb-[12px] text-etc-black">Services</h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {sitterDetail[0]?.service_description}
               </p>
             </div>
             <div>
-              <h3 className="text-headline3 mb-[12px]">My Place</h3>
+              <h3 className="text-headline3 mb-[12px] text-etc-black">My Place</h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {sitterDetail[0]?.place_description}
               </p>
@@ -104,11 +104,11 @@ function SitterDetail() {
             </div>
             {/* detail in Card */}
             <div className="flex flex-col gap-1 mb-10">
-              <h2 className="text-headline2 m-0 self-stretch">
+              <h2 className="text-headline2 m-0 self-stretch text-etc-black">
                 {" "}
                 {sitterDetail[0]?.trade_name}
               </h2>
-              <h4 className="text-[20px] m-0">
+              <h4 className="text-[20px] m-0 text-etc-black">
                 {" "}
                 {sitterDetail[0]?.full_name}{" "}
                 <span className="text-[16px] text-green-500">

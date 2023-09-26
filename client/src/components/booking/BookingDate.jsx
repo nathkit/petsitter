@@ -280,7 +280,7 @@ function BookingDate() {
 
   return (
     <div className="">
-      <ButtonPrimary content="Book Now" width=" 250px" onClick={openModal} />
+      <ButtonPrimary content="Book Now" width=" 320px" onClick={openModal} />
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div className="w-full h-full ">
           <p className="mb-6 text-body1 text-start">

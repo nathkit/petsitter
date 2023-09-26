@@ -30,7 +30,7 @@ pamentGatewayRouter.post("/", async (req, res) => {
       // authorize_uri: charge.authorize_uri,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error, "error");
   }
 });
 

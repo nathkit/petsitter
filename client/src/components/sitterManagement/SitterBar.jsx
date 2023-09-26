@@ -29,6 +29,7 @@ function SitterBar(props) {
   const isSitterBookingListPage = props.children.type === SitterBookingList;
   const isSitterProfilePage = props.children.type === SitterProfile;
 
+  const userData = JSON.parse(window.localStorage.getItem("user"));
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -144,13 +145,17 @@ function SitterBar(props) {
                 ☰
               </button>
             </div>
-            <div className="flex items-center">
-              <img
-                src="https://i0.wp.com/www.korseries.com/wp-content/uploads/2021/05/rose-blackpink-photo.jpeg?resize=700%2C874&ssl=1"
-                className="object-cover w-10 h-10 relative rounded-[999px]"
-              />
-              <p className="ml-4">Park Chaeyoung</p>
-            </div>
+            {userData.sitterAuthen ? (
+              <div className="flex items-center">
+                <img
+                  src="https://i0.wp.com/www.korseries.com/wp-content/uploads/2021/05/rose-blackpink-photo.jpeg?resize=700%2C874&ssl=1"
+                  className="object-cover w-10 h-10 relative rounded-[999px]"
+                />
+                <p className="ml-4">Park Chaeyoung</p>
+              </div>
+            ) : (
+              <p className=" text-headline4">Wellcome to Stitter Profile</p>
+            )}
           </nav>
           <div>{props.children}</div>
         </div>

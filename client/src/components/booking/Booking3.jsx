@@ -1,47 +1,110 @@
 import { CreditCardIcon, WalletIcon } from "../systemdesign/Icons";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import TextField from "@mui/material/TextField";
 import { Vector } from "../systemdesign/image";
 import { useState } from "react";
 import { useBooking } from "../../contexts/BookingContext";
-import usePosts from "../../hooks/usePost";
 
-function Booking3({ setDisableButtonBooking3 }) {
-  const { paymentMethod, setPaymentMethod } = useBooking();
+import axios from "axios";
+import Script from "react-load-script";
+let OmiseCard;
 
-  const [credit, setCredit] = useState("#ff7037");
-  const [wallet, setWallet] = useState(null);
+function Booking3() {
+  const { paymentMethod, setPaymentMethod, totalAmount, setConfirmbooking } =
+    useBooking();
+
+  const [credit, setCredit] = useState(null);
+  const [wallet, setWallet] = useState("#ff7037");
 
   const handleCreditClick = () => {
-    setPaymentMethod("Credit"); // เมื่อคลิก Credit Card Icon ให้แสดงหน้า Credit
+    setPaymentMethod("Credit");
     setWallet(null);
   };
   const handleCashClick = () => {
-    setPaymentMethod("Cash"); // เมื่อคลิก Wallet Icon ให้แสดงหน้า Cash
+    setPaymentMethod("Cash");
     setCredit(null);
+  };
+
+  const handleLoadScript = () => {
+    OmiseCard = window.OmiseCard;
+    OmiseCard.configure({
+      publicKey: "pkey_test_5x5w3xryolrnev4hk37",
+      currency: "THB",
+      frameLabel: "Pet Sitter",
+      submitLabel: "Pay Now",
+      buttonLabel: "Pay with Omise",
+    });
+  };
+
+  const creditCardConfigure = () => {
+    OmiseCard.configure({
+      defaultPaymentMethod: "credit_card",
+      otherPaymentMethods: [],
+    });
+    OmiseCard.configureButton("#credit-card");
+    OmiseCard.attach();
+  };
+
+  const omiseCardHandler = () => {
+    OmiseCard.open({
+      amount: totalAmount * 100,
+      onCreateTokenSuccess: async (token) => {
+        const result = await axios.post(`http://localhost:4000/pamentGateway`, {
+          amount: totalAmount * 100,
+          token: token,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (result.data.status == "successful") {
+          alert("Payment Successful");
+        } else {
+          alert("Payment Failed");
+        }
+        console.log(result.data.status);
+        setConfirmbooking(result.data.status);
+      },
+      onFormClosed: () => {},
+    });
   };
 
   return (
     <>
       <div className="bg-etc-white h-fit p-10">
-        <div className="flex justify-between w-full mb-12">
-          <button
-            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
+        <div className="flex justify-between w-full mb-12 ">
+          <div
+            className={`own-form w-[376px] h-20 rounded-[999px] shadow border hover:border-orange-500 
           
             ${
               paymentMethod === "Credit"
                 ? "border-orange-500 text-orange-500"
                 : ""
             }`}
-            onClick={() => {
-              handleCreditClick();
-              setCredit("#ff7037");
-            }}
           >
-            <CreditCardIcon color={credit} />
-            <p className="ml-2 text-gray-500">Credit Card</p>
-          </button>
+            <Script
+              url="https://cdn.omise.co/omise.js"
+              onLoad={handleLoadScript}
+            />
+            <form className=" flex justify-center items-center w-full h-full relative">
+              <button
+                id="credit-card"
+                type="button"
+                className=" flex justify-center w-full item-center py-[27px] "
+                onClick={(e) => {
+                  handleCreditClick();
+                  e.preventDefault();
+                  creditCardConfigure();
+                  omiseCardHandler();
+                  setCredit("#ff7037");
+                }}
+              >
+                <p className="ml-2 text-gray-500 ">Credit Card</p>
+              </button>
+              <div className=" absolute top-[27px] start-[120px]">
+                {" "}
+                <CreditCardIcon color={credit} />
+              </div>
+            </form>
+          </div>
+
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
             ${
@@ -52,171 +115,15 @@ function Booking3({ setDisableButtonBooking3 }) {
             onClick={() => {
               handleCashClick();
               setWallet("#ff7037");
-              setDisableButtonBooking3(false);
             }}
           >
             <WalletIcon color={wallet} />
             <p className="ml-2 text-gray-500">Cash</p>
           </button>
         </div>
-        {paymentMethod === "Credit" ? (
-          <Credit setDisableButtonBooking3={setDisableButtonBooking3} />
-        ) : (
-          <Cash />
-        )}
+        {paymentMethod === "Cash" && <Cash />}
       </div>
     </>
-  );
-}
-
-function Credit({ setDisableButtonBooking3 }) {
-  const validationSchema = yup.object({
-    cardOwner: yup
-      .string("Enter your name")
-      .min(5, "Full name should be of minimum 5 characters length")
-      .matches(/^[A-Za-z]+$/, "Name should contain only letters")
-      .required("Name is required"),
-    cardNumber: yup
-      .string("Enter your card number")
-      .test("is-number", "Enter a valid card number", (value) => {
-        return /^\d+$/.test(value);
-      })
-      .test(
-        "is-sixteen-digits",
-        "Card number must be sixteen digits",
-        (value) => {
-          return value.length === 16;
-        }
-      )
-      .required("Card number is required"),
-    CVC: yup
-      .string("Enter your CVC/CVV")
-      .test("is-number", "Enter a valid CVC/CVV number", (value) => {
-        return /^\d+$/.test(value);
-      })
-      .test(
-        "is-three-digits",
-        "CVC/CVV number must be three digits",
-        (value) => {
-          return value.length === 3;
-        }
-      )
-      .required("CVC/CVV is required"),
-    expiryDate: yup
-      .string("Enter your expiry date")
-      .required("Expiry date is required")
-      .matches(
-        /^[0-9]{2}\/[0-9]{2}$/,
-        "Expiry date must be in the format MM/YY"
-      ),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      cardNumber: "",
-      cardOwner: "",
-      expiryDate: "",
-      CVC: "",
-    },
-    validationSchema: validationSchema,
-  });
-
-  const isCardNumber = formik.touched.cardNumber && !formik.errors.cardNumber;
-  const isCardOwner = formik.touched.cardOwner && !formik.errors.cardOwner;
-  const isExpiryDate = formik.touched.expiryDate && !formik.errors.expiryDate;
-  const isCVC = formik.touched.CVC && !formik.errors.CVC;
-
-  setDisableButtonBooking3(
-    !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
-  );
-
-  return (
-    <div>
-      <div className=" flex  justify-between flex-wrap gap-10 w-full">
-        <div className="flex w-full">
-          <div className=" flex flex-col w-full mr-10">
-            <label htmlFor="cardNumber">Card Number*</label>
-            <TextField
-              id="cardNumber"
-              name="cardNumber"
-              // label="Card Number"
-              value={formik.values.cardNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.cardNumber && Boolean(formik.errors.cardNumber)
-              }
-              helperText={formik.touched.cardNumber && formik.errors.cardNumber}
-              placeholder="xxxx-xxxx-xxxx-xxxx"
-              required
-              className="w-[100%]"
-              color="warning"
-              InputProps={{ sx: { borderRadius: " 8px" } }}
-            />
-          </div>
-          <div className=" flex flex-col w-full">
-            <label htmlFor="cardOwner">Card Owner*</label>
-            <TextField
-              id="cardOwner"
-              name="cardOwner"
-              // label="Card Owner"
-              value={formik.values.cardOwner}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.cardOwner && Boolean(formik.errors.cardOwner)
-              }
-              helperText={formik.touched.cardOwner && formik.errors.cardOwner}
-              placeholder="Card owner name"
-              required
-              className="w-[100%]"
-              color="warning"
-              InputProps={{ sx: { borderRadius: " 8px" } }}
-            />
-          </div>
-        </div>
-        <div className="flex w-full">
-          <div className=" flex flex-col w-full mr-10">
-            <label htmlFor="expiryDate">Expiry Date*</label>
-            <TextField
-              id="expiryDate"
-              name="expiryDate"
-              // label="Expiry Date"
-              value={formik.values.expiryDate}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
-              }
-              helperText={formik.touched.expiryDate && formik.errors.expiryDate}
-              placeholder="xx/xx"
-              required
-              className="w-[100%]"
-              color="warning"
-              InputProps={{ sx: { borderRadius: " 8px" } }}
-            />
-          </div>
-          <div className=" flex flex-col w-full ">
-            <label htmlFor="CVC">CVC/CVV*</label>
-            <TextField
-              id="CVC"
-              name="CVC"
-              // label="CVC/CVV"
-              value={formik.values.CVC}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.CVC && Boolean(formik.errors.CVC)}
-              helperText={formik.touched.CVC && formik.errors.CVC}
-              placeholder="xxx"
-              required
-              className="w-[100%]"
-              color="warning"
-              InputProps={{ sx: { borderRadius: " 8px" } }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
 

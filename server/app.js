@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import sitterManagementRouter from "./routers/sitterManagementRouter.js";
 import userManagementRouter from "./routers/userManagementRouter.js";
 import bookingRouter from "./routers/bookingRouter.js";
-
+import pamentGatewayRouter from "./routers/payment.js";
 async function init() {
   const app = express();
   const port = 4000;
@@ -17,7 +17,7 @@ async function init() {
     next();
   };
 
-  app.use(logger);
+  // app.use(logger);
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -34,6 +34,8 @@ async function init() {
   app.use("/booking", bookingRouter);
   // authRouter
   app.use("/auth", authRouter);
+  //pamentGatewayRouter
+  app.use("/pamentGateway", pamentGatewayRouter);
 
   app.get("*", (req, res) => {
     res.status(404).send("Not found");

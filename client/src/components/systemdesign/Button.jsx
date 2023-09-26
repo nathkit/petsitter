@@ -10,7 +10,8 @@ export function ButtonPrimary(props) {
         hover:bg-orange-400 active:bg-orange-600
          disabled:bg-gray-200 disabled:text-gray-300`}
       style={{ width: props.width ? props.width : "139px", height: "48px" }}
-      disabled={props.disabled}>
+      disabled={props.disabled}
+    >
       {props.content}
     </button>
   );
@@ -18,6 +19,7 @@ export function ButtonPrimary(props) {
 export function ButtonSecondary(props) {
   return (
     <button
+      id={props.id}
       onClick={props.onClick ? props.onClick : null}
       type={props.type ? props.type : null}
       className={`inline-flex justify-center items-center py-3 px-6 rounded-full gap-2 border-none
@@ -25,7 +27,8 @@ export function ButtonSecondary(props) {
         hover:text-orange-400 active:text-orange-600
          disabled:bg-gray-200 disabled:text-gray-100`}
       style={{ width: props.width ? props.width : "139px", height: "48px" }}
-      disabled={props.disabled}>
+      disabled={props.disabled}
+    >
       {props.content}
     </button>
   );
@@ -39,7 +42,8 @@ export function ButtonGhost(props) {
       bg-transparent text-orange-500 text-bodyButton
         hover:text-orange-400 active:text-orange-600
          disabled:text-gray-200 ${props.className}`}
-      style={{ width: props.width ? props.width : "91px", height: "48px" }}>
+      style={{ width: props.width ? props.width : "91px", height: "48px" }}
+    >
       {props.icon ? <props.icon /> : null}
       {props.content}
     </button>
@@ -53,7 +57,8 @@ export function ButtonSocial(props) {
         bg-gray-100 text-gray-600 text-bodyButton
        hover:text-gray-400 active:text-gray-600
          disabled:text-gray-600`}
-      style={{ width: props.width ? props.width : "153px", height: "48px" }}>
+      style={{ width: props.width ? props.width : "153px", height: "48px" }}
+    >
       {props.icon ? <props.icon /> : null}
       {props.content}
     </button>
@@ -67,7 +72,8 @@ export function ButtonIcon(props) {
         bg-orange-100 text-orange-500 text-bodyButton
         hover:text-orange-400 active:text-orange-600
          disabled:bg-gray-200 disabled:text-gray-100`}
-      style={{ width: props.width ? props.width : "60px", height: "60px" }}>
+      style={{ width: props.width ? props.width : "60px", height: "60px" }}
+    >
       {props.icon ? <props.icon /> : null}
       {props.content}
     </button>
@@ -86,14 +92,16 @@ export function ButtonSitter(props) {
         width: props.width ? props.width : "60px",
         height: "60px",
         cursor: "pointer",
-      }}>
+      }}
+    >
       <svg
         className="fill-orange-500 group-hover:fill-orange-400 group-active:fill-orange-600 group-disabled:fill-gray-100"
         xmlns="http://www.w3.org/2000/svg"
         width="30"
         height="30"
         viewBox="0 0 24 24"
-        fill="none">
+        fill="none"
+      >
         <path d="M16.2481 12.378C15.3157 10.889 13.7276 10 12 10C10.2725 10 8.68429 10.889 7.75201 12.378L5.50519 15.9657C5.1324 16.5611 4.9604 17.2486 5.00767 17.954C5.05494 18.6596 5.31721 19.3166 5.76604 19.8543C6.21518 20.3919 6.80867 20.7592 7.4823 20.9168C8.15594 21.0743 8.84649 21.0071 9.47918 20.7225L9.52044 20.7037C11.1126 20.0012 12.9324 20.0075 14.5206 20.7225C14.9302 20.9068 15.3642 21 15.8021 21C16.0402 21 16.2797 20.9723 16.517 20.917C17.1907 20.7595 17.7841 20.3922 18.2334 19.8546C18.6824 19.3171 18.9449 18.6599 18.9923 17.9544C19.0397 17.2486 18.8677 16.5611 18.4949 15.9656L16.2481 12.378ZM17.3103 19.0465C16.7388 19.7303 15.8143 19.9465 15.0096 19.5844C14.0531 19.1538 13.0265 18.9386 11.9995 18.9386C10.9735 18.9386 9.94698 19.1536 8.99114 19.5837L8.96395 19.596C8.16542 19.9417 7.25449 19.7227 6.6893 19.0465C6.11843 18.3625 6.05345 17.3941 6.52773 16.6366L8.77471 13.0489C9.48266 11.9184 10.6883 11.2434 12 11.2434C13.3117 11.2434 14.5175 11.9184 15.2256 13.0489L17.4722 16.6365C17.9467 17.3943 17.8815 18.3628 17.3103 19.0465Z" />
         <path d="M5.49763 12.8405C6.12624 12.5765 6.60379 12.0227 6.84241 11.2809C7.06929 10.5751 7.05071 9.77818 6.78978 9.03689C6.52871 8.2961 6.05383 7.69137 5.45273 7.33389C4.82101 6.95853 4.12713 6.89741 3.49957 7.1619C2.23701 7.69267 1.65761 9.39859 2.20816 10.9655C2.64795 12.2127 3.67367 13 4.71069 13C4.97548 13 5.24102 12.9486 5.49763 12.8405ZM3.27417 10.5169C2.94976 9.59351 3.23478 8.61131 3.90992 8.32747C4.03183 8.2761 4.16073 8.25058 4.29231 8.25058C4.4954 8.25058 4.70519 8.31122 4.90709 8.43135C5.27016 8.64707 5.56023 9.02161 5.72377 9.48573C5.88717 9.95017 5.90174 10.4405 5.76466 10.8665C5.63902 11.257 5.39861 11.5441 5.08788 11.6746C4.41363 11.9588 3.59963 11.4394 3.27417 10.5169Z" />
         <path d="M9.99984 9C11.6541 9 13 7.43009 13 5.5004C13 3.57023 11.6541 2 9.99984 2C8.34573 2 7 3.57023 7 5.5004C7 7.43009 8.34573 9 9.99984 9ZM9.99984 3.22578C10.9939 3.22578 11.8028 4.24622 11.8028 5.5004C11.8028 6.7541 10.9939 7.77422 9.99984 7.77422C9.00582 7.77422 8.19723 6.7541 8.19723 5.5004C8.19723 4.24622 9.00582 3.22578 9.99984 3.22578Z" />

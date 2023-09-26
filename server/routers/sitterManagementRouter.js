@@ -120,7 +120,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
 
     const paginatedReviews = sitterReview.rows.slice(skip, end);
 
-    console.log("Database Query Result:", paginatedReviews);
+    // console.log("Database Query Result:", paginatedReviews);
 
     return res.status(200).json({
       data: sitterDetails.rows,

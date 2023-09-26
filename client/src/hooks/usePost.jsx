@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
+import { format, parseISO } from "date-fns";
 
 const usePosts = () => {
   const [petData, setPetData] = useState();
@@ -87,8 +88,8 @@ const usePosts = () => {
     status = [],
     page = 1
   ) => {
-    console.log(searchKeywords);
-    console.log(status);
+    // console.log(searchKeywords);
+    // console.log(status);
     try {
       const response = await axios.get(
         `/sitterManagement/${sitterId}/booking/`,
@@ -101,7 +102,29 @@ const usePosts = () => {
         }
       );
       // Assuming you have a state variable 'bookings' and a setter function 'setBookings'
-      setBookings(response.data.data);
+      const startDateFormat = "d MMM, hh:mm a";
+      const endDateFormat = "hh:mm a";
+
+      const data = response.data.data;
+      for (let i = 0; i < data.length; i++) {
+        if (
+          format(parseISO(data[i].start_date_time), "dd MMM yyyy") ===
+          format(parseISO(data[i].end_date_time), "dd MMM yyyy")
+        ) {
+          data[i].bookedDate =
+            format(parseISO(data[i].start_date_time), startDateFormat) +
+            " - " +
+            format(parseISO(data[i].end_date_time), endDateFormat);
+        } else {
+          data[i].bookedDate =
+            format(parseISO(data[i].start_date_time), startDateFormat) +
+            " - " +
+            format(parseISO(data[i].end_date_time), startDateFormat);
+        }
+      }
+
+      setBookings(data);
+      // console.log(data);
       // console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching bookings: ", error);

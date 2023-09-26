@@ -33,7 +33,7 @@ function SitterBar(props) {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
+  // userData.sitterAuthen = true;
   return (
     <>
       <div className=" flex ">
@@ -45,7 +45,8 @@ function SitterBar(props) {
                   className="cursor-pointer"
                   onClick={() => {
                     navigate("/");
-                  }}>
+                  }}
+                >
                   <SitterIconBlack width="132" height="40" />
                 </div>
               </li>
@@ -61,7 +62,8 @@ function SitterBar(props) {
                 }}
                 onMouseLeave={() => {
                   setUserIconColor("#aeb1c3");
-                }}>
+                }}
+              >
                 <UserIcon
                   hoverColor={userIconColor}
                   onFocus={isSitterProfilePage ? "#ff7037" : undefined}
@@ -82,7 +84,8 @@ function SitterBar(props) {
                 }}
                 onMouseLeave={() => {
                   setListIconColor("#aeb1c3");
-                }}>
+                }}
+              >
                 <ListIcon
                   hoverColor={listIconColor}
                   onFocus={
@@ -106,7 +109,8 @@ function SitterBar(props) {
                 }}
                 onMouseLeave={() => {
                   setPaymentIconColor("#aeb1c3");
-                }}>
+                }}
+              >
                 <CreditCardIcon
                   hoverColor={paymentIconColor}
                   onFocus={isPayoutOptionPage ? "#ff7037" : undefined}
@@ -124,7 +128,8 @@ function SitterBar(props) {
               }}
               onMouseLeave={() => {
                 setLogOutIconColor("#aeb1c3");
-              }}>
+              }}
+            >
               <LogOutIcon hoverColor={logOutIconColor} />
               <p className="ml-4">Log Out</p>
             </div>
@@ -135,17 +140,18 @@ function SitterBar(props) {
             <div className="px-[30px]">
               <button
                 className="hover:text-orange-500 text-3xl"
-                onClick={toggleSidebar}>
+                onClick={toggleSidebar}
+              >
                 ☰
               </button>
             </div>
             {userData.sitterAuthen ? (
               <div className="flex items-center">
                 <img
-                  src="https://i0.wp.com/www.korseries.com/wp-content/uploads/2021/05/rose-blackpink-photo.jpeg?resize=700%2C874&ssl=1"
+                  src={userData.image_path}
                   className="object-cover w-10 h-10 relative rounded-[999px]"
                 />
-                <p className="ml-4">Park Chaeyoung</p>
+                <p className="ml-4 text-body2">{userData.fullName}</p>
               </div>
             ) : (
               <p className=" text-headline4">Wellcome to Stitter Profile</p>

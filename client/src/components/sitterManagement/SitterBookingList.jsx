@@ -19,6 +19,7 @@ const status = [
 ];
 
 function SitterBookingList() {
+  const formatDate = "dd MMM, hh:mm a";
   const {
     getSitterBookingList,
     bookings,
@@ -138,9 +139,8 @@ function SitterBookingList() {
                 {booking.duration} hours
               </div>
               <div className="w-[420px] text-body2 text-etc-black px-4 py-6">
-                Booked Date
+                {booking.bookedDate}
               </div>
-              {}
               <div className={`w-[220px] text-body2 ${statusColor} px-4 py-6`}>
                 <span className="text-headline4">•</span> {booking.statuses}
               </div>

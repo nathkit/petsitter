@@ -32,9 +32,10 @@ function BookingPage() {
     setPetIds,
     setBookingMessage,
     setPaymentMethod,
+    confirmbooking,
   } = useBooking();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
-  const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
+  // const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
   const { userData } = useAuth();
   const nextStep = () => {
@@ -100,7 +101,8 @@ function BookingPage() {
           )}
           {step === 2 && <Booking2 />}
           {step === 3 && (
-            <Booking3 setDisableButtonBooking3={setDisableButtonBooking3} />
+            // <Booking3 setDisableButtonBooking3={setDisableButtonBooking3} />
+            <Booking3 />
           )}
           <div className=" p-10 w-full h-fit bg-etc-white flex justify-between">
             {step >= 1 && (
@@ -118,7 +120,7 @@ function BookingPage() {
                 content={"Next"}
                 onClick={() => {
                   nextStep();
-                  setPaymentMethod("Credit");
+                  setPaymentMethod("Cash");
                 }}
                 disabled={disableButtonBooking1.length <= 0}
               />
@@ -133,9 +135,13 @@ function BookingPage() {
                 primaryWidth={"142px"}
                 buttonName={"Confirm Booking"}
                 buttonWidth={"175px"}
-                disabled={disableButtonBooking3}
+                // disabled={disableButtonBooking3}
+                disabled={
+                  confirmbooking !== "successful" && paymentMethod !== "Cash"
+                }
                 onClick={() => {
                   createBooking(bookingData);
+                  setConfirmbooking("");
                 }}
               />
             )}

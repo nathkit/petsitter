@@ -17,7 +17,6 @@ sitterManagementRouter.get("/", async (req, res) => {
     const offset = (page - 1) * limit;
 
     let query = `SELECT * FROM pet_sitter_view`;
-    // let paginationQuery = `SELECT COUNT(id) FROM pet_sitter_view`;
     let value = [];
     let condition = [];
 
@@ -61,21 +60,16 @@ sitterManagementRouter.get("/", async (req, res) => {
 
     if (condition.length > 0) {
       query += ` where ` + condition.join(` and `);
-      // paginationQuery += ` where ` + condition.join(` and `);
     }
     const paginationResult = await pool.query(query, value);
 
     query += ` limit ${limit} offset ${offset}`;
-
-    console.log(query);
-    // console.log(paginationQuery);
 
     const result = await pool.query(query, value);
 
     const rows = result.rows;
     const total = paginationResult.rows.length;
     const pagination = getPagingData(total, page, limit);
-    // console.log(rows);
 
     const parseTypeRows = rows.map((e) => {
       const types = e.pet_type.split(",");
@@ -182,7 +176,7 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     const totalPages = Math.ceil(totalCount / pageSize);
     // console.log("TotalRows:", results.rows.length);
     // console.log("TotalRows:", results.rows);
-    console.log("total Page:", totalPages)
+    console.log("total Page:", totalPages);
     return res.status(200).json({
       message: "Get detail successfully",
       data: results.rows,

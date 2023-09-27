@@ -24,38 +24,29 @@ function SitterDetail() {
   }, []);
 
   const avgRating = parseFloat(sitterDetail[0]?.avg_rating);
-  const fullStars = Math.floor(avgRating);
-  const partialStar = avgRating - fullStars;
-  const starIcons = [];
-  for (let i = 0; i < fullStars; i++) {
-    starIcons.push(
-      <svg
-        key={i}
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 18 18"
-        fill="#1CCD83"
-      >
-        <path d="M8.14319 1.42372C8.53185 0.777902 9.46815 0.777901 9.85681 1.42372L12.0731 5.10651C12.2128 5.33853 12.4405 5.504 12.7043 5.56509L16.8918 6.53491C17.6261 6.70498 17.9154 7.59545 17.4213 8.16466L14.6036 11.4106C14.4261 11.6151 14.3391 11.8828 14.3625 12.1526L14.7342 16.4347C14.7994 17.1857 14.0419 17.736 13.3478 17.442L9.39009 15.7653C9.14076 15.6596 8.85924 15.6596 8.60991 15.7653L4.65216 17.442C3.95813 17.736 3.20065 17.1857 3.26582 16.4347L3.63745 12.1526C3.66087 11.8828 3.57387 11.6151 3.39637 11.4106L0.578707 8.16466C0.0845982 7.59545 0.373929 6.70498 1.10824 6.53491L5.29567 5.56509C5.55948 5.504 5.78723 5.33853 5.92685 5.10652L8.14319 1.42372Z" />
-      </svg>
-    );
-  }
 
-  if (partialStar > 0) {
-    starIcons.push(
-      <svg
-        key="partial"
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 18 18"
-        fill="#1CCD83"
-      >
-        {/* Include the path for a partially filled star here */}
-      </svg>
-    );
-  }
+  const starIcons = !isNaN(avgRating)
+    ? Array.from({ length: Math.floor(avgRating || 0) }).map((_, i) => (
+        <svg
+          key={i}
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          fill="#1CCD83"
+        >
+          <path d="M8.14319 1.42372C8.53185 0.777902 9.46815 0.777901 9.85681 1.42372L12.0731 5.10651C12.2128 5.33853 12.4405 5.504 12.7043 5.56509L16.8918 6.53491C17.6261 6.70498 17.9154 7.59545 17.4213 8.16466L14.6036 11.4106C14.4261 11.6151 14.3391 11.8828 14.3625 12.1526L14.7342 16.4347C14.7994 17.1857 14.0419 17.736 13.3478 17.442L9.39009 15.7653C9.14076 15.6596 8.85924 15.6596 8.60991 15.7653L4.65216 17.442C3.95813 17.736 3.20065 17.1857 3.26582 16.4347L3.63745 12.1526C3.66087 11.8828 3.57387 11.6151 3.39637 11.4106L0.578707 8.16466C0.0845982 7.59545 0.373929 6.70498 1.10824 6.53491L5.29567 5.56509C5.55948 5.504 5.78723 5.33853 5.92685 5.10652L8.14319 1.42372Z" />
+        </svg>
+      ))
+    : null;
+
+  const ratingDisplay = !isNaN(avgRating) ? (
+    <div className="flex justify-center mt-1">{starIcons}</div>
+  ) : (
+    <div className="flex justify-center mt-1">No rating</div>
+  );
+
+  console.log("start", ratingDisplay);
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-etc-bg_gray">
@@ -67,23 +58,32 @@ function SitterDetail() {
         {/* Detail */}
         <div className=" w-[70%] px-14 flex flex-col items-start justify-center gap-[48px]">
           <div className=" flex flex-col gap-12 px-14">
-            <h1 className="text-headline1 text-etc-black"> {sitterDetail[0]?.trade_name}</h1>
+            <h1 className="text-headline1 text-etc-black">
+              {" "}
+              {sitterDetail[0]?.trade_name}
+            </h1>
 
             <div>
-              <h3 className="text-headline3 mb-[12px] text-etc-black">Introduction</h3>
+              <h3 className="text-headline3 mb-[12px] text-etc-black">
+                Introduction
+              </h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {sitterDetail[0]?.introduction}
               </p>
             </div>
 
             <div>
-              <h3 className="text-headline3 mb-[12px] text-etc-black">Services</h3>
+              <h3 className="text-headline3 mb-[12px] text-etc-black">
+                Services
+              </h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {sitterDetail[0]?.service_description}
               </p>
             </div>
             <div>
-              <h3 className="text-headline3 mb-[12px] text-etc-black">My Place</h3>
+              <h3 className="text-headline3 mb-[12px] text-etc-black">
+                My Place
+              </h3>
               <p className="font-[500px] text-[16px] text-gray-500 break-all">
                 {sitterDetail[0]?.place_description}
               </p>
@@ -115,9 +115,9 @@ function SitterDetail() {
                   {(() => {
                     const experience = sitterDetail[0]?.experience;
 
-                    if (experience >= 0 && experience <= 2) {
+                    if (experience === 0) {
                       return "0-2";
-                    } else if (experience >= 3 && experience <= 5) {
+                    } else if (experience === 1) {
                       return "3-5";
                     } else {
                       return "5+";
@@ -127,11 +127,7 @@ function SitterDetail() {
                 </span>
               </h4>
               {/* rating star use logic if number 1 render 1 star */}
-              <div className="flex justify-center mt-1">
-                {starIcons.map((star, index) => (
-                  <span key={index}>{star}</span>
-                ))}
-              </div>
+              <div className="flex justify-center mt-1">{ratingDisplay}</div>
               <div className="mt-2 text-body2 text-gray-400 flex items-center justify-center">
                 <span className="mt-1 mr-[6px]">
                   <svg

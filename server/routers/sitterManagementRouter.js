@@ -244,6 +244,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const end = skip + reviewPerPage;
 
     // console.log("Database Query Result:", sitterReview.rows);
+    // console.log("Database Query Result:", sitterReview.rows);
 
     if (totalData === 0) {
       return res.status(404).json({ message: "Sitter not found" });
@@ -413,6 +414,9 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   // console.log("search: ", searchKeywords);
   // console.log("status: ", status);
   // console.log("sitterId: ", sitterId);
+  // console.log("search: ", searchKeywords);
+  // console.log("status: ", status);
+  // console.log("sitterId: ", sitterId);
 
   let query = `
     SELECT distinct booking_no, user_full_name, pet_ids, duration, start_date_time, end_date_time, statuses
@@ -447,8 +451,8 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   values.push(pageSize, offset);
 
   // console.log(query);
-  // console.log(query);
   try {
+    // console.log(query);
     // console.log(query);
     const results = await pool.query(query, values);
     const totalCountRes = await pool.query(
@@ -457,6 +461,8 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     );
     const totalCount = parseInt(totalCountRes.rows[0].count, 10);
     const totalPages = Math.ceil(totalCount / pageSize);
+    // console.log("TotalRows:", results.rows.length);
+    // console.log("TotalRows:", results.rows);
     // console.log("TotalRows:", results.rows.length);
     // console.log("TotalRows:", results.rows);
     return res.status(200).json({

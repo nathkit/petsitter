@@ -15,7 +15,7 @@ const usePosts = () => {
   const [bookingStatus, setBookingStatus] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [bookingId, setBookingId] = useState("");
   const getProfileImage = async (user) => {
     if (user) {
       setProfileImage(user.image_path);
@@ -78,6 +78,7 @@ const usePosts = () => {
         `/booking/${userData.id}/${data.pet_sitter_id}`,
         data
       );
+      setBookingId(createBookingResult.data.bookingId);
       console.log(createBookingResult.data.bookingId);
       navigate(
         `/userManagement/${userData.id}/booking/${createBookingResult.data.bookingId}`
@@ -155,6 +156,7 @@ const usePosts = () => {
     setCurrentPage,
     totalPages,
     setTotalPages,
+    bookingId,
   };
 };
 

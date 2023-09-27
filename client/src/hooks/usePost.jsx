@@ -13,6 +13,8 @@ const usePosts = () => {
   const [cursor, setCursor] = useState(null); // cursor for pagination
   const [searchKeywords, setSearchKeywords] = useState("");
   const [bookingStatus, setBookingStatus] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const getProfileImage = async (user) => {
     if (user) {
@@ -76,8 +78,10 @@ const usePosts = () => {
         `/booking/${userData.id}/${data.pet_sitter_id}`,
         data
       );
-      console.log(createBookingResult.data.data);
-      navigate(`/userManagement/${userData.id}/booking/:bookingId`);
+      console.log(createBookingResult.data.bookingId);
+      navigate(
+        `/userManagement/${userData.id}/booking/${createBookingResult.data.bookingId}`
+      );
     } catch (error) {
       console.log(error);
     }
@@ -86,18 +90,18 @@ const usePosts = () => {
     sitterId,
     searchKeywords = "",
     status = [],
-    page = 1
+    page
   ) => {
     // console.log(searchKeywords);
-    // console.log(status);
+    // console.log(page);
     try {
       const response = await axios.get(
         `/sitterManagement/${sitterId}/booking/`,
         {
           params: {
-            searchKeywords,
+            searchKeywords: searchKeywords,
             status: status,
-            page,
+            page: page,
           },
         }
       );
@@ -124,8 +128,9 @@ const usePosts = () => {
       }
 
       setBookings(data);
+      setTotalPages(Number(response.data.totalPages));
+      setCurrentPage(Number(response.data.currentPage));
       // console.log(data);
-      // console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching bookings: ", error);
     }
@@ -146,6 +151,10 @@ const usePosts = () => {
     setSearchKeywords,
     bookingStatus,
     setBookingStatus,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    setTotalPages,
   };
 };
 

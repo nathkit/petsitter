@@ -19,17 +19,26 @@ function SitterPictureSlide() {
 
   useEffect(() => {}, [sitterDetail]);
 
-  // function getImageArray(imageString) {
-  //   return imageString.split(",");
-  // }
+  function getImageArray(imageString) {
+    return imageString.split(",");
+  }
+
+  const imageArray = getImageArray(
+    sitterDetail && sitterDetail.length > 0
+      ? sitterDetail[0].trade_image_path
+      : ""
+  );
+  const slidesPerView = imageArray.length <= 2 ? 1 : 1.5;
+  const spaceBetween = imageArray.length <= 2 ? 0 : -450;
+  const autoplay = imageArray.length <= 3 ? false : true;
 
   return (
     <div className="justify-center items-center py-[40px]">
       <div className="w-full">
         <Swiper
           className="w-full relative swiper-container"
-          slidesPerView={1.5}
-          spaceBetween={-450}
+          slidesPerView={slidesPerView}
+          spaceBetween={spaceBetween}
           centeredSlides={true}
           modules={[Navigation, Keyboard, Autoplay]}
           navigation={{
@@ -39,7 +48,7 @@ function SitterPictureSlide() {
           keyboard={{
             enabled: true,
           }}
-          autoplay={true}
+          autoplay={autoplay}
           loop={true}
         >
           {sitterDetail !== null && sitterDetail.length > 0 ? (
@@ -61,11 +70,9 @@ function SitterPictureSlide() {
                 ))}
             </>
           ) : (
-            
-              <div className=" flex justify-center items-center w-full h-[400px] text-headline3">
-                No picture available 🐶
-              </div>
-            
+            <div className=" flex justify-center items-center w-full h-[400px] text-headline3">
+              No picture available 🐶
+            </div>
           )}
 
           <div className="custom-button-next absolute z-10 top-[45%] w-14 h-14 right-[80px] rounded-full bg-etc-white grid place-items-center">

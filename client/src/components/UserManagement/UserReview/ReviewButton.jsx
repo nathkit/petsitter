@@ -77,7 +77,7 @@ function ReviewButton(props) {
             <h3>Rating & Review</h3>
           </div>
           <hr />
-          <div className="flex flex-col gap-20 p-10">
+          <div className="flex flex-col gap-20 p-20">
             <div className="flex flex-col gap-6 items-center">
               <h3>What is your rate?</h3>
               <div className="flex gap-4">
@@ -101,8 +101,8 @@ function ReviewButton(props) {
               <h3>Share more about your experience</h3>
               <textarea
                 id="search"
-                className="outline-none w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
-                     border-[#DCDFED] border-[1px] focus:border-orange-300 resize-none"
+                className="outline-none bg-etc-white w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
+ border-[1px] focus:border-orange-300 resize-none"
                 placeholder="Your Review..."
                 onChange={(e) => handleReviewText(e)}
                 value={review.text}

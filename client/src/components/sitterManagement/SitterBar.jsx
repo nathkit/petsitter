@@ -19,8 +19,7 @@ import { Vector } from "../systemdesign/image";
 const SitterBar = (props) => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
-  const { signOut, petSitterId } = useAuth();
-  const { signOut, petSitterId } = useAuth();
+  const { signOut } = useAuth();
 
   const [userIconColor, setUserIconColor] = useState(null);
   const [paymentIconColor, setPaymentIconColor] = useState(null);

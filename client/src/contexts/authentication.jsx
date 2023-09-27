@@ -199,7 +199,8 @@ function AuthProvider(props) {
     localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
   );
 
-  const isPetSitter = boolean(window.localStorage.getItem("user")).sitterAuthen;
+  const isPetSitter = window.localStorage.getItem("user").sitter_id === !null;
+  const petSitterId = window.localStorage.getItem("user")?.sitter_id;
 
   return (
     <AuthContext.Provider
@@ -222,8 +223,8 @@ function AuthProvider(props) {
         userData,
         isAuthenticated,
         isPetSitter,
-      }}
-    >
+        petSitterId,
+      }}>
       {props.children}
     </AuthContext.Provider>
   );

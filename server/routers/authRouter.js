@@ -8,7 +8,7 @@ const authRouter = Router();
 // login router ****************************
 authRouter.post("/login", async (req, res) => {
   // console.log("nknkn");
-  let query = "select * from users where email = $1";
+  let query = "select * from user_login where email = $1";
   let value = [req.body.email];
   let result;
   try {
@@ -48,7 +48,9 @@ authRouter.post("/login", async (req, res) => {
       dateOfbirth: result.date_of_birth,
       image_name: result.image_name,
       image_path: result.profile_image_path,
-      sitterAuthen: result.sitter_authen,
+      sitter_id: result.pet_sitter_id,
+      sitter_image_name: result.pet_sitter_image_name,
+      sitter_image_path: result.pet_sitter_profile_image_path,
     },
   });
 });

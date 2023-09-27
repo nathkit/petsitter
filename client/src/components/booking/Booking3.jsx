@@ -47,22 +47,29 @@ function Booking3() {
     OmiseCard.open({
       amount: totalAmount * 100,
       onCreateTokenSuccess: async (token) => {
-        const result = await axios.post(`http://localhost:4000/pamentGateway`, {
-          amount: totalAmount * 100,
-          token: token,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (result.data.status == "successful") {
-          alert("Payment Successful");
-        } else {
-          alert("Payment Failed");
+        try {
+          const result = await axios.post(
+            `http://localhost:4000/pamentGateway`,
+            {
+              amount: totalAmount * 100,
+              token: token,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (result.data.status == "successful") {
+            alert("Payment Successful");
+          } else {
+            alert("Payment Failed");
+          }
+          console.log(result.data.status);
+          setConfirmbooking(result.data.status);
+        } catch (error) {
+          console.log(error, "Can't Payment");
         }
-        console.log(result.data.status);
-        setConfirmbooking(result.data.status);
       },
-      onFormClosed: () => {},
+      // onFormClosed: () => {},
     });
   };
 

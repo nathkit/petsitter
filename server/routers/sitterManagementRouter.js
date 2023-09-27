@@ -169,9 +169,9 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   `;
   values.push(pageSize, offset);
 
-  console.log(query);
+  // console.log(query);
   try {
-    console.log(query);
+    // console.log(query);
     const results = await pool.query(query, values);
     const totalCountRes = await pool.query(
       `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`,
@@ -179,8 +179,9 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     );
     const totalCount = parseInt(totalCountRes.rows[0].count, 10);
     const totalPages = Math.ceil(totalCount / pageSize);
-    console.log("TotalRows:", results.rows.length);
-    console.log("TotalRows:", results.rows);
+    // console.log("TotalRows:", results.rows.length);
+    // console.log("TotalRows:", results.rows);
+    console.log("total Page:", totalPages)
     return res.status(200).json({
       message: "Get detail successfully",
       data: results.rows,

@@ -105,58 +105,64 @@ function SitterBookingList() {
             Status
           </div>
         </div>
-        {bookings.map((booking) => {
-          let statusColor = "text-etc-black";
-          if (booking.statuses === "Waiting for confirm") {
-            statusColor = "text-pink-500";
-          }
-          if (booking.statuses === "Waiting for service") {
-            statusColor = "text-yellow-200";
-          }
-          if (booking.statuses === "In service") {
-            statusColor = "text-blue-500";
-          }
-          if (booking.statuses === "Success") {
-            statusColor = "text-green-500";
-          }
-          if (booking.statuses === "Canceled") {
-            statusColor = "text-etc-red";
-          }
-          return (
-            <div
-              key={booking.booking_no}
-              onClick={() => {
-                navigate(
-                  `/sitterManagement/${params.sitterId}/sitterBookingList/${booking.booking_no}`
-                );
-              }}
-              className="flex h-[76px] bg-etc-white border-b-[1px] border-b-gray-200 last:rounded-b-2xl last:border-none  ">
-              <div className="w-[240px] text-body2 text-etc-black px-4 py-6">
-                {booking.statuses === "Waiting for confirm" ? (
-                  <div>
-                    <span className="text-orange-500 text-headline4">• </span>
-                    <span>{booking.user_full_name}</span>
-                  </div>
-                ) : (
-                  booking.user_full_name
-                )}
-              </div>
+        {bookings.length > 0 ? (
+          bookings.map((booking) => {
+            let statusColor = "text-etc-black";
+            if (booking.statuses === "Waiting for confirm") {
+              statusColor = "text-pink-500";
+            }
+            if (booking.statuses === "Waiting for service") {
+              statusColor = "text-yellow-200";
+            }
+            if (booking.statuses === "In service") {
+              statusColor = "text-blue-500";
+            }
+            if (booking.statuses === "Success") {
+              statusColor = "text-green-500";
+            }
+            if (booking.statuses === "Canceled") {
+              statusColor = "text-etc-red";
+            }
+            return (
+              <div
+                key={booking.booking_no}
+                onClick={() => {
+                  navigate(
+                    `/sitterManagement/${params.sitterId}/sitterBookingList/${booking.booking_no}`
+                  );
+                }}
+                className="flex h-[76px] bg-etc-white border-b-[1px] border-b-gray-200 last:rounded-b-2xl last:border-none  ">
+                <div className="w-[240px] text-body2 text-etc-black px-4 py-6">
+                  {booking.statuses === "Waiting for confirm" ? (
+                    <div>
+                      <span className="text-orange-500 text-headline4">• </span>
+                      <span>{booking.user_full_name}</span>
+                    </div>
+                  ) : (
+                    booking.user_full_name
+                  )}
+                </div>
 
-              <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
-                {booking.pet_ids.length}
+                <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
+                  {booking.pet_ids.length}
+                </div>
+                <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
+                  {booking.duration}{" "}
+                  {booking.duration == 1.0 ? "hour" : "hours"}
+                </div>
+                <div className="w-[420px] text-body2 text-etc-black px-4 py-6">
+                  {booking.bookedDate}
+                </div>
+                <div
+                  className={`w-[220px] text-body2 ${statusColor} px-4 py-6`}>
+                  <span className="text-headline4">•</span> {booking.statuses}
+                </div>
               </div>
-              <div className="w-[120px] text-body2 text-etc-black px-4 py-6">
-                {booking.duration} {booking.duration == 1.0 ? "hour" : "hours"}
-              </div>
-              <div className="w-[420px] text-body2 text-etc-black px-4 py-6">
-                {booking.bookedDate}
-              </div>
-              <div className={`w-[220px] text-body2 ${statusColor} px-4 py-6`}>
-                <span className="text-headline4">•</span> {booking.statuses}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div className="mt-4 text-center">No booking available</div>
+        )}
       </div>
       {totalPages > 1 ? (
         <div className="flex justify-center items-center gap-3 font-bold text-gray-300 mt-10">

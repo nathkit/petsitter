@@ -380,7 +380,6 @@ sitterManagementRouter.get("/:sitterId/review", async (req, res) => {
 
     let query = `SELECT *
     FROM sitter_reviews_view WHERE pet_sitter_id = $1`;
-    // let paginationQuery = `SELECT COUNT(pet_sitter_id) FROM sitter_reviews_view where pet_sitter_id = $1`;
     let value = [sitterId];
     let condition = [];
 
@@ -391,17 +390,14 @@ sitterManagementRouter.get("/:sitterId/review", async (req, res) => {
 
     if (condition.length > 0) {
       query += ` and ` + condition;
-      // paginationQuery += ` and ` + condition;
     }
     const paginationResult = await pool.query(query, value);
 
     query += ` limit ${limit} offset ${offset}`;
 
     console.log(query);
-    // console.log(paginationQuery);
 
     const result = await pool.query(query, value);
-    // const paginationResult = await pool.query(paginationQuery, value);
 
     const rows = result.rows;
     const total = parseInt(paginationResult.rows.length) || 0;

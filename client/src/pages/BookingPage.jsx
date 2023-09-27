@@ -33,6 +33,7 @@ function BookingPage() {
     setBookingMessage,
     setPaymentMethod,
     confirmbooking,
+    setConfirmbooking,
   } = useBooking();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
   // const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);

@@ -110,7 +110,7 @@ function SitterSearch({ onSearch }) {
       <form action="" className="flex flex-col gap-[40px] p-6">
         {/* Start Search */}
         <div>
-          <div className="text-[16px] font-medium"> Search </div>
+          <div className=" text-body2 text-etc-black"> Search </div>
           <div className="relative">
             <input
               type="text"
@@ -131,7 +131,9 @@ function SitterSearch({ onSearch }) {
 
         {/* Start Pet Type */}
         <div>
-          <div className="text-[16px] pb-4 font-bold">Pet Type:</div>
+          <div className="text-[16px] pb-4 font-bold text-etc-black">
+            Pet Type:
+          </div>
           <div className="flex relative text-[16px] font-medium items-center justify-between">
             {allPetTypes.map((type) => (
               <BaseCheckbox
@@ -147,7 +149,9 @@ function SitterSearch({ onSearch }) {
 
         {/* Start Rating */}
         <div>
-          <div className="text-[16px] pb-4 font-bold">Rating:</div>
+          <div className="text-[16px] pb-4 font-bold text-etc-black">
+            Rating:
+          </div>
           <div className="flex flex-wrap gap-2">
             {starRates.map((rate, index) => (
               <button
@@ -175,7 +179,10 @@ function SitterSearch({ onSearch }) {
 
         {/* Start Experience */}
         <div className="Experience">
-          <div className="text-[16px] font-bold pb-4"> Experience: </div>
+          <div className="text-[16px] font-bold pb-4 text-etc-black">
+            {" "}
+            Experience:{" "}
+          </div>
           <select
             className="select w-[346px] text-[#7B7E8F] border-[#DCDFED] bg-etc-white"
             onChange={(e) => handleExperience(e)}

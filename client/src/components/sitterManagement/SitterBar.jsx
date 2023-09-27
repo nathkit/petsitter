@@ -13,7 +13,7 @@ import SitterBookingDetail from "./sitterBookingDetail/SitterBookingDetail";
 import SitterBookingList from "./SitterBookingList";
 import SitterProfile from "./SitterProfile";
 import { Ellipse21 } from "../systemdesign/image";
-
+import useUserProfile from "../../hooks/useUserProfile";
 function SitterBar(props) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ function SitterBar(props) {
   const isSitterBookingDetailPage = props.children.type === SitterBookingDetail;
   const isSitterBookingListPage = props.children.type === SitterBookingList;
   const isSitterProfilePage = props.children.type === SitterProfile;
+  const { userData } = useUserProfile();
 
-  const userData = JSON.parse(window.localStorage.getItem("user"));
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };

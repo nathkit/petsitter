@@ -51,6 +51,50 @@ function ViewProfile({ userId }) {
                   <img src={users.profile_image_path} alt={users.full_name} />
                 </div>
               </div>
+              <div className=" flex flex-col justify-center items-center gap-2">
+                <h4 className=" text-headline4 text-etc-black">User Ratings</h4>
+                <div className=" flex flex-col items-center gap-2">
+                  <div className="flex gap-[2px]">
+                    {users.average_rating !== null ? (
+                      <>
+                        {Array.from(
+                          { length: users.average_rating },
+                          (_, index) => (
+                            <StarIcon key={index} color="#1CCD83" />
+                          )
+                        )}
+                      </>
+                    ) : (
+                      <p>No review</p>
+                    )}
+                  </div>
+                  <div>
+                    {users.ratings !== null && users.ratings !== undefined ? (
+                      <>
+                        <p className="text-body2 text-gray-300">
+                          {(() => {
+                            const ratingArray = users.ratings.split(",");
+                            const nonZeroRatings = ratingArray.filter(
+                              (rating) => parseFloat(rating) !== 0
+                            );
+                            const ratingCount = nonZeroRatings.length;
+                            return (
+                              <>
+                                {ratingCount}
+                                <span className="m-1">
+                                  {ratingCount === 1
+                                    ? "sitter review"
+                                    : "sitter reviews"}
+                                </span>
+                              </>
+                            );
+                          })()}
+                        </p>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
             </div>
             <div className=" flex flex-col w-full h-auto gap-10 bg-etc-bg_gray p-6 rounded-lg">
               <div className=" flex flex-row gap-10 w-full h-auto">
@@ -90,27 +134,6 @@ function ViewProfile({ userId }) {
                   </h4>
                   <h4 className=" text-body2 text-etc-black">
                     {dateWithOutComma(users.date_of_birth)}
-                  </h4>
-                </div>
-              </div>
-              <div className=" flex flex-row gap-10 w-full h-auto">
-                <div className=" space-y-1 w-full h-auto ">
-                  <h4 className=" text-headline4 text-gray-300">User Rating</h4>
-                  <h4 className=" text-body2 text-etc-black">
-                    <div className="flex gap-[2px]">
-                      {users.average_rating !== null ? (
-                        <>
-                          {Array.from(
-                            { length: users.average_rating },
-                            (_, index) => (
-                              <StarIcon key={index} color="#1CCD83" />
-                            )
-                          )}
-                        </>
-                      ) : (
-                       <p>No review</p>
-                      )}
-                    </div>
                   </h4>
                 </div>
               </div>

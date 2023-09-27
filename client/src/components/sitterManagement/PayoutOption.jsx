@@ -1,7 +1,7 @@
 import React from "react";
 import { BahtIcon } from "../systemdesign/Icons";
 import { WalletIcon } from "../systemdesign/Icons";
-import { ArrowRightIcon } from "../systemdesign/Icons";
+import { ArrowRightIcon, ArrowLeftIcon } from "../systemdesign/Icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -9,32 +9,37 @@ import { dateTimeFormat } from "../../utils/timeFormat";
 
 function PayoutOption() {
   const [payoutOption, setPayoutOption] = useState([]);
+  const [totalAmount, setTotalAmount] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
 
   const params = useParams();
 
-  const getSitterPayoutOption = async () => {
+  const getSitterPayoutOption = async (currentPage) => {
     try {
       const results = await axios.get(
-        `/sitterManagement/${params.sitterId}/payoutOption`
+        `/sitterManagement/${params.sitterId}/payoutOption?page=${currentPage}`
       );
       console.log("sitterId", params.sitterId);
       setPayoutOption(results.data.data);
+      setCurrentPage(results.data.pagination.currentPage);
+      setTotalPages(results.data.pagination.totalPages);
+      setTotalAmount(results.data.totalAmount);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    getSitterPayoutOption();
-  }, []);
+    getSitterPayoutOption(currentPage);
+  }, [currentPage]);
 
-  const successEntries = payoutOption.filter(
-    (entry) => entry.statuses === "Success"
-  );
+  
 
   return (
     <section className="">
-      <div className="flex flex-col h-full gap-6 p-10 bg-gray-100">
+      <div className="flex flex-col h-screen gap-6 p-10 bg-gray-100">
         <h1 className=" text-headline3 text-[#2A2E3F]">Payout Option</h1>
         <div className=" w-full flex gap-6 text-body2">
           <div className=" w-full flex gap-4 p-6 bg-etc-white rounded-2xl text-etc-black">
@@ -42,9 +47,7 @@ function PayoutOption() {
               <BahtIcon /> Total Earning
             </h3>
             <div className=" w-auto gap-2 flex flex-row">
-              {successEntries
-                .reduce((total, card) => total + parseFloat(card.amount), 0)
-                .toFixed(2)}{" "}
+            {totalAmount}
               <h3>THB</h3>
             </div>
           </div>
@@ -75,8 +78,8 @@ function PayoutOption() {
               <h3 className=" w-full h-auto text-right">Amount</h3>
             </div>
           </div>
-          {successEntries && successEntries.length > 0 ? (
-            successEntries.map((card) => (
+          {payoutOption && payoutOption.length > 0 ? (
+            payoutOption.map((card) => (
               <div
                 className="flex flex-row w-full bg-etc-white border-b border-gray-200 text-body2 text-[#2A2E3F] last:rounded-b-2xl last:border-none "
                 key={card.booking_no}
@@ -100,11 +103,45 @@ function PayoutOption() {
               </div>
             ))
           ) : (
-            <p className="text-center py-6 bg-etc-white border-b border-gray-200">
+            <p className="text-center py-6 bg-etc-white rounded-b-2xl ">
               No successful jobs found🐾
             </p>
           )}
         </div>
+        {totalPages > 1 ? (
+          <div className="flex justify-center items-center gap-3 font-bold text-gray-300">
+            {currentPage > 1 ? (
+              <button
+                className="previous-button"
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                <ArrowLeftIcon color="#AEB1C3" />
+              </button>
+            ) : null}
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
+                  index + 1 === currentPage
+                    ? "bg-orange-100 text-orange-500"
+                    : ""
+                }`}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+            {currentPage < totalPages ? (
+              <button
+                className="next-button"
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                <ArrowRightIcon color="#AEB1C3" />
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );

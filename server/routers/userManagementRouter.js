@@ -229,7 +229,7 @@ userManagementRouter.get("/:userId/booking", async (req, res) => {
     const userId = req.params.userId;
     const page = parseInt(req.query.page) || 1;
     const dataPerPage = 5;
-    const query = `SELECT * FROM bookings_history_detail WHERE user_id = $1;`;
+    const query = `SELECT * FROM bookings_history_detail WHERE user_id = $1 ORDER BY booking_no DESC;`;
 
     const bookingHistory = await pool.query(query, [userId]);
     const totalData = bookingHistory.rows.length;

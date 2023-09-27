@@ -193,12 +193,14 @@ function BookingHistory() {
         <p className="text-center"> No available booking 🐾 </p>
       )}
       <div className="flex justify-center items-center gap-3 font-bold text-gray-300">
-        <button
-          className="previous-button"
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          <ArrowLeftIcon color="#AEB1C3" />
-        </button>
+        {currentPage > 1 ? (
+          <button
+            className="previous-button"
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            <ArrowLeftIcon color="#AEB1C3" />
+          </button>
+        ) : null}
 
         {Array.from({ length: totalPages }, (_, index) => (
           <button

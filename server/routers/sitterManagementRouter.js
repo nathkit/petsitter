@@ -411,7 +411,7 @@ sitterManagementRouter.get("/:sitterId/review", async (req, res) => {
     const paginationResult = await pool.query(paginationQuery, value);
 
     const rows = result.rows;
-    const total = parseInt(paginationResult.rows[0].count);
+    const total = parseInt(paginationResult.rows[0].count) || 0;
     const pagination = getPagingData(total, page, limit);
 
     return res.status(200).json({

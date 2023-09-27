@@ -16,7 +16,7 @@ function SitterReview() {
   const [averageRating, setAverageRating] = useState(0.0);
   const [totalReviews, setTotalReviews] = useState(0);
   const [searchData, setSearchData] = useState({ rate: "All Reviews" });
-  const [totalData, setTotalData] = useState(1);
+  const [totalData, setTotalData] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [paging, setPaging] = useState({
@@ -60,11 +60,17 @@ function SitterReview() {
 
       const { reviews: newReviews, totalData } = response.data;
       setReviews(newReviews);
-      setAverageRating(response.data.reviews[0].avg_rating);
-      setTotalReviews(totalData);
-      setTotalData(totalData);
+      if (response.data.reviews.length > 0) {
+        setAverageRating(response.data.reviews[0].avg_rating);
+      } else {
+        setAverageRating(0);
+      }
+      setTotalReviews(totalData || 0);
+      setTotalData(totalData || 0);
       setCurrentPage(response.data.paging.currentPage);
       setTotalPages(response.data.paging.totalPages);
+      console.log("response", response);
+      console.log("total", totalData);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -95,11 +101,11 @@ function SitterReview() {
               {averageRating || "N/A"}
             </h1>
             <h3 className="total-reviews text-body3 text-etc-white absolute top-[59%] left-[24%]">
-              {totalReviews !== null
+              {totalReviews != null
                 ? totalReviews <= 1
                   ? totalReviews + " Review"
                   : totalReviews + " Reviews"
-                : 0}
+                : "0"}
             </h3>
           </div>
 

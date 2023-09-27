@@ -15,6 +15,7 @@ function Navbar() {
     setUserData,
     checkGooggleFirstSignIn,
     isPetSitter,
+    petSitterId,
   } = useAuth();
   const { profileImage, getProfileImage } = usePosts();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -143,7 +144,7 @@ function Navbar() {
           width={isPetSitter ? "200px" : "240px"}
           onClick={
             isPetSitter
-              ? () => navigate("/sitterManagement/:sitterId")
+              ? () => navigate(`/sitterManagement/${petSitterId}`)
               : () => navigate("/sitterManagement/create")
           }
         />

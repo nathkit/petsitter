@@ -9,6 +9,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { useState, useEffect } from "react";
 import usePosts from "../../hooks/usePost";
 import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeftIcon, ArrowRightIcon } from "../systemdesign/Icons";
 
 const status = [
   "Waiting for confirm",
@@ -27,6 +28,9 @@ function SitterBookingList() {
     setSearchKeywords,
     bookingStatus,
     setBookingStatus,
+    currentPage,
+    setCurrentPage,
+    totalPages,
   } = usePosts();
 
   const params = useParams();
@@ -37,10 +41,16 @@ function SitterBookingList() {
   };
 
   useEffect(() => {
-    getSitterBookingList(params.sitterId, searchKeywords, bookingStatus);
-  }, [searchKeywords, bookingStatus]);
-  console.log(bookingStatus);
-  console.log(bookings);
+    getSitterBookingList(
+      params.sitterId,
+      searchKeywords,
+      bookingStatus,
+      currentPage
+    );
+    // console.log(currentPage);
+  }, [searchKeywords, bookingStatus, currentPage]);
+  // console.log(bookingStatus);
+  // console.log(bookings);
 
   return (
     <div className="list-container bg-gray-100">
@@ -148,6 +158,35 @@ function SitterBookingList() {
           );
         })}
       </div>
+      {totalPages > 1 ? (
+        <div className="flex justify-center items-center gap-3 font-bold text-gray-300 mt-10">
+          {currentPage > 1 ? (
+            <button
+              className="previous-button"
+              onClick={() => setCurrentPage(currentPage - 1)}>
+              <ArrowLeftIcon color="#AEB1C3" />
+            </button>
+          ) : null}
+
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
+                index + 1 === currentPage ? "bg-orange-100 text-orange-500" : ""
+              }`}
+              onClick={() => setCurrentPage(index + 1)}>
+              {index + 1}
+            </button>
+          ))}
+          {currentPage < totalPages ? (
+            <button
+              className="next-button"
+              onClick={() => setCurrentPage(currentPage + 1)}>
+              <ArrowRightIcon color="#AEB1C3" />
+            </button>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

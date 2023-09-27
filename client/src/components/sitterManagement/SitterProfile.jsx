@@ -22,22 +22,21 @@ function SitterProfile(props) {
     setImageGalleryFile,
     sitterData,
     setSitterData,
-    // petType,
-    // setPetType,
+    imageGalleryName,
+    petType,
+    setPetType,
   } = useSitter();
   const {
+    test,
     sitterImageUrlsManage,
     sitterImageFileManage,
     sitterImageArrayManage,
     createSitterProfile,
     updateSitterProfile,
     getSitterData,
+    createFormData,
   } = useSitterProfile();
-  // props.update ?
-  // console.log(imageGalleryFile);
-  // console.log(imageGalleryUrls);
-  // console.log(petType);
-  // console.log(userData);
+
   useEffect(() => {
     setAvatarUrl("");
     setAvatarFile(null);
@@ -54,26 +53,24 @@ function SitterProfile(props) {
     if (props.update) {
       getSitterData();
     }
-    // console.log("first");
-  }, [sitterData]);
-  // console.log(sitterData);
+  }, []);
 
   const initialValues = props.update
     ? {
         fullName: userData.fullName,
         phone: userData.phone,
         email: userData.email,
-        petType: sitterData.petType,
+        petType: petType,
         experience: sitterData.experience,
-        intro: sitterData.intro,
-        tradeName: sitterData.tradeName,
-        services: sitterData.service,
-        myPlace: sitterData.myPlace,
-        address: sitterData.address,
+        intro: sitterData.introduction,
+        tradeName: sitterData.trade_name,
+        services: sitterData.service_description,
+        myPlace: sitterData.place_description,
+        address: sitterData.address_detail,
         district: sitterData.district,
         province: sitterData.province,
-        subDistrict: sitterData.subDistrict,
-        postCode: sitterData.postCode,
+        subDistrict: sitterData.sub_district,
+        postCode: sitterData.post_code,
       }
     : {
         fullName: userData.fullName,
@@ -148,14 +145,12 @@ function SitterProfile(props) {
           let newValues = {
             ...values,
             userId: userData.id,
-            avatarName: userData.image_name,
+            avatarName: sitterData.image_name,
             avatarFile: avatarFile,
           };
-
+          const form = createFormData(newValues);
           console.log(newValues);
-          props.update
-            ? updateSitterProfile(newValues)
-            : createSitterProfile(newValues);
+          props.update ? updateSitterProfile(form) : createSitterProfile(form);
         }}
       >
         {({ errors, isValid, touched, dirty, setFieldValue, values }) => {
@@ -175,7 +170,7 @@ function SitterProfile(props) {
 
               {/* section 1 basic information ************************************************** */}
               <section className="flex flex-col gap-10 w-[1120px] p-10 bg-etc-white rounded-xl">
-                <Box className="flex justify-between">
+                <Box className="flex justify-between items-center h-[3rem]">
                   <h1 className="text-headline4 text-gray-300 ">
                     Basic Information
                   </h1>
@@ -199,8 +194,8 @@ function SitterProfile(props) {
                     img={
                       avatarUrl
                         ? avatarUrl
-                        : userData
-                        ? userData.image_path
+                        : sitterData
+                        ? sitterData.sitter_profile
                         : null
                     }
                     onChange={async (e) => {
@@ -304,6 +299,7 @@ function SitterProfile(props) {
                       Introduction (Describe about yourself as pet sitter)
                     </label>
                     <TextField
+                      value={values.intro}
                       className="TextField w-full"
                       rows={4}
                       multiline
@@ -377,12 +373,12 @@ function SitterProfile(props) {
                   {/* services ********************************* */}
                   <label
                     className="text-lg text-etc-black font-medium mt-5"
-                    mt-5
                     htmlFor="services"
                   >
                     Services (Describe all of your service for pet sitting)
                   </label>
                   <TextField
+                    value={values.services}
                     className="TextField w-full"
                     rows={4}
                     multiline
@@ -403,6 +399,7 @@ function SitterProfile(props) {
                     My Place (Describe your Place)
                   </label>
                   <TextField
+                    value={values.myPlace}
                     className="TextField w-full"
                     rows={4}
                     multiline

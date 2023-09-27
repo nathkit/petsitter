@@ -51,6 +51,7 @@ authRouter.post("/login", async (req, res) => {
       sitter_id: result.pet_sitter_id,
       sitter_image_name: result.pet_sitter_image_name,
       sitter_image_path: result.pet_sitter_profile_image_path,
+      sitter_authen: result.sitter_authen,
     },
   });
 });

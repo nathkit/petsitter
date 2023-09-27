@@ -45,8 +45,9 @@ function useUserProfile() {
       console.log("Error is occured!");
     }
   };
+  const userData = JSON.parse(window.localStorage.getItem("user"));
 
-  return { updateUserData };
+  return { updateUserData, userData };
 }
 
 export default useUserProfile;

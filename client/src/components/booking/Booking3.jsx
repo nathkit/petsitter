@@ -2,7 +2,8 @@ import { CreditCardIcon, WalletIcon } from "../systemdesign/Icons";
 import { Vector } from "../systemdesign/image";
 import { useState } from "react";
 import { useBooking } from "../../contexts/BookingContext";
-
+import { useNavigate } from "react-router-dom";
+import useUserProfile from "../../hooks/useUserProfile";
 import axios from "axios";
 import Script from "react-load-script";
 let OmiseCard;
@@ -10,10 +11,10 @@ let OmiseCard;
 function Booking3() {
   const { paymentMethod, setPaymentMethod, totalAmount, setConfirmbooking } =
     useBooking();
-
+  const navigate = useNavigate();
   const [credit, setCredit] = useState(null);
   const [wallet, setWallet] = useState("#ff7037");
-
+  const { userData } = useUserProfile();
   const handleCreditClick = () => {
     setPaymentMethod("Credit");
     setWallet(null);
@@ -37,7 +38,11 @@ function Booking3() {
   const creditCardConfigure = () => {
     OmiseCard.configure({
       defaultPaymentMethod: "credit_card",
-      otherPaymentMethods: [],
+      otherPaymentMethods: [
+        // "shopeepay",
+        // "mobile_banking_scb",
+        // "mobile_banking_kbank",
+      ],
     });
     OmiseCard.configureButton("#credit-card");
     OmiseCard.attach();
@@ -56,10 +61,12 @@ function Booking3() {
               headers: {
                 "Content-Type": "application/json",
               },
+              // timeout: 5000,
             }
           );
           if (result.data.status == "successful") {
             alert("Payment Successful");
+            navigate(`/userManagement/${userData.id}/booking/:bookingId`);
           } else {
             alert("Payment Failed");
           }

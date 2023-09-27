@@ -26,7 +26,7 @@ function SitterCardList({ items }) {
                 <div className="flex gap-4">
                   <div>
                     <img
-                      src={card.profile_image_path}
+                      src={card.sitter_profile}
                       alt={card.full_name}
                       className="object-cover w-[64px] h-[64px] rounded-full"
                     />

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
 import { format, parseISO } from "date-fns";
-
+import { useBooking } from "../contexts/BookingContext";
 const usePosts = () => {
   const [petData, setPetData] = useState();
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const usePosts = () => {
   const [bookingStatus, setBookingStatus] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [bookingId, setBookingId] = useState("");
+  const { setBookingId } = useBooking();
   const getProfileImage = async (user) => {
     if (user) {
       setProfileImage(user.image_path);
@@ -156,7 +156,6 @@ const usePosts = () => {
     setCurrentPage,
     totalPages,
     setTotalPages,
-    bookingId,
   };
 };
 

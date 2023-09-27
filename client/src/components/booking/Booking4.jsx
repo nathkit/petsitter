@@ -58,7 +58,9 @@ function Booking4() {
               <div>
                 <p className="text-gray-400 text-body3">Duration:</p>
                 <p className="text-body2 text-etc-black">
-                  {bookingDetail.duration} hours
+                  {bookingDetail.duration <= 1
+                    ? `${bookingDetail.duration} hour`
+                    : `${bookingDetail.duration} hours`}
                 </p>
               </div>
             </div>
@@ -73,7 +75,7 @@ function Booking4() {
             <div className="pb-6">
               <p className="text-gray-400 text-body3">Additional Message </p>
               <p className="text-body2 text-etc-black">
-                {bookingDetail.message}
+                {bookingDetail.message || "No additinal message"}
               </p>
             </div>
           </div>

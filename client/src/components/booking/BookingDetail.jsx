@@ -45,7 +45,10 @@ export default function BookingDatail() {
         </div>
         <div className="pb-6">
           <p className="text-body3">Duration</p>
-          <p className="text-body2">{duration} hours</p>
+          <p className="text-body2">
+            {" "}
+            {duration <= 1 ? `${duration} hour` : `${duration} hours`}
+          </p>
         </div>
         <div>
           <p className="text-body3">Pet</p>

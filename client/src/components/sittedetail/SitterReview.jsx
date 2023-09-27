@@ -5,62 +5,100 @@ import axios from "axios";
 import union from "../../assets/SitterReview/Union.png";
 import { StarIcon } from "../systemdesign/Icons";
 import { timeFormatForSitterReviews } from "../../utils/timeFormat";
+import { ArrowLeftIcon, ArrowRightIcon } from "../systemdesign/Icons";
 
 function SitterReview() {
   const starRates = ["All Reviews", 5, 4, 3, 2, 1];
-  const [reviews, setReviews] = useState([starRates]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0.0);
   const [totalReviews, setTotalReviews] = useState(0);
-  const [searchData, setSearchData] = useState({ rate: undefined });
+  const [searchData, setSearchData] = useState({ rate: "All Reviews" });
+  const [totalData, setTotalData] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paging, setPaging] = useState({
+    currentPage: 1,
+    totalPages: 1,
+  });
   const params = useParams();
 
   const handleRating = (event, rate) => {
     event.preventDefault();
-    const newRate = rate === searchData.rate ? "All Reviews" : rate;
-    setSearchData({ ...searchData, rate: newRate });
-    setFilteredReviews(
-      newRate === "All Reviews"
-        ? reviews
-        : reviews.filter((review) => review.rating === newRate)
-    );
+    setSearchData({ ...searchData, rate });
+
+    if (rate === searchData.rate) {
+      setSearchData({ rate: "All Reviews" });
+    } else {
+      setSearchData({ rate });
+    }
+  };
+
+  const handlePaging = (event, page) => {
+    event.preventDefault();
+    setPaging({ ...paging, currentPage: page });
   };
 
   const getSitterReviewById = async () => {
+    setIsLoading(true);
+    setIsError(false);
+
     try {
-      const queryParams =
-        searchData.rate !== "All Reviews" ? { rate: searchData.rate } : {};
-      const response = await axios.get(`/sitterManagement/${params.sitterId}`, {
-        params: queryParams,
-      });
-      const { reviews: newReviews, pagination } = response.data;
+      const response = await axios.get(
+        `/sitterManagement/${params.sitterId}/review`,
+        {
+          params: {
+            rate:
+              searchData.rate === "All Reviews" ? undefined : searchData.rate,
+            page: paging.currentPage,
+          },
+        }
+      );
+
+      const { reviews: newReviews, totalData } = response.data;
       setReviews(newReviews);
-      setAverageRating(newReviews[0]?.avg_rating || "N/A");
-      setTotalReviews(pagination.totalData);
+      setAverageRating(response.data.reviews[0].avg_rating);
+      setTotalReviews(totalData);
+      setTotalData(totalData);
+      setCurrentPage(response.data.paging.currentPage);
+      setTotalPages(response.data.paging.totalPages);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
       console.error("Request error occurred", error);
     }
   };
 
   useEffect(() => {
     getSitterReviewById();
-  }, []);
+  }, [searchData.rate, paging.currentPage, params.sitterId]);
 
   useEffect(() => {
-    setFilteredReviews(reviews);
-  }, [reviews]);
+    setFilteredReviews(
+      searchData.rate === "All Reviews"
+        ? reviews
+        : reviews.filter((review) => review.rating === searchData.rate)
+    );
+  }, [reviews, searchData.rate]);
 
   return (
-    <div className="sitter-review w-[100%] min-h-screen bg-etc-bg_gray">
-      <div className="sitter-review-container p-6 bg-gray-100 w-[800px] rounded-tl-[120px] rounded-r-[16px] rounded-b-[16px] rounded-l-[16px]">
+    <div className="sitter-review w-full min-h-screen bg-etc-bg_gray">
+      <div className="sitter-review-container p-6 bg-gray-100 w-5/6 rounded-[16px]">
         <div className="sitter-review-header p-6 bg-etc-white rounded-tl-[99px] rounded-tr-[12px] rounded-br-[12px] rounded-bl-[99px] flex items-center gap-8">
           <div className="image-wrapper relative">
             <img src={union} alt="union-icon" />
-            <h1 className="average text-headline2 text-etc-white absolute top-[27%] left-[29%]">
+            <h1 className="average text-headline2 text-etc-white absolute top-[22%] left-[24%]">
               {averageRating || "N/A"}
             </h1>
-            <h3 className="total-reviews text-body3 text-etc-white absolute top-[59%] left-[26%]">
-              {totalReviews} Reviews
+            <h3 className="total-reviews text-body3 text-etc-white absolute top-[59%] left-[24%]">
+              {totalReviews !== null
+                ? totalReviews <= 1
+                  ? totalReviews + " Review"
+                  : totalReviews + " Reviews"
+                : 0}
             </h3>
           </div>
 
@@ -72,8 +110,7 @@ function SitterReview() {
                   {starRates.map((rate, index) => (
                     <button
                       type="button"
-                      id={`${rate}star`}
-                      key={index}
+                      key={rate}
                       className={`flex items-center h-[36px] px-2 py-1 gap-1 border-[1px] rounded-[8px] text-gray-400 border-gray-200 bg-etc-white hover:border-orange-500 ${
                         rate === searchData.rate
                           ? "border-orange-500 text-orange-500"
@@ -104,7 +141,7 @@ function SitterReview() {
                   className="review flex h-[204px] w-[100%] border border-gray-100 border-b-gray-200 "
                   key={index}
                 >
-                  <div className="flex gap-4 w-[30%] items-start">
+                  <div className="flex gap-4 w-[35%] items-start">
                     <Avatar
                       alt="avatar"
                       src={user_profile_image_path}
@@ -135,6 +172,41 @@ function SitterReview() {
             <div>No reviews available</div>
           )}
         </div>
+      </div>
+      <div className="flex justify-center items-center gap-3 font-bold text-gray-300 py-8">
+        <button
+          className="p-[10px]"
+          onClick={(e) => {
+            if (paging.currentPage > 1) {
+              handlePaging(e, paging.currentPage - 1);
+            }
+          }}
+        >
+          <ArrowLeftIcon color="#AEB1C3" />
+        </button>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
+              index + 1 === currentPage ? "bg-orange-100 text-orange-500" : ""
+            }`}
+            onClick={(e) => {
+              handlePaging(e, index + 1);
+            }}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button
+          className="p-[10px]"
+          onClick={(e) => {
+            if (currentPage < totalPages) {
+              handlePaging(e, currentPage + 1);
+            }
+          }}
+        >
+          <ArrowRightIcon color="#AEB1C3" />
+        </button>
       </div>
     </div>
   );

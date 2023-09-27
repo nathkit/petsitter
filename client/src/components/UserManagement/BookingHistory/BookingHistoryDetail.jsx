@@ -62,7 +62,9 @@ function BookingHistoryDetail({ card }) {
               <div className="flex flex-col  w-[50%]">
                 <div className=" text-body3 text-gray-400">Duration:</div>{" "}
                 <div className=" text-body2 text-gray-600 ">
-                  {card.duration} hours
+                  {card.duration <= 1
+                    ? `${card.duration} hour`
+                    : `${card.duration} hours`}
                 </div>
               </div>
             </div>
@@ -81,7 +83,10 @@ function BookingHistoryDetail({ card }) {
           <hr />
           <div className="flex justify-between">
             <h1 className="text-body2 text-etc-black">Total: </h1>
-            <p className="text-body1 text-etc-black"> {card.total_amount} THB</p>
+            <p className="text-body1 text-etc-black">
+              {" "}
+              {card.total_amount} THB
+            </p>
           </div>
         </div>
       </div>

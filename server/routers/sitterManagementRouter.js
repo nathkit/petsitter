@@ -24,16 +24,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-        (value.length + 1) +
-        ` or Lower(address_detail) like $` +
-        (value.length + 1) +
-        ` or Lower(district) like $` +
-        (value.length + 1) +
-        ` or Lower(sub_district) like $` +
-        (value.length + 1) +
-        `  or Lower(province) like $` +
-        (value.length + 1) +
-        ` )`
+          (value.length + 1) +
+          ` or Lower(address_detail) like $` +
+          (value.length + 1) +
+          ` or Lower(district) like $` +
+          (value.length + 1) +
+          ` or Lower(sub_district) like $` +
+          (value.length + 1) +
+          `  or Lower(province) like $` +
+          (value.length + 1) +
+          ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -104,46 +104,18 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => { });
+sitterManagementRouter.post("/", async (req, res) => {});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
     const sitterId = req.params.sitterId;
-    const page = parseInt(req.query.page) || 1;
-    const reviewPerPage = 5;
 
     const queryForDetail = `SELECT * FROM pet_sitter_view WHERE id = $1;`;
 
-    // Use "sitter_reviews_view" instead of "sitter_reviews_by_id" for reviews
-    const queryForReviews = `SELECT *
-    FROM sitter_reviews_view WHERE pet_sitter_id = $1;`;
-
     const sitterDetails = await pool.query(queryForDetail, [sitterId]);
-    const sitterReview = await pool.query(queryForReviews, [sitterId]);
-    const totalData = sitterReview.rows.length;
-    const totalPages = Math.ceil(totalData / reviewPerPage);
-    const skip = (page - 1) * reviewPerPage;
-    const end = skip + reviewPerPage;
-
-    console.log("Database Query Result:", sitterReview.rows);
-
-    if (totalData === 0) {
-      return res.status(404).json({ message: "Sitter not found" });
-    }
-
-    const paginatedReviews = sitterReview.rows.slice(skip, end);
-
-    // console.log("Database Query Result:", paginatedReviews);
 
     return res.status(200).json({
       data: sitterDetails.rows,
-      reviews: paginatedReviews,
-      pagination: {
-        currentPage: page,
-        totalPages: totalPages,
-        dataPerPage: reviewPerPage,
-        totalData: totalData,
-      },
     });
   } catch (error) {
     console.error("Error fetching sitter details:", error);
@@ -151,7 +123,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => { });
+sitterManagementRouter.put("/:sitterId", async (req, res) => {});
 
 sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const sitterId = req.params.sitterId;
@@ -347,8 +319,9 @@ sitterManagementRouter.get("/:sitterId/payoutOption", async (req, res) => {
 
     const queryForTotalAmount = `SELECT SUM(amount) AS total_amount FROM payout_option WHERE pet_sitter_id = $1;`;
     const totalAmountQuery = await pool.query(queryForTotalAmount, [sitterId]);
-    const totalAmount = parseFloat(totalAmountQuery.rows[0].total_amount || 0).toFixed(2);
-
+    const totalAmount = parseFloat(
+      totalAmountQuery.rows[0].total_amount || 0
+    ).toFixed(2);
 
     const queryForPayout = `SELECT * FROM payout_option WHERE pet_sitter_id = $1;`;
     const sitterPayout = await pool.query(queryForPayout, [sitterId]);
@@ -372,7 +345,6 @@ sitterManagementRouter.get("/:sitterId/payoutOption", async (req, res) => {
         totalData: totalData,
       },
     });
-
   } catch (error) {
     console.error("Error fetching sitter details:", error);
     return res.status(500).json({ message: "Request error occurred" });
@@ -403,5 +375,55 @@ sitterManagementRouter.get(
     }
   }
 );
+
+sitterManagementRouter.get("/:sitterId/review", async (req, res) => {
+  try {
+    const sitterId = req.params.sitterId;
+
+    const PAGE_SIZE = 5;
+    const rate = req.query.rate || "";
+    const page = req.query.page || 1;
+    const limit = req.query.limit || PAGE_SIZE;
+    const offset = (page - 1) * limit;
+
+    let query = `SELECT *
+    FROM sitter_reviews_view WHERE pet_sitter_id = $1`;
+    let paginationQuery = `SELECT COUNT(pet_sitter_id) FROM sitter_reviews_view where pet_sitter_id = $1`;
+    let value = [sitterId];
+    let condition = [];
+
+    if (rate) {
+      condition.push(`rating = $2 `);
+      value.push(rate);
+    }
+
+    if (condition.length > 0) {
+      query += ` and ` + condition;
+      paginationQuery += ` and ` + condition;
+    }
+
+    query += ` limit ${limit} offset ${offset}`;
+
+    console.log(query);
+    console.log(paginationQuery);
+
+    const result = await pool.query(query, value);
+    const paginationResult = await pool.query(paginationQuery, value);
+
+    const rows = result.rows;
+    const total = parseInt(paginationResult.rows[0].count);
+    const pagination = getPagingData(total, page, limit);
+
+    return res.status(200).json({
+      reviews: rows,
+      message: "Get detail successfully",
+      paging: pagination,
+      totalData: total,
+    });
+  } catch (error) {
+    console.error("Error fetching sitter details:", error);
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
 
 export default sitterManagementRouter;

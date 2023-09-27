@@ -33,6 +33,7 @@ function SitterReview() {
       setSearchData({ rate: "All Reviews" });
     } else {
       setSearchData({ rate });
+      setPaging({ ...paging, currentPage: 1 });
     }
   };
 

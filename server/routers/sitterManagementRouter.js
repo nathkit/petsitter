@@ -24,16 +24,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-          (value.length + 1) +
-          ` or Lower(address_detail) like $` +
-          (value.length + 1) +
-          ` or Lower(district) like $` +
-          (value.length + 1) +
-          ` or Lower(sub_district) like $` +
-          (value.length + 1) +
-          `  or Lower(province) like $` +
-          (value.length + 1) +
-          ` )`
+        (value.length + 1) +
+        ` or Lower(address_detail) like $` +
+        (value.length + 1) +
+        ` or Lower(district) like $` +
+        (value.length + 1) +
+        ` or Lower(sub_district) like $` +
+        (value.length + 1) +
+        `  or Lower(province) like $` +
+        (value.length + 1) +
+        ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -104,7 +104,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -123,7 +123,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => {});
+sitterManagementRouter.put("/:sitterId", async (req, res) => { });
 
 sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const sitterId = req.params.sitterId;
@@ -169,9 +169,10 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   `;
   values.push(pageSize, offset);
 
-  console.log(query);
+  // console.log(query);
   try {
-    console.log(query);
+    // console.log("query is", query);
+    // console.log("values is", values)
     const results = await pool.query(query, values);
     const totalCountRes = await pool.query(
       `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`,
@@ -179,8 +180,9 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     );
     const totalCount = parseInt(totalCountRes.rows[0].count, 10);
     const totalPages = Math.ceil(totalCount / pageSize);
-    console.log("TotalRows:", results.rows.length);
-    console.log("TotalRows:", results.rows);
+    // console.log("TotalRows:", results.rows.length);
+    // console.log("TotalRows:", results.rows);
+    console.log("total Page:", totalPages)
     return res.status(200).json({
       message: "Get detail successfully",
       data: results.rows,

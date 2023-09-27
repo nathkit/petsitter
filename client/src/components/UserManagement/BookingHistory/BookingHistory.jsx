@@ -13,54 +13,63 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { timeFormat, dateFormat, formatTime } from "../../../utils/timeFormat";
 import { useAuth } from "../../../contexts/authentication";
+import { ArrowLeftIcon, ArrowRightIcon } from "../../systemdesign/Icons";
 
 function BookingHistory() {
   const [bookingHistory, setBookingHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const params = useParams();
   const { userData } = useAuth();
 
-  const getBookingDetail = async () => {
+  const getBookingDetail = async (currentPage) => {
     try {
-      const results = await axios.get(`/userManagement/${userData.id}/booking`);
+      const results = await axios.get(
+        `/userManagement/${userData.id}/booking?page=${currentPage}`
+      );
       console.log("userData", userData.id);
       console.log(params.bookingId);
       console.log(results);
       const uniqueBookings = removeDuplicates(results.data.data, "booking_no");
       setBookingHistory(uniqueBookings);
+      setCurrentPage(results.data.pagination.currentPage);
+      setTotalPages(results.data.pagination.totalPages);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    getBookingDetail();
-  }, [userData]);
+    getBookingDetail(currentPage);
+  }, [userData, currentPage]);
 
   // เอาไว้ใช้ตอนที่ owner / sitter กด button เพื่อเปลี่ยน status //เอาไปใช้ต่อ
-  const handleClick = (id) => {
-    const updatedBookingHistory = bookingHistory.map((card) => {
-      if (card.booking_no === id) {
-        switch (card.statuses) {
-          case "Waiting for confirm":
-            return { ...card, statuses: "Waiting for service" };
-          case "Waiting for service":
-            return { ...card, statuses: "In service" };
-          case "In service":
-            return { ...card, statuses: "Success" };
-          default:
-            return card;
-        }
-      } else {
-        return card;
-      }
-    });
-    setBookingHistory(updatedBookingHistory);
-  };
+  // const handleClick = (id) => {
+  //   const updatedBookingHistory = bookingHistory.map((card) => {
+  //     if (card.booking_no === id) {
+  //       switch (card.statuses) {
+  //         case "Waiting for confirm":
+  //           return { ...card, statuses: "Waiting for service" };
+  //         case "Waiting for service":
+  //           return { ...card, statuses: "In service" };
+  //         case "In service":
+  //           return { ...card, statuses: "Success" };
+  //         default:
+  //           return card;
+  //       }
+  //     } else {
+  //       return card;
+  //     }
+  //   });
+  //   setBookingHistory(updatedBookingHistory);
+  // };
 
   return (
     <section className="booking-history flex flex-col gap-6">
-      <p className=" pb-[60px] text-headline3 text-etc-black">Booking History</p>
+      <p className=" pb-[60px] text-headline3 text-etc-black">
+        Booking History
+      </p>
       {bookingHistory && bookingHistory.length > 0 ? (
         bookingHistory.map((card) => (
           <div
@@ -87,7 +96,7 @@ function BookingHistory() {
             <BookingHistoryDetail
               key={card.booking_no}
               card={card}
-              handleClick={handleClick}
+              // handleClick={handleClick}
             />
             <header className="booking-history-header flex justify-between border border-etc-white border-b-gray-200 pb-4">
               <div className="flex gap-2 items-center">
@@ -97,7 +106,9 @@ function BookingHistory() {
                   className="border"
                 />
                 <div>
-                  <h1 className=" text-headline3 text-etc-black">{card.trade_name}</h1>
+                  <h1 className=" text-headline3 text-etc-black">
+                    {card.trade_name}
+                  </h1>
                   <h3 className=" text-body1 text-etc-black">
                     By {card.pet_sitter_full_name}
                   </h3>
@@ -181,6 +192,36 @@ function BookingHistory() {
       ) : (
         <p className="text-center"> No available booking 🐾 </p>
       )}
+      <div className="flex justify-center items-center gap-3 font-bold text-gray-300">
+        {currentPage > 1 ? (
+          <button
+            className="previous-button"
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            <ArrowLeftIcon color="#AEB1C3" />
+          </button>
+        ) : null}
+
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
+              index + 1 === currentPage ? "bg-orange-100 text-orange-500" : ""
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+        {currentPage < totalPages ? (
+          <button
+            className="next-button"
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            <ArrowRightIcon color="#AEB1C3" />
+          </button>
+        ) : null}
+      </div>
     </section>
   );
 }

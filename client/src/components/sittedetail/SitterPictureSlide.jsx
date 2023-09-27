@@ -42,7 +42,7 @@ function SitterPictureSlide() {
           autoplay={true}
           loop={true}
         >
-          {sitterDetail.length > 0 && (
+          {sitterDetail !== null && sitterDetail.length > 0 ? (
             <>
               {sitterDetail[0].trade_image_path
                 .split(",")
@@ -60,6 +60,12 @@ function SitterPictureSlide() {
                   </SwiperSlide>
                 ))}
             </>
+          ) : (
+            
+              <div className=" flex justify-center items-center w-full h-[400px] text-headline3">
+                No picture available 🐶
+              </div>
+            
           )}
 
           <div className="custom-button-next absolute z-10 top-[45%] w-14 h-14 right-[80px] rounded-full bg-etc-white grid place-items-center">

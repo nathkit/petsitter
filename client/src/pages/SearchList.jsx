@@ -7,6 +7,7 @@ import Navbar from "../components/systemdesign/Navbar.jsx";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
+  PetIcon,
 } from "../components/systemdesign/Icons.jsx";
 
 function SearchList() {
@@ -73,7 +74,14 @@ function SearchList() {
               searchPets(data);
             }}
           />
-          <SitterCardList items={pets} />
+          {pets.length > 0 ? (
+            <SitterCardList items={pets} />
+          ) : (
+            <div className="flex text-[20px] pl-[26%] pt-[10%] gap-3">
+              <PetIcon color="#FF7037" />
+              Pet sitter not found <PetIcon color="#FF7037" />
+            </div>
+          )}
         </div>
         <div className="flex justify-center items-center gap-3 font-bold text-gray-300">
           <button

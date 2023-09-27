@@ -347,8 +347,37 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
 });
 
 sitterManagementRouter.get(
-  "/:sitterId/booking/:bookingId",
-  async (req, res) => {}
+  "/:sitterId/sitterBookingList/:bookingId",
+  async (req, res) => {
+    try {
+      const bookingId = req.params.bookingId;
+
+      let query = "select * from bookings_user where booking_id = $1";
+      let value = [bookingId];
+
+      const result = await pool.query(query, value);
+
+      const rows = result.rows;
+
+      const newResult = rows.map((e) => {
+        const pet_name = e.pet_names.split(",");
+        const pet_id = e.pet_id.split(",");
+        return {
+          ...e,
+          pet_names: pet_name,
+          pet_id: pet_id,
+        };
+      });
+
+      return res.status(200).json({
+        message: "Get detail successfully",
+        data: newResult[0],
+      });
+    } catch (error) {
+      console.error("Error fetching sitter details:", error);
+      return res.status(500).json({ message: "Request error occurred" });
+    }
+  }
 );
 
 sitterManagementRouter.put(
@@ -409,7 +438,7 @@ sitterManagementRouter.put(
   }
 );
 
-sitterManagementRouter.put(
+sitterManagementRouter.post(
   "/:userId/booking/:bookingId/review",
   async (req, res) => {
     try {

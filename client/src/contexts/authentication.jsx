@@ -47,7 +47,7 @@ function AuthProvider(props) {
           localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
           formikHelpers.resetForm();
           nav("/");
-        }, 1000);
+        }, 1500);
       } else {
         // console.log(serverRespond.data.message);
         setAlertMessage({
@@ -199,8 +199,10 @@ function AuthProvider(props) {
     localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
   );
 
-  const isPetSitter = window.localStorage.getItem("user").sitter_id === !null;
-  const petSitterId = window.localStorage.getItem("user")?.sitter_id;
+  const isPetSitter = JSON.parse(localStorage.getItem("user"))?.sitter_authen;
+  const petSitterId = JSON.parse(
+    window.localStorage.getItem("user")
+  )?.sitter_id;
 
   return (
     <AuthContext.Provider
@@ -224,7 +226,8 @@ function AuthProvider(props) {
         isAuthenticated,
         isPetSitter,
         petSitterId,
-      }}>
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

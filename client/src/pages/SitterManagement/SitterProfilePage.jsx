@@ -6,6 +6,7 @@ import { useAuth } from "../../contexts/authentication";
 function SitterProfilePage() {
   const { isPetSitter } = useAuth();
   const params = useParams();
+
   return (
     <SitterBar>
       <SitterProfile update={isPetSitter ? true : null} />

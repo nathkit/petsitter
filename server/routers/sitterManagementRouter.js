@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getPagingData } from "../utils/pagination.js";
 import pool from "../utils/db.js";
+import { fileUpload } from "../utils/multerUpload.js";
 
 const sitterManagementRouter = Router();
 
@@ -98,7 +99,136 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => {});
+sitterManagementRouter.post("/", fileUpload, async (req, res) => {
+  try {
+    let result;
+    // update user first *************************************************************
+    const user = {
+      fullName: req.body.fullName,
+      phone: req.body.phone,
+      email: req.body.email,
+      updated_at: new Date(),
+      sitter_authen: true,
+      userId: req.body.userId,
+    };
+
+    const userQuery = `UPDATE users set full_name = $1, phone = $2, email = $3, updated_at = $4, sitter_authen = $5 where id = $6`;
+    const userValues = Object.values(user);
+    const updateUserResult = await pool.query(userQuery, userValues);
+
+    //--------------------------------------------------------------------------
+    // create pet_sitter ***********************************************************
+
+    const sitterQuery = `insert into pet_sitter(experience,introduction,trade_name,service_description,place_description,address_detail,district,province,sub_district,post_code,user_id,created_at,updated_at,image_name,profile_image_path)
+                     values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id`;
+
+    const sitterValues = Object.values(req.body);
+    sitterValues.splice(0, 4);
+    sitterValues.splice(11);
+    sitterValues.push(new Date(), new Date());
+
+    // // upload avatar ************************************************************
+    const { avatarName, url } = await supabaseUpload(
+      req.files.avatarFile[0],
+      req.body.avatarName
+    );
+    sitterValues.push(avatarName, url);
+
+    // console.log(sitterValues);
+    const createSitterResult = await pool.query(sitterQuery, sitterValues);
+    const petSitterId = createSitterResult.rows[0].id;
+
+    //--------------------------------------------------------------------------------
+    // insert to pet_sitter_trade_images *******************************************
+    const imageGallery = await supabaseMultiUpload(
+      req.files.imageGalleryFile,
+      petSitterId
+    );
+
+    for (let item of imageGallery) {
+      const tradeImageRespondes = await pool.query(
+        `insert into pet_sitter_trade_images(pet_sitter_id,trade_image_name,trade_image_path)
+       values($1,$2,$3)`,
+        [petSitterId, item.fileName, item.url]
+      );
+    }
+    // // //----------------------------------------------------------------------------
+    // // // create pet type ************************************************************
+
+    const petType = req.body.petType.split(",");
+    console.log(petType);
+    // reassign pet type condition ******************************************
+    const newPetType = petType.map((item) => {
+      item === "Dog"
+        ? (item = 1)
+        : item === "Cat"
+        ? (item = 2)
+        : item === "Bird"
+        ? (item = 3)
+        : item === "Rabbit"
+        ? (item = 4)
+        : null;
+      return item;
+    });
+    const length = newPetType.length;
+    const petTypeQuery = `insert into pet_sitter_pet_type(pet_sitter_id,pet_type_id)
+                     values${
+                       length === 1
+                         ? "($1,$2)"
+                         : length === 2
+                         ? "($1,$2),($1,$3)"
+                         : length === 3
+                         ? "($1,$2),($1,$3),($1,$4)"
+                         : length === 4
+                         ? "($1,$2),($1,$3),($1,$4),($1,$5)"
+                         : null
+                     }`;
+    newPetType.unshift(petSitterId);
+    const petTypeRusult = await pool.query(petTypeQuery, newPetType);
+
+    //-----------------------------------------------------------------------------------
+    const serverRespondes = await pool.query(
+      `select users.phone,users.full_name,users.email,users.id_number,users.date_of_birth,users.image_name,users.profile_image_path,users.sitter_authen,pet_sitter.user_id,pet_sitter.id
+     from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
+      [petSitterId]
+    );
+    result = serverRespondes.rows[0];
+    return res.json({
+      message: "Sitter Profile has been created successfully",
+      data: {
+        id: result.user_id,
+        fullName: result.full_name,
+        email: result.email,
+        idNumber: result.id_number,
+        phone: result.phone,
+        dateOfbirth: result.date_of_birth,
+        image_name: result.image_name,
+        image_path: result.profile_image_path,
+        sitterAuthen: result.sitter_authen,
+        sitterId: result.id,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
+
+sitterManagementRouter.get("/getSitterData/:sitterId", async (req, res) => {
+  let result;
+  try {
+    const respondes = await pool.query(
+      `SELECT * FROM pet_sitter_view WHERE id = $1;`,
+      [req.params.sitterId]
+    );
+    result = respondes.rows[0];
+  } catch (err) {
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+  return res.json({
+    message: "Fetch sitter data successfully",
+    data: result,
+  });
+});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -117,7 +247,145 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => {});
+sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
+  try {
+    let result;
+    console.log(req.body);
+    console.log(req.files);
+    // update user first *************************************************************
+    const user = {
+      fullName: req.body.fullName,
+      phone: req.body.phone,
+      email: req.body.email,
+      updated_at: new Date(),
+      sitter_authen: true,
+      userId: req.body.userId,
+    };
+
+    const userQuery = `UPDATE users set full_name = $1, phone = $2, email = $3, updated_at = $4, sitter_authen = $5 where id = $6`;
+    const userValues = Object.values(user);
+    const updateUserResult = await pool.query(userQuery, userValues);
+
+    // //--------------------------------------------------------------------------
+    // // update pet_sitter ***********************************************************
+
+    const sitterQuery = `update pet_sitter set experience = $1,introduction = $2,trade_name = $3,service_description = $4,place_description = $5,address_detail = $6,district = $7,province = $8,sub_district = $9,post_code = $10,user_id = $11,created_at = $12,updated_at = $13 
+  ${
+    req.files?.avatarFile
+      ? ",image_name = $15,profile_image_path = $16 where id = $14"
+      : " where id = $14"
+  }`;
+    const sitterValues = Object.values(req.body);
+    sitterValues.splice(0, 5);
+    sitterValues.splice(11);
+    sitterValues.push(new Date(), new Date(), req.params.sitterId);
+
+    // // // upload avatar ************************************************************
+    if (req.files?.avatarFile) {
+      console.log("knkn");
+      const { avatarName, url } = await supabaseUpload(
+        req.files.avatarFile[0],
+        req.body.avatarName
+      );
+      sitterValues.push(avatarName, url);
+    }
+    console.log(sitterQuery);
+    console.log(sitterValues);
+    const createSitterResult = await pool.query(sitterQuery, sitterValues);
+
+    // //--------------------------------------------------------------------------------
+    // // insert to pet_sitter_trade_images *******************************************
+    const imageGalleryName = req.body.imageGalleryName.split(",");
+    const tradeImageRemove = await pool.query(
+      `DELETE FROM pet_sitter_trade_images WHERE pet_sitter_id = $1 AND trade_image_name NOT IN (SELECT unnest($2::text[]))`,
+      [req.params.sitterId, imageGalleryName]
+    );
+    if (req.files?.imageGalleryFile) {
+      console.log("in1");
+      const imageGallery = await supabaseMultiUpload(
+        req.files.imageGalleryFile,
+        req.params.sitterId,
+        imageGalleryName
+      );
+      console.log("in2");
+      console.log(imageGallery);
+      for (let item of imageGallery) {
+        const tradeImageRespondes = await pool.query(
+          `insert into pet_sitter_trade_images(pet_sitter_id,trade_image_name,trade_image_path)
+         values($1,$2,$3)`,
+          [req.params.sitterId, item.fileName, item.url]
+        );
+      }
+      console.log("in3");
+    } else {
+      const imageGallery = await supabaseMultiUpload(
+        null,
+        req.params.sitterId,
+        imageGalleryName
+      );
+      console.log("in4");
+    }
+    // // // //----------------------------------------------------------------------------
+    // // // // create pet type ************************************************************
+
+    const petType = req.body.petType.split(",");
+    console.log(petType);
+    // delete pet type condition ******************************************
+    const deleteResult = await pool.query(
+      `DELETE FROM pet_sitter_pet_type WHERE pet_sitter_id = $1`,
+      [req.params.sitterId]
+    );
+
+    const petTypeMapping = {
+      Dog: 1,
+      Cat: 2,
+      Bird: 3,
+      Rabbit: 4,
+    };
+
+    const newPetType = petType.map((item) => petTypeMapping[item] || null);
+
+    const insertQuery = `INSERT INTO pet_sitter_pet_type (pet_sitter_id, pet_type_id)
+  VALUES 
+    ${newPetType.map((_, index) => `($1, $${index + 2})`).join(", ")}
+`;
+    const insertValues = [req.params.sitterId, ...newPetType];
+    const insertResult = await pool.query(insertQuery, insertValues);
+
+    console.log("done");
+
+    // //-----------------------------------------------------------------------------------
+    const serverRespondes = await pool.query(
+      `select users.phone,users.full_name,users.email,users.id_number,users.date_of_birth,users.image_name,users.profile_image_path,users.sitter_authen,pet_sitter.user_id,pet_sitter.id
+     from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
+      [req.params.sitterId]
+    );
+    const sitterResPondes = await pool.query(
+      `SELECT * FROM pet_sitter_view WHERE id = $1;`,
+      [req.params.sitterId]
+    );
+
+    result = serverRespondes.rows[0];
+    return res.json({
+      message: "Sitter Profile has been updated successfully",
+      userData: {
+        id: result.user_id,
+        fullName: result.full_name,
+        email: result.email,
+        idNumber: result.id_number,
+        phone: result.phone,
+        dateOfbirth: result.date_of_birth,
+        image_name: result.image_name,
+        image_path: result.profile_image_path,
+        sitterAuthen: result.sitter_authen,
+        sitterId: result.id,
+      },
+      sitterData: sitterResPondes.rows[0],
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Request error occurred" });
+  }
+});
 
 sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const sitterId = req.params.sitterId;

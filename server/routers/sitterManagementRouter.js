@@ -17,23 +17,23 @@ sitterManagementRouter.get("/", async (req, res) => {
     const offset = (page - 1) * limit;
 
     let query = `SELECT * FROM pet_sitter_view`;
-    let paginationQuery = `SELECT COUNT(id) FROM pet_sitter_view`;
+    // let paginationQuery = `SELECT COUNT(id) FROM pet_sitter_view`;
     let value = [];
     let condition = [];
 
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-        (value.length + 1) +
-        ` or Lower(address_detail) like $` +
-        (value.length + 1) +
-        ` or Lower(district) like $` +
-        (value.length + 1) +
-        ` or Lower(sub_district) like $` +
-        (value.length + 1) +
-        `  or Lower(province) like $` +
-        (value.length + 1) +
-        ` )`
+          (value.length + 1) +
+          ` or Lower(address_detail) like $` +
+          (value.length + 1) +
+          ` or Lower(district) like $` +
+          (value.length + 1) +
+          ` or Lower(sub_district) like $` +
+          (value.length + 1) +
+          `  or Lower(province) like $` +
+          (value.length + 1) +
+          ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -61,19 +61,19 @@ sitterManagementRouter.get("/", async (req, res) => {
 
     if (condition.length > 0) {
       query += ` where ` + condition.join(` and `);
-      paginationQuery += ` where ` + condition.join(` and `);
+      // paginationQuery += ` where ` + condition.join(` and `);
     }
+    const paginationResult = await pool.query(query, value);
 
     query += ` limit ${limit} offset ${offset}`;
 
     console.log(query);
-    console.log(paginationQuery);
+    // console.log(paginationQuery);
 
     const result = await pool.query(query, value);
-    const paginationResult = await pool.query(paginationQuery, value);
 
     const rows = result.rows;
-    const total = paginationResult.rows[0].count;
+    const total = paginationResult.rows.length;
     const pagination = getPagingData(total, page, limit);
     // console.log(rows);
 
@@ -104,7 +104,7 @@ sitterManagementRouter.get("/", async (req, res) => {
   }
 });
 
-sitterManagementRouter.post("/", async (req, res) => { });
+sitterManagementRouter.post("/", async (req, res) => {});
 
 sitterManagementRouter.get("/:sitterId", async (req, res) => {
   try {
@@ -123,7 +123,7 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
   }
 });
 
-sitterManagementRouter.put("/:sitterId", async (req, res) => { });
+sitterManagementRouter.put("/:sitterId", async (req, res) => {});
 
 sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const sitterId = req.params.sitterId;

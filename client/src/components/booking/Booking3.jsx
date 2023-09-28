@@ -61,27 +61,20 @@ function Booking3() {
               headers: {
                 "Content-Type": "application/json",
               },
-              // timeout: 5000,
             }
           );
-          console.log(result);
-          console.log(result.data.message);
-          try {
-            if (result.data.message == "successful") {
-              alert("Payment Successful");
-              navigate(`/userManagement/${userData.id}/booking/:bookingId`);
-            } else {
-              alert("Payment Failed");
-              navigate(`/search`);
-            }
-            setConfirmbooking(result.data.message);
-          } catch (error) {
-            console.log("without status");
+          if (result.data.status == "successful") {
+            alert("Payment Successful");
+          } else {
+            alert("Payment Failed");
           }
+          console.log(result.data.status);
+          setConfirmbooking(result.data.status);
         } catch (error) {
           console.log(error, "Can't Payment");
         }
       },
+      // onFormClosed: () => {},
       // onFormClosed: () => {},
     });
   };

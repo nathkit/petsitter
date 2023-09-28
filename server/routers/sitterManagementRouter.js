@@ -640,7 +640,7 @@ sitterManagementRouter.get("/:sitterId/review", async (req, res) => {
   try {
     const sitterId = req.params.sitterId;
 
-    const PAGE_SIZE = 3;
+    const PAGE_SIZE = 5;
     const rate = req.query.rate || "";
     const page = req.query.page || 1;
     const limit = req.query.limit || PAGE_SIZE;

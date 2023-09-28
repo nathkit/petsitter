@@ -237,6 +237,21 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
     const queryForDetail = `SELECT * FROM pet_sitter_view WHERE id = $1;`;
 
     const sitterDetails = await pool.query(queryForDetail, [sitterId]);
+    const sitterReview = await pool.query(queryForReviews, [sitterId]);
+    const totalData = sitterReview.rows.length;
+    const totalPages = Math.ceil(totalData / reviewPerPage);
+    const skip = (page - 1) * reviewPerPage;
+    const end = skip + reviewPerPage;
+
+    // console.log("Database Query Result:", sitterReview.rows);
+
+    if (totalData === 0) {
+      return res.status(404).json({ message: "Sitter not found" });
+    }
+
+    const paginatedReviews = sitterReview.rows.slice(skip, end);
+
+    // console.log("Database Query Result:", paginatedReviews);
 
     return res.status(200).json({
       data: sitterDetails.rows,
@@ -395,9 +410,9 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const pageSize = 8;
   const offset = (page - 1) * pageSize;
 
-  console.log("search: ", searchKeywords);
-  console.log("status: ", status);
-  console.log("sitterId: ", sitterId);
+  // console.log("search: ", searchKeywords);
+  // console.log("status: ", status);
+  // console.log("sitterId: ", sitterId);
 
   let query = `
     SELECT distinct booking_no, user_full_name, pet_ids, duration, start_date_time, end_date_time, statuses
@@ -432,9 +447,9 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   values.push(pageSize, offset);
 
   // console.log(query);
+  // console.log(query);
   try {
-    // console.log("query is", query);
-    // console.log("values is", values)
+    // console.log(query);
     const results = await pool.query(query, values);
     const totalCountRes = await pool.query(
       `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`,
@@ -444,7 +459,6 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     const totalPages = Math.ceil(totalCount / pageSize);
     // console.log("TotalRows:", results.rows.length);
     // console.log("TotalRows:", results.rows);
-    console.log("total Page:", totalPages);
     return res.status(200).json({
       message: "Get detail successfully",
       data: results.rows,

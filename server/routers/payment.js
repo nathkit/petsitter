@@ -1,8 +1,13 @@
 import { Router } from "express";
 import dotenv from "dotenv";
 import Omise from "omise";
+import express from "express";
 
 dotenv.config();
+
+// const app = express();
+// const server = app.listen(5000);
+// server.timeout = 50000;
 
 const omise = Omise({
   //   secretKey: process.env.Secret_Key,
@@ -20,11 +25,11 @@ pamentGatewayRouter.post("/", async (req, res) => {
       amount: amount,
       currency: "thb",
       card: token.startsWith("tokn_") ? token : null,
-      source: token.startsWith("tokn_") ? null : token,
+      // source: token.startsWith("tokn_") ? null : token,
       // return_uri: "http://localhost:5173",
     });
     console.log(charge);
-    res.send({
+    return res.json({
       amount: charge.amount,
       status: charge.status,
       // authorize_uri: charge.authorize_uri,

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { SitterIconBlack } from "./Icons";
 import { ButtonPrimary, ButtonSitter } from "./Button";
 import { useAuth } from "../../contexts/authentication";

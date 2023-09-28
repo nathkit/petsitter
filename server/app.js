@@ -17,7 +17,7 @@ async function init() {
     next();
   };
 
-  app.use(logger);
+  // app.use(logger);
 
   app.use(cors());
   app.use(bodyParser.json());

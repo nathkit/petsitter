@@ -21,7 +21,8 @@ function BookingProvider(props) {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [bookingDetail, setBookingDetail] = useState({});
   const [petBookingDetail, setPetBookingDetail] = useState([]);
-  const [confirmbooking, setConfirmbooking] = useState(true);
+  const [confirmbooking, setConfirmbooking] = useState("");
+
   const navigate = useNavigate();
 
   const getSitterDetail = async (sitterId) => {

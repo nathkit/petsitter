@@ -2,18 +2,20 @@ import { CreditCardIcon, WalletIcon } from "../systemdesign/Icons";
 import { Vector } from "../systemdesign/image";
 import { useState } from "react";
 import { useBooking } from "../../contexts/BookingContext";
-
+import { useNavigate } from "react-router-dom";
+import useUserProfile from "../../hooks/useUserProfile";
 import axios from "axios";
 import Script from "react-load-script";
+
 let OmiseCard;
 
 function Booking3() {
   const { paymentMethod, setPaymentMethod, totalAmount, setConfirmbooking } =
     useBooking();
-
+  const navigate = useNavigate();
   const [credit, setCredit] = useState(null);
   const [wallet, setWallet] = useState("#ff7037");
-
+  const [status, setStatus] = useState("");
   const handleCreditClick = () => {
     setPaymentMethod("Credit");
     setWallet(null);
@@ -37,7 +39,11 @@ function Booking3() {
   const creditCardConfigure = () => {
     OmiseCard.configure({
       defaultPaymentMethod: "credit_card",
-      otherPaymentMethods: [],
+      otherPaymentMethods: [
+        // "shopeepay",
+        // "mobile_banking_scb",
+        // "mobile_banking_kbank",
+      ],
     });
     OmiseCard.configureButton("#credit-card");
     OmiseCard.attach();
@@ -47,22 +53,39 @@ function Booking3() {
     OmiseCard.open({
       amount: totalAmount * 100,
       onCreateTokenSuccess: async (token) => {
-        const result = await axios.post(`http://localhost:4000/pamentGateway`, {
-          amount: totalAmount * 100,
-          token: token,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (result.data.status == "successful") {
-          alert("Payment Successful");
-        } else {
-          alert("Payment Failed");
+        try {
+          const result = await axios.post(
+            `http://localhost:4000/pamentGateway`,
+            {
+              amount: totalAmount * 100,
+              token: token,
+              headers: {
+                "Content-Type": "application/json",
+              },
+              // timeout: 5000,
+            }
+          );
+          console.log(result);
+          console.log(result.data.message);
+          setStatus(result.data.message);
+          try {
+            if (result.data.message == "successful") {
+              alert("Payment Successful");
+              // console.log(bookingId);
+              // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
+            } else {
+              alert("Payment Failed");
+              navigate(`/search`);
+            }
+            setConfirmbooking(result.data.message);
+          } catch (error) {
+            console.log("without status");
+          }
+        } catch (error) {
+          console.log(error, "Can't Payment");
         }
-        console.log(result.data.status);
-        setConfirmbooking(result.data.status);
       },
-      onFormClosed: () => {},
+      // onFormClosed: () => {},
     });
   };
 
@@ -95,6 +118,7 @@ function Booking3() {
                   omiseCardHandler();
                   setCredit("#ff7037");
                 }}
+                disabled={status === "successful"}
               >
                 <p className="ml-2 text-gray-500 ">Credit Card</p>
               </button>
@@ -116,6 +140,7 @@ function Booking3() {
               handleCashClick();
               setWallet("#ff7037");
             }}
+            disabled={status === "successful"}
           >
             <WalletIcon color={wallet} />
             <p className="ml-2 text-gray-500">Cash</p>

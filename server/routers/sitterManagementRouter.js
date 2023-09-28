@@ -395,9 +395,12 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   const pageSize = 8;
   const offset = (page - 1) * pageSize;
 
-  console.log("search: ", searchKeywords);
-  console.log("status: ", status);
-  console.log("sitterId: ", sitterId);
+  // console.log("search: ", searchKeywords);
+  // console.log("status: ", status);
+  // console.log("sitterId: ", sitterId);
+  // console.log("search: ", searchKeywords);
+  // console.log("status: ", status);
+  // console.log("sitterId: ", sitterId);
 
   let query = `
     SELECT distinct booking_no, user_full_name, pet_ids, duration, start_date_time, end_date_time, statuses

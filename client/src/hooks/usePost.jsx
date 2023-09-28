@@ -15,7 +15,6 @@ const usePosts = () => {
   const [bookingStatus, setBookingStatus] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const getProfileImage = async (user) => {
     if (user) {
       setProfileImage(user.image_path);

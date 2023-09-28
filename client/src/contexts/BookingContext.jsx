@@ -22,7 +22,10 @@ function BookingProvider(props) {
   const [bookingDetail, setBookingDetail] = useState({});
   const [petBookingDetail, setPetBookingDetail] = useState([]);
   const [confirmbooking, setConfirmbooking] = useState("");
-
+  const [time1, setTime1] = useState(null);
+  const [time2, setTime2] = useState(null);
+  const [startDay, setStartDay] = useState("");
+  const [endDay, setEndDay] = useState("");
   const navigate = useNavigate();
 
   const getSitterDetail = async (sitterId) => {
@@ -85,6 +88,14 @@ function BookingProvider(props) {
         getBookingDetail,
         confirmbooking,
         setConfirmbooking,
+        time1,
+        setTime1,
+        time2,
+        setTime2,
+        startDay,
+        setStartDay,
+        endDay,
+        setEndDay,
       }}
     >
       {props.children}

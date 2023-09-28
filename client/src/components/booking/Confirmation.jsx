@@ -5,7 +5,7 @@ import {
   ButtonGhost,
 } from "../systemdesign/Button";
 import usePosts from "../../hooks/usePost";
-
+import { useBooking } from "../../contexts/BookingContext";
 import { TrashIcon } from "../systemdesign/Icons";
 
 function Confirmation(props) {
@@ -29,7 +29,7 @@ function Confirmation(props) {
         >
           <div className="flex justify-between mx-6 my-4">
             <h3 className="text-headline4 ">{props.title}</h3>
-            <button className="btn btn-sm btn-circle btn-ghost ">✕</button>
+            <button className="btn btn-sm btn-circle btn-ghost">✕</button>
           </div>
           <hr />
           <div className="m-6 ">

@@ -65,7 +65,6 @@ function Booking3() {
               // timeout: 5000,
             }
           );
-          console.log(result);
           console.log(result.data.message);
           setStatus(result.data.message);
           try {
@@ -85,7 +84,7 @@ function Booking3() {
           console.log(error, "Can't Payment");
         }
       },
-      // onFormClosed: () => {},
+      onFormClosed: () => {},
     });
   };
 

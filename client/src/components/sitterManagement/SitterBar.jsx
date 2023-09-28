@@ -41,7 +41,7 @@ const SitterBar = (props) => {
     <div className="flex">
       <aside
         className={` ${
-          open ? "w-72" : "w-24 "
+          open ? "w-72" : "w-20 "
         } pt-4 flex flex-col justify-between text-gray-500 bg-etc-bg_gray text-body1 border-r border-gray-200 h-screen relative duration-300`}
       >
         <ul
@@ -62,12 +62,14 @@ const SitterBar = (props) => {
             </li>
           ) : (
             <div
-              className={`pt-6 pb-10 flex justify-center cursor-pointer}`}
+              className={`pt-6 pb-10 flex justify-center }`}
               onClick={() => {
                 navigate("/");
               }}
             >
-              <Vector width="40" height="40" />
+              <div className="cursor-pointer">
+                <Vector width="40" height="40" />
+              </div>
             </div>
           )}
           <li
@@ -170,7 +172,7 @@ const SitterBar = (props) => {
         <nav className="w-full h-[72px] flex items-center py-4 text-gray-600 bg-etc-bg_gray text-body2">
           <div className="px-[30px]">
             <button
-              className="hover:text-orange-500 text-3xl"
+              className="hover:text-orange-500 text-3xl text-gray-300"
               onClick={() => setOpen(!open)}
             >
               ☰

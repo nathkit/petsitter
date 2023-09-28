@@ -10,18 +10,12 @@ import Script from "react-load-script";
 let OmiseCard;
 
 function Booking3() {
-  const {
-    paymentMethod,
-    setPaymentMethod,
-    totalAmount,
-    setConfirmbooking,
-    bookingId,
-  } = useBooking();
+  const { paymentMethod, setPaymentMethod, totalAmount, setConfirmbooking } =
+    useBooking();
   const navigate = useNavigate();
   const [credit, setCredit] = useState(null);
   const [wallet, setWallet] = useState("#ff7037");
-  const { userData } = useUserProfile();
-
+  const [status, setStatus] = useState("");
   const handleCreditClick = () => {
     setPaymentMethod("Credit");
     setWallet(null);
@@ -73,11 +67,12 @@ function Booking3() {
           );
           console.log(result);
           console.log(result.data.message);
+          setStatus(result.data.message);
           try {
             if (result.data.message == "successful") {
               alert("Payment Successful");
-              console.log(bookingId);
-              navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
+              // console.log(bookingId);
+              // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
             } else {
               alert("Payment Failed");
               navigate(`/search`);
@@ -123,6 +118,7 @@ function Booking3() {
                   omiseCardHandler();
                   setCredit("#ff7037");
                 }}
+                disabled={status === "successful"}
               >
                 <p className="ml-2 text-gray-500 ">Credit Card</p>
               </button>
@@ -144,6 +140,7 @@ function Booking3() {
               handleCashClick();
               setWallet("#ff7037");
             }}
+            disabled={status === "successful"}
           >
             <WalletIcon color={wallet} />
             <p className="ml-2 text-gray-500">Cash</p>

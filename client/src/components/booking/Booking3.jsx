@@ -61,10 +61,12 @@ function Booking3() {
               headers: {
                 "Content-Type": "application/json",
               },
+              // timeout: 5000,
             }
           );
           if (result.data.status == "successful") {
             alert("Payment Successful");
+            navigate(`/userManagement/${userData.id}/booking/:bookingId`);
           } else {
             alert("Payment Failed");
           }

@@ -45,10 +45,12 @@ function Navbar() {
       getProfileImage(user);
       setProfileImageLoaded(true);
     } else if (!user) {
+      // console.log("in");
       const getSession = async () => {
         const {
           data: { user },
         } = await supabase.auth.getUser();
+        // console.log(user);
         if (user) {
           const newUser = { email: user.email, id: user.id };
           await checkThirdPartyFirstSignIn(newUser);

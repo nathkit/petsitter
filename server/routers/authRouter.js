@@ -155,9 +155,10 @@ authRouter.post("/googleRegister", async (req, res) => {
   try {
     // console.log("kkkk");
     await pool.query(query, values);
-    result = await pool.query(`select * from users where google_auth_id = $1`, [
-      user.googleId,
-    ]);
+    result = await pool.query(
+      `select * from user_login where google_auth_id = $1`,
+      [user.id]
+    );
     // console.log("2222");
   } catch (err) {
     // console.log("3");
@@ -166,7 +167,20 @@ authRouter.post("/googleRegister", async (req, res) => {
   // console.log("4");
   return res.json({
     message: "User profile has been created successfully",
-    data: result.rows[0],
+    data: {
+      id: result.id,
+      fullName: result.full_name,
+      email: result.email,
+      idNumber: result.id_number,
+      phone: result.phone,
+      dateOfbirth: result.date_of_birth,
+      image_name: result.image_name,
+      image_path: result.profile_image_path,
+      sitter_id: result.pet_sitter_id,
+      sitter_image_name: result.pet_sitter_image_name,
+      sitter_image_path: result.pet_sitter_profile_image_path,
+      sitter_authen: result.sitter_authen,
+    },
   });
 });
 

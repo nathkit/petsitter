@@ -50,7 +50,7 @@ userManagementRouter.put("/:userId", fileUpload, async (req, res) => {
     await pool.query(query, values);
     // user query after update *****************************************************
     const serverRespondes = await pool.query(
-      `select * from users where id = $1`,
+      "select * from user_login where id = $1",
       [userId]
     );
     result = serverRespondes.rows[0];
@@ -68,7 +68,10 @@ userManagementRouter.put("/:userId", fileUpload, async (req, res) => {
       dateOfbirth: result.date_of_birth,
       image_name: result.image_name,
       image_path: result.profile_image_path,
-      sitterAuthen: result.sitter_authen,
+      sitter_id: result.pet_sitter_id,
+      sitter_image_name: result.pet_sitter_image_name,
+      sitter_image_path: result.pet_sitter_profile_image_path,
+      sitter_authen: result.sitter_authen,
     },
   });
 });

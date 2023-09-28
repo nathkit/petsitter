@@ -13,11 +13,12 @@ import { FacebookIcon, GoogleIcon } from "../components/systemdesign/Icons";
 import { Star1, Vector, Ellipse15 } from "../components/systemdesign/image";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication.jsx";
+import { BsDiscord } from "react-icons/bs";
 
 function LoginPage() {
   const nav = useNavigate();
   const {
-    signInWithFacebook,
+    signInWithDiscord,
     signInWithGoogle,
     handleLoginSubmit,
     handleClickShowPassword,
@@ -187,10 +188,10 @@ function LoginPage() {
         <Box>
           <ButtonSocial
             onClick={(e) => {
-              signInWithFacebook();
+              signInWithDiscord();
             }}
-            icon={FacebookIcon}
-            content="Facebook"
+            icon={BsDiscord}
+            content="Discord"
           />
 
           <ButtonSocial

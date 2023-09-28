@@ -84,9 +84,9 @@ function AuthProvider(props) {
     });
   };
 
-  const signInWithFacebook = async () => {
+  const signInWithDiscord = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "facebook",
+      provider: "discord",
     });
   };
 
@@ -205,7 +205,7 @@ function AuthProvider(props) {
     <AuthContext.Provider
       value={{
         handleRegisterSubmit,
-        signInWithFacebook,
+        signInWithDiscord,
         signInWithGoogle,
         checkThirdPartyFirstSignIn,
         handleLoginSubmit,

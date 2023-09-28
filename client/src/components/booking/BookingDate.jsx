@@ -25,18 +25,26 @@ function BookingDate() {
     setPetIds,
     setPetIdsNames,
     setTotalAmount,
+    time1,
+    setTime1,
+    time2,
+    setTime2,
+    startDay,
+    setStartDay,
+    endDay,
+    setEndDay,
   } = useBooking();
   const params = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dateFormat = "DD MMM YYYY";
-  const [startDay, setStartDay] = useState("");
-  const [endDay, setEndDay] = useState("");
+  // const [startDay, setStartDay] = useState("");
+  // const [endDay, setEndDay] = useState("");
   // const startInputTime = dayjs().startOf("hour").minute(0);
   // const endInputTime = startInputTime.add(1, "hour").startOf("hour").minute(0);
   const [disable, setDisable] = useState(true);
   const [checkStartTime, setCheckStartTime] = useState(dayjs().add(4, "hour"));
-  const [time1, setTime1] = useState(null);
-  const [time2, setTime2] = useState(null);
+  // const [time1, setTime1] = useState(null);
+  // const [time2, setTime2] = useState(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -95,15 +103,6 @@ function BookingDate() {
         setDisable(true);
         console.log(2);
       } else if (
-        currentDate == startDay &&
-        endDay == currentDate &&
-        !checkStartTime.isAfter(minimumBookingTime)
-      ) {
-        alert("Please select a booking time at least 3 hours in advance.");
-        setDisable(true);
-        console.log(minimumBookingTime);
-        console.log(3);
-      } else if (
         startDay !== currentDate &&
         endDay !== currentDate &&
         startDay !== endDay
@@ -155,6 +154,8 @@ function BookingDate() {
       }
     }
   };
+  // console.log(start, "start");
+  // console.log(end, "end");
   // console.log(startDate);
   // console.log(endDate);
 
@@ -321,7 +322,8 @@ function BookingDate() {
               setPetIdsNames({});
               setTotalAmount(0);
               navigate(`/booking/${userData.id}/${params.sitterId}`);
-            }}>
+            }}
+          >
             <ButtonPrimary
               width={"100%"}
               content={"Continue"}
@@ -335,23 +337,37 @@ function BookingDate() {
 }
 
 export const Modal = ({ isOpen, onClose, children }) => {
-  const { setStartDate, setEndDate, setStartTime, setEndTime } = useBooking();
+  const {
+    setStartDate,
+    setEndDate,
+    setStartTime,
+    setEndTime,
+    setTime1,
+    setTime2,
+    setStartDay,
+    setEndDay,
+  } = useBooking();
   if (!isOpen) return null;
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-0 "
-      style={{ background: "rgba(0, 0, 0, 0.75)" }}>
+      style={{ background: "rgba(0, 0, 0, 0.75)" }}
+    >
       <div className="relative z-10">
         <div className="w-[560px] bg-etc-white h-[440px] rounded-2xl opacity-1">
           <div className="px-10 py-6 border-b justify-between items-center gap-2.5 flex">
             <div className="text-headline3">Booking</div>
             <Close
               onClick={() => {
-                setStartDate("");
-                setEndDate("");
-                setStartTime("");
-                setEndTime("");
-                onClose();
+                setStartDate(""),
+                  setEndDate(""),
+                  setStartTime(""),
+                  setEndTime(""),
+                  setTime1(""),
+                  setTime2(""),
+                  setStartDay(""),
+                  setEndDay(""),
+                  onClose();
               }}
             />
           </div>

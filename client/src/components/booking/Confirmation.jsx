@@ -14,17 +14,19 @@ function Confirmation(props) {
 
   return (
     <>
-      <button onClick={() => window.my_modal_3.showModal()}>
+      <button onClick={() => window.my_modal_3.showModal()} type="button">
         <ButtonPrimary
           content={props.buttonName}
           width={props.buttonWidth}
           disabled={props.disabled}
+          type="button"
         />
       </button>
       <dialog id="my_modal_3" className="modal ">
         <form
           method="dialog"
-          className="modal-box max-w-[400px] p-0 bg-etc-white">
+          className="modal-box max-w-[400px] p-0 bg-etc-white"
+        >
           <div className="flex justify-between mx-6 my-4">
             <h3 className="text-headline4 ">{props.title}</h3>
             <button className="btn btn-sm btn-circle btn-ghost ">✕</button>
@@ -42,6 +44,7 @@ function Confirmation(props) {
                 width={props.primaryWidth}
                 content={props.primaryContent}
                 onClick={props.onClick}
+                type={props.type}
               />
             </div>
           </div>
@@ -57,7 +60,8 @@ export function Delete(props) {
     <>
       <button
         onClick={() => window.my_modal_3.showModal()}
-        className="flex items-center justify-start">
+        className="flex items-center justify-start"
+      >
         <ButtonGhost
           content={props.buttonName}
           disabled={props.disabled}
@@ -68,7 +72,8 @@ export function Delete(props) {
       <dialog id="my_modal_3" className="modal ">
         <form
           method="dialog"
-          className="modal-box max-w-[400px] p-0 bg-etc-white">
+          className="modal-box max-w-[400px] p-0 bg-etc-white"
+        >
           <div className="flex justify-between mx-6 my-4">
             <h3 className="text-headline4 text-etc-black">{props.title}</h3>
             <button className="btn btn-sm btn-circle btn-ghost ">✕</button>

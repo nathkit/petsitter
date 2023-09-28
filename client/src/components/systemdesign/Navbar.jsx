@@ -144,8 +144,10 @@ function Navbar() {
         }
       >
         <ButtonSitter
-          content={isPetSitter ? "For Pet Sitter" : "Become A Pet Sitter"}
-          width={isPetSitter ? "200px" : "240px"}
+          content={
+            isPetSitter ? "Pet Sitter Management" : "Become A Pet Sitter"
+          }
+          width={isPetSitter ? "250px" : "240px"}
           onClick={
             isPetSitter
               ? () => navigate(`/sitterManagement/${petSitterId}`)

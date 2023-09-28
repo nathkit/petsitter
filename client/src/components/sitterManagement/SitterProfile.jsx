@@ -8,6 +8,7 @@ import { CreateIcon, CloseIcon } from "../systemdesign/Icons";
 import { useSitter } from "../../contexts/sitterContext";
 import useSitterProfile from "../../hooks/useSitterProfile";
 import { ButtonPrimary } from "../systemdesign/Button";
+import Confirmation from "../booking/Confirmation";
 
 function SitterProfile(props) {
   const { alertMessage, setAlertMessage, userData, setUserData } = useAuth();
@@ -36,7 +37,7 @@ function SitterProfile(props) {
     getSitterData,
     createFormData,
   } = useSitterProfile();
-
+  const [submitConfirm, setSubmitConfirm] = useState(false);
   useEffect(() => {
     setAvatarUrl("");
     setAvatarFile(null);
@@ -142,28 +143,64 @@ function SitterProfile(props) {
           postCode: yup.string().required("Please enter your post code"),
         })}
         onSubmit={(values, formikHelpers) => {
-          let newValues = {
-            ...values,
-            userId: userData.id,
-            avatarName: sitterData.image_name,
-            avatarFile: avatarFile,
-          };
-          const form = createFormData(newValues);
-          console.log(newValues);
-          props.update ? updateSitterProfile(form) : createSitterProfile(form);
+          if (submitConfirm) {
+            let newValues = {
+              ...values,
+              userId: userData.id,
+              avatarName: sitterData.image_name,
+              avatarFile: avatarFile,
+            };
+            const form = createFormData(newValues);
+            // console.log(newValues);
+            props.update
+              ? updateSitterProfile(form)
+              : createSitterProfile(form);
+            setSubmitConfirm(false);
+          }
         }}
       >
-        {({ errors, isValid, touched, dirty, setFieldValue, values }) => {
+        {({
+          errors,
+          isValid,
+          touched,
+          dirty,
+          setFieldValue,
+          values,
+          handleSubmit,
+        }) => {
           return (
             <Form className="flex flex-col gap-10 ">
               <div className="flex justify-between items-center">
                 <h1 className="text-headline3 text-etc-black ">
                   Pet Sitter Profile
                 </h1>
-                <ButtonPrimary
-                  width="15rem"
-                  content={props.update ? "Update" : "Create Sitter Account"}
+
+                <Confirmation
+                  buttonWidth="15rem"
+                  buttonName={
+                    props.update
+                      ? "Update Sitter Profile"
+                      : "Create Sitter Account"
+                  }
+                  title={
+                    props.update
+                      ? "pet sitter profile"
+                      : "create sitter account"
+                  }
+                  description={
+                    props.update
+                      ? "Are you sure to confirm update your pet sitter profile."
+                      : "Are you sure to confirm create your pet sitter account."
+                  }
+                  secondaryContent="Cancel"
+                  secondaryWidth="10rem"
+                  primaryContent="Confirm"
+                  primaryWidth="10rem"
                   type="submit"
+                  onClick={() => {
+                    setSubmitConfirm(true);
+                    handleSubmit();
+                  }}
                   disabled={!props.update ? !dirty || !isValid : false}
                 />
               </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   UserIcon,
   SitterIconBlack,
@@ -19,7 +19,7 @@ import { Vector } from "../systemdesign/image";
 const SitterBar = (props) => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
-  const { signOut, petSitterId } = useAuth();
+  const { signOut, petSitterId, userData, setUserData } = useAuth();
 
   const [userIconColor, setUserIconColor] = useState(null);
   const [paymentIconColor, setPaymentIconColor] = useState(null);
@@ -31,6 +31,11 @@ const SitterBar = (props) => {
   const isSitterBookingListPage = props.children.type === SitterBookingList;
   const isSitterProfilePage = props.children.type === SitterProfile;
   const { sitterDetail } = useBooking();
+
+  useEffect(() => {
+    const newUser = JSON.parse(localStorage.getItem("user"));
+    setUserData(newUser);
+  }, []);
 
   return (
     <div className="flex">
@@ -172,21 +177,17 @@ const SitterBar = (props) => {
             </button>
           </div>
           <div className="flex items-center">
-            <img
-              src={
-                sitterDetail?.sitter_profile
-                  ? sitterDetail.sitter_profile
-                  : frame2
-              }
-              className="object-cover w-10 h-10 relative rounded-[999px]"
-            />
-            <p className="ml-4 text-body2">
-              {sitterDetail?.full_name ? (
-                sitterDetail?.full_name
-              ) : (
-                <p className="text-headline4">Welcome to Sitter Profile</p>
-              )}
-            </p>
+            {petSitterId ? (
+              <div className="flex items-center">
+                <img
+                  src={userData.sitter_image_path}
+                  className="object-cover w-10 h-10 relative rounded-[999px]"
+                />
+                <p className="ml-4 text-headline4">{userData.fullName}</p>
+              </div>
+            ) : (
+              <p className=" text-headline4">Wellcome to Stitter Profile</p>
+            )}
           </div>
         </nav>
         <div className="bg-gray-100 pt-10 pb-20 px-10">{props.children}</div>

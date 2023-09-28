@@ -54,7 +54,7 @@ function SitterProfile(props) {
       getSitterData();
     }
   }, []);
-
+  console.log(props.update);
   const initialValues = props.update
     ? {
         fullName: userData.fullName,
@@ -164,7 +164,7 @@ function SitterProfile(props) {
                   width="15rem"
                   content={props.update ? "Update" : "Create Sitter Account"}
                   type="submit"
-                  // disabled={!dirty || !isValid}
+                  disabled={!props.update ? !dirty || !isValid : false}
                 />
               </div>
 

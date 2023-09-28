@@ -47,7 +47,7 @@ function AuthProvider(props) {
           localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
           formikHelpers.resetForm();
           nav("/");
-        }, 1500);
+        }, 2000);
       } else {
         // console.log(serverRespond.data.message);
         setAlertMessage({
@@ -195,14 +195,12 @@ function AuthProvider(props) {
     nav("login");
   };
 
-  const isAuthenticated = Boolean(
+  const isAuthenticated = JSON.parse(
     localStorage.getItem("sb-wjxguyrdfqbtwsetylfq-auth-token")
   );
 
   const isPetSitter = JSON.parse(localStorage.getItem("user"))?.sitter_authen;
-  const petSitterId = JSON.parse(
-    window.localStorage.getItem("user")
-  )?.sitter_id;
+  const petSitterId = JSON.parse(localStorage.getItem("user"))?.sitter_id;
 
   return (
     <AuthContext.Provider

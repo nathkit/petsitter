@@ -24,13 +24,21 @@ function LoginPage() {
     showPassword,
     alertMessage,
     setAlertMessage,
+    isAuthenticated,
   } = useAuth();
 
   useEffect(() => {
-    setAlertMessage({
-      message: "",
-      severity: "",
-    });
+    if (isAuthenticated) {
+      setAlertMessage({
+        message: "User has been verified successfully",
+        severity: "success",
+      });
+    } else {
+      setAlertMessage({
+        message: "",
+        severity: "",
+      });
+    }
   }, []);
 
   return (

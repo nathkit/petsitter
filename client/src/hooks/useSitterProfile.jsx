@@ -115,7 +115,7 @@ function useSitterProfile() {
             message: "",
             severity: "",
           });
-          nav(`/sitterManagement/${serverRespondes.data.data.sitterId}`);
+          nav(`/sitterManagement/${serverRespondes.data.data.sitter_id}`);
         }, 4000);
       } else {
         setAlertMessage({
@@ -160,6 +160,7 @@ function useSitterProfile() {
             message: "",
             severity: "",
           });
+          nav(`/sitterManagement/${serverRespondes.data.userData.sitter_id}`);
         }, 4000);
       } else {
         setAlertMessage({

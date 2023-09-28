@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getPagingData } from "../utils/pagination.js";
 import pool from "../utils/db.js";
 import { fileUpload } from "../utils/multerUpload.js";
+import { supabaseUpload, supabaseMultiUpload } from "../utils/supabase.js";
 
 const sitterManagementRouter = Router();
 
@@ -189,7 +190,7 @@ sitterManagementRouter.post("/", fileUpload, async (req, res) => {
     //-----------------------------------------------------------------------------------
     const serverRespondes = await pool.query(
       `select users.phone,users.full_name,users.email,users.id_number,users.date_of_birth,users.image_name,users.profile_image_path,users.sitter_authen,pet_sitter.user_id,pet_sitter.id
-     from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
+     ,pet_sitter.profile_image_path as sitter_image_path,pet_sitter.image_name as sitter_image_name from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
       [petSitterId]
     );
     result = serverRespondes.rows[0];
@@ -204,8 +205,10 @@ sitterManagementRouter.post("/", fileUpload, async (req, res) => {
         dateOfbirth: result.date_of_birth,
         image_name: result.image_name,
         image_path: result.profile_image_path,
-        sitterAuthen: result.sitter_authen,
-        sitterId: result.id,
+        sitter_authen: result.sitter_authen,
+        sitter_id: result.id,
+        sitter_image_path: result.sitter_image_path,
+        sitter_image_name: result.sitter_image_name,
       },
     });
   } catch (err) {
@@ -250,8 +253,8 @@ sitterManagementRouter.get("/:sitterId", async (req, res) => {
 sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
   try {
     let result;
-    console.log(req.body);
-    console.log(req.files);
+    // console.log(req.body);
+    // console.log(req.files);
     // update user first *************************************************************
     const user = {
       fullName: req.body.fullName,
@@ -282,33 +285,35 @@ sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
 
     // // // upload avatar ************************************************************
     if (req.files?.avatarFile) {
-      console.log("knkn");
+      // console.log("knkn");
       const { avatarName, url } = await supabaseUpload(
         req.files.avatarFile[0],
         req.body.avatarName
       );
       sitterValues.push(avatarName, url);
     }
-    console.log(sitterQuery);
-    console.log(sitterValues);
+    // console.log(sitterQuery);
+    // console.log(sitterValues);
     const createSitterResult = await pool.query(sitterQuery, sitterValues);
-
+    // console.log("nnnnn");
     // //--------------------------------------------------------------------------------
     // // insert to pet_sitter_trade_images *******************************************
     const imageGalleryName = req.body.imageGalleryName.split(",");
+    // console.log("n1");
     const tradeImageRemove = await pool.query(
       `DELETE FROM pet_sitter_trade_images WHERE pet_sitter_id = $1 AND trade_image_name NOT IN (SELECT unnest($2::text[]))`,
       [req.params.sitterId, imageGalleryName]
     );
+    // console.log("n2");
     if (req.files?.imageGalleryFile) {
-      console.log("in1");
+      // console.log("in1");
       const imageGallery = await supabaseMultiUpload(
         req.files.imageGalleryFile,
         req.params.sitterId,
         imageGalleryName
       );
-      console.log("in2");
-      console.log(imageGallery);
+      // console.log("in2");
+      // console.log(imageGallery);
       for (let item of imageGallery) {
         const tradeImageRespondes = await pool.query(
           `insert into pet_sitter_trade_images(pet_sitter_id,trade_image_name,trade_image_path)
@@ -316,20 +321,20 @@ sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
           [req.params.sitterId, item.fileName, item.url]
         );
       }
-      console.log("in3");
+      // console.log("in3");
     } else {
       const imageGallery = await supabaseMultiUpload(
         null,
         req.params.sitterId,
         imageGalleryName
       );
-      console.log("in4");
+      // console.log("in4");
     }
     // // // //----------------------------------------------------------------------------
     // // // // create pet type ************************************************************
-
+    // console.log("n3");
     const petType = req.body.petType.split(",");
-    console.log(petType);
+    // console.log(petType);
     // delete pet type condition ******************************************
     const deleteResult = await pool.query(
       `DELETE FROM pet_sitter_pet_type WHERE pet_sitter_id = $1`,
@@ -357,7 +362,7 @@ sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
     // //-----------------------------------------------------------------------------------
     const serverRespondes = await pool.query(
       `select users.phone,users.full_name,users.email,users.id_number,users.date_of_birth,users.image_name,users.profile_image_path,users.sitter_authen,pet_sitter.user_id,pet_sitter.id
-     from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
+     ,pet_sitter.profile_image_path as sitter_image_path,pet_sitter.image_name as sitter_image_name from users inner join pet_sitter on users.id = pet_sitter.user_id where pet_sitter.id = $1`,
       [req.params.sitterId]
     );
     const sitterResPondes = await pool.query(
@@ -377,8 +382,10 @@ sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
         dateOfbirth: result.date_of_birth,
         image_name: result.image_name,
         image_path: result.profile_image_path,
-        sitterAuthen: result.sitter_authen,
-        sitterId: result.id,
+        sitter_authen: result.sitter_authen,
+        sitter_id: result.id,
+        sitter_image_path: result.sitter_image_path,
+        sitter_image_name: result.sitter_image_name,
       },
       sitterData: sitterResPondes.rows[0],
     });

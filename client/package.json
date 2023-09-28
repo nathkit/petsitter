@@ -34,6 +34,7 @@
     "react-datepicker": "^4.17.0",
     "react-daterangepicker": "^0.1.2",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
     "react-load-script": "^0.0.6",
     "react-router-dom": "^6.15.0",
     "react-script-loader-hoc": "^1.2.2",

@@ -24,6 +24,7 @@
   box-sizing: border-box;
   font-family: "Satoshi", sans-serif;
   min-height: 100vh;
+  color: black;
 }
 
 body {
@@ -49,4 +50,15 @@ select:-webkit-autofill:focus {
 
 .swiper {
   z-index: 0 !important;
+}
+
+span.label-text {
+  color: black;
+}
+
+pre.text-clip{
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }

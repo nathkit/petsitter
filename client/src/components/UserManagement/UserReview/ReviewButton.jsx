@@ -77,7 +77,7 @@ function ReviewButton(props) {
             <h3>Rating & Review</h3>
           </div>
           <hr />
-          <div className="flex flex-col gap-20 p-20">
+          <div className="flex flex-col gap-20 p-10">
             <div className="flex flex-col gap-6 items-center">
               <h3>What is your rate?</h3>
               <div className="flex gap-4">
@@ -102,7 +102,7 @@ function ReviewButton(props) {
               <textarea
                 id="search"
                 className="outline-none bg-etc-white w-full h-[243px] p-3 border-solid rounded-[8px] text-[16px]
- border-[1px] focus:border-orange-300 resize-none"
+                     borde border-[1px] focus:border-orange-300 resize-none"
                 placeholder="Your Review..."
                 onChange={(e) => handleReviewText(e)}
                 value={review.text}
@@ -116,7 +116,7 @@ function ReviewButton(props) {
               <div className="flex justify-between">
                 <ButtonSecondary className="btn" content="Cancel" />
                 <ButtonPrimary
-                  content="Send Review&Rating"
+                  content="Send Review & Rating"
                   width="202px"
                   className="btn"
                   onClick={() => addNewReview()}

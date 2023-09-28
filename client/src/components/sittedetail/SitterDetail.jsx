@@ -1,9 +1,8 @@
 import SitterPictureSlide from "./SitterPictureSlide";
 import SitterReview from "./SitterReview";
 import BookingDate from "../booking/BookingDate";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import {
   DogType,
   CatType,
@@ -15,10 +14,7 @@ import { useBooking } from "../../contexts/BookingContext";
 function SitterDetail() {
   const { getSitterDetail, sitterDetail } = useBooking();
   const params = useParams();
-  // const [sitterDetail, setSitterDetail] = useState([]);
-  // // const uniquePetTypeIds = [
-  // //   ...new Set(sitterDetail.map((petType) => petType.pet_type)),
-  // // ];
+
   useEffect(() => {
     getSitterDetail(params.sitterId);
   }, []);
@@ -43,10 +39,8 @@ function SitterDetail() {
   const ratingDisplay = !isNaN(avgRating) ? (
     <div className="flex justify-center mt-1">{starIcons}</div>
   ) : (
-    <div className="flex justify-center mt-1">No rating</div>
+    <div className="flex justify-center mt-1 text-gray-400">No rating</div>
   );
-
-  console.log("start", ratingDisplay);
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-etc-bg_gray">
@@ -63,30 +57,47 @@ function SitterDetail() {
               {sitterDetail[0]?.trade_name}
             </h1>
 
-            <div>
+            <div className=" w-[688px]">
               <h3 className="text-headline3 mb-[12px] text-etc-black">
                 Introduction
               </h3>
-              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+              <pre
+                className="text-clip font-[500px] text-[16px] text-gray-500 break-all"
+                style={{
+                  whiteSpace: "pre-line",
+                }}
+              >
                 {sitterDetail[0]?.introduction}
-              </p>
+              </pre>
             </div>
 
-            <div>
+            <div className=" w-[688px] text-justify">
               <h3 className="text-headline3 mb-[12px] text-etc-black">
                 Services
               </h3>
-              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+              <pre
+                className="text-clip font-[500px] text-[16px] text-gray-500 break-all"
+                style={{
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {" "}
                 {sitterDetail[0]?.service_description}
-              </p>
+              </pre>
             </div>
-            <div>
+            <div className=" w-[688px]">
               <h3 className="text-headline3 mb-[12px] text-etc-black">
                 My Place
               </h3>
-              <p className="font-[500px] text-[16px] text-gray-500 break-all">
+              <pre
+                className="text-clip font-[500px] text-[16px] text-gray-500 break-all"
+                style={{
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {" "}
                 {sitterDetail[0]?.place_description}
-              </p>
+              </pre>
             </div>
           </div>
           <div className="">
@@ -115,9 +126,9 @@ function SitterDetail() {
                   {(() => {
                     const experience = sitterDetail[0]?.experience;
 
-                    if (experience === 0) {
+                    if (experience <= 2) {
                       return "0-2";
-                    } else if (experience === 1) {
+                    } else if (experience >= 3 && experience <= 5) {
                       return "3-5";
                     } else {
                       return "5+";
@@ -147,7 +158,6 @@ function SitterDetail() {
                   {sitterDetail[0]?.sub_district} , {sitterDetail[0]?.province}
                 </div>
               </div>
-              {/* pets ทำ equality แสดง */}
               <div className="w-full h-auto mt-4 flex flex-row justify-center gap-[6px]">
                 <div className="flex gap-2">
                   {sitterDetail.length > 0 && sitterDetail[0] && (

@@ -14,6 +14,9 @@ import SitterBookingList from "./SitterBookingList";
 import SitterProfile from "./SitterProfile";
 import { Ellipse21 } from "../systemdesign/image";
 import useUserProfile from "../../hooks/useUserProfile";
+import { useBooking } from "../../contexts/BookingContext";
+import frame2 from "../../assets/SitterReview/frame427320942.png";
+
 function SitterBar(props) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
@@ -28,7 +31,8 @@ function SitterBar(props) {
   const isSitterBookingDetailPage = props.children.type === SitterBookingDetail;
   const isSitterBookingListPage = props.children.type === SitterBookingList;
   const isSitterProfilePage = props.children.type === SitterProfile;
-  const { userData } = useUserProfile();
+  const { sitterDetail } = useBooking();
+  console.log(sitterDetail);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -147,17 +151,23 @@ function SitterBar(props) {
                 ☰
               </button>
             </div>
-            {userData.sitterAuthen ? (
-              <div className="flex items-center">
-                <img
-                  src={userData.image_path}
-                  className="object-cover w-10 h-10 relative rounded-[999px]"
-                />
-                <p className="ml-4 text-body2">{userData.fullName}</p>
-              </div>
-            ) : (
-              <p className=" text-headline4">Wellcome to Stitter Profile</p>
-            )}
+            <div className="flex items-center">
+              <img
+                src={
+                  sitterDetail?.sitter_profile
+                    ? sitterDetail.sitter_profile
+                    : frame2
+                }
+                className="object-cover w-10 h-10 relative rounded-[999px]"
+              />
+              <p className="ml-4 text-body2">
+                {sitterDetail?.full_name ? (
+                  sitterDetail?.full_name
+                ) : (
+                  <p className="text-headline4">Welcome to Sitter Profile</p>
+                )}
+              </p>
+            </div>
           </nav>
           <div className="bg-gray-100 pt-10 pb-20 px-10">{props.children}</div>
         </div>

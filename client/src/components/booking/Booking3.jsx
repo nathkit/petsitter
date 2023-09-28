@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useUserProfile from "../../hooks/useUserProfile";
 import axios from "axios";
 import Script from "react-load-script";
+import usePosts from "../../hooks/usePost";
 let OmiseCard;
 
 function Booking3() {
@@ -15,6 +16,7 @@ function Booking3() {
   const [credit, setCredit] = useState(null);
   const [wallet, setWallet] = useState("#ff7037");
   const { userData } = useUserProfile();
+  const { bookingId } = usePosts();
   const handleCreditClick = () => {
     setPaymentMethod("Credit");
     setWallet(null);
@@ -69,7 +71,7 @@ function Booking3() {
           try {
             if (result.data.message == "successful") {
               alert("Payment Successful");
-              navigate(`/userManagement/${userData.id}/booking/:bookingId`);
+              navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
             } else {
               alert("Payment Failed");
               navigate(`/search`);

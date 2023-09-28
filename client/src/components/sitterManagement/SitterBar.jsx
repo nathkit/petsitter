@@ -33,7 +33,7 @@ function SitterBar(props) {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
+  // userData.sitterAuthen = true;
   return (
     <>
       <div className=" flex ">
@@ -150,10 +150,10 @@ function SitterBar(props) {
             {userData.sitterAuthen ? (
               <div className="flex items-center">
                 <img
-                  src="https://i0.wp.com/www.korseries.com/wp-content/uploads/2021/05/rose-blackpink-photo.jpeg?resize=700%2C874&ssl=1"
+                  src={userData.image_path}
                   className="object-cover w-10 h-10 relative rounded-[999px]"
                 />
-                <p className="ml-4">Park Chaeyoung</p>
+                <p className="ml-4 text-body2">{userData.fullName}</p>
               </div>
             ) : (
               <p className=" text-headline4">Wellcome to Stitter Profile</p>

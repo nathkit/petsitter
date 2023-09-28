@@ -195,7 +195,7 @@ function LoginPage() {
 
           <ButtonSocial
             onClick={(e) => {
-              signInWithGoogle();
+              signInWithGoogle(e);
             }}
             icon={GoogleIcon}
             content="Google"

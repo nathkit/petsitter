@@ -47,7 +47,7 @@ function AuthProvider(props) {
           localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
           formikHelpers.resetForm();
           nav("/");
-        }, 2000);
+        }, 1000);
       } else {
         // console.log(serverRespond.data.message);
         setAlertMessage({
@@ -60,8 +60,7 @@ function AuthProvider(props) {
     }
   };
 
-  const checkGooggleFirstSignIn = async (data) => {
-    console.log("loop1");
+  const checkThirdPartyFirstSignIn = async (data) => {
     try {
       let serverRespond = await axios.post("/auth/login", data);
       if (
@@ -80,7 +79,7 @@ function AuthProvider(props) {
   };
 
   const signInWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const data = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
   };
@@ -208,7 +207,7 @@ function AuthProvider(props) {
         handleRegisterSubmit,
         signInWithFacebook,
         signInWithGoogle,
-        checkGooggleFirstSignIn,
+        checkThirdPartyFirstSignIn,
         handleLoginSubmit,
         sendRequestResetPassword,
         handleResetPasswordSubmit,

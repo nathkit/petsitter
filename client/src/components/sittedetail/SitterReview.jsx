@@ -27,14 +27,11 @@ function SitterReview() {
 
   const handleRating = (event, rate) => {
     event.preventDefault();
-    setSearchData({ ...searchData, rate });
-
-    if (rate === searchData.rate) {
-      setSearchData({ rate: "All Reviews" });
-    } else {
-      setSearchData({ rate });
-      setPaging({ ...paging, currentPage: 1 });
-    }
+    setSearchData((prevSearchData) => ({
+      ...prevSearchData,
+      rate: rate === prevSearchData.rate ? "All Reviews" : rate,
+    }));
+    setPaging({ ...paging, currentPage: 1 });
   };
 
   const handlePaging = (event, page) => {
@@ -60,22 +57,15 @@ function SitterReview() {
 
       const { reviews: newReviews, totalData } = response.data;
       setReviews(newReviews);
-      if (response.data.reviews.length > 0) {
-        setAverageRating(response.data.reviews[0].avg_rating);
-      } else {
-        setAverageRating(0);
-      }
+      setAverageRating(newReviews.length > 0 ? newReviews[0].avg_rating : 0);
       setTotalReviews(totalData || 0);
       setTotalData(totalData || 0);
       setCurrentPage(response.data.paging.currentPage);
       setTotalPages(response.data.paging.totalPages);
-      console.log("response", response);
-      console.log("total", totalData);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
-      console.error("Request error occurred", error);
     }
   };
 
@@ -101,11 +91,9 @@ function SitterReview() {
               {averageRating || "N/A"}
             </h1>
             <h3 className="total-reviews text-body3 text-etc-white absolute top-[59%] left-[24%]">
-              {totalReviews != null
-                ? totalReviews <= 1
-                  ? totalReviews + " Review"
-                  : totalReviews + " Reviews"
-                : "0"}
+              {totalReviews <= 1
+                ? `${totalReviews} Review`
+                : `${totalReviews} Reviews`}
             </h3>
           </div>
 
@@ -138,7 +126,7 @@ function SitterReview() {
         </div>
 
         <div className="sitter-review-list w-[100%] flex flex-col gap-4 p-6 pt-12 ">
-          {filteredReviews && filteredReviews.length > 0 ? (
+          {filteredReviews.length > 0 ? (
             filteredReviews.map(
               (
                 { user_profile_image_path, full_name, date, rating, comment },

@@ -82,7 +82,7 @@ function Booking3() {
           console.log(error, "Can't Payment");
         }
       },
-      onFormClosed: () => {},
+      // onFormClosed: () => {},
     });
   };
 

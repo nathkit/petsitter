@@ -5,7 +5,7 @@ import {
   ButtonGhost,
 } from "../systemdesign/Button";
 import usePosts from "../../hooks/usePost";
-
+import { useBooking } from "../../contexts/BookingContext";
 import { TrashIcon } from "../systemdesign/Icons";
 
 function Confirmation(props) {
@@ -24,10 +24,11 @@ function Confirmation(props) {
       <dialog id="my_modal_3" className="modal ">
         <form
           method="dialog"
-          className="modal-box max-w-[400px] p-0 bg-etc-white">
+          className="modal-box max-w-[400px] p-0 bg-etc-white"
+        >
           <div className="flex justify-between mx-6 my-4">
             <h3 className="text-headline4 ">{props.title}</h3>
-            <button className="btn btn-sm btn-circle btn-ghost ">✕</button>
+            <button className="btn btn-sm btn-circle btn-ghost">✕</button>
           </div>
           <hr />
           <div className="m-6 ">
@@ -57,7 +58,8 @@ export function Delete(props) {
     <>
       <button
         onClick={() => window.my_modal_3.showModal()}
-        className="flex items-center justify-start">
+        className="flex items-center justify-start"
+      >
         <ButtonGhost
           content={props.buttonName}
           disabled={props.disabled}
@@ -68,7 +70,8 @@ export function Delete(props) {
       <dialog id="my_modal_3" className="modal ">
         <form
           method="dialog"
-          className="modal-box max-w-[400px] p-0 bg-etc-white">
+          className="modal-box max-w-[400px] p-0 bg-etc-white"
+        >
           <div className="flex justify-between mx-6 my-4">
             <h3 className="text-headline4 text-etc-black">{props.title}</h3>
             <button className="btn btn-sm btn-circle btn-ghost ">✕</button>

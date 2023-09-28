@@ -121,14 +121,6 @@ function BookingDate() {
         setEndDate(`${endYear}-${endMonth}-${endDay}`);
         console.log(5);
       } else if (
-        startDay == currentDate &&
-        endDay !== currentDate &&
-        !checkStartTime.isAfter(minimumBookingTime)
-      ) {
-        alert("Please select a booking time at least 3 hours in advance.");
-        setDisable(true);
-        console.log(6);
-      } else if (
         startDay !== currentDate &&
         endDay !== currentDate &&
         startDay == endDay &&

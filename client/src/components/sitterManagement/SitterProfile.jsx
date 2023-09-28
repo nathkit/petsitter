@@ -316,6 +316,7 @@ function SitterProfile(props) {
                       Email*
                     </label>
                     <Field
+                      disabled
                       className="TextField"
                       id="email"
                       name="email"
@@ -333,7 +334,7 @@ function SitterProfile(props) {
                       className="text-lg text-etc-black font-medium "
                       htmlFor="intro"
                     >
-                      Introduction (Describe about yourself as pet sitter)
+                      Introduction ( Describe about yourself as pet sitter )
                     </label>
                     <TextField
                       value={values.intro}
@@ -363,7 +364,7 @@ function SitterProfile(props) {
                     className="text-lg text-etc-black font-medium"
                     htmlFor="tradeName"
                   >
-                    Pet sitter name (Trade Name)*
+                    Pet sitter name ( Trade Name )*
                   </label>
                   <Field
                     className="TextField"
@@ -412,7 +413,7 @@ function SitterProfile(props) {
                     className="text-lg text-etc-black font-medium mt-5"
                     htmlFor="services"
                   >
-                    Services (Describe all of your service for pet sitting)
+                    Services ( Describe all of your service for pet sitting )
                   </label>
                   <TextField
                     value={values.services}
@@ -433,7 +434,7 @@ function SitterProfile(props) {
                     className="text-lg text-etc-black font-medium mt-5"
                     htmlFor="myPlace"
                   >
-                    My Place (Describe your Place)
+                    My Place ( Describe your Place )
                   </label>
                   <TextField
                     value={values.myPlace}
@@ -457,7 +458,8 @@ function SitterProfile(props) {
 
                 <Box>
                   <h1 className="text-lg text-etc-black font-medium ">
-                    Image Gallery (Maximum 10 images)
+                    Image Gallery ( Maximum 10 images and your first image will
+                    be showed on search page )
                   </h1>
                   <div className="flex gap-5 flex-wrap">
                     {/* imageGalleryUrls condition ********************************************* */}

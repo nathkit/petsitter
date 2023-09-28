@@ -156,6 +156,7 @@ const profile = () => {
             <label htmlFor="email" className="text-body1 text-etc-black">
               <p className="mb-4">Email*</p>
               <TextField
+                disabled={userData ? true : false}
                 className="TextField"
                 fullWidth
                 id="email"

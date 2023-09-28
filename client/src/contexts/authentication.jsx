@@ -62,6 +62,7 @@ function AuthProvider(props) {
 
   const checkThirdPartyFirstSignIn = async (data) => {
     try {
+      // console.log("1");
       let serverRespond = await axios.post("/auth/login", data);
       if (
         serverRespond.data.message === "User has been verified successfully"
@@ -69,6 +70,7 @@ function AuthProvider(props) {
         setUserData(serverRespond.data.data);
         localStorage.setItem("user", JSON.stringify(serverRespond.data.data));
       } else {
+        // console.log("2");
         serverRespond = await axios.post("/auth/googleRegister", data);
         setUserData(serverRespond.data.data);
         localStorage.setItem("user", JSON.stringify(serverRespond.data.data));

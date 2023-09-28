@@ -179,41 +179,41 @@ function SitterReview() {
             <div>No reviews available</div>
           )}
         </div>
-      </div>
-      <div className="flex justify-center items-center gap-3 font-bold text-gray-300 py-8">
-        <button
-          className="p-[10px]"
-          onClick={(e) => {
-            if (paging.currentPage > 1) {
-              handlePaging(e, paging.currentPage - 1);
-            }
-          }}
-        >
-          <ArrowLeftIcon color="#AEB1C3" />
-        </button>
-        {Array.from({ length: totalPages }, (_, index) => (
+        <div className="flex justify-center items-center gap-3 font-bold text-gray-300 py-8">
           <button
-            key={index}
-            className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
-              index + 1 === currentPage ? "bg-orange-100 text-orange-500" : ""
-            }`}
+            className="p-[10px]"
             onClick={(e) => {
-              handlePaging(e, index + 1);
+              if (paging.currentPage > 1) {
+                handlePaging(e, paging.currentPage - 1);
+              }
             }}
           >
-            {index + 1}
+            <ArrowLeftIcon color="#AEB1C3" />
           </button>
-        ))}
-        <button
-          className="p-[10px]"
-          onClick={(e) => {
-            if (currentPage < totalPages) {
-              handlePaging(e, currentPage + 1);
-            }
-          }}
-        >
-          <ArrowRightIcon color="#AEB1C3" />
-        </button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
+                index + 1 === currentPage ? "bg-orange-100 text-orange-500" : ""
+              }`}
+              onClick={(e) => {
+                handlePaging(e, index + 1);
+              }}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            className="p-[10px]"
+            onClick={(e) => {
+              if (currentPage < totalPages) {
+                handlePaging(e, currentPage + 1);
+              }
+            }}
+          >
+            <ArrowRightIcon color="#AEB1C3" />
+          </button>
+        </div>
       </div>
     </div>
   );

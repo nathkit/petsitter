@@ -119,6 +119,8 @@ userManagementRouter.get("/:userId/pets/:petId", async (req, res) => {
   } catch (err) {
     return res.json({ message: "Server is error!" });
   }
+  // console.log(result);
+  // console.log("first");
   return res.json({
     message: "Fetch data successfully",
     data: result,
@@ -176,6 +178,8 @@ userManagementRouter.put(
         }`;
       const values = Object.values(pet);
       // use supabase function for uploading **************************************
+      // console.log(pet);
+      // console.log(values);
       if (req.files) {
         const { avatarName, url } = await supabaseUpload(
           req.files.avatarFile[0],
@@ -185,8 +189,9 @@ userManagementRouter.put(
         // splice avatarName out and reassign ************************************
         values.splice(8, 1, avatarName, url);
       } else {
-        values.splice(9, 1);
+        values.splice(8, 2);
       }
+
       // update query ****************************************************************
       await pool.query(query, values);
       // user query after update *****************************************************

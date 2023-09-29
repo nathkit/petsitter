@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ButtonPrimary } from "./Button";
 import { useEffect } from "react";
 import { useAuth } from "../../contexts/authentication";
-
+import { UploadPetImage } from "./uploadImage";
 export function CardPet1() {
   const { getTypeStyle, petData, getAllPetList } = usePosts();
   const { userData } = useAuth();
@@ -48,13 +48,18 @@ export function CardPet1() {
               >
                 <div
                   id="card"
-                  className={`hover:border-orange-400 hover:shadow-lg  border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
+                  className={`hover:border-orange-400 hover:shadow-lg border-gray-200 w-[207px] h-60 p-6 bg-white rounded-2xl border focus:border-orange-500 flex-col justify-between items-center gap-4 inline-flex relative mb-4 
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
-                  <img
-                    className="w-[104px] h-[104px] relative rounded-[99px] object-cover"
-                    src={item.image_path}
-                  />
+                  {item.image_path !== "none" ? (
+                    <img
+                      className="w-[104px] h-[104px] relative rounded-[99px] object-cover"
+                      src={item.image_path}
+                    />
+                  ) : (
+                    <UploadPetImage cardWidth="104px" hidden="hidden" />
+                  )}
+
                   <div className="self-stretch h-[68px] flex-col  items-center gap-2 flex">
                     <div className="self-stretch text-center text-headline4">
                       {item.name}
@@ -105,10 +110,14 @@ export function CardPet2(props) {
                   }
                   ${isInvalidType ? "opacity-40" : ""} }`}
                 >
-                  <img
-                    className="w-[104px] h-[104px] relative rounded-[99px] object-cover"
-                    src={item.image_path}
-                  />
+                  {item.image_path !== "none" ? (
+                    <img
+                      className="w-[104px] h-[104px] relative rounded-[99px] object-cover"
+                      src={item.image_path}
+                    />
+                  ) : (
+                    <UploadPetImage cardWidth="104px" hidden="hidden" />
+                  )}
                   <div className="self-stretch h-[68px] flex-col  items-center gap-2 flex">
                     <div className="self-stretch text-center text-headline4">
                       {item.name}

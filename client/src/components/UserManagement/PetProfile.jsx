@@ -43,14 +43,12 @@ function PetInputForm(props) {
   props.editPet
     ? useEffect(() => {
         getPetProfile();
-      }, [props.editPet])
+      }, [])
     : null;
   // console.log(petAvatarFile);
-  // console.log(petDataById);
+  // console.log("in");
+  // console.log(petDataById.image_name);
   // console.log(props.editPet);
-  // useEffect(() => {
-  //   getPetProfile();
-  // }, []);
 
   const formik = useFormik({
     initialValues: props.editPet
@@ -108,7 +106,8 @@ function PetInputForm(props) {
       onSubmit={(values, formikHelpers) => {
         formik.handleSubmit(values, formikHelpers);
       }}
-      className="outline-none flex flex-col">
+      className="outline-none flex flex-col"
+    >
       <div className="outline-none flex flex-col item-start gap-1 w-full mb-10">
         <label className="text-etc-black text-body2" htmlFor="petName">
           Pet Name*
@@ -142,7 +141,8 @@ function PetInputForm(props) {
             onChange={formik.handleChange}
             value={formik.values.petType}
             onBlur={formik.handleBlur}
-            placeholder="Select your pet type">
+            placeholder="Select your pet type"
+          >
             <option value="" disabled>
               Select your pet type
             </option>
@@ -188,7 +188,8 @@ function PetInputForm(props) {
             type="text"
             onChange={formik.handleChange}
             value={formik.values.sex}
-            onBlur={formik.handleBlur}>
+            onBlur={formik.handleBlur}
+          >
             <option value="" disabled>
               Select sex of your pet
             </option>
@@ -318,7 +319,8 @@ export function TurnBack() {
       className=" bg-etc-white h-[3rem] flex justify-between items-center mb-[60px] cursor-pointer"
       onClick={() => {
         navigate(`/userManagement/${userData.id}/pets`);
-      }}>
+      }}
+    >
       <p className=" text-headline3 flex items-center gap-[10px]">
         <ArrowLeftIcon color="#7B7E8F" />
         Your Pet
@@ -381,7 +383,7 @@ export function EditPet() {
           img={
             petAvatarUrl
               ? petAvatarUrl
-              : petDataById?.image_path
+              : petDataById?.image_path !== "none"
               ? petDataById?.image_path
               : null
           }

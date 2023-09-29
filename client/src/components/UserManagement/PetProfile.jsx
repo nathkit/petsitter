@@ -32,7 +32,8 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { petAvatarFile, petDataById, handleDelete } = usePet();
+  const { petAvatarFile, petDataById, handleDelete, setPetAvatarFile } =
+    usePet();
   const { getPetProfile, createPetProfile, updatePetProfile, checkPetType } =
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
@@ -88,7 +89,8 @@ function PetInputForm(props) {
       props.editPet
         ? await updatePetProfile(newValues)
         : await createPetProfile(newValues);
-      // props.editPet ? null : formikHelpers.resetForm();
+      setPetAvatarFile(null);
+      props.editPet ? null : formikHelpers.resetForm();
     },
   });
   const errorForm = {
@@ -290,7 +292,7 @@ function PetInputForm(props) {
             buttonName={"Delete"}
             buttonWidth={"175px"}
             onClick={() => {
-              handleDelete(params.userId, params.petId);
+              handleDelete(params.userId, params.petId, petDataById.image_name);
             }}
           />
         </div>
@@ -304,6 +306,7 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
+          // disabled={!formik.dirty || !formik.isValid}
           // onClick={() => navigate(-1)}
         />
       </div>

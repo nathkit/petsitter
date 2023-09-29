@@ -55,6 +55,7 @@ function Navbar() {
           await checkThirdPartyFirstSignIn(newUser);
 
           const userFromLocal = JSON.parse(localStorage.getItem("user"));
+          setIsAuthenticated(true);
           setUserData(userFromLocal);
           getProfileImage(userFromLocal);
           setProfileImageLoaded(true);
@@ -163,7 +164,9 @@ function Navbar() {
           onClick={
             isPetSitter
               ? () => navigate(`/sitterManagement/${petSitterId}`)
-              : () => navigate("/sitterManagement/create")
+              : isAuthenticated
+              ? () => navigate("/sitterManagement/create")
+              : () => navigate("/login")
           }
         />
         <LoginButton />

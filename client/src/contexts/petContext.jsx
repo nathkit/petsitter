@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { supabase } from "./supabase";
 const petContext = React.createContext();
 
 function PetProvider(props) {
@@ -12,12 +12,14 @@ function PetProvider(props) {
 
   const navigate = useNavigate();
 
-  const handleDelete = async (userId, petId) => {
+  const handleDelete = async (userId, petId, avatarName) => {
     try {
       const response = await axios.delete(
         `http://localhost:4000/userManagement/${userId}/pets/${petId}`
       );
       if (response.status === 200) {
+        // delete image from supabase too ***************************
+        await supabase.storage.from("avatars").remove([avatarName]);
         const newPetIds = petIds.filter((id) => id !== petId);
         setPetIds(newPetIds);
         console.log("Pet deleted successfully.");

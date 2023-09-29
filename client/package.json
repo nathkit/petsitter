@@ -39,6 +39,7 @@
     "react-router-dom": "^6.15.0",
     "react-script-loader-hoc": "^1.2.2",
     "styled-components": "^5.3.11",
+    "sweetalert2": "^11.7.31",
     "swiper": "^10.2.0",
     "uuid": "^9.0.0",
     "yup": "^1.2.0"

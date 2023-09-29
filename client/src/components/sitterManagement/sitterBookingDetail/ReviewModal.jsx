@@ -78,7 +78,7 @@ function ReviewModal({ setBooking, booking }) {
 
               <ButtonPrimary
                 content="Send Review & Rating"
-                width="202px"
+                width="220px"
                 className="btn"
                 onClick={() => addNewReview()}
               />

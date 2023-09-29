@@ -116,7 +116,7 @@ function FilterBar() {
             onChange={(e) => handleExperience(e)}
             value={searchData.exp}
           >
-            <option value={3}>All exp</option>
+            <option value={3}>All Experiences</option>
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}

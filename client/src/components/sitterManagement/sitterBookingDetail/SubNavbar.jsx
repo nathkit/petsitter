@@ -37,7 +37,7 @@ function SubNavbar({
   };
 
   return (
-    <div className="flex w-[1120px] h-[48px] justify-between ">
+    <div className="flex w-[1120px] h-[48px] justify-between my-6 ">
       <div className="flex justify-center items-center">
         <Link to={`/sitterManagement/${sitterId}/sitterBookingList`}>
           <ArrowLeftIcon color="#7B7E8F" />

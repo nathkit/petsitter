@@ -11,7 +11,7 @@ export function CardPet1() {
 
   useEffect(() => {
     getAllPetList();
-  }, []);
+  }, [petData]);
   // console.log(petData);
 
   const navigate = useNavigate();
@@ -81,7 +81,7 @@ export function CardPet2(props) {
   const navigate = useNavigate();
   useEffect(() => {
     getAllPetList();
-  }, []);
+  }, [petData]);
 
   return (
     <>

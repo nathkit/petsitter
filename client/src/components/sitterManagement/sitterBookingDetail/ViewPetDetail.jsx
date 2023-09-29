@@ -97,7 +97,7 @@ function ViewPetDetail({ petId, userId }) {
                 <div className="flex flex-col w-[176px]">
                   <p className="text-[#AEB1C3] text-[20px] font-bold">Age</p>
                   <p className="text-[#000] text-[16px] font-[400px]">
-                    {pets.age ? pets.age : "-"}
+                    {pets.age ? pets.age : "-"} Month
                   </p>
                 </div>
               </div>
@@ -112,7 +112,7 @@ function ViewPetDetail({ petId, userId }) {
                 <div className="flex flex-col w-[176px]">
                   <p className="text-[#AEB1C3] text-[20px] font-bold">Weight</p>
                   <p className="text-[#000] text-[16px] font-[400px]">
-                    {pets.weight ? pets.weight : "-"}
+                    {pets.weight ? pets.weight : "-"} Kilogram
                   </p>
                 </div>
               </div>

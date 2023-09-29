@@ -18,7 +18,7 @@ function ViewProfile({ userId }) {
     if (userId) {
       getUser();
     }
-  }, [userId]);
+  }, [users,userId]);
 
   return (
     <div className="flex">

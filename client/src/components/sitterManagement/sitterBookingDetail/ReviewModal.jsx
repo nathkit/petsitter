@@ -77,7 +77,7 @@ function ReviewModal({ setBooking, booking }) {
               <ButtonSecondary className="btn" content="Cancel" />
 
               <ButtonPrimary
-                content="Send Review&Rating"
+                content="Send Review & Rating"
                 width="202px"
                 className="btn"
                 onClick={() => addNewReview()}

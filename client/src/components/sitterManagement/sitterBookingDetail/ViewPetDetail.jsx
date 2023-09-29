@@ -12,7 +12,7 @@ function ViewPetDetail({ petId, userId }) {
 
   const getPets = async () => {
     const result = await axios.get(`/userManagement/${userId}/pets/${petId}`);
-    console.log(result.data.data);
+    // console.log(result.data.data);
     setPets(result.data.data);
   };
 

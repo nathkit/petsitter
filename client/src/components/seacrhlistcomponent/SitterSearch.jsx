@@ -16,7 +16,7 @@ function SitterSearch({ onSearch }) {
     search: "",
     types: petType ?? [],
     rate: parseInt(searchParams.get("rate")),
-    exp: parseInt(searchParams.get("exp")) ?? 0,
+    exp: searchParams.get("exp") ?? 0,
   });
 
   useEffect(() => {

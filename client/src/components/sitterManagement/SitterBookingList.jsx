@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import usePosts from "../../hooks/usePost";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, ArrowRightIcon } from "../systemdesign/Icons";
-
+const newUser = JSON.parse(localStorage.getItem("user"));
 const status = [
   "Waiting for confirm",
   "Waiting for service",
@@ -42,7 +42,7 @@ function SitterBookingList() {
 
   useEffect(() => {
     getSitterBookingList(
-      params.sitterId,
+      newUser.sitter_id,
       searchKeywords,
       bookingStatus,
       currentPage
@@ -76,7 +76,8 @@ function SitterBookingList() {
               id="status-dropdown"
               className="outline-none flex items-center gap-2 self-stretch py-3 pl-3 pr-4 border-[1px] rounded-[8px] border-gray-200 text-body2 text-etc-black focus:border-orange-500 h-12 bg-etc-white w-[240px]"
               value={bookingStatus}
-              onChange={handleChange}>
+              onChange={handleChange}
+            >
               <option value="">All status</option>
               {status.map((s) => (
                 <option key={s} value={s} className="hover:bg-orange-500">
@@ -131,7 +132,8 @@ function SitterBookingList() {
                     `/sitterManagement/${params.sitterId}/sitterBookingList/${booking.booking_no}`
                   );
                 }}
-                className="flex h-[76px] bg-etc-white border-b-[1px] border-b-gray-200 last:rounded-b-2xl last:border-none  ">
+                className="flex h-[76px] bg-etc-white border-b-[1px] border-b-gray-200 last:rounded-b-2xl last:border-none  "
+              >
                 <div className="w-[240px] text-body2 text-etc-black px-4 py-6">
                   {booking.statuses === "Waiting for confirm" ? (
                     <div>
@@ -154,7 +156,8 @@ function SitterBookingList() {
                   {booking.bookedDate}
                 </div>
                 <div
-                  className={`w-[220px] text-body2 ${statusColor} px-4 py-6`}>
+                  className={`w-[220px] text-body2 ${statusColor} px-4 py-6`}
+                >
                   <span className="text-headline4">•</span> {booking.statuses}
                 </div>
               </div>
@@ -169,7 +172,8 @@ function SitterBookingList() {
           {currentPage > 1 ? (
             <button
               className="previous-button"
-              onClick={() => setCurrentPage(currentPage - 1)}>
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
               <ArrowLeftIcon color="#AEB1C3" />
             </button>
           ) : null}
@@ -180,14 +184,16 @@ function SitterBookingList() {
               className={`w-[40px] h-[40px] rounded-full hover:bg-orange-100 hover:text-orange-500 ${
                 index + 1 === currentPage ? "bg-orange-100 text-orange-500" : ""
               }`}
-              onClick={() => setCurrentPage(index + 1)}>
+              onClick={() => setCurrentPage(index + 1)}
+            >
               {index + 1}
             </button>
           ))}
           {currentPage < totalPages ? (
             <button
               className="next-button"
-              onClick={() => setCurrentPage(currentPage + 1)}>
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
               <ArrowRightIcon color="#AEB1C3" />
             </button>
           ) : null}

@@ -13,15 +13,14 @@ function PayoutOption() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-
   const params = useParams();
-
+  const newUser = JSON.parse(localStorage.getItem("user"));
   const getSitterPayoutOption = async (currentPage) => {
     try {
       const results = await axios.get(
-        `/sitterManagement/${params.sitterId}/payoutOption?page=${currentPage}`
+        `/sitterManagement/${newUser.sitter_id}/payoutOption?page=${currentPage}`
       );
-      console.log("sitterId", params.sitterId);
+      console.log("sitterId", newUser.sitter_id);
       setPayoutOption(results.data.data);
       setCurrentPage(results.data.pagination.currentPage);
       setTotalPages(results.data.pagination.totalPages);
@@ -35,8 +34,6 @@ function PayoutOption() {
     getSitterPayoutOption(currentPage);
   }, [currentPage]);
 
-  
-
   return (
     <section className="">
       <div className="flex flex-col h-screen gap-6 p-10 bg-gray-100">
@@ -47,7 +44,7 @@ function PayoutOption() {
               <BahtIcon /> Total Earning
             </h3>
             <div className=" w-auto gap-2 flex flex-row">
-            {totalAmount}
+              {totalAmount}
               <h3>THB</h3>
             </div>
           </div>

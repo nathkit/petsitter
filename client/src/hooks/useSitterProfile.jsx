@@ -23,7 +23,7 @@ function useSitterProfile() {
     setImageGalleryName,
     setPetType,
   } = useSitter();
-
+  const newUser = JSON.parse(localStorage.getItem("user"));
   const sitterImageUrlsManage = (selectFile) => {
     const imgUrl = selectFile.map((item) => {
       return URL.createObjectURL(item);
@@ -69,7 +69,7 @@ function useSitterProfile() {
     let result;
     try {
       const serverRespondes = await axios.get(
-        `/sitterManagement//getSitterData/${param.sitterId}`
+        `/sitterManagement/getSitterData/${newUser.sitter_id}`
       );
       const newPetType = serverRespondes.data.data.pet_type.split(",");
       setPetType(newPetType);
@@ -135,7 +135,7 @@ function useSitterProfile() {
     let result;
     try {
       const serverRespondes = await axios.put(
-        `/sitterManagement/${param.sitterId}`,
+        `/sitterManagement/${newUser.sitter_id}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

@@ -16,7 +16,7 @@ function SitterSearch({ onSearch }) {
     search: "",
     types: petType ?? [],
     rate: parseInt(searchParams.get("rate")),
-    exp: parseInt(searchParams.get("exp")) ?? 0,
+    exp: searchParams.get("exp") ?? 0,
   });
 
   useEffect(() => {
@@ -99,7 +99,7 @@ function SitterSearch({ onSearch }) {
       search: "",
       types: [],
       rate: undefined,
-      exp: 0,
+      exp: 3,
     };
     setSearchData(clearedSearchData);
     onSearch(clearedSearchData);
@@ -188,6 +188,7 @@ function SitterSearch({ onSearch }) {
             onChange={(e) => handleExperience(e)}
             value={searchData.exp}
           >
+            <option value={3}>All exp</option>
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}

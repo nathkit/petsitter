@@ -13,7 +13,7 @@ sitterManagementRouter.get("/", async (req, res) => {
     const search = req.query.search || "";
     let petType = req.query.petType || "";
     const rate = req.query.rate || "";
-    const exp = req.query.exp || "";
+    const exp = req.query.exp || 3;
     const page = req.query.page || 1;
     const limit = req.query.limit || PAGE_SIZE;
     const offset = (page - 1) * limit;
@@ -25,16 +25,16 @@ sitterManagementRouter.get("/", async (req, res) => {
     if (search) {
       condition.push(
         `(Lower(trade_name) like $` +
-        (value.length + 1) +
-        ` or Lower(address_detail) like $` +
-        (value.length + 1) +
-        ` or Lower(district) like $` +
-        (value.length + 1) +
-        ` or Lower(sub_district) like $` +
-        (value.length + 1) +
-        `  or Lower(province) like $` +
-        (value.length + 1) +
-        ` )`
+          (value.length + 1) +
+          ` or Lower(address_detail) like $` +
+          (value.length + 1) +
+          ` or Lower(district) like $` +
+          (value.length + 1) +
+          ` or Lower(sub_district) like $` +
+          (value.length + 1) +
+          `  or Lower(province) like $` +
+          (value.length + 1) +
+          ` )`
       );
       value.push(`%` + search.toLowerCase() + `%`);
     }
@@ -56,8 +56,12 @@ sitterManagementRouter.get("/", async (req, res) => {
       value.push(rate);
     }
 
-    if (exp) {
-      condition.push(`experience = ` + exp);
+    if (exp == 0) {
+      condition.push(`experience <= 2`);
+    } else if (exp == 1) {
+      condition.push(`experience > 2 and experience <= 5`);
+    } else if (exp == 2) {
+      condition.push(`experience > 5`);
     }
 
     if (condition.length > 0) {
@@ -66,6 +70,8 @@ sitterManagementRouter.get("/", async (req, res) => {
     const paginationResult = await pool.query(query, value);
 
     query += ` limit ${limit} offset ${offset}`;
+
+    console.log(query);
 
     const result = await pool.query(query, value);
 
@@ -163,26 +169,27 @@ sitterManagementRouter.post("/", fileUpload, async (req, res) => {
       item === "Dog"
         ? (item = 1)
         : item === "Cat"
-          ? (item = 2)
-          : item === "Bird"
-            ? (item = 3)
-            : item === "Rabbit"
-              ? (item = 4)
-              : null;
+        ? (item = 2)
+        : item === "Bird"
+        ? (item = 3)
+        : item === "Rabbit"
+        ? (item = 4)
+        : null;
       return item;
     });
     const length = newPetType.length;
     const petTypeQuery = `insert into pet_sitter_pet_type(pet_sitter_id,pet_type_id)
-                     values${length === 1
-        ? "($1,$2)"
-        : length === 2
-          ? "($1,$2),($1,$3)"
-          : length === 3
-            ? "($1,$2),($1,$3),($1,$4)"
-            : length === 4
-              ? "($1,$2),($1,$3),($1,$4),($1,$5)"
-              : null
-      }`;
+                     values${
+                       length === 1
+                         ? "($1,$2)"
+                         : length === 2
+                         ? "($1,$2),($1,$3)"
+                         : length === 3
+                         ? "($1,$2),($1,$3),($1,$4)"
+                         : length === 4
+                         ? "($1,$2),($1,$3),($1,$4),($1,$5)"
+                         : null
+                     }`;
     newPetType.unshift(petSitterId);
     const petTypeRusult = await pool.query(petTypeQuery, newPetType);
 
@@ -272,10 +279,11 @@ sitterManagementRouter.put("/:sitterId", fileUpload, async (req, res) => {
     // // update pet_sitter ***********************************************************
 
     const sitterQuery = `update pet_sitter set experience = $1,introduction = $2,trade_name = $3,service_description = $4,place_description = $5,address_detail = $6,district = $7,province = $8,sub_district = $9,post_code = $10,user_id = $11,created_at = $12,updated_at = $13 
-  ${req.files?.avatarFile
-        ? ",image_name = $15,profile_image_path = $16 where id = $14"
-        : " where id = $14"
-      }`;
+  ${
+    req.files?.avatarFile
+      ? ",image_name = $15,profile_image_path = $16 where id = $14"
+      : " where id = $14"
+  }`;
     const sitterValues = Object.values(req.body);
     sitterValues.splice(0, 5);
     sitterValues.splice(11);
@@ -414,8 +422,8 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
   `;
   let values = [sitterId];
 
-  let countQuery = `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`
-  let countValues = [sitterId]
+  let countQuery = `SELECT COUNT(*) FROM bookings_history_detail WHERE id = $1`;
+  let countValues = [sitterId];
 
   if (searchKeywords) {
     query += `
@@ -460,11 +468,11 @@ sitterManagementRouter.get("/:sitterId/booking/", async (req, res) => {
     // console.log("query is", query);
     // console.log("values is", values)
     const results = await pool.query(query, values);
-    const totalCountRes = await pool.query(countQuery, countValues)
+    const totalCountRes = await pool.query(countQuery, countValues);
 
     const totalCount = parseInt(totalCountRes.rows[0].count, 10);
     const totalPages = Math.ceil(totalCount / pageSize);
-    console.log(totalCount)
+    console.log(totalCount);
     // console.log("TotalRows:", results.rows.length);
     // console.log("TotalRows:", results.rows);
     console.log("total Page:", totalPages);
@@ -485,9 +493,11 @@ sitterManagementRouter.get(
   async (req, res) => {
     try {
       const bookingId = req.params.bookingId;
+      const sitterId = req.params.sitterId;
 
-      let query = "select * from bookings_user where booking_id = $1";
-      let value = [bookingId];
+      let query =
+        "select * from bookings_user where booking_id = $1 and pet_sitter_id = $2";
+      let value = [bookingId, sitterId];
 
       const result = await pool.query(query, value);
 

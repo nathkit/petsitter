@@ -10,7 +10,7 @@ function FilterBar() {
   const [searchData, setSearchData] = useState({
     types: [],
     rate: undefined,
-    exp: 0,
+    exp: 3,
   });
 
   const petType = ["Dog", "Cat", "Bird", "Rabbit"];
@@ -66,12 +66,6 @@ function FilterBar() {
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(searchData);
-    onSearch(searchData);
-  };
-
   return (
     <div className="max-w-[1064px] mx-auto rounded-[15px]">
       <div className="w-full p-6 bg-gray-100 rounded-t-[15px] flex items-center gap-3 self-stretch">
@@ -103,7 +97,8 @@ function FilterBar() {
                       : ""
                   }
                   `}
-                onClick={(e) => handleRating(e, rate)}>
+                onClick={(e) => handleRating(e, rate)}
+              >
                 <span className="pr-[3px] font-Satoshi ">{rate}</span>
                 {Array.from({ length: rate }, (_, index) => (
                   <StarIcon key={index} color="#1CCD83" />
@@ -116,8 +111,10 @@ function FilterBar() {
           <div className="font-bold">Experience: </div>
           <select
             className="select w-full text-[#7B7E8F] border-[#DCDFED] bg-etc-white"
-            defaultValue={allExp[0].value}
-            onChange={(e) => handleExperience(e)}>
+            onChange={(e) => handleExperience(e)}
+            value={searchData.exp}
+          >
+            <option value={3}>All exp</option>
             {allExp.map((exp) => (
               <option key={exp.value} value={exp.value}>
                 {exp.label}

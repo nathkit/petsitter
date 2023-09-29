@@ -32,7 +32,8 @@ const PetProfileSchema = Yup.object().shape({
 
 function PetInputForm(props) {
   const navigate = useNavigate();
-  const { petAvatarFile, petDataById, handleDelete } = usePet();
+  const { petAvatarFile, petDataById, handleDelete, setPetAvatarFile } =
+    usePet();
   const { getPetProfile, createPetProfile, updatePetProfile, checkPetType } =
     usePetProfile();
   const [isHovered, setIsHovered] = useState(null);
@@ -43,14 +44,12 @@ function PetInputForm(props) {
   props.editPet
     ? useEffect(() => {
         getPetProfile();
-      }, [props.editPet])
+      }, [])
     : null;
   // console.log(petAvatarFile);
-  // console.log(petDataById);
+  // console.log("in");
+  // console.log(petDataById.image_name);
   // console.log(props.editPet);
-  // useEffect(() => {
-  //   getPetProfile();
-  // }, []);
 
   const formik = useFormik({
     initialValues: props.editPet
@@ -90,6 +89,7 @@ function PetInputForm(props) {
       props.editPet
         ? await updatePetProfile(newValues)
         : await createPetProfile(newValues);
+      setPetAvatarFile(null);
       props.editPet ? null : formikHelpers.resetForm();
     },
   });
@@ -102,13 +102,14 @@ function PetInputForm(props) {
     fontSize: "0.875rem",
     marginTop: "0.25rem",
   };
-  console.log(formik.values);
+  // console.log(formik.values);
   return (
     <form
       onSubmit={(values, formikHelpers) => {
         formik.handleSubmit(values, formikHelpers);
       }}
-      className="outline-none flex flex-col">
+      className="outline-none flex flex-col"
+    >
       <div className="outline-none flex flex-col item-start gap-1 w-full mb-10">
         <label className="text-etc-black text-body2" htmlFor="petName">
           Pet Name*
@@ -142,7 +143,8 @@ function PetInputForm(props) {
             onChange={formik.handleChange}
             value={formik.values.petType}
             onBlur={formik.handleBlur}
-            placeholder="Select your pet type">
+            placeholder="Select your pet type"
+          >
             <option value="" disabled>
               Select your pet type
             </option>
@@ -188,7 +190,8 @@ function PetInputForm(props) {
             type="text"
             onChange={formik.handleChange}
             value={formik.values.sex}
-            onBlur={formik.handleBlur}>
+            onBlur={formik.handleBlur}
+          >
             <option value="" disabled>
               Select sex of your pet
             </option>
@@ -289,7 +292,7 @@ function PetInputForm(props) {
             buttonName={"Delete"}
             buttonWidth={"175px"}
             onClick={() => {
-              handleDelete(params.userId, params.petId);
+              handleDelete(params.userId, params.petId, petDataById.image_name);
             }}
           />
         </div>
@@ -303,7 +306,8 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
-          onClick={() => navigate(-1)}
+          // disabled={!formik.dirty || !formik.isValid}
+          // onClick={() => navigate(-1)}
         />
       </div>
     </form>
@@ -318,7 +322,8 @@ export function TurnBack() {
       className=" bg-etc-white h-[3rem] flex justify-between items-center mb-[60px] cursor-pointer"
       onClick={() => {
         navigate(`/userManagement/${userData.id}/pets`);
-      }}>
+      }}
+    >
       <p className=" text-headline3 flex items-center gap-[10px]">
         <ArrowLeftIcon color="#7B7E8F" />
         Your Pet
@@ -381,7 +386,7 @@ export function EditPet() {
           img={
             petAvatarUrl
               ? petAvatarUrl
-              : petDataById?.image_path
+              : petDataById?.image_path !== "none"
               ? petDataById?.image_path
               : null
           }

@@ -15,7 +15,7 @@ export const supabaseUpload = async (file, avatarName, breed) => {
     bucketName = "userAvatar";
   }
   // delete avatar bofore upload condition because cannot directly replace there is bug on supabase storage replace query ********************************
-  if (avatarName) {
+  if (avatarName !== "none") {
     await supabase.storage.from("avatars").remove([avatarName]);
     avatarName = `${bucketName}/${uniqueName}`;
     await supabase.storage.from("avatars").upload(avatarName, file.buffer, {

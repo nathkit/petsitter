@@ -106,14 +106,20 @@ function BookingPage() {
             <Booking3 />
           )}
           <div className=" p-10 w-full h-fit bg-etc-white flex justify-between">
-            {step >= 1 && (
+            {step === 1 ? (
+              <ButtonPrimary
+                content={"Back"}
+                onClick={() => {
+                  navigate(-1);
+                }}
+              />
+            ) : (
               <ButtonPrimary
                 content={"Back"}
                 onClick={() => {
                   // setDisableButtonBooking1("");
                   prevStep();
                 }}
-                disabled={step === 1}
               />
             )}
             {step >= 1 && step < 3 && (

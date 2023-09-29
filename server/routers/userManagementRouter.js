@@ -27,11 +27,10 @@ userManagementRouter.put("/:userId", fileUpload, async (req, res) => {
   user.id = userId;
   let result;
   try {
-    const query = `update users set full_name = $1, email = $2, id_number = $3, phone = $4, date_of_birth = $5, image_name = $6, ${
-      req.files
-        ? "profile_image_path = $7, updated_at = $8 where id = $9"
-        : "updated_at = $7 where id = $8"
-    }`;
+    const query = `update users set full_name = $1, email = $2, id_number = $3, phone = $4, date_of_birth = $5, image_name = $6, ${req.files
+      ? "profile_image_path = $7, updated_at = $8 where id = $9"
+      : "updated_at = $7 where id = $8"
+      }`;
     const values = Object.values(user);
     // use supabase function for uploading **************************************
     if (req.files) {
@@ -133,7 +132,7 @@ userManagementRouter.post("/:userId/pets", fileUpload, async (req, res) => {
   pet.created_at = new Date();
   pet.userId = req.params.userId;
   try {
-    let query = `INSERT INTO pets (name, pet_type_id, breed, sex, age, color, weight, description, image_name, created_at, updated_at,user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
+    let query = `INSERT INTO pets (name, pet_type_id, breed, sex, age, color, weight, description, image_name, image_path, created_at, updated_at,user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`;
     let values = Object.values(pet);
     // use supabase function for uploading **************************************
     if (req.files) {
@@ -143,11 +142,11 @@ userManagementRouter.post("/:userId/pets", fileUpload, async (req, res) => {
         pet.breed
       );
       // splice avatarName out and reassige ************************************
-      values.splice(8, 1, avatarName, url);
-      query = `INSERT INTO pets (name, pet_type_id, breed, sex, age, color, weight, description, image_name, image_path, created_at, updated_at,user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`;
+      values.splice(8, 2, avatarName, url);
+      // query = `INSERT INTO pets (name, pet_type_id, breed, sex, age, color, weight, description, image_name, image_path, created_at, updated_at,user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`;
     } else {
       // splice avatarFile out *********************************************
-      values.splice(9, 1);
+      values.splice(8, 2, "none", "none");
     }
     // insert query ****************************************************************
     await pool.query(query, values);
@@ -174,7 +173,7 @@ userManagementRouter.put(
         req.files
           ? "image_path = $10, updated_at = $11 WHERE user_id = $12 AND id = $13"
           : "updated_at = $10 WHERE user_id = $11 AND id = $12"
-      }`;
+        }`;
       const values = Object.values(pet);
       // use supabase function for uploading **************************************
       if (req.files) {

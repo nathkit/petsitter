@@ -3,9 +3,11 @@ import { StarIcon } from "../systemdesign/Icons";
 import { ButtonPrimary } from "../systemdesign/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../contexts/authentication";
 
 function FilterBar() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const [searchData, setSearchData] = useState({
     types: [],
@@ -144,7 +146,9 @@ function FilterBar() {
                   searchParams.append("exp", searchData.exp);
                 }
               }
-              navigate("/search?" + searchParams.toString());
+              isAuthenticated
+                ? navigate("/search?" + searchParams.toString())
+                : navigate("/login");
             }}
           />
         </div>

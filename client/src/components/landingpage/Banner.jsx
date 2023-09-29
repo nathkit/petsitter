@@ -1,9 +1,11 @@
 import { ButtonPrimary } from "../systemdesign/Button";
 import { Ellipse16, Star1, Ellipse17 } from "../systemdesign/image";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/authentication";
 
 export default function Banner() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   return (
     <div className="min-w-[1440px] p-20 flex flex-col">
       <div className="w-full h-[448px] bg-yellow-100 rounded-[16px] relative overflow-hidden">
@@ -24,7 +26,7 @@ export default function Banner() {
             content="Find A Pet Sitter"
             width="120"
             onClick={() => {
-              navigate("/search");
+              isAuthenticated ? navigate("/search") : navigate("/login");
             }}
           />
         </div>

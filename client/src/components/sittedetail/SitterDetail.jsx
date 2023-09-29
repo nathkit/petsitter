@@ -126,15 +126,14 @@ function SitterDetail() {
                   {(() => {
                     const experience = sitterDetail[0]?.experience;
 
-                    if (experience <= 2) {
-                      return "0-2";
-                    } else if (experience >= 3 && experience <= 5) {
-                      return "3-5";
-                    } else {
-                      return "5+";
+                    if (experience === 0) {
+                      return "Newbie sitter";
+                    } else if (experience > 1) {
+                      return sitterDetail[0]?.experience + " Years Exp.";
+                    } else if (experience === 1) {
+                      return sitterDetail[0]?.experience + " Year Exp.";
                     }
                   })()}{" "}
-                  Years Exp.
                 </span>
               </h4>
               {/* rating star use logic if number 1 render 1 star */}

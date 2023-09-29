@@ -189,8 +189,8 @@ function SitterProfile(props) {
                   }
                   description={
                     props.update
-                      ? "Are you sure to confirm update your pet sitter profile."
-                      : "Are you sure to confirm create your pet sitter account."
+                      ? "Are you sure to confirm update your pet sitter profile?"
+                      : "Are you sure to confirm create your pet sitter account?"
                   }
                   secondaryContent="Cancel"
                   secondaryWidth="10rem"

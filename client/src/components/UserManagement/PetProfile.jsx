@@ -88,7 +88,7 @@ function PetInputForm(props) {
       props.editPet
         ? await updatePetProfile(newValues)
         : await createPetProfile(newValues);
-      props.editPet ? null : formikHelpers.resetForm();
+      // props.editPet ? null : formikHelpers.resetForm();
     },
   });
   const errorForm = {
@@ -100,7 +100,7 @@ function PetInputForm(props) {
     fontSize: "0.875rem",
     marginTop: "0.25rem",
   };
-  console.log(formik.values);
+  // console.log(formik.values);
   return (
     <form
       onSubmit={(values, formikHelpers) => {
@@ -304,7 +304,7 @@ function PetInputForm(props) {
         <ButtonPrimary
           content={!props.editPet ? "Create Pet" : "Update Pet"}
           type="submit"
-          onClick={() => navigate(-1)}
+          // onClick={() => navigate(-1)}
         />
       </div>
     </form>

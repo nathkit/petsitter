@@ -42,7 +42,7 @@ export function CardPet1() {
                 key={index}
                 className="flex mx-[5px] cursor-pointer"
                 onClick={() => {
-                  console.log(item.id);
+                  // console.log(item.id);
                   navigate(`/userManagement/${userData.id}/pets/${item.id}`);
                 }}
               >

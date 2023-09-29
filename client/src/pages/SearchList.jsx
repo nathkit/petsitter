@@ -45,7 +45,7 @@ function SearchList() {
         searchParams.append("rate", searchData.rate);
       }
 
-      if (searchData?.exp) {
+      if (searchData?.exp && searchData.exp != 3) {
         searchParams.append("exp", searchData.exp);
       }
 
@@ -62,12 +62,13 @@ function SearchList() {
     topRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-
   return (
     <>
       <Navbar />
       <div className="flex flex-col w-[1440px] h-[1570px] pt-10 pb-20 px-20 bg-[#FAFAFB]">
-        <div className="text-[24px] font-bold text-gray-600 ">Search For Pet Sitter</div>
+        <div className="text-[24px] font-bold text-gray-600 ">
+          Search For Pet Sitter
+        </div>
         <div className="flex  py-[80px] gap-9" ref={topRef}>
           <SitterSearch
             onSearch={(data) => {

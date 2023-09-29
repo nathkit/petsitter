@@ -43,17 +43,18 @@ pamentGatewayRouter.post("/", async (req, res) => {
     //   status: charge.status,
     //   // authorize_uri: charge.authorize_uri,
     // });
-    try {
-      if (charge.status === "successful") {
-        return res.status(200).json({ message: "successful" });
-      }
-
-      if (charge.status === "failed") {
-        return res.status(400).json({ message: "failed" });
-      }
-    } catch (error) {
-      return res.status(404).json({ message: "Can't Payment" });
+    // try {
+    if (charge.status === "successful") {
+      return res.status(200).json({ message: "successful" });
+    } else {
+      return res.status(400).json({ message: "failed" });
     }
+    // if (charge.status === "failed") {
+    //   return res.status(400).json({ message: "failed" });
+    // }
+    // } catch (error) {
+    //   return res.status(404).json({ message: "Can't Payment" });
+    // }
   } catch (error) {
     console.log(error, "error");
   }

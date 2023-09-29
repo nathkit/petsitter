@@ -188,7 +188,7 @@ const SitterBar = (props) => {
                 <p className="ml-4 text-headline4">{userData.fullName}</p>
               </div>
             ) : (
-              <p className=" text-headline4">Wellcome to Stitter Profile</p>
+              <p className=" text-headline4">Welcome to Sitter Profile</p>
             )}
           </div>
         </nav>

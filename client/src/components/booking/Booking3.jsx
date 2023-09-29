@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useUserProfile from "../../hooks/useUserProfile";
 import axios from "axios";
 import Script from "react-load-script";
-
+import Swal from "sweetalert2";
 let OmiseCard;
 
 function Booking3() {
@@ -67,21 +67,26 @@ function Booking3() {
           );
           console.log(result.data.message);
           setStatus(result.data.message);
-          try {
-            if (result.data.message == "successful") {
-              alert("Payment Successful");
-              // console.log(bookingId);
-              // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
-            } else {
-              alert("Payment Failed");
-              navigate(`/search`);
-            }
-            setConfirmbooking(result.data.message);
-          } catch (error) {
-            console.log("without status");
+          // try {
+          if (result.data.message == "successful") {
+            Swal.fire("Payment Successful", "", "success");
+            // alert("Payment Successful");
+            // console.log(bookingId);
+            // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
           }
+          // else {
+          //   // alert("Payment Failed");
+          //   Swal.fire("Payment Failed", "Return to search page.", "error");
+          //   navigate(`/search`);
+          // }
+          setConfirmbooking(result.data.message);
+          // } catch (error) {
+          //   console.log("without status");
+          // }
         } catch (error) {
-          console.log(error, "Can't Payment");
+          await Swal.fire("Payment Failed", "Return to search page.", "error");
+          navigate(`/search`);
+          // console.log(error, "Can't Payment");
         }
       },
       onFormClosed: () => {},

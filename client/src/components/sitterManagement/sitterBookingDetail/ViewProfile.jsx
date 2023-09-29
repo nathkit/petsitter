@@ -10,7 +10,7 @@ function ViewProfile({ userId }) {
 
   const getUser = async () => {
     const result = await axios.get(`/userManagement/${userId}`);
-    console.log(result.data.data);
+    // console.log(result.data.data);
     setUsers(result.data.data);
   };
 

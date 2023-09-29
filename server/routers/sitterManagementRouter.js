@@ -71,7 +71,7 @@ sitterManagementRouter.get("/", async (req, res) => {
 
     query += ` limit ${limit} offset ${offset}`;
 
-    console.log(query);
+    // console.log(query);
 
     const result = await pool.query(query, value);
 

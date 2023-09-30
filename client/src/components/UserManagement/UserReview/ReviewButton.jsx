@@ -117,7 +117,7 @@ function ReviewButton(props) {
                 <ButtonSecondary className="btn" content="Cancel" />
                 <ButtonPrimary
                   content="Send Review & Rating"
-                  width="202px"
+                  width="220px"
                   className="btn"
                   onClick={() => addNewReview()}
                 />

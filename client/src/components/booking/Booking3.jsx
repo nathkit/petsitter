@@ -49,48 +49,61 @@ function Booking3() {
     OmiseCard.attach();
   };
 
-  const omiseCardHandler = () => {
-    OmiseCard.open({
-      amount: totalAmount * 100,
-      onCreateTokenSuccess: async (token) => {
-        try {
-          const result = await axios.post(
-            `http://localhost:4000/pamentGateway`,
-            {
-              amount: totalAmount * 100,
-              token: token,
-              headers: {
-                "Content-Type": "application/json",
-              },
-              // timeout: 5000,
-            }
-          );
-          console.log(result.data.message);
-          setStatus(result.data.message);
-          // try {
-          if (result.data.message == "successful") {
-            Swal.fire("Payment Successful", "", "success");
-            // alert("Payment Successful");
-            // console.log(bookingId);
-            // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
-          }
-          // else {
-          //   // alert("Payment Failed");
-          //   Swal.fire("Payment Failed", "Return to search page.", "error");
-          //   navigate(`/search`);
-          // }
-          setConfirmbooking(result.data.message);
-          // } catch (error) {
-          //   console.log("without status");
-          // }
-        } catch (error) {
-          await Swal.fire("Payment Failed", "Return to search page.", "error");
-          navigate(`/search`);
-          // console.log(error, "Can't Payment");
-        }
-      },
-      onFormClosed: () => {},
-    });
+  const omiseCardHandler = async () => {
+    var bodyFormData = new FormData();
+    bodyFormData.append("card[expiration_month]", 10);
+    bodyFormData.append("card[expiration_year]", 24);
+    bodyFormData.append("card[name]", "Tester");
+    bodyFormData.append("card[number]", "4242424242424242");
+
+    const token = await axios.post(
+      `https://vault.omise.co/tokens`,
+      bodyFormData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        auth: {
+          username: "pkey_test_5x5w3xryolrnev4hk37",
+          password: "",
+        },
+      }
+    );
+
+    console.log(token);
+
+    try {
+      const result = await axios.post(`http://localhost:4000/pamentGateway`, {
+        amount: totalAmount * 100,
+        token: token.data.id,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // timeout: 5000,
+      });
+      console.log(result.data.message);
+      setStatus(result.data.message);
+      // try {
+      if (result.data.message == "successful") {
+        Swal.fire("Payment Successful", "", "success");
+        // alert("Payment Successful");
+        // console.log(bookingId);
+        // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
+      }
+      // else {
+      //   // alert("Payment Failed");
+      //   Swal.fire("Payment Failed", "Return to search page.", "error");
+      //   navigate(`/search`);
+      // }
+      setConfirmbooking(result.data.message);
+      // } catch (error) {
+      //   console.log("without status");
+      // }
+    } catch (error) {
+      await Swal.fire("Payment Failed", "Return to search page.", "error");
+      navigate(`/search`);
+      // console.log(error, "Can't Payment");
+    }
   };
 
   return (
@@ -118,7 +131,7 @@ function Booking3() {
                 onClick={(e) => {
                   handleCreditClick();
                   e.preventDefault();
-                  creditCardConfigure();
+                  // creditCardConfigure();
                   omiseCardHandler();
                   setCredit("#ff7037");
                 }}

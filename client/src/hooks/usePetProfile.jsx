@@ -68,7 +68,7 @@ function usePetProfile() {
   };
 
   const createPetProfile = async (data) => {
-    console.log(data);
+    // console.log(data.avatarFile);
     try {
       const result = await axios.post(
         `http://localhost:4000/userManagement/${params.userId}/pets`,

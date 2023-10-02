@@ -3,7 +3,8 @@ import * as pg from "pg";
 const { Pool } = pg.default;
 
 const pool = new Pool({
-    connectionString: "postgresql://postgres:vN4Qg4n-ypk@pLS@db.wjxguyrdfqbtwsetylfq.supabase.co:5432/postgres",
+  connectionString:
+    "postgresql://postgres:vN4Qg4n-ypk@pLS@db.wjxguyrdfqbtwsetylfq.supabase.co:5432/postgres",
 });
 
-export { pool };
+export default pool;

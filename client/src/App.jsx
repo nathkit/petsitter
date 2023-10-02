@@ -1,8 +1,13 @@
 import "./App.css";
-import AuthenticatedApp from "./pages/AuthenticatedApp";
+import { useAuth } from "./contexts/authentication";
+import AuthenticatedApp from "./pages/AuthenticatedApp.jsx";
+import axios from "axios";
+import UnauthenticatedApp from "./pages/UnauthenticatedApp";
+axios.defaults.baseURL = "http://localhost:4000";
 
 function App() {
-  return <AuthenticatedApp />;
+  const auth = useAuth();
+  return auth.isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
 }
 
 export default App;

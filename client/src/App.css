@@ -5,10 +5,60 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-Bold.otf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* * {
+  outline: 1px solid red;
+} */
+
 #root {
   max-width: 1440px;
-  margin: 0;
+  min-width: 1440px;
+  margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
   font-family: "Satoshi", sans-serif;
+  min-height: 100vh;
+  color: black;
+}
+
+body {
+  background-color: #ffff;
+  min-width: 1440px;
+}
+
+:root {
+  --n: 0 !important;
+  --nc: 0 !important;
+}
+
+input:-webkit-autofill,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgb(0, 0, 0);
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+}
+
+.TextField:focus-within fieldset,
+.TextField:hover fieldset {
+  border: 1px solid #ff986f !important;
+}
+
+.swiper {
+  z-index: 0 !important;
+}
+
+span.label-text {
+  color: black;
+}
+
+pre.text-clip{
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }

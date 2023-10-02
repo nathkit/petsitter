@@ -1,0 +1,67 @@
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+    color: #fff !important;
+    background: #ff7037 !important;
+    border-radius: 15px !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner {
+    border-radius: 15px !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner {
+    border-radius: 15px !important;
+    border-radius: 15px !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
+    background: #ffd5c2 !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
+    background: #ffd5c2 !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+    border: 1px solid #e44a0c;
+    border-radius: 15px;
+}
+
+.ant-picker-focused {
+    border-color: #ff7037 !important;
+}
+
+.ant-picker:hover,
+.ant-picker-focused {
+    border-color: #ff7037 !important;
+}
+
+.ant-picker-focused {
+    border-color: #ff7037 !important;
+}
+
+.ant-picker .ant-picker-input>input {
+    font-family: Satoshi !important;
+    font-size: 1rem !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 150% !important;
+}
+
+/* button, */
+/* [type='button'], */
+/* [type='reset'] */
+/* [type='submit'] */
+.ant-btn-primary {
+    background-color: #ff7037 !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+    background-color: #ff986f !important;
+}
+
+.ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+    background: #ffd5c2 !important;
+}

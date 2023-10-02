@@ -36,6 +36,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-load-script": "^0.0.6",
+    "react-payment-inputs": "^1.1.9",
     "react-router-dom": "^6.15.0",
     "react-script-loader-hoc": "^1.2.2",
     "styled-components": "^5.3.11",

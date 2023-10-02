@@ -3,19 +3,22 @@ import { Vector } from "../systemdesign/image";
 import { useState } from "react";
 import { useBooking } from "../../contexts/BookingContext";
 import { useNavigate } from "react-router-dom";
-import useUserProfile from "../../hooks/useUserProfile";
-import axios from "axios";
 import Script from "react-load-script";
-import Swal from "sweetalert2";
-let OmiseCard;
-
-function Booking3() {
+import { useOmise } from "../../contexts/OmiseContext";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import TextField from "@mui/material/TextField";
+import { usePaymentInputs } from "react-payment-inputs";
+import images from "react-payment-inputs/images";
+import InputAdornment from "@mui/material/InputAdornment";
+function Booking3({ setDisableButtonBooking3 }) {
   const { paymentMethod, setPaymentMethod, totalAmount, setConfirmbooking } =
     useBooking();
-  const navigate = useNavigate();
-  const [credit, setCredit] = useState(null);
-  const [wallet, setWallet] = useState("#ff7037");
-  const [status, setStatus] = useState("");
+  // const { handleLoadScript, omiseCardHandler, status } = useOmise();
+  // const navigate = useNavigate();
+  const [credit, setCredit] = useState("#ff7037");
+  const [wallet, setWallet] = useState(null);
+  // const [status, setStatus] = useState("");
   const handleCreditClick = () => {
     setPaymentMethod("Credit");
     setWallet(null);
@@ -25,127 +28,26 @@ function Booking3() {
     setCredit(null);
   };
 
-  const handleLoadScript = () => {
-    OmiseCard = window.OmiseCard;
-    OmiseCard.configure({
-      publicKey: "pkey_test_5x5w3xryolrnev4hk37",
-      currency: "THB",
-      frameLabel: "Pet Sitter",
-      submitLabel: "Pay Now",
-      buttonLabel: "Pay with Omise",
-    });
-  };
-
-  const creditCardConfigure = () => {
-    OmiseCard.configure({
-      defaultPaymentMethod: "credit_card",
-      otherPaymentMethods: [
-        // "shopeepay",
-        // "mobile_banking_scb",
-        // "mobile_banking_kbank",
-      ],
-    });
-    OmiseCard.configureButton("#credit-card");
-    OmiseCard.attach();
-  };
-
-  const omiseCardHandler = async () => {
-    var bodyFormData = new FormData();
-    bodyFormData.append("card[expiration_month]", 10);
-    bodyFormData.append("card[expiration_year]", 24);
-    bodyFormData.append("card[name]", "Tester");
-    bodyFormData.append("card[number]", "4242424242424242");
-
-    const token = await axios.post(
-      `https://vault.omise.co/tokens`,
-      bodyFormData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        auth: {
-          username: "pkey_test_5x5w3xryolrnev4hk37",
-          password: "",
-        },
-      }
-    );
-
-    console.log(token);
-
-    try {
-      const result = await axios.post(`http://localhost:4000/pamentGateway`, {
-        amount: totalAmount * 100,
-        token: token.data.id,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // timeout: 5000,
-      });
-      console.log(result.data.message);
-      setStatus(result.data.message);
-      // try {
-      if (result.data.message == "successful") {
-        Swal.fire("Payment Successful", "", "success");
-        // alert("Payment Successful");
-        // console.log(bookingId);
-        // navigate(`/userManagement/${userData.id}/booking/${bookingId}`);
-      }
-      // else {
-      //   // alert("Payment Failed");
-      //   Swal.fire("Payment Failed", "Return to search page.", "error");
-      //   navigate(`/search`);
-      // }
-      setConfirmbooking(result.data.message);
-      // } catch (error) {
-      //   console.log("without status");
-      // }
-    } catch (error) {
-      await Swal.fire("Payment Failed", "Return to search page.", "error");
-      navigate(`/search`);
-      // console.log(error, "Can't Payment");
-    }
-  };
-
   return (
     <>
       <div className="bg-etc-white h-fit p-10">
-        <div className="flex justify-between w-full mb-12 ">
-          <div
-            className={`own-form w-[376px] h-20 rounded-[999px] shadow border hover:border-orange-500 
+        <div className="flex justify-between w-full mb-12">
+          <button
+            className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
           
             ${
               paymentMethod === "Credit"
                 ? "border-orange-500 text-orange-500"
                 : ""
             }`}
+            onClick={() => {
+              handleCreditClick();
+              setCredit("#ff7037");
+            }}
           >
-            <Script
-              url="https://cdn.omise.co/omise.js"
-              onLoad={handleLoadScript}
-            />
-            <form className=" flex justify-center items-center w-full h-full relative">
-              <button
-                id="credit-card"
-                type="button"
-                className=" flex justify-center w-full item-center py-[27px] "
-                onClick={(e) => {
-                  handleCreditClick();
-                  e.preventDefault();
-                  // creditCardConfigure();
-                  omiseCardHandler();
-                  setCredit("#ff7037");
-                }}
-                disabled={status === "successful"}
-              >
-                <p className="ml-2 text-gray-500 ">Credit Card</p>
-              </button>
-              <div className=" absolute top-[27px] start-[120px]">
-                {" "}
-                <CreditCardIcon color={credit} />
-              </div>
-            </form>
-          </div>
-
+            <CreditCardIcon color={credit} />
+            <p className="ml-2 text-gray-500">Credit Card</p>
+          </button>
           <button
             className={`py-[27px] px-[124px] rounded-[999px] shadow border flex w-[49%] justify-center hover:border-orange-500 
             ${
@@ -156,14 +58,18 @@ function Booking3() {
             onClick={() => {
               handleCashClick();
               setWallet("#ff7037");
+              setDisableButtonBooking3(false);
             }}
-            disabled={status === "successful"}
           >
             <WalletIcon color={wallet} />
             <p className="ml-2 text-gray-500">Cash</p>
           </button>
         </div>
-        {paymentMethod === "Cash" && <Cash />}
+        {paymentMethod === "Credit" ? (
+          <Credit setDisableButtonBooking3={setDisableButtonBooking3} />
+        ) : (
+          <Cash />
+        )}
       </div>
     </>
   );
@@ -179,6 +85,262 @@ function Cash() {
         you are required to make a cash payment <br />
         upon arrival at the pet sitter'slocation.
       </p>
+    </div>
+  );
+}
+
+function Credit({ setDisableButtonBooking3 }) {
+  const validationSchema = yup.object({
+    cardOwner: yup
+      .string("Enter your name")
+      // .min(5, "Full name should be of minimum 5 characters length")
+      .matches(/^[A-Za-z]+$/, "Name should contain only letters")
+      .required("Name is required"),
+    cardNumber: yup
+      .string("Enter your card number")
+      .test(
+        "is-sixteen-digits",
+        "Card number must be exactly 16 digits",
+        (value) => {
+          const numericValue = value.replace(/\D/g, "");
+          return numericValue.length >= 16;
+        }
+      )
+      .required("Card number is required"),
+
+    CVC: yup
+      .string("Enter your CVC/CVV")
+      .test("is-number", "Enter a valid CVC/CVV number", (value) => {
+        return /^\d+$/.test(value);
+      })
+      .test(
+        "is-three-digits",
+        "CVC/CVV number must be three digits",
+        (value) => {
+          return value.length === 3;
+        }
+      )
+      .required("CVC/CVV is required"),
+    expiryDate: yup
+      .string("Enter your expiry date")
+      .required("Expiry date is required")
+      .matches(
+        /^[0-9]{2}\/[0-9]{2}$/,
+        "Expiry date must be in the format MM/YY"
+      ),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      cardNumber: "",
+      cardOwner: "",
+      expiryDate: "",
+      CVC: "",
+    },
+    validationSchema: validationSchema,
+  });
+
+  const isCardNumber = formik.touched.cardNumber && !formik.errors.cardNumber;
+  const isCardOwner = formik.touched.cardOwner && !formik.errors.cardOwner;
+  const isExpiryDate = formik.touched.expiryDate && !formik.errors.expiryDate;
+  const isCVC = formik.touched.CVC && !formik.errors.CVC;
+
+  setDisableButtonBooking3(
+    !formik.isValid || !isCardNumber || !isCardOwner || !isCVC || !isExpiryDate
+  );
+  const { setCardNumber, setCardOwner, setMonth, setYear, setCVC, cardNumber } =
+    useOmise();
+
+  const formatCardNumber = (cardNumber) => {
+    const numericValue = cardNumber.replace(/\D/g, "");
+    const formattedValue = numericValue
+      .slice(0, 16) // กำหนดความยาวสูงสุดให้เป็น 16 ตัวอักษร
+      // .replace(/(\d{4})(?=\d{4})/g, "$1-") // จัดรูปแบบให้เป็น "xxxx-xxxx-xxxx-xxxx"
+      // .trim();
+      // .replace(/[^\dA-Z]/g, "")
+      .replace(/(.{4})/g, "$1 ")
+      .trim();
+    return formattedValue;
+  };
+
+  // const formatExpiryDate = (expiryDate) => {
+  //   const numericValue = expiryDate.replace(/\D/g, ""); // ลบอักขระที่ไม่ใช่ตัวเลข
+  //   const formattedValue = numericValue
+  //     .slice(0, 4) // กำหนดความยาวสูงสุดให้เป็น 4 ตัวอักษร (xx/xx)
+  //     .replace(/(\d{2})(?=\d{2})/, "$1/"); // จัดรูปแบบให้เป็น "xx/xx"
+  //   return formattedValue;
+  // };
+
+  const formatExpiryDate = (expiryDate) => {
+    const numericValue = expiryDate.replace(/\D/g, ""); // ลบอักขระที่ไม่ใช่ตัวเลข
+    const formattedValue = numericValue
+      .slice(0, 4) // กำหนดความยาวสูงสุดให้เป็น 4 ตัวอักษร (xx/xx)
+      .replace(/(\d{2})(\d{2})/, "$1/$2"); // จัดรูปแบบให้เป็น "xxxx"
+    return formattedValue;
+  };
+
+  // const {
+  //   meta,
+  //   getCardNumberProps,
+  //   getExpiryDateProps,
+  //   getCVCProps,
+  //   getCardImageProps,
+  // } = usePaymentInputs();
+
+  return (
+    <div>
+      <div className=" flex  justify-between flex-wrap gap-10 w-full">
+        <div className="flex w-full">
+          <div className=" flex flex-col w-full mr-10">
+            <label htmlFor="cardNumber">Card Number*</label>
+            <TextField
+              id="cardNumber"
+              name="cardNumber"
+              value={formatCardNumber(formik.values.cardNumber)}
+              onChange={(e) => {
+                const rawValue = e.target.value.replace(/\D/g, "");
+                const formattedValue = formatCardNumber(rawValue);
+                formik.handleChange({
+                  target: {
+                    name: "cardNumber",
+                    value: formattedValue,
+                  },
+                });
+                // const cardNumberWithHyphen = formattedValue;
+                // const cardNumberWithoutHyphen = cardNumberWithHyphen.replace(
+                //   /-/g,
+                //   ""
+                // );
+                // setCardNumber(cardNumberWithoutHyphen);
+                // console.log(cardNumberWithoutHyphen);
+
+                setCardNumber(formattedValue.replace(/\s/g, ""));
+                console.log(formattedValue.replace(/\s/g, ""));
+              }}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.cardNumber && Boolean(formik.errors.cardNumber)
+              }
+              helperText={formik.touched.cardNumber && formik.errors.cardNumber}
+              placeholder="xxxx xxxx xxxx xxxx"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{
+                // endAdornment: (
+                //   <InputAdornment position="end">
+                //     <svg {...getCardImageProps({ images })} />
+                //   </InputAdornment>
+                // ),
+                sx: { borderRadius: " 8px" },
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+            />
+          </div>
+          <div className=" flex flex-col w-full">
+            <label htmlFor="cardOwner">Card Owner*</label>
+            <TextField
+              id="cardOwner"
+              name="cardOwner"
+              // label="Card Owner"
+              value={formik.values.cardOwner}
+              onChange={(e) => {
+                formik.handleChange(e);
+                setCardOwner(e.target.value);
+              }}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.cardOwner && Boolean(formik.errors.cardOwner)
+              }
+              helperText={formik.touched.cardOwner && formik.errors.cardOwner}
+              placeholder="Card owner name"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{ sx: { borderRadius: " 8px" } }}
+            />
+          </div>
+        </div>
+        <div className="flex w-full">
+          <div className=" flex flex-col w-full mr-10">
+            <label htmlFor="expiryDate">Expiry Date*</label>
+            <TextField
+              id="expiryDate"
+              name="expiryDate"
+              // label="Expiry Date"
+              value={formik.values.expiryDate}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                const formattedValue = inputValue.replace(/\//g, ""); // ตัด / ออก
+                const [month, year] = formattedValue.match(/.{1,2}/g) || []; // แยกเป็น 2 ค่า
+                if (/^\d{2}$/.test(month) && /^\d{2}$/.test(year)) {
+                  console.log("Month:", month);
+                  console.log("Year:", year);
+                  setMonth(month);
+                  setYear(year);
+                }
+                formik.handleChange({
+                  target: {
+                    name: "expiryDate",
+                    value: formatExpiryDate(formattedValue), // เรียกใช้ formatExpiryDate อีกครั้ง
+                  },
+                });
+              }}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+              }
+              helperText={formik.touched.expiryDate && formik.errors.expiryDate}
+              placeholder="MM/YY"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{
+                sx: { borderRadius: " 8px" },
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+                maxLength: 5,
+              }}
+            />
+          </div>
+          <div className=" flex flex-col w-full ">
+            <label htmlFor="CVC">CVC/CVV*</label>
+            <TextField
+              id="CVC"
+              name="CVC"
+              // label="CVC/CVV"
+              value={formik.values.CVC}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                const numericValue = inputValue.replace(/\D/g, ""); // ลบทุกอักขระที่ไม่ใช่ตัวเลข
+                const formattedValue = numericValue.slice(0, 3); // กำหนดความยาวสูงสุดเป็น 3 ตัวเลข
+                formik.handleChange({
+                  target: {
+                    name: "CVC",
+                    value: formattedValue,
+                  },
+                });
+                setCVC(formattedValue);
+                console.log(formattedValue);
+              }}
+              onBlur={formik.handleBlur}
+              error={formik.touched.CVC && Boolean(formik.errors.CVC)}
+              helperText={formik.touched.CVC && formik.errors.CVC}
+              placeholder="xxx"
+              required
+              className="w-[100%]"
+              color="warning"
+              InputProps={{
+                sx: { borderRadius: " 8px" },
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+                maxLength: 3,
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

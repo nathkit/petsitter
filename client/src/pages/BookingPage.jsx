@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
 import { useBooking } from "../contexts/BookingContext";
 import usePosts from "../hooks/usePost";
+import { useOmise } from "../contexts/OmiseContext";
 
 function BookingPage() {
   const navigate = useNavigate();
@@ -35,8 +36,9 @@ function BookingPage() {
     confirmbooking,
     setConfirmbooking,
   } = useBooking();
+  const { setBookingDataOmise, omiseCardHandler } = useOmise();
   const [disableButtonBooking1, setDisableButtonBooking1] = useState([]);
-  // const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
+  const [disableButtonBooking3, setDisableButtonBooking3] = useState(true);
   const [step, setStep] = useState(1);
   const { userData } = useAuth();
   const nextStep = () => {
@@ -68,6 +70,7 @@ function BookingPage() {
     payment_method: paymentMethod,
   };
   // console.log(bookingData);
+  // setBookingDataOmise(bookingData);
 
   return (
     <>
@@ -102,8 +105,8 @@ function BookingPage() {
           )}
           {step === 2 && <Booking2 />}
           {step === 3 && (
-            // <Booking3 setDisableButtonBooking3={setDisableButtonBooking3} />
-            <Booking3 />
+            <Booking3 setDisableButtonBooking3={setDisableButtonBooking3} />
+            // <Booking3 />
           )}
           <div className=" p-10 w-full h-fit bg-etc-white flex justify-between">
             {step === 1 ? (
@@ -119,6 +122,7 @@ function BookingPage() {
                 onClick={() => {
                   // setDisableButtonBooking1("");
                   prevStep();
+                  setPaymentMethod(null);
                 }}
               />
             )}
@@ -127,12 +131,12 @@ function BookingPage() {
                 content={"Next"}
                 onClick={() => {
                   nextStep();
-                  setPaymentMethod("Cash");
+                  setPaymentMethod("Credit");
                 }}
                 disabled={disableButtonBooking1.length <= 0}
               />
             )}
-            {step === 3 && (
+            {paymentMethod === "Cash" && step === 3 && (
               <Confirmation
                 title={"Booking Confirmation"}
                 description={"Are you sure to booking this pet sitter?"}
@@ -142,13 +146,34 @@ function BookingPage() {
                 primaryWidth={"142px"}
                 buttonName={"Confirm Booking"}
                 buttonWidth={"175px"}
-                // disabled={disableButtonBooking3}
-                disabled={
-                  confirmbooking !== "successful" && paymentMethod !== "Cash"
-                }
+                disabled={disableButtonBooking3}
                 onClick={() => {
                   createBooking(bookingData);
                   setConfirmbooking("");
+                }}
+              />
+            )}
+            {paymentMethod === "Credit" && step === 3 && (
+              <Confirmation
+                title={"Booking Confirmation"}
+                description={"Are you sure to booking this pet sitter?"}
+                secondaryContent={"Cancel"}
+                secondaryWidth={"120px"}
+                primaryContent={"Yes, I’m sure"}
+                primaryWidth={"142px"}
+                buttonName={"Confirm Booking"}
+                buttonWidth={"175px"}
+                disabled={disableButtonBooking3}
+                // disabled={
+                //   confirmbooking !== "successful" && paymentMethod !== "Cash"
+                // }
+                onClick={() => {
+                  // setConfirmbooking("");
+                  // if (paymentMethod === "Credit") {
+                  // handleLoadScript(),
+                  omiseCardHandler(bookingData);
+                  // createBooking(bookingData);
+                  // }
                 }}
               />
             )}

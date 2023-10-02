@@ -9,6 +9,7 @@ import jwtInterceptor from "./utils/jwtIntercepter.js";
 import { BookingProvider } from "./contexts/BookingContext.jsx";
 import { PetProvider } from "./contexts/petContext.jsx";
 import { SitterProvider } from "./contexts/sitterContext.jsx";
+import { OmiseProvider } from "./contexts/OmiseContext.jsx";
 
 jwtInterceptor();
 
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <PetProvider>
             <BookingStatusProvider>
               <BookingProvider>
-                <App />
+                <OmiseProvider>
+                  <App />
+                </OmiseProvider>
               </BookingProvider>
             </BookingStatusProvider>
           </PetProvider>

@@ -109,7 +109,7 @@ authRouter.post("/requestResetPassword", async (req, res) => {
       return res.json({ message: "Invalid email!" });
     }
     await supabase.auth.resetPasswordForEmail(req.body.email, {
-      redirectTo: "http://localhost:5173/resetPassword",
+      redirectTo: "https://pet-sitter-53f4f.web.app/resetPassword",
     });
   } catch (err) {
     console.log(err);

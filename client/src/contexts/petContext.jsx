@@ -15,7 +15,7 @@ function PetProvider(props) {
   const handleDelete = async (userId, petId, avatarName) => {
     try {
       const response = await axios.delete(
-        `http://localhost:4000/userManagement/${userId}/pets/${petId}`
+        `/userManagement/${userId}/pets/${petId}`
       );
       if (response.status === 200) {
         // delete image from supabase too ***************************
@@ -44,8 +44,7 @@ function PetProvider(props) {
         handleDelete,
         petIds,
         setPetIds,
-      }}
-    >
+      }}>
       {props.children}
     </petContext.Provider>
   );

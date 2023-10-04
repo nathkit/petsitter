@@ -25,7 +25,7 @@ function usePetProfile() {
   const getPetProfile = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`
+        `/userManagement/${params.userId}/pets/${params.petId}`
       );
       setPetDataById(result.data.data);
     } catch (err) {
@@ -39,7 +39,7 @@ function usePetProfile() {
   const updatePetProfile = async (data) => {
     try {
       const result = await axios.put(
-        `http://localhost:4000/userManagement/${params.userId}/pets/${params.petId}`,
+        `/userManagement/${params.userId}/pets/${params.petId}`,
         data,
         data.avatarFile
           ? {
@@ -71,7 +71,7 @@ function usePetProfile() {
     // console.log(data.avatarFile);
     try {
       const result = await axios.post(
-        `http://localhost:4000/userManagement/${params.userId}/pets`,
+        `/userManagement/${params.userId}/pets`,
         data,
         data.avatarFile
           ? { headers: { "Content-Type": "multipart/form-data" } }

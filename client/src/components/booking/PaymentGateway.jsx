@@ -36,7 +36,7 @@ export default function PaymentGateway() {
     OmiseCard.open({
       amount: totalAmount * 100,
       onCreateTokenSuccess: async (token) => {
-        const result = await axios.post(`http://localhost:4000/pamentGateway`, {
+        const result = await axios.post(`/pamentGateway`, {
           amount: totalAmount * 100,
           token: token,
           headers: {
@@ -72,8 +72,7 @@ export default function PaymentGateway() {
           className={`inline-flex justify-center items-center py-3 px-6 rounded-full gap-2 border-none
           bg-orange-100 text-orange-500 text-bodyButton
           hover:text-orange-400 active:text-orange-600
-           disabled:bg-gray-200 disabled:text-gray-100`}
-        >
+           disabled:bg-gray-200 disabled:text-gray-100`}>
           Pay with debit card
         </button>
       </form>

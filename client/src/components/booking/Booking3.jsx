@@ -54,17 +54,14 @@ function Booking3() {
       amount: totalAmount * 100,
       onCreateTokenSuccess: async (token) => {
         try {
-          const result = await axios.post(
-            `http://localhost:4000/pamentGateway`,
-            {
-              amount: totalAmount * 100,
-              token: token,
-              headers: {
-                "Content-Type": "application/json",
-              },
-              // timeout: 5000,
-            }
-          );
+          const result = await axios.post(`/pamentGateway`, {
+            amount: totalAmount * 100,
+            token: token,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // timeout: 5000,
+          });
           console.log(result.data.message);
           setStatus(result.data.message);
           // try {
@@ -104,8 +101,7 @@ function Booking3() {
               paymentMethod === "Credit"
                 ? "border-orange-500 text-orange-500"
                 : ""
-            }`}
-          >
+            }`}>
             <Script
               url="https://cdn.omise.co/omise.js"
               onLoad={handleLoadScript}
@@ -122,8 +118,7 @@ function Booking3() {
                   omiseCardHandler();
                   setCredit("#ff7037");
                 }}
-                disabled={status === "successful"}
-              >
+                disabled={status === "successful"}>
                 <p className="ml-2 text-gray-500 ">Credit Card</p>
               </button>
               <div className=" absolute top-[27px] start-[120px]">
@@ -144,8 +139,7 @@ function Booking3() {
               handleCashClick();
               setWallet("#ff7037");
             }}
-            disabled={status === "successful"}
-          >
+            disabled={status === "successful"}>
             <WalletIcon color={wallet} />
             <p className="ml-2 text-gray-500">Cash</p>
           </button>

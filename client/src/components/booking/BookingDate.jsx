@@ -237,6 +237,8 @@ function BookingDate() {
         startDay !== currentDate &&
         endDay !== currentDate &&
         startDay == endDay &&
+        startDay !== "" &&
+        endDay !== "" &&
         time1 < time2
       ) {
         setStartTime(startTimeString);

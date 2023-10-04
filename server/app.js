@@ -9,7 +9,7 @@ import bookingRouter from "./routers/bookingRouter.js";
 import pamentGatewayRouter from "./routers/payment.js";
 async function init() {
   const app = express();
-  const port = 4000;
+  const port = process.env.port || 4000;
   dotenv.config();
 
   const logger = (req, res, next) => {

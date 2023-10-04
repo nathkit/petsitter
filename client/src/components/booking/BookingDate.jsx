@@ -105,7 +105,11 @@ function BookingDate() {
       } else if (
         startDay !== currentDate &&
         endDay !== currentDate &&
-        startDay !== endDay
+        startDay !== endDay &&
+        time1 !== null &&
+        time2 !== null &&
+        time2 !== "" &&
+        time1 !== ""
       ) {
         setDisable(false);
         setStartDate(`${startYear}-${startMonth}-${startDay}`);
@@ -114,7 +118,11 @@ function BookingDate() {
       } else if (
         checkStartTime.isAfter(minimumBookingTime) &&
         startDay == currentDate &&
-        endDay !== currentDate
+        endDay !== currentDate &&
+        time1 !== null &&
+        time2 !== null &&
+        time2 !== "" &&
+        time1 !== ""
       ) {
         setDisable(false);
         setStartDate(`${startYear}-${startMonth}-${startDay}`);

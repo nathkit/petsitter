@@ -237,8 +237,17 @@ function BookingDate() {
         startDay !== currentDate &&
         endDay !== currentDate &&
         startDay == endDay &&
+        startDay !== "" &&
+        endDay !== "" &&
         time1 < time2
       ) {
+        // console.log(startDay !== currentDate);
+        // console.log(endDay !== currentDate);
+        // console.log(startDay == endDay);
+        // console.log(time1 < time2);
+        // console.log(typeof startDay);
+        // console.log(endDay);
+        // console.log(currentDate);
         setStartTime(startTimeString);
         setEndTime(endTimeString);
         setDisable(false);

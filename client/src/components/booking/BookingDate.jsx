@@ -33,6 +33,8 @@ function BookingDate() {
     setStartDay,
     endDay,
     setEndDay,
+    disable,
+    setDisable,
   } = useBooking();
   const params = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,7 +43,7 @@ function BookingDate() {
   // const [endDay, setEndDay] = useState("");
   // const startInputTime = dayjs().startOf("hour").minute(0);
   // const endInputTime = startInputTime.add(1, "hour").startOf("hour").minute(0);
-  const [disable, setDisable] = useState(true);
+  // const [disable, setDisable] = useState(true);
   const [checkStartTime, setCheckStartTime] = useState(dayjs().add(4, "hour"));
   // const [time1, setTime1] = useState(null);
   // const [time2, setTime2] = useState(null);
@@ -105,7 +107,11 @@ function BookingDate() {
       } else if (
         startDay !== currentDate &&
         endDay !== currentDate &&
-        startDay !== endDay
+        startDay !== endDay &&
+        time1 !== null &&
+        time2 !== null &&
+        time2 !== "" &&
+        time1 !== ""
       ) {
         setDisable(false);
         setStartDate(`${startYear}-${startMonth}-${startDay}`);
@@ -114,8 +120,14 @@ function BookingDate() {
       } else if (
         checkStartTime.isAfter(minimumBookingTime) &&
         startDay == currentDate &&
-        endDay !== currentDate
+        endDay !== currentDate &&
+        time1 !== null &&
+        time2 !== null &&
+        time2 !== "" &&
+        time1 !== ""
       ) {
+        console.log(time1);
+        console.log(time2);
         setDisable(false);
         setStartDate(`${startYear}-${startMonth}-${startDay}`);
         setEndDate(`${endYear}-${endMonth}-${endDay}`);
@@ -347,6 +359,7 @@ export const Modal = ({ isOpen, onClose, children }) => {
     setTime2,
     setStartDay,
     setEndDay,
+    setDisable,
   } = useBooking();
   if (!isOpen) return null;
   return (
@@ -368,7 +381,8 @@ export const Modal = ({ isOpen, onClose, children }) => {
                   setTime2(""),
                   setStartDay(""),
                   setEndDay(""),
-                  onClose();
+                  setDisable(true);
+                onClose();
               }}
             />
           </div>

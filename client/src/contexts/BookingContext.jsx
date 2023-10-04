@@ -26,6 +26,7 @@ function BookingProvider(props) {
   const [time2, setTime2] = useState(null);
   const [startDay, setStartDay] = useState("");
   const [endDay, setEndDay] = useState("");
+  const [disable, setDisable] = useState(true);
   const navigate = useNavigate();
 
   const getSitterDetail = async (sitterId) => {
@@ -96,6 +97,8 @@ function BookingProvider(props) {
         setStartDay,
         endDay,
         setEndDay,
+        disable,
+        setDisable,
       }}
     >
       {props.children}

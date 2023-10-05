@@ -15,13 +15,17 @@ import axios from "axios";
 function HomePage() {
   const { getUserData, user } = useAuth();
   useEffect(() => {
-    console.log("test update deploy");
-    try {
-      const response = axios.get("https://petsitter-sever.onrender.com");
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://petsitter-sever.onrender.com"
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, []);
   return (
     <div className="bg-etc-white min-h-screen">

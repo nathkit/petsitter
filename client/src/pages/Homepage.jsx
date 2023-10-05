@@ -13,7 +13,11 @@ import { useEffect } from "react";
 
 function HomePage() {
   const { getUserData, user } = useAuth();
-
+  useEffect(() => {
+    fetch("https://petsitter-sever.onrender.com/")
+      .then((response) => response.send())
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
   return (
     <div className="bg-etc-white min-h-screen">
       <Navbar />

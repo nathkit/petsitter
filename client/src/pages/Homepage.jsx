@@ -10,13 +10,18 @@ import Footer from "../components/systemdesign/Footer";
 import Navbar from "../components/systemdesign/Navbar";
 import { useAuth } from "../contexts/authentication";
 import { useEffect } from "react";
+import axios from "axios";
 
 function HomePage() {
   const { getUserData, user } = useAuth();
   useEffect(() => {
-    fetch("https://petsitter-sever.onrender.com/")
-      .then((response) => response.send())
-      .catch((error) => console.error("Error fetching data:", error));
+    console.log("test update deploy");
+    try {
+      const response = axios.get("https://petsitter-sever.onrender.com");
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }, []);
   return (
     <div className="bg-etc-white min-h-screen">

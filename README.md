@@ -33,7 +33,7 @@ The pet-sitter project utilizes the following technologies:
 # Team Members
 The project is developed by a team consisting of the following members:
 
-- [NaeNe](https://github.com/BMIWALY) - API Design, ERD Design, Data Fetching, UI Creation
+- [NaeNe](https://github.com/nathkit) - API Design, ERD Design, Data Fetching, UI Creation
 - [Pui](https://github.com/anthiya-r) - API Design, ERD Design, Data Fetching, UI Creation
 - [Babe](https://github.com/PyW1tt) - API Design, ERD Design, Data Fetching, UI Creation (Payment gateway)
 - [James](https://github.com/TJThanachot) - API Design, ERD Design, Data Fetching, UI Creation (Authentication)

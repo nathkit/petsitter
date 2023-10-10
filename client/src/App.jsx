@@ -3,7 +3,7 @@ import { useAuth } from "./contexts/authentication";
 import AuthenticatedApp from "./pages/AuthenticatedApp.jsx";
 import axios from "axios";
 import UnauthenticatedApp from "./pages/UnauthenticatedApp";
-axios.defaults.baseURL = "https://petsitter-sever.onrender.com";
+axios.defaults.baseURL = "http://localhost:4000/";
 
 function App() {
   const auth = useAuth();

@@ -9,7 +9,7 @@ import bookingRouter from "./routers/bookingRouter.js";
 import pamentGatewayRouter from "./routers/payment.js";
 async function init() {
   const app = express();
-  const port = 4000;
+  const PORT = process.env.PORT || 4000;
   dotenv.config();
 
   const logger = (req, res, next) => {
@@ -41,8 +41,8 @@ async function init() {
     res.status(404).send("Not found");
   });
 
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+  app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}`);
   });
 }
 

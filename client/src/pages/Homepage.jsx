@@ -10,10 +10,23 @@ import Footer from "../components/systemdesign/Footer";
 import Navbar from "../components/systemdesign/Navbar";
 import { useAuth } from "../contexts/authentication";
 import { useEffect } from "react";
+import axios from "axios";
 
 function HomePage() {
   const { getUserData, user } = useAuth();
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://petsitter-sever.onrender.com"
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div className="bg-etc-white min-h-screen">
       <Navbar />

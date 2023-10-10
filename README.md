@@ -13,6 +13,7 @@ The key features of the pet-sitter project include:
 
 1. **Authentication:** Users and pet sitters can create accounts, log in, log out, and reset passwords.
 <img width='700px' src='https://res.cloudinary.com/dotjt9qcw/image/upload/v1696952417/login-page_zqepd5.png'/>
+
 2. **User Management:** Users can manage their user profiles, create and manage pet profiles, and view their booking history.
 3. **Pet-Sitter Listing:** Users can browse and search for pet sitters.
 4. **Pet-Sitter Details:** Users can view detailed information about pet sitters, including their introductions, services, location details, ratings, and reviews.

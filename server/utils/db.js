@@ -5,7 +5,7 @@ const { Pool } = pg.default;
 const pool = new Pool({
   connectionString:
     // "postgresql://postgres:vN4Qg4n-ypk@pLS@db.wjxguyrdfqbtwsetylfq.supabase.co:5432/postgres",
-  "postgresql://postgres.wjxguyrdfqbtwsetylfq:vN4Qg4n-ypk@pLS@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres",
+  `postgresql://postgres.wjxguyrdfqbtwsetylfq:${process.env.DB_PASSWAORD}@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres`,
 });
 
 export default pool;
